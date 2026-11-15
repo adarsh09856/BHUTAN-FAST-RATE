@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tour Packages &amp; Itineraries | Bhutan Fast Rate Tours</title>
+  <meta name="description" content="Explore handcrafted Bhutan tour packages. Cultural discoveries, festival journeys, high Himalayan treks, and luxury escapes. All inclusive with official SDF &amp; visa.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700;9..144,800&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- TOP UTILITY BAR -->
+  <aside class="tour-topbar">
+    <div class="tour-container tour-topbar-inner">
+      <div class="topbar-info">
+        <span class="topbar-badge">🇧🇹 Department of Tourism Certified #DOT-2024-884</span>
+        <span>📍 Thimphu &amp; Paro, Kingdom of Bhutan</span>
+        <span>📞 +975 2 334 890 / WhatsApp: +975 17 889 012</span>
+      </div>
+      <div class="topbar-actions">
+        <span>Daily SDF Included Guarantee</span>
+        <select class="currency-picker">
+          <option value="USD">USD ($)</option>
+          <option value="BTN">Nu. (BTN)</option>
+          <option value="INR">INR (₹)</option>
+          <option value="EUR">EUR (€)</option>
+          <option value="GBP">GBP (£)</option>
+        </select>
+      </div>
+    </div>
+  </aside>
+
+  <!-- MAIN NAVIGATION BAR -->
+  <header class="tour-navbar">
+    <div class="tour-container tour-navbar-inner">
+      <a href="index.html" class="tour-brand">
+        <div class="brand-emblem">ༀ</div>
+        <div class="brand-text-col">
+          <span class="brand-title">Bhutan Fast Rate Tours</span>
+          <span class="brand-sub">Himalayan Kingdom Expeditions</span>
+        </div>
+      </a>
+
+      <nav aria-label="Main Navigation">
+        <ul class="nav-menu-desktop">
+          <li><a href="index.html" class="nav-link">Home</a></li>
+          <li><a href="tours.html" class="nav-link active">Tour Packages</a></li>
+          <li><a href="destinations.html" class="nav-link">Destinations</a></li>
+          <li><a href="festivals.html" class="nav-link">Festivals 2027</a></li>
+          <li><a href="services.html" class="nav-link">Services &amp; Flights</a></li>
+          <li><a href="about.html" class="nav-link">About Bhutan</a></li>
+          <li><a href="contact.html" class="nav-link">Contact</a></li>
+        </ul>
+      </nav>
+
+      <div class="nav-actions">
+        <button type="button" class="btn-gold-cta" onclick="openBookingModal('Custom Tour Inquiry', 1899)">
+          <span>Plan Custom Tour &rarr;</span>
+        </button>
+        <button type="button" id="menuToggleBtn" class="btn-menu-toggle" aria-label="Open Mobile Menu">☰</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- MOBILE DRAWER MENU -->
+  <div id="mobileOverlay" class="mobile-drawer-overlay"></div>
+  <aside id="mobileDrawer" class="mobile-drawer">
+    <div class="mobile-drawer-header">
+      <div class="brand-text-col">
+        <span class="brand-title" style="font-size: 1.15rem;">Bhutan Fast Rate Tours</span>
+        <span class="brand-sub">Kingdom Expeditions</span>
+      </div>
+      <button type="button" id="drawerCloseBtn" class="drawer-close-btn">&times;</button>
+    </div>
+    <ul class="drawer-nav-list">
+      <li><a href="index.html" class="drawer-nav-link">Home <span>&rarr;</span></a></li>
+      <li><a href="tours.html" class="drawer-nav-link active">Tour Packages <span>&rarr;</span></a></li>
+      <li><a href="destinations.html" class="drawer-nav-link">Destinations <span>&rarr;</span></a></li>
+      <li><a href="festivals.html" class="drawer-nav-link">Festivals 2027 <span>&rarr;</span></a></li>
+      <li><a href="services.html" class="drawer-nav-link">Services &amp; Flights <span>&rarr;</span></a></li>
+      <li><a href="about.html" class="drawer-nav-link">About Bhutan <span>&rarr;</span></a></li>
+      <li><a href="contact.html" class="drawer-nav-link">Contact &amp; Offices <span>&rarr;</span></a></li>
+    </ul>
+  </aside>
+
+  <!-- PAGE HEADER BANNER -->
+  <div style="background: linear-gradient(180deg, var(--forest-dark), var(--forest)); color: #fff; padding: 60px 0 50px; text-align: center; border-bottom: 2px solid rgba(201,162,75,0.3);">
+    <div class="tour-container">
+      <span class="slide-kicker">All Inclusive Himalayan Itineraries</span>
+      <h1 style="font-family: var(--font-serif); font-size: clamp(2rem, 4vw, 3.2rem); margin-bottom: 12px; color: #fff;">
+        Bhutan Tour Packages &amp; Expeditions
+      </h1>
+      <p style="max-width: 680px; margin: 0 auto; color: var(--cream2); font-size: 1rem;">
+        Browse our 2027 certified itineraries below. Filter by style or duration, and click any package for full day-by-day itineraries, highlights, and direct booking.
+      </p>
+    </div>
+  </div>
+
+  <!-- TOURS CATALOG CONTENT -->
+  <main class="tour-container section-py">
+    <!-- Category Tabs Filter -->
+    <div class="category-tabs-nav">
+      <button type="button" class="cat-tab-btn active" data-cat="All">All Packages</button>
+      <button type="button" class="cat-tab-btn" data-cat="Classic">Classic Cultural</button>
+      <button type="button" class="cat-tab-btn" data-cat="Festival">Festival Tours</button>
+      <button type="button" class="cat-tab-btn" data-cat="Luxury">Luxury Lodges</button>
+      <button type="button" class="cat-tab-btn" data-cat="Trekking">High Treks</button>
+      <button type="button" class="cat-tab-btn" data-cat="Honeymoon">Honeymoon</button>
+      <button type="button" class="cat-tab-btn" data-cat="Family">Family</button>
+      <button type="button" class="cat-tab-btn" data-cat="Adventure">Adventure</button>
+    </div>
+
+    <!-- Tours Grid -->
+    <div id="toursGrid" class="tours-cards-grid">
+      <!-- Injected by JavaScript -->
+    </div>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="tour-footer">
+    <div class="tour-container">
+      <div class="footer-bottom-row">
+        <div>&copy; 2027 Bhutan Fast Rate Tours. All Rights Reserved. Kingdom of Bhutan.</div>
+        <div>Licensed Tour Operator #DOT-2024-884 &bull; ABTO Member #249</div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ITINERARY MODAL -->
+  <div id="itineraryModal" class="modal-overlay">
+    <div class="modal-dialog">
+      <button type="button" class="modal-close-btn" onclick="closeModal('itineraryModal')">&times;</button>
+      <div id="itineraryModalContent"></div>
+    </div>
+  </div>
+
+  <!-- BOOKING MODAL -->
+  <div id="bookingModal" class="modal-overlay">
+    <div class="modal-dialog" style="max-width: 580px;">
+      <button type="button" class="modal-close-btn" onclick="closeModal('bookingModal')">&times;</button>
+      <div class="modal-content-body">
+        <span class="slide-kicker">Official Booking Request</span>
+        <h3 style="font-family: var(--font-serif); font-size: 1.6rem; color: var(--forest); margin-bottom: 6px;">Plan Your Bhutan Journey</h3>
+        <form id="bookingModalForm">
+          <input type="hidden" id="bookingPkgName" value="Classic Bhutan Discovery">
+          <div style="margin-bottom: 14px;">
+            <label style="display: block; font-size: 0.78rem; font-weight: 800; text-transform: uppercase; color: var(--muted); margin-bottom: 4px;">Full Name *</label>
+            <input type="text" name="clientName" required class="filter-input" style="background: #fff;">
+          </div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 14px;">
+            <div>
+              <label style="display: block; font-size: 0.78rem; font-weight: 800; text-transform: uppercase; color: var(--muted); margin-bottom: 4px;">Email *</label>
+              <input type="email" name="clientEmail" required class="filter-input" style="background: #fff;">
+            </div>
+            <div>
+              <label style="display: block; font-size: 0.78rem; font-weight: 800; text-transform: uppercase; color: var(--muted); margin-bottom: 4px;">Phone / WhatsApp</label>
+              <input type="tel" name="clientPhone" class="filter-input" style="background: #fff;">
+            </div>
+          </div>
+          <div style="margin-bottom: 20px;">
+            <label style="display: block; font-size: 0.78rem; font-weight: 800; text-transform: uppercase; color: var(--muted); margin-bottom: 4px;">Special Wishes</label>
+            <textarea name="clientMessage" rows="3" class="filter-input" style="background: #fff;"></textarea>
+          </div>
+          <button type="submit" class="btn-gold-cta" style="width: 100%; justify-content: center; padding: 13px;">Submit Booking Request &rarr;</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/main.js"></script>
+</body>
+</html>

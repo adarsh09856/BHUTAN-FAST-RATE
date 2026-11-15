@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Travel Services, Flights &amp; Visa | Bhutan Fast Rate Tours</title>
+  <meta name="description" content="End-to-end travel services for Bhutan. Drukair and Bhutan Airlines ticketing, official Visa &amp; SDF processing, luxury 5-star hotel reservations, and private vehicle fleet.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700;9..144,800&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- TOPBAR -->
+  <aside class="tour-topbar">
+    <div class="tour-container tour-topbar-inner">
+      <div class="topbar-info">
+        <span class="topbar-badge">🇧🇹 Department of Tourism Certified #DOT-2024-884</span>
+        <span>📍 Thimphu &amp; Paro, Kingdom of Bhutan</span>
+      </div>
+      <div class="topbar-actions">
+        <select class="currency-picker">
+          <option value="USD">USD ($)</option>
+          <option value="BTN">Nu. (BTN)</option>
+          <option value="INR">INR (₹)</option>
+          <option value="EUR">EUR (€)</option>
+          <option value="GBP">GBP (£)</option>
+        </select>
+      </div>
+    </div>
+  </aside>
+
+  <!-- NAVBAR -->
+  <header class="tour-navbar">
+    <div class="tour-container tour-navbar-inner">
+      <a href="index.html" class="tour-brand">
+        <div class="brand-emblem">ༀ</div>
+        <div class="brand-text-col">
+          <span class="brand-title">Bhutan Fast Rate Tours</span>
+          <span class="brand-sub">Himalayan Kingdom Expeditions</span>
+        </div>
+      </a>
+
+      <nav aria-label="Main Navigation">
+        <ul class="nav-menu-desktop">
+          <li><a href="index.html" class="nav-link">Home</a></li>
+          <li><a href="tours.html" class="nav-link">Tour Packages</a></li>
+          <li><a href="destinations.html" class="nav-link">Destinations</a></li>
+          <li><a href="festivals.html" class="nav-link">Festivals 2027</a></li>
+          <li><a href="services.html" class="nav-link active">Services &amp; Flights</a></li>
+          <li><a href="about.html" class="nav-link">About Bhutan</a></li>
+          <li><a href="contact.html" class="nav-link">Contact</a></li>
+        </ul>
+      </nav>
+
+      <div class="nav-actions">
+        <button type="button" class="btn-gold-cta" onclick="openBookingModal('Services & Flight Inquiry', 1899)">
+          <span>Inquire Services &rarr;</span>
+        </button>
+        <button type="button" id="menuToggleBtn" class="btn-menu-toggle">☰</button>
+      </div>
+    </div>
+  </header>
+
+  <div id="mobileOverlay" class="mobile-drawer-overlay"></div>
+  <aside id="mobileDrawer" class="mobile-drawer">
+    <div class="mobile-drawer-header">
+      <div class="brand-text-col">
+        <span class="brand-title" style="font-size: 1.15rem;">Bhutan Fast Rate Tours</span>
+        <span class="brand-sub">Kingdom Expeditions</span>
+      </div>
+      <button type="button" id="drawerCloseBtn" class="drawer-close-btn">&times;</button>
+    </div>
+    <ul class="drawer-nav-list">
+      <li><a href="index.html" class="drawer-nav-link">Home <span>&rarr;</span></a></li>
+      <li><a href="tours.html" class="drawer-nav-link">Tour Packages <span>&rarr;</span></a></li>
+      <li><a href="destinations.html" class="drawer-nav-link">Destinations <span>&rarr;</span></a></li>
+      <li><a href="festivals.html" class="drawer-nav-link">Festivals 2027 <span>&rarr;</span></a></li>
+      <li><a href="services.html" class="drawer-nav-link active">Services &amp; Flights <span>&rarr;</span></a></li>
+      <li><a href="about.html" class="drawer-nav-link">About Bhutan <span>&rarr;</span></a></li>
+      <li><a href="contact.html" class="drawer-nav-link">Contact &amp; Offices <span>&rarr;</span></a></li>
+    </ul>
+  </aside>
+
+  <!-- BANNER -->
+  <div style="background: linear-gradient(180deg, var(--forest-dark), var(--forest)); color: #fff; padding: 60px 0 50px; text-align: center; border-bottom: 2px solid rgba(201,162,75,0.3);">
+    <div class="tour-container">
+      <span class="slide-kicker">End-to-End Travel Concierge</span>
+      <h1 style="font-family: var(--font-serif); font-size: clamp(2rem, 4vw, 3.2rem); margin-bottom: 12px; color: #fff;">
+        Bhutan Travel Services &amp; Flight Ticketing
+      </h1>
+      <p style="max-width: 680px; margin: 0 auto; color: var(--cream2); font-size: 1rem;">
+        Everything you need for an effortless journey to the Dragon Kingdom — from official biometric visa clearances to Drukair flights and private Toyota Land Cruiser transfers.
+      </p>
+    </div>
+  </div>
+
+  <!-- SERVICES GRID -->
+  <main class="tour-container section-py">
+    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 32px; margin-bottom: 60px;">
+      
+      <!-- Service 1: Visa & SDF -->
+      <div style="background: #fff; border-radius: var(--radius-md); border: 1px solid var(--line); padding: 36px; box-shadow: var(--shadow-sm);">
+        <div style="font-size: 2.2rem; margin-bottom: 12px;">🛂</div>
+        <h3 style="font-family: var(--font-serif); font-size: 1.4rem; color: var(--forest); margin-bottom: 8px;">
+          Official Visa Clearance &amp; SDF Handling
+        </h3>
+        <p style="font-size: 0.9rem; color: #4b5563; line-height: 1.6; margin-bottom: 16px;">
+          We handle all Department of Immigration paperwork, tourist e-visa clearance, and official Sustainable Development Fee (SDF) receipts. Your digital Visa Clearance letter is issued within 72 hours of passport submission.
+        </p>
+        <ul style="font-size: 0.85rem; color: var(--ink); list-style: none; display: flex; flex-direction: column; gap: 6px; margin-bottom: 20px;">
+          <li>✓ 100% approval rate for genuine travelers</li>
+          <li>✓ Single-entry &amp; multi-entry Bhutan e-Visa processing</li>
+          <li>✓ Official government SDF tax invoice provided for your records</li>
+        </ul>
+        <button type="button" class="btn-gold-cta" onclick="openBookingModal('Visa & SDF Assistance', 1899)">Apply With Our Concierge &rarr;</button>
+      </div>
+
+      <!-- Service 2: Drukair & Flights -->
+      <div id="flights" style="background: #fff; border-radius: var(--radius-md); border: 1px solid var(--line); padding: 36px; box-shadow: var(--shadow-sm);">
+        <div style="font-size: 2.2rem; margin-bottom: 12px;">✈️</div>
+        <h3 style="font-family: var(--font-serif); font-size: 1.4rem; color: var(--forest); margin-bottom: 8px;">
+          Drukair &amp; Bhutan Airlines Direct Ticketing
+        </h3>
+        <p style="font-size: 0.9rem; color: #4b5563; line-height: 1.6; margin-bottom: 16px;">
+          Direct agent access to all Paro International Airport (PBH) flight routes. Guaranteed seat allocations from Bangkok (BKK), Singapore (SIN), Delhi (DEL), Kathmandu (KTM), and Guwahati (GAU).
+        </p>
+        <ul style="font-size: 0.85rem; color: var(--ink); list-style: none; display: flex; flex-direction: column; gap: 6px; margin-bottom: 20px;">
+          <li>✓ Best Himalayan window seats reserved (Mt. Everest &amp; Kanchenjunga views)</li>
+          <li>✓ Automatic flight schedule rebooking in case of mountain weather delays</li>
+          <li>✓ Business class &amp; economy class tickets issued in local currency</li>
+        </ul>
+        <button type="button" class="btn-gold-cta" onclick="openBookingModal('Flight Ticketing Request', 1899)">Book Paro Flights &rarr;</button>
+      </div>
+
+      <!-- Service 3: Stays -->
+      <div style="background: #fff; border-radius: var(--radius-md); border: 1px solid var(--line); padding: 36px; box-shadow: var(--shadow-sm);">
+        <div style="font-size: 2.2rem; margin-bottom: 12px;">🏨</div>
+        <h3 style="font-family: var(--font-serif); font-size: 1.4rem; color: var(--forest); margin-bottom: 8px;">
+          5-Star Luxury Resorts &amp; Heritage Farmstays
+        </h3>
+        <p style="font-size: 0.9rem; color: #4b5563; line-height: 1.6; margin-bottom: 16px;">
+          Preferred partnerships with Bhutan's most acclaimed properties: Amankora (all 5 valleys), Six Senses Bhutan, Zhiwa Ling Heritage, COMO Uma Paro, and authentic organic village farmstays.
+        </p>
+        <ul style="font-size: 0.85rem; color: var(--ink); list-style: none; display: flex; flex-direction: column; gap: 6px; margin-bottom: 20px;">
+          <li>✓ Exclusive complimentary room upgrades and spa vouchers</li>
+          <li>✓ Private hot stone bath sessions with medicinal river herbs</li>
+          <li>✓ Farm-to-table organic Bhutanese culinary experiences</li>
+        </ul>
+        <button type="button" class="btn-gold-cta" onclick="openBookingModal('Luxury Stays Inquiry', 4850)">Reserve Luxury Lodges &rarr;</button>
+      </div>
+
+      <!-- Service 4: Fleet & Guides -->
+      <div style="background: #fff; border-radius: var(--radius-md); border: 1px solid var(--line); padding: 36px; box-shadow: var(--shadow-sm);">
+        <div style="font-size: 2.2rem; margin-bottom: 12px;">🚙</div>
+        <h3 style="font-family: var(--font-serif); font-size: 1.4rem; color: var(--forest); margin-bottom: 8px;">
+          Private Fleet &amp; Senior Master Guides
+        </h3>
+        <p style="font-size: 0.9rem; color: #4b5563; line-height: 1.6; margin-bottom: 16px;">
+          Travel in absolute comfort across Bhutan's winding mountain highways. Modern Toyota Land Cruiser Prado 4x4s, Toyota HiAce luxury coaches, and veteran mountain chauffeurs.
+        </p>
+        <ul style="font-size: 0.85rem; color: var(--ink); list-style: none; display: flex; flex-direction: column; gap: 6px; margin-bottom: 20px;">
+          <li>✓ Guides with minimum 10+ years experience certified by Tourism Department</li>
+          <li>✓ Multilingual guides available (English, German, French, Japanese, Mandarin)</li>
+          <li>✓ Unlimited bottled Himalayan mineral water &amp; snacks provided daily</li>
+        </ul>
+        <button type="button" class="btn-gold-cta" onclick="openBookingModal('Private Fleet & Guide Inquiry', 1899)">Inquire Chauffeur &amp; Guide &rarr;</button>
+      </div>
+
+    </div>
+  </main>
+
+  <footer class="tour-footer">
+    <div class="tour-container">
+      <div class="footer-bottom-row">
+        <div>&copy; 2027 Bhutan Fast Rate Tours. All Rights Reserved. Kingdom of Bhutan.</div>
+        <div>Department of Tourism Licensed Operator #DOT-2024-884</div>
+      </div>
+    </div>
+  </footer>
+
+  <div id="bookingModal" class="modal-overlay">
+    <div class="modal-dialog" style="max-width: 580px;">
+      <button type="button" class="modal-close-btn" onclick="closeModal('bookingModal')">&times;</button>
+      <div class="modal-content-body">
+        <span class="slide-kicker">Travel Services Request</span>
+        <h3 style="font-family: var(--font-serif); font-size: 1.6rem; color: var(--forest); margin-bottom: 6px;">How can we assist your journey?</h3>
+        <form id="bookingModalForm">
+          <input type="hidden" id="bookingPkgName" value="Custom Travel Services">
+          <div style="margin-bottom: 14px;">
+            <label style="display: block; font-size: 0.78rem; font-weight: 800; text-transform: uppercase; color: var(--muted); margin-bottom: 4px;">Full Name *</label>
+            <input type="text" name="clientName" required class="filter-input" style="background: #fff;">
+          </div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 14px;">
+            <div>
+              <label style="display: block; font-size: 0.78rem; font-weight: 800; text-transform: uppercase; color: var(--muted); margin-bottom: 4px;">Email *</label>
+              <input type="email" name="clientEmail" required class="filter-input" style="background: #fff;">
+            </div>
+            <div>
+              <label style="display: block; font-size: 0.78rem; font-weight: 800; text-transform: uppercase; color: var(--muted); margin-bottom: 4px;">WhatsApp</label>
+              <input type="tel" name="clientPhone" class="filter-input" style="background: #fff;">
+            </div>
+          </div>
+          <div style="margin-bottom: 20px;">
+            <label style="display: block; font-size: 0.78rem; font-weight: 800; text-transform: uppercase; color: var(--muted); margin-bottom: 4px;">Details of your request</label>
+            <textarea name="clientMessage" rows="3" placeholder="Tell us your flight dates, preferred hotels, or visa questions..." class="filter-input" style="background: #fff;"></textarea>
+          </div>
+          <button type="submit" class="btn-gold-cta" style="width: 100%; justify-content: center; padding: 13px;">Submit Request &rarr;</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/main.js"></script>
+</body>
+</html>

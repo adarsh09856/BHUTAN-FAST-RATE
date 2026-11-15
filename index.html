@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bhutan Fast Rate Tours | Official Tourism &amp; Himalayan Journeys</title>
+  <meta name="description" content="Official licensed tour operator in the Kingdom of Bhutan. Exclusive cultural tours, festival packages, high Himalayan treks, luxury escapes, and end-to-end Visa/SDF processing.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700;9..144,800&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- TOP UTILITY BAR -->
+  <aside class="tour-topbar">
+    <div class="tour-container tour-topbar-inner">
+      <div class="topbar-info">
+        <span class="topbar-badge">🇧🇹 Department of Tourism Certified #DOT-2024-884</span>
+        <span>📍 Thimphu &amp; Paro, Kingdom of Bhutan</span>
+        <span>📞 +975 2 334 890 / WhatsApp: +975 17 889 012</span>
+      </div>
+      <div class="topbar-actions">
+        <span>Daily SDF Included Guarantee</span>
+        <label for="currencyPicker" style="display:none;">Currency</label>
+        <select id="currencyPicker" class="currency-picker">
+          <option value="USD">USD ($)</option>
+          <option value="BTN">Nu. (BTN)</option>
+          <option value="INR">INR (₹)</option>
+          <option value="EUR">EUR (€)</option>
+          <option value="GBP">GBP (£)</option>
+        </select>
+      </div>
+    </div>
+  </aside>
+
+  <!-- MAIN NAVIGATION BAR -->
+  <header class="tour-navbar">
+    <div class="tour-container tour-navbar-inner">
+      <a href="index.html" class="tour-brand">
+        <div class="brand-emblem">ༀ</div>
+        <div class="brand-text-col">
+          <span class="brand-title">Bhutan Fast Rate Tours</span>
+          <span class="brand-sub">Himalayan Kingdom Expeditions</span>
+        </div>
+      </a>
+
+      <!-- Desktop Nav -->
+      <nav aria-label="Main Navigation">
+        <ul class="nav-menu-desktop">
+          <li><a href="index.html" class="nav-link active">Home</a></li>
+          <li><a href="tours.html" class="nav-link">Tour Packages</a></li>
+          <li><a href="destinations.html" class="nav-link">Destinations</a></li>
+          <li><a href="festivals.html" class="nav-link">Festivals 2027</a></li>
+          <li><a href="services.html" class="nav-link">Services &amp; Flights</a></li>
+          <li><a href="about.html" class="nav-link">About Bhutan</a></li>
+          <li><a href="contact.html" class="nav-link">Contact</a></li>
+        </ul>
+      </nav>
+
+      <!-- Right CTAs -->
+      <div class="nav-actions">
+        <button type="button" class="btn-sdf-calc" onclick="document.getElementById('sdfSection').scrollIntoView({behavior: 'smooth'})">
+          <span>🏷️ SDF Calculator</span>
+        </button>
+        <button type="button" class="btn-gold-cta" onclick="openBookingModal('Custom Private Itinerary', 1899)">
+          <span>Plan My Journey &rarr;</span>
+        </button>
+        <button type="button" id="menuToggleBtn" class="btn-menu-toggle" aria-label="Open Mobile Menu">
+          ☰
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- MOBILE DRAWER MENU -->
+  <div id="mobileOverlay" class="mobile-drawer-overlay"></div>
+  <aside id="mobileDrawer" class="mobile-drawer">
+    <div class="mobile-drawer-header">
+      <div class="brand-text-col">
+        <span class="brand-title" style="font-size: 1.15rem;">Bhutan Fast Rate Tours</span>
+        <span class="brand-sub">Kingdom Expeditions</span>
+      </div>
+      <button type="button" id="drawerCloseBtn" class="drawer-close-btn" aria-label="Close menu">&times;</button>
+    </div>
+    <ul class="drawer-nav-list">
+      <li><a href="index.html" class="drawer-nav-link active">Home <span>&rarr;</span></a></li>
+      <li><a href="tours.html" class="drawer-nav-link">Tour Packages <span>&rarr;</span></a></li>
+      <li><a href="destinations.html" class="drawer-nav-link">Destinations <span>&rarr;</span></a></li>
+      <li><a href="festivals.html" class="drawer-nav-link">Festivals 2027 <span>&rarr;</span></a></li>
+      <li><a href="services.html" class="drawer-nav-link">Services &amp; Flights <span>&rarr;</span></a></li>
+      <li><a href="about.html" class="drawer-nav-link">About Bhutan <span>&rarr;</span></a></li>
+      <li><a href="contact.html" class="drawer-nav-link">Contact &amp; Offices <span>&rarr;</span></a></li>
+    </ul>
+    <div style="margin-top: auto; padding-top: 20px; border-top: 1px solid rgba(231,220,196,0.15);">
+      <button type="button" class="btn-gold-cta" style="width: 100%; justify-content: center;" onclick="openBookingModal('General Inquiry', 1899)">
+        Plan My Journey Now
+      </button>
+      <div style="font-size: 0.78rem; color: var(--cream2); text-align: center; margin-top: 14px;">
+        WhatsApp: +975 17 889 012<br>info@bhutanfastratetours.com
+      </div>
+    </div>
+  </aside>
+
+  <!-- HERO CAROUSEL SECTION -->
+  <section class="hero-carousel-wrap">
+    <!-- Slide 1: Tiger's Nest -->
+    <div class="carousel-slide active">
+      <img src="assets/images/tigers-nest.webp" alt="Tiger's Nest Taktsang Monastery Paro Bhutan" class="carousel-bg-img">
+      <div class="carousel-overlay"></div>
+      <div class="tour-container" style="position: relative; z-index: 10;">
+        <div class="carousel-content">
+          <span class="slide-kicker">Paro &bull; The Sacred Icon</span>
+          <h1 class="slide-title">Stand above the clouds at Tiger’s Nest.</h1>
+          <p class="slide-sub">A cliff monastery clinging 900 meters above Paro valley, pine-scented mountain air, and a spiritual awakening you will remember for a lifetime.</p>
+          <div class="slide-actions">
+            <button type="button" class="btn-gold-cta" onclick="openItineraryModal(1)">
+              Explore Classic Tour &rarr;
+            </button>
+            <div class="slide-price-tag">
+              From <strong data-price-usd="1899">$1,899</strong> / person &bull; 6 Days
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 2: Punakha Dzong -->
+    <div class="carousel-slide">
+      <img src="assets/images/punakha-dzong.webp" alt="Punakha Dzong palace of great bliss Bhutan" class="carousel-bg-img">
+      <div class="carousel-overlay"></div>
+      <div class="tour-container" style="position: relative; z-index: 10;">
+        <div class="carousel-content">
+          <span class="slide-kicker">Punakha &bull; Palace of Great Happiness</span>
+          <h2 class="slide-title">Where two sacred rivers meet a golden dzong.</h2>
+          <p class="slide-sub">The majestic 17th-century fortress framed by jacaranda blossoms at the confluence of the Pho Chhu and Mo Chhu rivers.</p>
+          <div class="slide-actions">
+            <button type="button" class="btn-gold-cta" onclick="openItineraryModal(3)">
+              Explore Luxury Escape &rarr;
+            </button>
+            <div class="slide-price-tag">
+              From <strong data-price-usd="4850">$4,850</strong> / person &bull; 8 Days
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 3: Thimphu Festival -->
+    <div class="carousel-slide">
+      <img src="assets/images/thimphu-festival.webp" alt="Thimphu Tshechu masked cham dance Bhutan" class="carousel-bg-img">
+      <div class="carousel-overlay"></div>
+      <div class="tour-container" style="position: relative; z-index: 10;">
+        <div class="carousel-content">
+          <span class="slide-kicker">Thimphu &bull; Sacred Masked Festival</span>
+          <h2 class="slide-title">Dance, colour and blessing in Thimphu.</h2>
+          <p class="slide-sub">Sacred cham dances, silk thongdrels, trumpets echoing through the fortress courtyard, and timeless Himalayan celebration.</p>
+          <div class="slide-actions">
+            <button type="button" class="btn-gold-cta" onclick="openItineraryModal(2)">
+              View Festival Tour &rarr;
+            </button>
+            <div class="slide-price-tag">
+              From <strong data-price-usd="2499">$2,499</strong> / person &bull; 7 Days
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 4: Dochula Pass -->
+    <div class="carousel-slide">
+      <img src="assets/images/dochula-pass.webp" alt="Dochula Pass 108 chortens Bhutan" class="carousel-bg-img">
+      <div class="carousel-overlay"></div>
+      <div class="tour-container" style="position: relative; z-index: 10;">
+        <div class="carousel-content">
+          <span class="slide-kicker">Dochula &bull; 3,100M Mountain Pass</span>
+          <h2 class="slide-title">108 chortens. One endless horizon.</h2>
+          <p class="slide-sub">Breathtaking panoramic views across the snow-clad peaks of the Great Himalayas, wrapped in flutter of thousands of prayer flags.</p>
+          <div class="slide-actions">
+            <button type="button" class="btn-gold-cta" onclick="openItineraryModal(4)">
+              Honeymoon &amp; Scenic &rarr;
+            </button>
+            <div class="slide-price-tag">
+              From <strong data-price-usd="2799">$2,799</strong> / person &bull; 7 Days
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Controls -->
+    <button type="button" class="slider-arrow-btn prev" onclick="prevSlide()" aria-label="Previous slide">&#10094;</button>
+    <button type="button" class="slider-arrow-btn next" onclick="nextSlide()" aria-label="Next slide">&#10095;</button>
+
+    <div class="slider-dots-nav">
+      <button type="button" class="slider-dot active" onclick="setSlide(0)" aria-label="Slide 1"></button>
+      <button type="button" class="slider-dot" onclick="setSlide(1)" aria-label="Slide 2"></button>
+      <button type="button" class="slider-dot" onclick="setSlide(2)" aria-label="Slide 3"></button>
+      <button type="button" class="slider-dot" onclick="setSlide(3)" aria-label="Slide 4"></button>
+    </div>
+  </section>
+
+  <!-- SEARCH & FILTER ENGINE -->
+  <section class="tour-container search-filter-section">
+    <div class="search-filter-card">
+      <form id="tourSearchForm" class="search-filter-form">
+        <div class="filter-group">
+          <label class="filter-label" for="filterDestination">Destination Valley</label>
+          <select id="filterDestination" class="filter-select">
+            <option value="all">All Bhutan Valleys</option>
+            <option value="Paro">Paro Valley</option>
+            <option value="Thimphu">Thimphu Capital</option>
+            <option value="Punakha">Punakha &amp; Wangdue</option>
+            <option value="Phobjikha">Phobjikha Glacial Valley</option>
+            <option value="Bumthang">Bumthang Spiritual Heart</option>
+          </select>
+        </div>
+
+        <div class="filter-group">
+          <label class="filter-label" for="filterSeason">Travel Season</label>
+          <select id="filterSeason" class="filter-select">
+            <option value="all">Any Season</option>
+            <option value="spring">Spring (Mar – May) &bull; Blooms</option>
+            <option value="autumn">Autumn (Sep – Nov) &bull; Festivals</option>
+            <option value="winter">Winter (Dec – Feb) &bull; Clear Skies</option>
+            <option value="summer">Summer (Jun – Aug) &bull; Lush Green</option>
+          </select>
+        </div>
+
+        <div class="filter-group">
+          <label class="filter-label" for="filterStyle">Travel Style</label>
+          <select id="filterStyle" class="filter-select">
+            <option value="all">All Styles</option>
+            <option value="Classic">Classic Cultural</option>
+            <option value="Festival">Festival &amp; Cham</option>
+            <option value="Luxury">5-Star Ultra Luxury</option>
+            <option value="Trekking">Himalayan Trekking</option>
+            <option value="Honeymoon">Honeymoon Romance</option>
+            <option value="Family">Family Adventure</option>
+            <option value="Adventure">Nature &amp; Rafting</option>
+          </select>
+        </div>
+
+        <div class="filter-group">
+          <label class="filter-label" for="filterDuration">Duration</label>
+          <select id="filterDuration" class="filter-select">
+            <option value="all">Any Duration</option>
+            <option value="short">5 – 6 Days (Highlights)</option>
+            <option value="medium">7 – 9 Days (Comprehensive)</option>
+            <option value="long">10+ Days (Grand Circuit)</option>
+          </select>
+        </div>
+
+        <button type="submit" class="btn-search-submit">
+          <span>🔍 Search Tours</span>
+        </button>
+      </form>
+    </div>
+  </section>
+
+  <!-- FEATURED TOURS SECTION -->
+  <section class="tour-container section-py" id="toursSection">
+    <div class="section-header-block">
+      <span class="section-kicker">Curated Bhutan Journeys</span>
+      <h2 class="section-title">Handcrafted Tour Packages</h2>
+      <p class="section-sub">Every itinerary includes official Bhutan Government Visa clearance, $100/day SDF sustainability fee, certified English-speaking guide, private chauffeur vehicle, and 3-to-5 star accommodations.</p>
+    </div>
+
+    <!-- Category Tabs Filter -->
+    <div class="category-tabs-nav">
+      <button type="button" class="cat-tab-btn active" data-cat="All">All Packages</button>
+      <button type="button" class="cat-tab-btn" data-cat="Classic">Classic Cultural</button>
+      <button type="button" class="cat-tab-btn" data-cat="Festival">Festival Tours</button>
+      <button type="button" class="cat-tab-btn" data-cat="Luxury">Luxury Lodges</button>
+      <button type="button" class="cat-tab-btn" data-cat="Trekking">High Treks</button>
+      <button type="button" class="cat-tab-btn" data-cat="Honeymoon">Honeymoon</button>
+      <button type="button" class="cat-tab-btn" data-cat="Family">Family</button>
+      <button type="button" class="cat-tab-btn" data-cat="Adventure">Adventure</button>
+    </div>
+
+    <!-- Tour Cards Grid -->
+    <div id="toursGrid" class="tours-cards-grid">
+      <!-- Injected by JavaScript -->
+    </div>
+
+    <div style="text-align: center; margin-top: 48px;">
+      <a href="tours.html" class="btn-gold-cta" style="padding: 12px 32px; font-size: 0.95rem;">
+        View All 15+ Tour Itineraries &rarr;
+      </a>
+    </div>
+  </section>
+
+  <!-- DESTINATIONS SHOWCASE -->
+  <section class="tour-container section-py" style="background-color: #f7edd8; border-radius: var(--radius-lg); margin-bottom: 80px; padding-left: 36px; padding-right: 36px;">
+    <div class="section-header-block">
+      <span class="section-kicker">Enchanting Valleys</span>
+      <h2 class="section-title">Iconic Destinations of the Thunder Dragon</h2>
+      <p class="section-sub">From the subtropical orange orchards of Punakha to the glacier-carved sanctuary of Phobjikha and the alpine heights of Paro.</p>
+    </div>
+
+    <div class="destinations-grid">
+      <div class="destination-card">
+        <img src="assets/images/tigers-nest.webp" alt="Paro Valley Taktsang Dzong" class="dest-bg-img">
+        <div class="dest-overlay">
+          <span class="dest-best-season">Elevation: 2,280m &bull; Best: Mar–May &bull; Sep–Nov</span>
+          <h3 class="dest-name">Paro Valley</h3>
+          <p class="dest-why">Home to Tiger's Nest, the historic Rinpung Dzong, and the kingdom's only international airport surrounded by 5,500m peaks.</p>
+        </div>
+      </div>
+
+      <div class="destination-card">
+        <img src="assets/images/punakha-dzong.webp" alt="Punakha Valley Dzong" class="dest-bg-img">
+        <div class="dest-overlay">
+          <span class="dest-best-season">Elevation: 1,300m &bull; Best: Oct–Apr &bull; Warm Climate</span>
+          <h3 class="dest-name">Punakha &amp; Wangdue</h3>
+          <p class="dest-why">The ancient winter capital where terraced rice fields slope down to turquoise rivers and the majestic Palace of Great Bliss.</p>
+        </div>
+      </div>
+
+      <div class="destination-card">
+        <img src="assets/images/phobjikha-cranes.webp" alt="Phobjikha Glacial Valley" class="dest-bg-img">
+        <div class="dest-overlay">
+          <span class="dest-best-season">Elevation: 3,000m &bull; Best: Oct–Mar &bull; Crane Sanctuary</span>
+          <h3 class="dest-name">Phobjikha Valley</h3>
+          <p class="dest-why">A vast U-shaped glacial bowl that hosts hundreds of sacred Black-necked Cranes migrating from the Tibetan plateau every winter.</p>
+        </div>
+      </div>
+    </div>
+
+    <div style="text-align: center; margin-top: 36px;">
+      <a href="destinations.html" class="btn-sdf-calc" style="background: #FFFFFF; font-size: 0.88rem; padding: 10px 24px;">
+        Explore All Dzongkhags &amp; Travel Guides &rarr;
+      </a>
+    </div>
+  </section>
+
+  <!-- FESTIVALS 2027 CALENDAR -->
+  <section class="tour-container section-py">
+    <div class="section-header-block">
+      <span class="section-kicker">Sacred Cham &amp; Blessings</span>
+      <h2 class="section-title">Bhutan Tshechu &amp; Festival Calendar 2027</h2>
+      <p class="section-sub">Experience the spiritual crescendo of Bhutanese life. Early booking is essential as flights and boutique hotels book out months ahead.</p>
+    </div>
+
+    <div class="festivals-grid">
+      <article class="festival-card">
+        <div class="fest-thumb-wrap">
+          <img src="assets/images/thimphu-festival.webp" alt="Thimphu Tshechu Festival" class="fest-thumb">
+          <span class="fest-date-badge">Sep 2027</span>
+        </div>
+        <div class="fest-body">
+          <h3 class="fest-name">Thimphu Tshechu</h3>
+          <p class="fest-desc">Three days of transcendent masked dances at Tashichho Dzong courtyard honouring Guru Rinpoche with royal presence.</p>
+          <button type="button" class="fest-btn" onclick="openItineraryModal(2)">View 7-Day Festival Tour</button>
+        </div>
+      </article>
+
+      <article class="festival-card">
+        <div class="fest-thumb-wrap">
+          <img src="assets/images/tigers-nest.webp" alt="Paro Tshechu Spring Festival" class="fest-thumb">
+          <span class="fest-date-badge">Mar 2027</span>
+        </div>
+        <div class="fest-body">
+          <h3 class="fest-name">Paro Tshechu</h3>
+          <p class="fest-desc">Witness the pre-dawn unveiling of the four-story sacred Guru Thongdrel silk scroll that liberates onlookers by sight alone.</p>
+          <button type="button" class="fest-btn" onclick="openItineraryModal(2)">View Spring Festival Tour</button>
+        </div>
+      </article>
+
+      <article class="festival-card">
+        <div class="fest-thumb-wrap">
+          <img src="assets/images/punakha-dzong.webp" alt="Punakha Drubchen Winter Festival" class="fest-thumb">
+          <span class="fest-date-badge">Feb 2027</span>
+        </div>
+        <div class="fest-body">
+          <h3 class="fest-name">Punakha Drubchen</h3>
+          <p class="fest-desc">Dramatic battlefield re-enactment honoring Zhabdrung Ngawang Namgyal's victory over invading Tibetan armies in the 1600s.</p>
+          <button type="button" class="fest-btn" onclick="openItineraryModal(1)">View Winter Festival Tour</button>
+        </div>
+      </article>
+
+      <article class="festival-card">
+        <div class="fest-thumb-wrap">
+          <img src="assets/images/dochula-pass.webp" alt="Jambay Lhakhang Drup Central Bhutan" class="fest-thumb">
+          <span class="fest-date-badge">Oct 2027</span>
+        </div>
+        <div class="fest-body">
+          <h3 class="fest-name">Jambay Lhakhang Drup</h3>
+          <p class="fest-desc">Famous for the sacred midnight fire blessing (Mewang) where devotees sprint beneath fiery archways for purification.</p>
+          <button type="button" class="fest-btn" onclick="openItineraryModal(4)">View Bumthang Festival Tour</button>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <!-- INTERACTIVE SDF CALCULATOR SECTION -->
+  <section class="tour-container section-py" id="sdfSection">
+    <div class="sdf-calculator-box">
+      <div class="sdf-grid">
+        <div class="sdf-info-col">
+          <span class="slide-kicker" style="background: rgba(201,162,75,0.2);">Official Policy &bull; Department of Tourism</span>
+          <h3>Understanding Bhutan's SDF Fee</h3>
+          <p>The Sustainable Development Fee (SDF) supports Bhutan's free healthcare, free education, carbon-negative ecology, and cultural heritage preservation.</p>
+          <div class="sdf-badges-list">
+            <div class="sdf-badge-item">
+              <span class="icon">✓</span>
+              <span><strong>US $100 per adult per night</strong> (reduced 50% from former $200 rate).</span>
+            </div>
+            <div class="sdf-badge-item">
+              <span class="icon">✓</span>
+              <span><strong>Children aged 6–12 receive 50% concession</strong> (US $50 per night).</span>
+            </div>
+            <div class="sdf-badge-item">
+              <span class="icon">✓</span>
+              <span><strong>Children under 6 are completely exempt</strong> from SDF fees.</span>
+            </div>
+            <div class="sdf-badge-item">
+              <span class="icon">✓</span>
+              <span><strong>Indian Passport Holders:</strong> Nu. 1,200 (approx ₹1,200) per person/night.</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="sdf-calc-form">
+          <h4 style="font-family: var(--font-serif); font-size: 1.25rem; color: #FFFFFF; margin-bottom: 18px;">
+            Instant SDF Fee Estimator
+          </h4>
+          <div class="calc-inputs-row">
+            <div class="calc-field">
+              <label for="sdfNationality">Passport / Nationality</label>
+              <select id="sdfNationality">
+                <option value="international">International ($100/night)</option>
+                <option value="indian">Indian National (Nu. 1,200/night)</option>
+              </select>
+            </div>
+            <div class="calc-field">
+              <label for="sdfNights">Total Nights in Bhutan</label>
+              <input type="number" id="sdfNights" value="5" min="1" max="60">
+            </div>
+          </div>
+
+          <div class="calc-inputs-row">
+            <div class="calc-field">
+              <label for="sdfAdults">Adults (Age 12+)</label>
+              <input type="number" id="sdfAdults" value="2" min="1" max="30">
+            </div>
+            <div class="calc-field">
+              <label for="sdfKids">Children (Age 6–12)</label>
+              <input type="number" id="sdfKids" value="0" min="0" max="20">
+            </div>
+          </div>
+
+          <div class="calc-result-box">
+            <span class="calc-result-label">Estimated Government SDF Total</span>
+            <div id="sdfResultDisplay" class="calc-result-val">$1,000</div>
+            <p id="sdfResultNote" class="calc-result-note">2 adults for 5 nights in the Kingdom of Bhutan.</p>
+          </div>
+
+          <div style="margin-top: 18px; text-align: center;">
+            <button type="button" class="btn-gold-cta" style="width: 100%; justify-content: center;" onclick="openBookingModal('SDF & Visa Assistance', 1899)">
+              Apply For Visa &amp; Book Tour &rarr;
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TRAVEL REVIEWS & TRUST -->
+  <section class="tour-container section-py">
+    <div class="section-header-block">
+      <span class="section-kicker">Devoted Travelers</span>
+      <h2 class="section-title">Words from Himalayan Voyagers</h2>
+      <p class="section-sub">Over 1,200 international travelers guided with 5-star perfection since 2012.</p>
+    </div>
+
+    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px;">
+      <div style="background: #fff; padding: 30px; border-radius: var(--radius-md); border: 1px solid var(--line); box-shadow: var(--shadow-sm);">
+        <div style="color: var(--gold); font-size: 1.1rem; margin-bottom: 12px;">★★★★★</div>
+        <p style="font-size: 0.92rem; color: #374151; line-height: 1.6; margin-bottom: 16px;">
+          "The hike to Tiger's Nest was life-changing. Our guide Kinley knew every monastery monk and shared profound Buddhist philosophy that made the journey spiritually unforgettable."
+        </p>
+        <div style="display: flex; align-items: center; gap: 12px;">
+          <div style="width: 40px; height: 40px; border-radius: 50%; background: var(--forest); color: var(--gold2); display: flex; align-items: center; justify-content: center; font-weight: 800;">ER</div>
+          <div>
+            <h4 style="font-size: 0.9rem; font-weight: 800; color: var(--forest);">Eleanor Richardson</h4>
+            <span style="font-size: 0.75rem; color: var(--muted);">London, United Kingdom &bull; Classic 6D</span>
+          </div>
+        </div>
+      </div>
+
+      <div style="background: #fff; padding: 30px; border-radius: var(--radius-md); border: 1px solid var(--line); box-shadow: var(--shadow-sm);">
+        <div style="color: var(--gold); font-size: 1.1rem; margin-bottom: 12px;">★★★★★</div>
+        <p style="font-size: 0.92rem; color: #374151; line-height: 1.6; margin-bottom: 16px;">
+          "Every single logistics detail — Drukair flights from Bangkok, luxury Six Senses villas, and SDF fee clearances — was handled seamlessly. Bhutan Fast Rate Tours is truly the gold standard."
+        </p>
+        <div style="display: flex; align-items: center; gap: 12px;">
+          <div style="width: 40px; height: 40px; border-radius: 50%; background: var(--forest); color: var(--gold2); display: flex; align-items: center; justify-content: center; font-weight: 800;">MC</div>
+          <div>
+            <h4 style="font-size: 0.9rem; font-weight: 800; color: var(--forest);">Marcus &amp; Claire Chen</h4>
+            <span style="font-size: 0.75rem; color: var(--muted);">Singapore &bull; Luxury Himalayan 8D</span>
+          </div>
+        </div>
+      </div>
+
+      <div style="background: #fff; padding: 30px; border-radius: var(--radius-md); border: 1px solid var(--line); box-shadow: var(--shadow-sm);">
+        <div style="color: var(--gold); font-size: 1.1rem; margin-bottom: 12px;">★★★★★</div>
+        <p style="font-size: 0.92rem; color: #374151; line-height: 1.6; margin-bottom: 16px;">
+          "The Thimphu Tshechu festival was hypnotic! Being immersed among thousands of Bhutanese in their finest handwoven ghos and kiras was an honor beyond words."
+        </p>
+        <div style="display: flex; align-items: center; gap: 12px;">
+          <div style="width: 40px; height: 40px; border-radius: 50%; background: var(--forest); color: var(--gold2); display: flex; align-items: center; justify-content: center; font-weight: 800;">DS</div>
+          <div>
+            <h4 style="font-size: 0.9rem; font-weight: 800; color: var(--forest);">Dr. Stefan Meyer</h4>
+            <span style="font-size: 0.75rem; color: var(--muted);">Munich, Germany &bull; Festival 7D</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="tour-footer">
+    <div class="tour-container">
+      <div class="footer-top-grid">
+        <div class="footer-col">
+          <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 16px;">
+            <div class="brand-emblem" style="width: 38px; height: 38px; font-size: 1.1rem;">ༀ</div>
+            <div>
+              <h3 style="font-family: var(--font-serif); font-size: 1.25rem; color: #FFFFFF;">Bhutan Fast Rate Tours</h3>
+              <span style="font-size: 0.72rem; color: var(--gold2); text-transform: uppercase; letter-spacing: 1px;">Licensed Tour Operator</span>
+            </div>
+          </div>
+          <p style="font-size: 0.86rem; color: var(--cream2); line-height: 1.6; margin-bottom: 16px;">
+            Authorized by the Department of Tourism, Royal Government of Bhutan. Dedicated to authentic, high-value, low-volume sustainable travel honoring the principles of Gross National Happiness.
+          </p>
+          <div style="font-size: 0.8rem; color: var(--gold2);">
+            License No: DOT-2024-884 &bull; ABTO Member #249
+          </div>
+        </div>
+
+        <div class="footer-col">
+          <h4>Explore Tours</h4>
+          <ul class="footer-links-list">
+            <li><a href="tours.html?cat=Classic">Classic Cultural Tours</a></li>
+            <li><a href="tours.html?cat=Festival">Thimphu &amp; Paro Festivals</a></li>
+            <li><a href="tours.html?cat=Luxury">Luxury Amankora Lodges</a></li>
+            <li><a href="tours.html?cat=Trekking">Druk Path High Trek</a></li>
+            <li><a href="tours.html?cat=Honeymoon">Honeymoon Romance</a></li>
+            <li><a href="tours.html?cat=Family">Family Adventures</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4>Quick Links</h4>
+          <ul class="footer-links-list">
+            <li><a href="destinations.html">Bhutan Valleys Guide</a></li>
+            <li><a href="festivals.html">Festival Calendar 2027</a></li>
+            <li><a href="services.html">Visa &amp; SDF Handling</a></li>
+            <li><a href="services.html#flights">Drukair Flight Booking</a></li>
+            <li><a href="about.html">Our Certified Guides</a></li>
+            <li><a href="contact.html">Contact &amp; Offices</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4>Bhutan Headquarters</h4>
+          <p style="font-size: 0.85rem; color: var(--cream2); margin-bottom: 10px;">
+            Norzin Lam, Near Clock Tower Square<br>
+            Thimphu 11001, Kingdom of Bhutan
+          </p>
+          <p style="font-size: 0.85rem; color: var(--cream2); margin-bottom: 10px;">
+            Paro Branch: Bondey Highway, Paro Valley
+          </p>
+          <p style="font-size: 0.85rem; color: var(--gold2); font-weight: 700;">
+            WhatsApp: +975 17 889 012<br>
+            Hotline: +975 2 334 890
+          </p>
+        </div>
+      </div>
+
+      <div class="footer-bottom-row">
+        <div>
+          &copy; 2027 Bhutan Fast Rate Tours. All Rights Reserved. Kingdom of Bhutan.
+        </div>
+        <div>
+          Designed with Himalayan Reverence &bull; 100% Device-Friendly Responsive Layout
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ITINERARY DETAIL MODAL -->
+  <div id="itineraryModal" class="modal-overlay">
+    <div class="modal-dialog">
+      <button type="button" class="modal-close-btn" onclick="closeModal('itineraryModal')" aria-label="Close modal">&times;</button>
+      <div id="itineraryModalContent">
+        <!-- Injected via JavaScript -->
+      </div>
+    </div>
+  </div>
+
+  <!-- BOOKING & INQUIRY MODAL -->
+  <div id="bookingModal" class="modal-overlay">
+    <div class="modal-dialog" style="max-width: 580px;">
+      <button type="button" class="modal-close-btn" onclick="closeModal('bookingModal')" aria-label="Close modal">&times;</button>
+      <div class="modal-content-body">
+        <span class="slide-kicker" style="background: rgba(201,162,75,0.2);">Official Booking Request</span>
+        <h3 style="font-family: var(--font-serif); font-size: 1.6rem; color: var(--forest); margin-bottom: 6px;">Plan Your Bhutan Journey</h3>
+        <p style="font-size: 0.86rem; color: var(--muted); margin-bottom: 20px;">
+          Direct communication with our senior licensed travel planner in Paro. No obligation, guaranteed response within 2 hours.
+        </p>
+
+        <form id="bookingModalForm">
+          <input type="hidden" id="bookingPkgName" value="Classic Bhutan Discovery">
+          <div style="background: var(--cream); padding: 12px 16px; border-radius: var(--radius-sm); border: 1px solid var(--line); margin-bottom: 16px; display: flex; justify-content: space-between; align-items: center;">
+            <span style="font-size: 0.85rem; font-weight: 700; color: var(--forest);">Starting Price:</span>
+            <span id="bookingEstPrice" style="font-family: var(--font-serif); font-size: 1.25rem; font-weight: 800; color: var(--gold-dark);">$1,899</span>
+          </div>
+
+          <div style="margin-bottom: 14px;">
+            <label style="display: block; font-size: 0.78rem; font-weight: 800; text-transform: uppercase; color: var(--muted); margin-bottom: 4px;">Full Name *</label>
+            <input type="text" name="clientName" required placeholder="e.g. Johnathan Smith" class="filter-input" style="background: #fff;">
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 14px;">
+            <div>
+              <label style="display: block; font-size: 0.78rem; font-weight: 800; text-transform: uppercase; color: var(--muted); margin-bottom: 4px;">Email Address *</label>
+              <input type="email" name="clientEmail" required placeholder="john@example.com" class="filter-input" style="background: #fff;">
+            </div>
+            <div>
+              <label style="display: block; font-size: 0.78rem; font-weight: 800; text-transform: uppercase; color: var(--muted); margin-bottom: 4px;">WhatsApp / Phone</label>
+              <input type="tel" name="clientPhone" placeholder="+1 555-0192" class="filter-input" style="background: #fff;">
+            </div>
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 14px;">
+            <div>
+              <label style="display: block; font-size: 0.78rem; font-weight: 800; text-transform: uppercase; color: var(--muted); margin-bottom: 4px;">Expected Travel Date</label>
+              <input type="date" name="travelDate" class="filter-input" style="background: #fff;">
+            </div>
+            <div>
+              <label style="display: block; font-size: 0.78rem; font-weight: 800; text-transform: uppercase; color: var(--muted); margin-bottom: 4px;">Number of Guests</label>
+              <select name="guestsCount" class="filter-select" style="background: #fff;">
+                <option value="2">2 Guests (Couple/Twin)</option>
+                <option value="1">1 Solo Traveler</option>
+                <option value="4">Small Family (3-4)</option>
+                <option value="6">Group (5-8)</option>
+                <option value="10">Large Group (9+)</option>
+              </select>
+            </div>
+          </div>
+
+          <div style="margin-bottom: 16px;">
+            <label style="display: flex; align-items: center; gap: 8px; font-size: 0.84rem; color: var(--ink); cursor: pointer;">
+              <input type="checkbox" name="needFlights" checked style="accent-color: var(--forest);">
+              <span>Include Drukair / Bhutan Airlines international flight assistance to Paro</span>
+            </label>
+          </div>
+
+          <div style="margin-bottom: 20px;">
+            <label style="display: block; font-size: 0.78rem; font-weight: 800; text-transform: uppercase; color: var(--muted); margin-bottom: 4px;">Special Wishes / Dietary / Hotel Tier</label>
+            <textarea name="clientMessage" rows="3" placeholder="Tell us if you want luxury 5-star lodges, hot stone baths, or photography permits..." class="filter-input" style="background: #fff;"></textarea>
+          </div>
+
+          <button type="submit" class="btn-gold-cta" style="width: 100%; justify-content: center; padding: 13px;">
+            Submit Official Travel Request &rarr;
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- SCRIPT -->
+  <script src="js/main.js"></script>
+</body>
+</html>
