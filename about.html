@@ -2,170 +2,332 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>About Bhutan Fast Rate Tours | Gross National Happiness Travel</title>
-  <meta name="description" content="Learn about Bhutan Fast Rate Tours. Official Department of Tourism licensed operator, our native guides, and our commitment to sustainable Gross National Happiness travel.">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>About Us — Bhutan Fast Rate Tours | Our Heritage & Sustainable Tourism</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700;9..144,800&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            forest: '#0B2A22',
+            forest2: '#123A30',
+            gold: '#C9A24B',
+            gold2: '#E4C87E',
+            cream: '#FFF8EC',
+            cream2: '#F7EDD8',
+            ink: '#101613',
+            muted: '#66706A',
+            line: '#E7DCC4',
+            surface: '#FFF8EC',
+            card: '#FFFFFF',
+          },
+          fontFamily: {
+            serif: ['Fraunces', 'serif'],
+            sans: ['Manrope', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+  <link rel="stylesheet" href="css/tour-theme.css">
 </head>
-<body>
+<body class="min-h-screen bg-[var(--cream)] text-[var(--ink)] font-sans antialiased overflow-x-hidden">
 
-  <!-- TOPBAR -->
-  <aside class="tour-topbar">
-    <div class="tour-container tour-topbar-inner">
-      <div class="topbar-info">
-        <span class="topbar-badge">🇧🇹 Department of Tourism Certified #DOT-2024-884</span>
-        <span>📍 Thimphu &amp; Paro, Kingdom of Bhutan</span>
-      </div>
-      <div class="topbar-actions">
-        <select class="currency-picker">
-          <option value="USD">USD ($)</option>
-          <option value="BTN">Nu. (BTN)</option>
-          <option value="INR">INR (₹)</option>
-          <option value="EUR">EUR (€)</option>
-          <option value="GBP">GBP (£)</option>
-        </select>
-      </div>
+  <!-- Top Announcement Bar -->
+  <div class="bg-[#0B2A22] text-white text-[12px] sm:text-[13px] border-b border-[#123A30]">
+    <div class="max-w-[1360px] mx-auto px-4 sm:px-6 py-2.5 flex flex-wrap gap-x-6 gap-y-1 justify-between items-center">
+      <span class="font-semibold flex items-center gap-1.5">
+        <span class="text-[#E4C87E]">✓</span> 100% Bhutanese Owned & Operated · License #BT-8842
+      </span>
+      <span class="hidden md:flex items-center gap-4 text-white/80">
+        <span>Preserving the Living Heritage of Druk Yul</span>
+        <span>•</span>
+        <span>High Value, Low Volume Tourism</span>
+      </span>
+      <span class="text-[#E4C87E] font-bold flex items-center gap-1">
+        <span>★ 4.9</span>
+        <span class="text-white/70 font-normal">(2,400+ travellers)</span>
+      </span>
     </div>
-  </aside>
+  </div>
 
-  <!-- NAVBAR -->
-  <header class="tour-navbar">
-    <div class="tour-container tour-navbar-inner">
-      <a href="index.html" class="tour-brand">
-        <div class="brand-emblem">ༀ</div>
-        <div class="brand-text-col">
-          <span class="brand-title">Bhutan Fast Rate Tours</span>
-          <span class="brand-sub">Himalayan Kingdom Expeditions</span>
-        </div>
+  <!-- Header Navigation -->
+  <header class="sticky top-0 z-40 bg-[#FFF8EC]/95 backdrop-blur-md border-b border-[#E7DCC4] transition-all">
+    <div class="max-w-[1360px] mx-auto px-4 sm:px-6 h-[72px] flex items-center justify-between gap-4">
+      <button id="mobileMenuBtn" class="lg:hidden p-2 rounded-xl text-[#0B2A22] hover:bg-[#F7EDD8]" aria-label="Open navigation menu">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+      </button>
+
+      <a href="index.html" class="flex items-center gap-2.5 shrink-0">
+        <span class="w-10 h-10 rounded-full bg-[#0B2A22] text-[#C9A24B] grid place-items-center font-serif text-xl font-bold shadow-sm">B</span>
+        <span class="leading-none">
+          <span class="block font-serif text-[18px] sm:text-[22px] font-bold tracking-tight text-[#0B2A22]">BHUTAN FAST RATE</span>
+          <span class="block text-[10px] tracking-[0.24em] text-[#C9A24B] font-extrabold">TOURS · EST. PARO</span>
+        </span>
       </a>
 
-      <nav aria-label="Main Navigation">
-        <ul class="nav-menu-desktop">
-          <li><a href="index.html" class="nav-link">Home</a></li>
-          <li><a href="tours.html" class="nav-link">Tour Packages</a></li>
-          <li><a href="destinations.html" class="nav-link">Destinations</a></li>
-          <li><a href="festivals.html" class="nav-link">Festivals 2027</a></li>
-          <li><a href="services.html" class="nav-link">Services &amp; Flights</a></li>
-          <li><a href="about.html" class="nav-link active">About Bhutan</a></li>
-          <li><a href="contact.html" class="nav-link">Contact</a></li>
-        </ul>
+      <nav class="hidden lg:flex items-center gap-1 text-[15px] font-semibold text-[#101613]">
+        <a href="index.html" class="px-3.5 py-2 rounded-full hover:bg-[#F7EDD8] transition-colors">Home</a>
+        <a href="tours.html" class="px-3.5 py-2 rounded-full hover:bg-[#F7EDD8] transition-colors">Tours</a>
+        <a href="destinations.html" class="px-3.5 py-2 rounded-full hover:bg-[#F7EDD8] transition-colors">Destinations</a>
+        <a href="festivals.html" class="px-3.5 py-2 rounded-full hover:bg-[#F7EDD8] transition-colors">Festivals</a>
+        <a href="services.html" class="px-3.5 py-2 rounded-full hover:bg-[#F7EDD8] transition-colors">Visa & SDF</a>
+        <a href="about.html" class="px-3.5 py-2 rounded-full bg-[#0B2A22] text-white shadow-sm transition-colors">About Us</a>
+        <a href="contact.html" class="px-3.5 py-2 rounded-full hover:bg-[#F7EDD8] transition-colors">Contact</a>
       </nav>
 
-      <div class="nav-actions">
-        <button type="button" class="btn-gold-cta" onclick="openBookingModal('General Inquiry', 1899)">
-          <span>Contact Us &rarr;</span>
-        </button>
-        <button type="button" id="menuToggleBtn" class="btn-menu-toggle">☰</button>
+      <div class="flex items-center gap-3">
+        <a href="services.html#calculator" class="hidden sm:inline-flex items-center gap-1.5 text-xs font-bold text-[#0B2A22] bg-[#F7EDD8] hover:bg-[#EADFC8] px-3.5 py-2 rounded-full border border-[#E7DCC4] transition">
+          <svg class="w-4 h-4 text-[#C9A24B]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>
+          SDF Calculator
+        </a>
+        <a href="contact.html#inquire" class="inline-flex items-center gap-1.5 text-xs sm:text-sm font-bold bg-[#C9A24B] hover:bg-[#E4C87E] text-[#0B2A22] px-4 sm:px-5 py-2.5 rounded-full shadow-sm transition transform active:scale-95">
+          Build My Route
+        </a>
       </div>
     </div>
   </header>
 
-  <div id="mobileOverlay" class="mobile-drawer-overlay"></div>
-  <aside id="mobileDrawer" class="mobile-drawer">
-    <div class="mobile-drawer-header">
-      <div class="brand-text-col">
-        <span class="brand-title" style="font-size: 1.15rem;">Bhutan Fast Rate Tours</span>
-        <span class="brand-sub">Kingdom Expeditions</span>
+  <!-- Mobile Drawer Menu -->
+  <div id="mobileDrawer" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm hidden transition-opacity">
+    <div class="fixed top-0 bottom-0 left-0 w-[300px] max-w-[85vw] bg-[#FFF8EC] shadow-2xl p-6 flex flex-col justify-between overflow-y-auto">
+      <div>
+        <div class="flex items-center justify-between pb-5 border-b border-[#E7DCC4]">
+          <div class="flex items-center gap-2">
+            <span class="w-9 h-9 rounded-full bg-[#0B2A22] text-[#C9A24B] grid place-items-center font-serif text-lg font-bold">B</span>
+            <span class="font-serif text-lg font-bold text-[#0B2A22]">BHUTAN FAST RATE</span>
+          </div>
+          <button id="closeDrawerBtn" class="p-2 text-[#0B2A22] hover:bg-[#F7EDD8] rounded-xl" aria-label="Close menu">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+          </button>
+        </div>
+        <nav class="mt-6 space-y-2 text-base font-semibold">
+          <a href="index.html" class="block px-3 py-2.5 rounded-xl text-[#101613] hover:bg-[#F7EDD8]">Home</a>
+          <a href="tours.html" class="block px-3 py-2.5 rounded-xl text-[#101613] hover:bg-[#F7EDD8]">Tours & Packages</a>
+          <a href="destinations.html" class="block px-3 py-2.5 rounded-xl text-[#101613] hover:bg-[#F7EDD8]">Destinations</a>
+          <a href="festivals.html" class="block px-3 py-2.5 rounded-xl text-[#101613] hover:bg-[#F7EDD8]">Festival Calendar</a>
+          <a href="services.html" class="block px-3 py-2.5 rounded-xl text-[#101613] hover:bg-[#F7EDD8]">Visa, SDF & Flights</a>
+          <a href="about.html" class="block px-3 py-2.5 rounded-xl bg-[#0B2A22] text-white">About Us</a>
+          <a href="contact.html" class="block px-3 py-2.5 rounded-xl text-[#101613] hover:bg-[#F7EDD8]">Contact & Inquiry</a>
+        </nav>
       </div>
-      <button type="button" id="drawerCloseBtn" class="drawer-close-btn">&times;</button>
-    </div>
-    <ul class="drawer-nav-list">
-      <li><a href="index.html" class="drawer-nav-link">Home <span>&rarr;</span></a></li>
-      <li><a href="tours.html" class="drawer-nav-link">Tour Packages <span>&rarr;</span></a></li>
-      <li><a href="destinations.html" class="drawer-nav-link">Destinations <span>&rarr;</span></a></li>
-      <li><a href="festivals.html" class="drawer-nav-link">Festivals 2027 <span>&rarr;</span></a></li>
-      <li><a href="services.html" class="drawer-nav-link">Services &amp; Flights <span>&rarr;</span></a></li>
-      <li><a href="about.html" class="drawer-nav-link active">About Bhutan <span>&rarr;</span></a></li>
-      <li><a href="contact.html" class="drawer-nav-link">Contact &amp; Offices <span>&rarr;</span></a></li>
-    </ul>
-  </aside>
-
-  <!-- BANNER -->
-  <div style="background: linear-gradient(180deg, var(--forest-dark), var(--forest)); color: #fff; padding: 60px 0 50px; text-align: center; border-bottom: 2px solid rgba(201,162,75,0.3);">
-    <div class="tour-container">
-      <span class="slide-kicker">Born in the Kingdom</span>
-      <h1 style="font-family: var(--font-serif); font-size: clamp(2rem, 4vw, 3.2rem); margin-bottom: 12px; color: #fff;">
-        About Bhutan Fast Rate Tours
-      </h1>
-      <p style="max-width: 680px; margin: 0 auto; color: var(--cream2); font-size: 1rem;">
-        Founded in Thimphu by lifelong Himalayan mountaineers and cultural scholars. Discover our founding philosophy, certified guide team, and commitment to carbon-negative Gross National Happiness travel.
-      </p>
+      <div class="pt-6 border-t border-[#E7DCC4] space-y-3">
+        <a href="services.html#calculator" class="block text-center w-full py-2.5 rounded-xl font-bold bg-[#F7EDD8] text-[#0B2A22] text-sm">
+          SDF Fee Calculator
+        </a>
+        <a href="contact.html#inquire" class="block text-center w-full py-3 rounded-xl font-bold bg-[#C9A24B] text-[#0B2A22] text-sm">
+          Custom Itinerary Request
+        </a>
+      </div>
     </div>
   </div>
 
-  <!-- ABOUT CONTENT -->
-  <main class="tour-container section-py">
-    <div style="display: grid; grid-template-columns: 1.2fr 1fr; gap: 48px; align-items: center; margin-bottom: 60px;">
-      <div>
-        <span class="section-kicker">Our Heritage &amp; Ethos</span>
-        <h2 class="section-title">High Value, Low Impact Tourism</h2>
-        <p style="font-size: 0.95rem; color: #4b5563; line-height: 1.7; margin-bottom: 16px;">
-          Bhutan Fast Rate Tours was established with a singular mission: to open the gates of our sacred Himalayan home to curious world travelers without compromising the pristine ecology, ancient traditions, or spiritual sanctity of the Kingdom.
+  <!-- Hero Header -->
+  <section class="relative bg-[#0B2A22] text-white py-14 sm:py-20 overflow-hidden">
+    <div class="absolute inset-0 opacity-15 pointer-events-none">
+      <img src="assets/images/tigers-nest.webp" alt="Bhutan mountains" class="w-full h-full object-cover">
+    </div>
+    <div class="relative max-w-[1360px] mx-auto px-4 sm:px-6">
+      <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/10 border border-white/15 text-[#E4C87E] text-xs font-bold tracking-widest uppercase mb-4">
+        ★ The Bhutan Fast Rate Story
+      </div>
+      <h1 class="font-serif text-3xl sm:text-5xl lg:text-6xl font-bold tracking-tight max-w-3xl leading-tight">
+        Preserving the Living Heritage of Druk Yul.
+      </h1>
+      <p class="mt-4 text-base sm:text-lg text-white/80 max-w-2xl leading-relaxed">
+        Founded in Paro by veteran Bhutanese expedition leaders, we bring curious travelers face-to-face with authentic Buddhist culture, pristine Himalayan wilderness, and genuine Gross National Happiness.
+      </p>
+    </div>
+  </section>
+
+  <!-- Story & Philosophy Section -->
+  <main class="max-w-[1360px] mx-auto px-4 sm:px-6 py-16 space-y-16">
+
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center bg-white rounded-3xl p-6 sm:p-12 border border-[#E7DCC4] shadow-sm">
+      <div class="lg:col-span-6 space-y-5">
+        <span class="text-xs font-extrabold text-[#C9A24B] uppercase tracking-wider">Our Purpose</span>
+        <h2 class="font-serif text-3xl sm:text-4xl font-bold text-[#0B2A22] leading-tight">
+          Tourism That Nourishes the Kingdom
+        </h2>
+        <p class="text-sm sm:text-base text-[#66706A] leading-relaxed">
+          Bhutan has never subscribed to mass commercial tourism. Since 1974, our nation has operated under the visionary policy of <em>"High Value, Low Volume"</em>. 
         </p>
-        <p style="font-size: 0.95rem; color: #4b5563; line-height: 1.7; margin-bottom: 24px;">
-          Bhutan is the world's only carbon-negative nation — over 72% of our land is carpeted in virgin forests. Every journey booked with us directly contributes to the Royal Government's free universal healthcare, education, and ecological stewardship programs.
+        <p class="text-sm sm:text-base text-[#66706A] leading-relaxed">
+          At Bhutan Fast Rate Tours, our mission is to ensure every dollar you spend directly benefits Bhutan’s free healthcare, free public education, and over 70% forest cover preservation. We employ local storytellers, support generational weaver families, and select farmsteads that practice zero-waste organic farming.
         </p>
-        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px;">
-          <div style="background: #fff; padding: 18px; border-radius: var(--radius-sm); border: 1px solid var(--line); text-align: center;">
-            <div style="font-family: var(--font-serif); font-size: 1.8rem; font-weight: 800; color: var(--forest);">14+</div>
-            <span style="font-size: 0.75rem; color: var(--muted); text-transform: uppercase; font-weight: 700;">Years Operating</span>
-          </div>
-          <div style="background: #fff; padding: 18px; border-radius: var(--radius-sm); border: 1px solid var(--line); text-align: center;">
-            <div style="font-family: var(--font-serif); font-size: 1.8rem; font-weight: 800; color: var(--gold-dark);">1,200+</div>
-            <span style="font-size: 0.75rem; color: var(--muted); text-transform: uppercase; font-weight: 700;">Voyagers Guided</span>
-          </div>
-          <div style="background: #fff; padding: 18px; border-radius: var(--radius-sm); border: 1px solid var(--line); text-align: center;">
-            <div style="font-family: var(--font-serif); font-size: 1.8rem; font-weight: 800; color: var(--forest);">100%</div>
-            <span style="font-size: 0.75rem; color: var(--muted); text-transform: uppercase; font-weight: 700;">Native Team</span>
-          </div>
+        <div class="pt-2 flex items-center gap-4 text-xs font-bold text-[#0B2A22]">
+          <span class="flex items-center gap-1.5"><span class="text-[#C9A24B]">✓</span> 100% Bhutanese Owned</span>
+          <span class="flex items-center gap-1.5"><span class="text-[#C9A24B]">✓</span> Carbon-Negative Operations</span>
+          <span class="flex items-center gap-1.5"><span class="text-[#C9A24B]">✓</span> Certified Master Guides</span>
         </div>
       </div>
-
-      <div>
-        <img src="assets/images/dochula-pass.webp" alt="Dochula 108 Chortens" style="border-radius: var(--radius-md); box-shadow: var(--shadow-md); width: 100%; height: 380px; object-fit: cover;">
+      <div class="lg:col-span-6 relative rounded-2xl overflow-hidden h-[340px] sm:h-[440px]">
+        <img src="assets/images/punakha-dzong.webp" alt="Punakha Dzong" class="w-full h-full object-cover">
+        <div class="absolute bottom-4 left-4 right-4 bg-black/60 backdrop-blur-sm p-4 rounded-xl text-white text-xs">
+          <p class="font-serif text-base font-bold text-[#E4C87E]">"Gross National Happiness is more important than Gross Domestic Product."</p>
+          <p class="text-white/70 mt-1">— His Majesty Jigme Singye Wangchuck, Fourth Druk Gyalpo</p>
+        </div>
       </div>
     </div>
 
-    <!-- The 4 Pillars of GNH -->
-    <div style="background: #fff; border-radius: var(--radius-md); border: 1px solid var(--line); padding: 40px; box-shadow: var(--shadow-sm);">
-      <div style="text-align: center; max-width: 600px; margin: 0 auto 36px;">
-        <span class="section-kicker">Guiding Philosophy</span>
-        <h3 style="font-family: var(--font-serif); font-size: 1.8rem; color: var(--forest);">The 4 Pillars of Gross National Happiness</h3>
+    <!-- The 4 Pillars of Gross National Happiness -->
+    <div>
+      <div class="max-w-2xl mb-8">
+        <span class="text-xs font-extrabold text-[#C9A24B] uppercase tracking-wider">The Philosophy of Bhutan</span>
+        <h3 class="font-serif text-2xl sm:text-3xl font-bold text-[#0B2A22] mt-1">
+          Guided by Gross National Happiness (GNH)
+        </h3>
+        <p class="text-sm text-[#66706A] mt-2">
+          GNH is not a myth or marketing slogan; it is the constitutional foundation of Bhutanese life. We embody these four pillars in every itinerary we curate:
+        </p>
       </div>
 
-      <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px;">
-        <div style="background: var(--cream); padding: 24px; border-radius: var(--radius-sm); border-top: 4px solid var(--forest);">
-          <h4 style="font-size: 1rem; font-weight: 800; color: var(--forest); margin-bottom: 8px;">1. Sustainable Socio-Economic Development</h4>
-          <p style="font-size: 0.84rem; color: #4b5563; line-height: 1.5;">Tourism revenue directly funds local schools, hospitals, and organic farming co-operatives in rural dzongkhags.</p>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div class="p-6 rounded-2xl bg-white border border-[#E7DCC4] shadow-sm">
+          <div class="w-10 h-10 rounded-full bg-[#0B2A22] text-[#C9A24B] font-bold text-base grid place-items-center mb-4">1</div>
+          <h4 class="font-serif font-bold text-lg text-[#0B2A22]">Cultural Preservation</h4>
+          <p class="text-xs text-[#66706A] mt-2 leading-relaxed">
+            Protecting sacred Buddhist rituals, architectural codes, traditional dress, and centuries-old handicrafts from global homogenization.
+          </p>
         </div>
-        <div style="background: var(--cream); padding: 24px; border-radius: var(--radius-sm); border-top: 4px solid var(--gold);">
-          <h4 style="font-size: 1rem; font-weight: 800; color: var(--forest); margin-bottom: 8px;">2. Cultural Preservation</h4>
-          <p style="font-size: 0.84rem; color: #4b5563; line-height: 1.5;">Supporting the Zorig Chusum (13 Traditional Arts), sacred cham masked dances, and monastic restoration.</p>
+
+        <div class="p-6 rounded-2xl bg-white border border-[#E7DCC4] shadow-sm">
+          <div class="w-10 h-10 rounded-full bg-[#0B2A22] text-[#C9A24B] font-bold text-base grid place-items-center mb-4">2</div>
+          <h4 class="font-serif font-bold text-lg text-[#0B2A22]">Environmental Conservation</h4>
+          <p class="text-xs text-[#66706A] mt-2 leading-relaxed">
+            By constitutional mandate, 60% of Bhutan must remain under forest cover forever (currently 72%). Bhutan absorbs three times more carbon than it emits.
+          </p>
         </div>
-        <div style="background: var(--cream); padding: 24px; border-radius: var(--radius-sm); border-top: 4px solid var(--forest);">
-          <h4 style="font-size: 1rem; font-weight: 800; color: var(--forest); margin-bottom: 8px;">3. Environmental Conservation</h4>
-          <p style="font-size: 0.84rem; color: #4b5563; line-height: 1.5;">Strict zero-plastic policies on trekking routes and 100% carbon-offset emissions for all ground transport.</p>
+
+        <div class="p-6 rounded-2xl bg-white border border-[#E7DCC4] shadow-sm">
+          <div class="w-10 h-10 rounded-full bg-[#0B2A22] text-[#C9A24B] font-bold text-base grid place-items-center mb-4">3</div>
+          <h4 class="font-serif font-bold text-lg text-[#0B2A22]">Equitable Socio-Economic Growth</h4>
+          <p class="text-xs text-[#66706A] mt-2 leading-relaxed">
+            Tourism revenue supports rural valley livelihoods, universal free healthcare, and free higher education across all 20 dzongkhags.
+          </p>
         </div>
-        <div style="background: var(--cream); padding: 24px; border-radius: var(--radius-sm); border-top: 4px solid var(--gold);">
-          <h4 style="font-size: 1rem; font-weight: 800; color: var(--forest); margin-bottom: 8px;">4. Good Governance</h4>
-          <p style="font-size: 0.84rem; color: #4b5563; line-height: 1.5;">Transparent, audited operations certified by the Department of Tourism and the Association of Bhutanese Tour Operators.</p>
+
+        <div class="p-6 rounded-2xl bg-white border border-[#E7DCC4] shadow-sm">
+          <div class="w-10 h-10 rounded-full bg-[#0B2A22] text-[#C9A24B] font-bold text-base grid place-items-center mb-4">4</div>
+          <h4 class="font-serif font-bold text-lg text-[#0B2A22]">Good Governance</h4>
+          <p class="text-xs text-[#66706A] mt-2 leading-relaxed">
+            Leadership founded on ethical responsibility, citizen well-being, and community harmony over unchecked commercial exploitation.
+          </p>
         </div>
       </div>
     </div>
+
+    <!-- Credentials & Operator Accreditations -->
+    <div class="bg-[#0B2A22] text-white rounded-3xl p-8 sm:p-12 border border-[#123A30] shadow-xl">
+      <div class="max-w-2xl mb-8">
+        <span class="text-xs font-extrabold text-[#E4C87E] uppercase tracking-wider">Official Verification</span>
+        <h3 class="font-serif text-2xl sm:text-3xl font-bold mt-1">
+          Fully Licensed by the Royal Government
+        </h3>
+        <p class="text-sm text-white/70 mt-2">
+          You are booking directly with an officially accredited tour operator registered in Paro and Thimphu.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
+        <div class="p-5 rounded-2xl bg-white/5 border border-white/10">
+          <span class="text-2xl mb-2 block">🇧🇹</span>
+          <h4 class="font-bold text-white text-sm">Department of Tourism</h4>
+          <p class="text-xs text-white/70 mt-1">Full license #BT-8842 issued under the Tourism Act of Bhutan.</p>
+        </div>
+        <div class="p-5 rounded-2xl bg-white/5 border border-white/10">
+          <span class="text-2xl mb-2 block">✈️</span>
+          <h4 class="font-bold text-white text-sm">IATA & Drukair Ticketing</h4>
+          <p class="text-xs text-white/70 mt-1">Direct commercial ticketing privileges with Royal Bhutan Airlines & Bhutan Airlines.</p>
+        </div>
+        <div class="p-5 rounded-2xl bg-white/5 border border-white/10">
+          <span class="text-2xl mb-2 block">🛡️</span>
+          <h4 class="font-bold text-white text-sm">Bonded Tourist Trust</h4>
+          <p class="text-xs text-white/70 mt-1">All client payments are held in an official government-monitored escrow until trip completion.</p>
+        </div>
+      </div>
+    </div>
+
   </main>
 
-  <footer class="tour-footer">
-    <div class="tour-container">
-      <div class="footer-bottom-row">
-        <div>&copy; 2027 Bhutan Fast Rate Tours. All Rights Reserved. Kingdom of Bhutan.</div>
-        <div>Department of Tourism Licensed Operator #DOT-2024-884</div>
+  <!-- Footer -->
+  <footer class="bg-[#0B2A22] text-white border-t border-[#123A30] pt-16 pb-12 mt-16">
+    <div class="max-w-[1360px] mx-auto px-4 sm:px-6">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10 pb-12 border-b border-white/10">
+        <div class="lg:col-span-2">
+          <div class="flex items-center gap-2.5">
+            <span class="w-10 h-10 rounded-full bg-[#123A30] border border-[#C9A24B]/40 text-[#C9A24B] grid place-items-center font-serif text-xl font-bold">B</span>
+            <span class="leading-none">
+              <span class="block font-serif text-[22px] font-bold tracking-tight text-white">BHUTAN FAST RATE</span>
+              <span class="block text-[10px] tracking-[0.24em] text-[#C9A24B] font-extrabold">TOURS · EST. PARO</span>
+            </span>
+          </div>
+          <p class="mt-4 text-sm text-white/70 max-w-sm leading-relaxed">
+            The Kingdom of Bhutan’s trusted luxury & bespoke tour operator. Full SDF management, direct Drukair airline bookings, and licensed local cultural guides.
+          </p>
+          <div class="mt-6 flex items-center gap-3 text-xs text-[#E4C87E] font-semibold bg-white/5 border border-white/10 px-4 py-2.5 rounded-2xl w-fit">
+            <span>🇧🇹 Licensed by Department of Tourism · License #BT-8842</span>
+          </div>
+        </div>
+
+        <div>
+          <h4 class="font-serif text-base font-bold text-[#E4C87E] mb-4">Tour Packages</h4>
+          <ul class="space-y-2.5 text-sm text-white/70">
+            <li><a href="tours.html?cat=Classic" class="hover:text-white transition">Classic Bhutan (6D)</a></li>
+            <li><a href="festivals.html" class="hover:text-white transition">Festival Tshechus (8D)</a></li>
+            <li><a href="tours.html?cat=Luxury" class="hover:text-white transition">Luxury Himalayan (7D)</a></li>
+            <li><a href="tours.html?cat=Honeymoon" class="hover:text-white transition">Bhutan Honeymoon (7D)</a></li>
+            <li><a href="tours.html?cat=Trek" class="hover:text-white transition">Druk Path High Trek (9D)</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="font-serif text-base font-bold text-[#E4C87E] mb-4">Destinations</h4>
+          <ul class="space-y-2.5 text-sm text-white/70">
+            <li><a href="destinations.html#paro" class="hover:text-white transition">Paro & Tiger's Nest</a></li>
+            <li><a href="destinations.html#thimphu" class="hover:text-white transition">Thimphu Capital</a></li>
+            <li><a href="destinations.html#punakha" class="hover:text-white transition">Punakha River Valley</a></li>
+            <li><a href="destinations.html#phobjikha" class="hover:text-white transition">Phobjikha & Cranes</a></li>
+            <li><a href="destinations.html#bumthang" class="hover:text-white transition">Bumthang Valley</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="font-serif text-base font-bold text-[#E4C87E] mb-4">Travel Help</h4>
+          <ul class="space-y-2.5 text-sm text-white/70">
+            <li><a href="services.html#sdf" class="hover:text-white transition">SDF Fee Guide ($100/day)</a></li>
+            <li><a href="services.html#flights" class="hover:text-white transition">Drukair Flight Booking</a></li>
+            <li><a href="services.html#visa" class="hover:text-white transition">Bhutan Visa Processing</a></li>
+            <li><a href="about.html" class="hover:text-white transition">Why Choose Us</a></li>
+            <li><a href="contact.html" class="hover:text-white transition">Contact & Support</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="mt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-white/50">
+        <p>© 2026 Bhutan Fast Rate Tours Ltd. All rights reserved. Paro & Thimphu, Kingdom of Bhutan.</p>
+        <div class="flex items-center gap-6">
+          <a href="services.html#terms" class="hover:text-white">Terms of Travel</a>
+          <a href="services.html#privacy" class="hover:text-white">Privacy Policy</a>
+          <a href="services.html#sdf" class="hover:text-white">Bhutan Tourism Law</a>
+        </div>
       </div>
     </div>
   </footer>
 
-  <script src="js/main.js"></script>
+  <script>
+    const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+    const closeDrawerBtn = document.getElementById('closeDrawerBtn');
+    const mobileDrawer = document.getElementById('mobileDrawer');
+    mobileMenuBtn?.addEventListener('click', () => mobileDrawer.classList.remove('hidden'));
+    closeDrawerBtn?.addEventListener('click', () => mobileDrawer.classList.add('hidden'));
+    mobileDrawer?.addEventListener('click', (e) => {
+      if (e.target === mobileDrawer) mobileDrawer.classList.add('hidden');
+    });
+  </script>
 </body>
 </html>

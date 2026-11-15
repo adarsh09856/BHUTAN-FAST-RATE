@@ -2,205 +2,449 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Bhutan Destinations &amp; Valleys Guide | Bhutan Fast Rate Tours</title>
-  <meta name="description" content="Complete travel guide to the valleys of Bhutan: Paro, Thimphu, Punakha, Phobjikha, Bumthang, and Haa. Elevations, climate, and cultural sights.">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Destinations Guide — Bhutan Fast Rate Tours | Paro, Thimphu, Punakha & Beyond</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700;9..144,800&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            forest: '#0B2A22',
+            forest2: '#123A30',
+            gold: '#C9A24B',
+            gold2: '#E4C87E',
+            cream: '#FFF8EC',
+            cream2: '#F7EDD8',
+            ink: '#101613',
+            muted: '#66706A',
+            line: '#E7DCC4',
+            surface: '#FFF8EC',
+            card: '#FFFFFF',
+          },
+          fontFamily: {
+            serif: ['Fraunces', 'serif'],
+            sans: ['Manrope', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+  <link rel="stylesheet" href="css/tour-theme.css">
 </head>
-<body>
+<body class="min-h-screen bg-[var(--cream)] text-[var(--ink)] font-sans antialiased overflow-x-hidden">
 
-  <!-- TOP UTILITY BAR -->
-  <aside class="tour-topbar">
-    <div class="tour-container tour-topbar-inner">
-      <div class="topbar-info">
-        <span class="topbar-badge">🇧🇹 Department of Tourism Certified #DOT-2024-884</span>
-        <span>📍 Thimphu &amp; Paro, Kingdom of Bhutan</span>
-      </div>
-      <div class="topbar-actions">
-        <select class="currency-picker">
-          <option value="USD">USD ($)</option>
-          <option value="BTN">Nu. (BTN)</option>
-          <option value="INR">INR (₹)</option>
-          <option value="EUR">EUR (€)</option>
-          <option value="GBP">GBP (£)</option>
-        </select>
-      </div>
+  <!-- Top Announcement Bar -->
+  <div class="bg-[#0B2A22] text-white text-[12px] sm:text-[13px] border-b border-[#123A30]">
+    <div class="max-w-[1360px] mx-auto px-4 sm:px-6 py-2.5 flex flex-wrap gap-x-6 gap-y-1 justify-between items-center">
+      <span class="font-semibold flex items-center gap-1.5">
+        <span class="text-[#E4C87E]">✓</span> SDF fee included · Licensed Bhutan operator #BT-8842
+      </span>
+      <span class="hidden md:flex items-center gap-4 text-white/80">
+        <span>USD & INR Accepted</span>
+        <span>•</span>
+        <span>Direct Drukair & Bhutan Airlines Booking</span>
+        <span>•</span>
+        <span>Live Support 9am–8pm Bhutan Time</span>
+      </span>
+      <span class="text-[#E4C87E] font-bold flex items-center gap-1">
+        <span>★ 4.9</span>
+        <span class="text-white/70 font-normal">(2,400+ travellers)</span>
+      </span>
     </div>
-  </aside>
+  </div>
 
-  <!-- NAVBAR -->
-  <header class="tour-navbar">
-    <div class="tour-container tour-navbar-inner">
-      <a href="index.html" class="tour-brand">
-        <div class="brand-emblem">ༀ</div>
-        <div class="brand-text-col">
-          <span class="brand-title">Bhutan Fast Rate Tours</span>
-          <span class="brand-sub">Himalayan Kingdom Expeditions</span>
-        </div>
+  <!-- Header Navigation -->
+  <header class="sticky top-0 z-40 bg-[#FFF8EC]/95 backdrop-blur-md border-b border-[#E7DCC4] transition-all">
+    <div class="max-w-[1360px] mx-auto px-4 sm:px-6 h-[72px] flex items-center justify-between gap-4">
+      <button id="mobileMenuBtn" class="lg:hidden p-2 rounded-xl text-[#0B2A22] hover:bg-[#F7EDD8]" aria-label="Open navigation menu">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+      </button>
+
+      <a href="index.html" class="flex items-center gap-2.5 shrink-0">
+        <span class="w-10 h-10 rounded-full bg-[#0B2A22] text-[#C9A24B] grid place-items-center font-serif text-xl font-bold shadow-sm">B</span>
+        <span class="leading-none">
+          <span class="block font-serif text-[18px] sm:text-[22px] font-bold tracking-tight text-[#0B2A22]">BHUTAN FAST RATE</span>
+          <span class="block text-[10px] tracking-[0.24em] text-[#C9A24B] font-extrabold">TOURS · EST. PARO</span>
+        </span>
       </a>
 
-      <nav aria-label="Main Navigation">
-        <ul class="nav-menu-desktop">
-          <li><a href="index.html" class="nav-link">Home</a></li>
-          <li><a href="tours.html" class="nav-link">Tour Packages</a></li>
-          <li><a href="destinations.html" class="nav-link active">Destinations</a></li>
-          <li><a href="festivals.html" class="nav-link">Festivals 2027</a></li>
-          <li><a href="services.html" class="nav-link">Services &amp; Flights</a></li>
-          <li><a href="about.html" class="nav-link">About Bhutan</a></li>
-          <li><a href="contact.html" class="nav-link">Contact</a></li>
-        </ul>
+      <nav class="hidden lg:flex items-center gap-1 text-[15px] font-semibold text-[#101613]">
+        <a href="index.html" class="px-3.5 py-2 rounded-full hover:bg-[#F7EDD8] transition-colors">Home</a>
+        <a href="tours.html" class="px-3.5 py-2 rounded-full hover:bg-[#F7EDD8] transition-colors">Tours</a>
+        <a href="destinations.html" class="px-3.5 py-2 rounded-full bg-[#0B2A22] text-white shadow-sm transition-colors">Destinations</a>
+        <a href="festivals.html" class="px-3.5 py-2 rounded-full hover:bg-[#F7EDD8] transition-colors">Festivals</a>
+        <a href="services.html" class="px-3.5 py-2 rounded-full hover:bg-[#F7EDD8] transition-colors">Visa & SDF</a>
+        <a href="about.html" class="px-3.5 py-2 rounded-full hover:bg-[#F7EDD8] transition-colors">About Us</a>
+        <a href="contact.html" class="px-3.5 py-2 rounded-full hover:bg-[#F7EDD8] transition-colors">Contact</a>
       </nav>
 
-      <div class="nav-actions">
-        <button type="button" class="btn-gold-cta" onclick="openBookingModal('Destination Inquiry', 1899)">
-          <span>Inquire Tour &rarr;</span>
-        </button>
-        <button type="button" id="menuToggleBtn" class="btn-menu-toggle" aria-label="Open Mobile Menu">☰</button>
+      <div class="flex items-center gap-3">
+        <a href="services.html#calculator" class="hidden sm:inline-flex items-center gap-1.5 text-xs font-bold text-[#0B2A22] bg-[#F7EDD8] hover:bg-[#EADFC8] px-3.5 py-2 rounded-full border border-[#E7DCC4] transition">
+          <svg class="w-4 h-4 text-[#C9A24B]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>
+          SDF Calculator
+        </a>
+        <a href="contact.html#inquire" class="inline-flex items-center gap-1.5 text-xs sm:text-sm font-bold bg-[#C9A24B] hover:bg-[#E4C87E] text-[#0B2A22] px-4 sm:px-5 py-2.5 rounded-full shadow-sm transition transform active:scale-95">
+          Build My Route
+        </a>
       </div>
     </div>
   </header>
 
-  <!-- MOBILE DRAWER -->
-  <div id="mobileOverlay" class="mobile-drawer-overlay"></div>
-  <aside id="mobileDrawer" class="mobile-drawer">
-    <div class="mobile-drawer-header">
-      <div class="brand-text-col">
-        <span class="brand-title" style="font-size: 1.15rem;">Bhutan Fast Rate Tours</span>
-        <span class="brand-sub">Kingdom Expeditions</span>
+  <!-- Mobile Drawer Menu -->
+  <div id="mobileDrawer" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm hidden transition-opacity">
+    <div class="fixed top-0 bottom-0 left-0 w-[300px] max-w-[85vw] bg-[#FFF8EC] shadow-2xl p-6 flex flex-col justify-between overflow-y-auto">
+      <div>
+        <div class="flex items-center justify-between pb-5 border-b border-[#E7DCC4]">
+          <div class="flex items-center gap-2">
+            <span class="w-9 h-9 rounded-full bg-[#0B2A22] text-[#C9A24B] grid place-items-center font-serif text-lg font-bold">B</span>
+            <span class="font-serif text-lg font-bold text-[#0B2A22]">BHUTAN FAST RATE</span>
+          </div>
+          <button id="closeDrawerBtn" class="p-2 text-[#0B2A22] hover:bg-[#F7EDD8] rounded-xl" aria-label="Close menu">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+          </button>
+        </div>
+        <nav class="mt-6 space-y-2 text-base font-semibold">
+          <a href="index.html" class="block px-3 py-2.5 rounded-xl text-[#101613] hover:bg-[#F7EDD8]">Home</a>
+          <a href="tours.html" class="block px-3 py-2.5 rounded-xl text-[#101613] hover:bg-[#F7EDD8]">Tours & Packages</a>
+          <a href="destinations.html" class="block px-3 py-2.5 rounded-xl bg-[#0B2A22] text-white">Destinations</a>
+          <a href="festivals.html" class="block px-3 py-2.5 rounded-xl text-[#101613] hover:bg-[#F7EDD8]">Festival Calendar</a>
+          <a href="services.html" class="block px-3 py-2.5 rounded-xl text-[#101613] hover:bg-[#F7EDD8]">Visa, SDF & Flights</a>
+          <a href="about.html" class="block px-3 py-2.5 rounded-xl text-[#101613] hover:bg-[#F7EDD8]">About Us</a>
+          <a href="contact.html" class="block px-3 py-2.5 rounded-xl text-[#101613] hover:bg-[#F7EDD8]">Contact & Inquiry</a>
+        </nav>
       </div>
-      <button type="button" id="drawerCloseBtn" class="drawer-close-btn">&times;</button>
-    </div>
-    <ul class="drawer-nav-list">
-      <li><a href="index.html" class="drawer-nav-link">Home <span>&rarr;</span></a></li>
-      <li><a href="tours.html" class="drawer-nav-link">Tour Packages <span>&rarr;</span></a></li>
-      <li><a href="destinations.html" class="drawer-nav-link active">Destinations <span>&rarr;</span></a></li>
-      <li><a href="festivals.html" class="drawer-nav-link">Festivals 2027 <span>&rarr;</span></a></li>
-      <li><a href="services.html" class="drawer-nav-link">Services &amp; Flights <span>&rarr;</span></a></li>
-      <li><a href="about.html" class="drawer-nav-link">About Bhutan <span>&rarr;</span></a></li>
-      <li><a href="contact.html" class="drawer-nav-link">Contact &amp; Offices <span>&rarr;</span></a></li>
-    </ul>
-  </aside>
-
-  <!-- BANNER -->
-  <div style="background: linear-gradient(180deg, var(--forest-dark), var(--forest)); color: #fff; padding: 60px 0 50px; text-align: center; border-bottom: 2px solid rgba(201,162,75,0.3);">
-    <div class="tour-container">
-      <span class="slide-kicker">Sacred Himalayan Geography</span>
-      <h1 style="font-family: var(--font-serif); font-size: clamp(2rem, 4vw, 3.2rem); margin-bottom: 12px; color: #fff;">
-        Bhutan Destinations &amp; Valleys Guide
-      </h1>
-      <p style="max-width: 680px; margin: 0 auto; color: var(--cream2); font-size: 1rem;">
-        Discover the unique character, microclimates, monasteries, and fortress dzongs of each region across the Land of the Thunder Dragon.
-      </p>
+      <div class="pt-6 border-t border-[#E7DCC4] space-y-3">
+        <a href="services.html#calculator" class="block text-center w-full py-2.5 rounded-xl font-bold bg-[#F7EDD8] text-[#0B2A22] text-sm">
+          SDF Fee Calculator
+        </a>
+        <a href="contact.html#inquire" class="block text-center w-full py-3 rounded-xl font-bold bg-[#C9A24B] text-[#0B2A22] text-sm">
+          Custom Itinerary Request
+        </a>
+      </div>
     </div>
   </div>
 
-  <!-- DESTINATIONS DETAILED LIST -->
-  <main class="tour-container section-py">
-    <div style="display: flex; flex-direction: column; gap: 48px;">
-      
-      <!-- Paro -->
-      <article style="background: #fff; border-radius: var(--radius-md); border: 1px solid var(--line); overflow: hidden; display: grid; grid-template-columns: 1fr 1fr; gap: 0; box-shadow: var(--shadow-sm);">
-        <div style="height: 380px;">
-          <img src="assets/images/tigers-nest.webp" alt="Paro Valley Taktsang" style="width: 100%; height: 100%; object-fit: cover;">
-        </div>
-        <div style="padding: 36px; display: flex; flex-direction: column; justify-content: center;">
-          <span style="font-size: 0.76rem; font-weight: 800; color: var(--gold-dark); text-transform: uppercase; letter-spacing: 1px;">Western Bhutan &bull; 2,280m Elevation</span>
-          <h2 style="font-family: var(--font-serif); font-size: 1.8rem; color: var(--forest); margin: 6px 0 12px;">Paro Valley</h2>
-          <p style="color: #4b5563; font-size: 0.92rem; line-height: 1.6; margin-bottom: 16px;">
-            The historic gateway to the Kingdom. Paro is crowned by the cliff-hanging Taktsang (Tiger's Nest) Monastery, the 15th-century Rinpung Dzong, and the 7th-century Kyichu Lhakhang. Paro's fertile valley floor produces world-renowned red rice and crisp apples.
-          </p>
-          <div style="font-size: 0.82rem; font-weight: 700; color: var(--forest); margin-bottom: 20px;">
-            Highlights: Tiger's Nest Hike &bull; National Museum (Ta Dzong) &bull; Traditional Farmhouse Bath
-          </div>
-          <div>
-            <button type="button" class="btn-gold-cta" onclick="openItineraryModal(1)">View Tours Visiting Paro &rarr;</button>
-          </div>
-        </div>
-      </article>
-
-      <!-- Thimphu -->
-      <article style="background: #fff; border-radius: var(--radius-md); border: 1px solid var(--line); overflow: hidden; display: grid; grid-template-columns: 1fr 1fr; gap: 0; box-shadow: var(--shadow-sm);">
-        <div style="height: 380px; order: 2;">
-          <img src="assets/images/thimphu-festival.webp" alt="Thimphu Tashichho Dzong" style="width: 100%; height: 100%; object-fit: cover;">
-        </div>
-        <div style="padding: 36px; display: flex; flex-direction: column; justify-content: center; order: 1;">
-          <span style="font-size: 0.76rem; font-weight: 800; color: var(--gold-dark); text-transform: uppercase; letter-spacing: 1px;">The Capital &bull; 2,334m Elevation</span>
-          <h2 style="font-family: var(--font-serif); font-size: 1.8rem; color: var(--forest); margin: 6px 0 12px;">Thimphu Valley</h2>
-          <p style="color: #4b5563; font-size: 0.92rem; line-height: 1.6; margin-bottom: 16px;">
-            The only world capital with zero traffic lights, directed by white-gloved traffic officers with elegant balletic hand movements. Thimphu blends ancient Buddhist traditions with modern arts, housing the 169ft golden Buddha Dordenma, Tashichho Dzong, and the Royal Textile Academy.
-          </p>
-          <div style="font-size: 0.82rem; font-weight: 700; color: var(--forest); margin-bottom: 20px;">
-            Highlights: Buddha Dordenma &bull; Centenary Farmers Market &bull; Motithang Takin Preserve
-          </div>
-          <div>
-            <button type="button" class="btn-gold-cta" onclick="openItineraryModal(2)">View Tours Visiting Thimphu &rarr;</button>
-          </div>
-        </div>
-      </article>
-
-      <!-- Punakha -->
-      <article style="background: #fff; border-radius: var(--radius-md); border: 1px solid var(--line); overflow: hidden; display: grid; grid-template-columns: 1fr 1fr; gap: 0; box-shadow: var(--shadow-sm);">
-        <div style="height: 380px;">
-          <img src="assets/images/punakha-dzong.webp" alt="Punakha Dzong" style="width: 100%; height: 100%; object-fit: cover;">
-        </div>
-        <div style="padding: 36px; display: flex; flex-direction: column; justify-content: center;">
-          <span style="font-size: 0.76rem; font-weight: 800; color: var(--gold-dark); text-transform: uppercase; letter-spacing: 1px;">Winter Capital &bull; 1,300m Elevation</span>
-          <h2 style="font-family: var(--font-serif); font-size: 1.8rem; color: var(--forest); margin: 6px 0 12px;">Punakha &amp; Wangdue</h2>
-          <p style="color: #4b5563; font-size: 0.92rem; line-height: 1.6; margin-bottom: 16px;">
-            A lush subtropical valley blessed with warm breezes and banana trees. Punakha Dzong, the Palace of Great Happiness, sits at the confluence of the Pho Chhu (Male) and Mo Chhu (Female) rivers. Cross the 160m suspension bridge and hike through terraced fields to Chimi Lhakhang.
-          </p>
-          <div style="font-size: 0.82rem; font-weight: 700; color: var(--forest); margin-bottom: 20px;">
-            Highlights: Punakha Dzong &bull; Mo Chhu Rafting &bull; Chimi Lhakhang Fertility Temple
-          </div>
-          <div>
-            <button type="button" class="btn-gold-cta" onclick="openItineraryModal(3)">View Tours Visiting Punakha &rarr;</button>
-          </div>
-        </div>
-      </article>
-
-      <!-- Phobjikha -->
-      <article style="background: #fff; border-radius: var(--radius-md); border: 1px solid var(--line); overflow: hidden; display: grid; grid-template-columns: 1fr 1fr; gap: 0; box-shadow: var(--shadow-sm);">
-        <div style="height: 380px; order: 2;">
-          <img src="assets/images/phobjikha-cranes.webp" alt="Phobjikha Valley Cranes" style="width: 100%; height: 100%; object-fit: cover;">
-        </div>
-        <div style="padding: 36px; display: flex; flex-direction: column; justify-content: center; order: 1;">
-          <span style="font-size: 0.76rem; font-weight: 800; color: var(--gold-dark); text-transform: uppercase; letter-spacing: 1px;">Glacial Sanctuary &bull; 3,000m Elevation</span>
-          <h2 style="font-family: var(--font-serif); font-size: 1.8rem; color: var(--forest); margin: 6px 0 12px;">Phobjikha Glacial Valley</h2>
-          <p style="color: #4b5563; font-size: 0.92rem; line-height: 1.6; margin-bottom: 16px;">
-            One of the few glacial valleys in Bhutan. An expansive U-shaped wilderness bordered by the Black Mountains. It serves as the sacred winter roosting sanctuary for over 500 endangered Black-necked Cranes, watched over by the hillside Gangtey Goempa monastery.
-          </p>
-          <div style="font-size: 0.82rem; font-weight: 700; color: var(--forest); margin-bottom: 20px;">
-            Highlights: Black-necked Crane Sanctuary &bull; Gangtey Nature Trail &bull; Alpine Fireplace Lodges
-          </div>
-          <div>
-            <button type="button" class="btn-gold-cta" onclick="openItineraryModal(7)">View Phobjikha Expeditions &rarr;</button>
-          </div>
-        </div>
-      </article>
-
+  <!-- Hero Header -->
+  <section class="relative bg-[#0B2A22] text-white py-14 sm:py-20 overflow-hidden">
+    <div class="absolute inset-0 opacity-15 pointer-events-none">
+      <img src="assets/images/punakha-dzong.webp" alt="Punakha Dzong" class="w-full h-full object-cover">
     </div>
+    <div class="relative max-w-[1360px] mx-auto px-4 sm:px-6">
+      <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/10 border border-white/15 text-[#E4C87E] text-xs font-bold tracking-widest uppercase mb-4">
+        ★ The Sacred Valleys of Bhutan
+      </div>
+      <h1 class="font-serif text-3xl sm:text-5xl lg:text-6xl font-bold tracking-tight max-w-3xl leading-tight">
+        From Cliffside Monasteries to Golden River Fortresses.
+      </h1>
+      <p class="mt-4 text-base sm:text-lg text-white/80 max-w-2xl leading-relaxed">
+        Bhutan is not one uniform landscape, but a necklace of distinct enchanted valleys separated by snow-crowned passes. Here is our insider guide to the Kingdom’s six premier regions.
+      </p>
+
+      <!-- Quick Jump Links -->
+      <div class="mt-8 flex flex-wrap gap-2 pt-4 border-t border-white/10">
+        <a href="#paro" class="px-4 py-2 rounded-full text-xs font-bold bg-white/10 hover:bg-[#C9A24B] hover:text-[#0B2A22] transition">Paro Valley</a>
+        <a href="#thimphu" class="px-4 py-2 rounded-full text-xs font-bold bg-white/10 hover:bg-[#C9A24B] hover:text-[#0B2A22] transition">Thimphu Capital</a>
+        <a href="#punakha" class="px-4 py-2 rounded-full text-xs font-bold bg-white/10 hover:bg-[#C9A24B] hover:text-[#0B2A22] transition">Punakha & Wangdue</a>
+        <a href="#phobjikha" class="px-4 py-2 rounded-full text-xs font-bold bg-white/10 hover:bg-[#C9A24B] hover:text-[#0B2A22] transition">Phobjikha Glacial Valley</a>
+        <a href="#bumthang" class="px-4 py-2 rounded-full text-xs font-bold bg-white/10 hover:bg-[#C9A24B] hover:text-[#0B2A22] transition">Bumthang Heartland</a>
+        <a href="#haa" class="px-4 py-2 rounded-full text-xs font-bold bg-white/10 hover:bg-[#C9A24B] hover:text-[#0B2A22] transition">Haa Untouched Valley</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Main Destinations Content -->
+  <main class="max-w-[1360px] mx-auto px-4 sm:px-6 py-16 space-y-20">
+
+    <!-- Destination 1: Paro -->
+    <article id="paro" class="scroll-mt-24 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center bg-white rounded-3xl p-6 sm:p-10 border border-[#E7DCC4] shadow-sm">
+      <div class="lg:col-span-6 relative rounded-2xl overflow-hidden h-[340px] sm:h-[420px]">
+        <img src="assets/images/tigers-nest.webp" alt="Paro Valley & Tiger's Nest" class="w-full h-full object-cover">
+        <div class="absolute top-4 left-4 bg-[#0B2A22]/90 backdrop-blur-md text-[#E4C87E] text-xs font-extrabold px-3 py-1 rounded-full uppercase">
+          Altitude: 2,250m / 7,380ft
+        </div>
+        <div class="absolute bottom-4 left-4 right-4 bg-black/60 backdrop-blur-sm p-3 rounded-xl text-white text-xs">
+          ★ Home to Bhutan's only international airport & the legendary Tiger's Nest
+        </div>
+      </div>
+      <div class="lg:col-span-6 space-y-4">
+        <span class="text-xs font-extrabold text-[#C9A24B] uppercase tracking-widest">Gateway to the Kingdom</span>
+        <h2 class="font-serif text-3xl sm:text-4xl font-bold text-[#0B2A22] leading-tight">
+          Paro Valley & The Sacred Cliff of Taktsang
+        </h2>
+        <p class="text-sm sm:text-base text-[#66706A] leading-relaxed">
+          Paro is a broad, fertile valley dotted with willow trees, traditional wooden farmsteads, and the serpentine Pa Chhu river. Perched 900 meters above the valley floor on a sheer granite cliff hangs <strong class="text-[#0B2A22]">Paro Taktsang (Tiger’s Nest)</strong>, where Guru Rinpoche flew on the back of a tigress in the 8th century.
+        </p>
+        <div class="grid grid-cols-2 gap-3 pt-3 border-t border-[#E7DCC4] text-xs font-semibold text-[#101613]">
+          <div><span class="text-[#C9A24B] font-bold">Best Season:</span> Oct–May (Clear Skies)</div>
+          <div><span class="text-[#C9A24B] font-bold">Key Dzong:</span> Rinpung & Ta Dzong</div>
+          <div><span class="text-[#C9A24B] font-bold">Highlight:</span> Tiger’s Nest Hike (4–5 hrs)</div>
+          <div><span class="text-[#C9A24B] font-bold">Stay Type:</span> 5★ Luxury & Heritage Farm</div>
+        </div>
+        <div class="pt-4 flex flex-wrap gap-3">
+          <a href="tours.html?cat=Classic" class="px-5 py-2.5 rounded-full bg-[#0B2A22] hover:bg-[#123A30] text-white text-xs font-bold transition shadow-sm">
+            View Paro Tour Packages
+          </a>
+          <a href="contact.html?tour=Custom-Paro-Trip" class="px-5 py-2.5 rounded-full border border-[#0B2A22] text-[#0B2A22] hover:bg-[#F7EDD8] text-xs font-bold transition">
+            Inquire Private Paro Stay
+          </a>
+        </div>
+      </div>
+    </article>
+
+    <!-- Destination 2: Thimphu -->
+    <article id="thimphu" class="scroll-mt-24 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center bg-white rounded-3xl p-6 sm:p-10 border border-[#E7DCC4] shadow-sm">
+      <div class="lg:col-span-6 space-y-4 order-2 lg:order-1">
+        <span class="text-xs font-extrabold text-[#C9A24B] uppercase tracking-widest">The Seat of Government & Faith</span>
+        <h2 class="font-serif text-3xl sm:text-4xl font-bold text-[#0B2A22] leading-tight">
+          Thimphu: The World’s Only Capital Without Traffic Lights
+        </h2>
+        <p class="text-sm sm:text-base text-[#66706A] leading-relaxed">
+          Thimphu blends ancient monastic traditions with modern Bhutanese creativity. Watch white-gloved traffic officers direct cars with balletic grace, marvel at the colossal 51.5-meter golden Buddha Dordenma, explore royal weaving schools, and watch monks debate at Tashichho Dzong.
+        </p>
+        <div class="grid grid-cols-2 gap-3 pt-3 border-t border-[#E7DCC4] text-xs font-semibold text-[#101613]">
+          <div><span class="text-[#C9A24B] font-bold">Altitude:</span> 2,334m / 7,657ft</div>
+          <div><span class="text-[#C9A24B] font-bold">Drive from Paro:</span> 1 hr 15 mins (smooth highway)</div>
+          <div><span class="text-[#C9A24B] font-bold">Highlight:</span> 169ft Golden Buddha Statue</div>
+          <div><span class="text-[#C9A24B] font-bold">Culture:</span> School of 13 Traditional Arts</div>
+        </div>
+        <div class="pt-4 flex flex-wrap gap-3">
+          <a href="tours.html?cat=Festival" class="px-5 py-2.5 rounded-full bg-[#0B2A22] hover:bg-[#123A30] text-white text-xs font-bold transition shadow-sm">
+            View Thimphu Tshechu Tours
+          </a>
+          <a href="contact.html?tour=Custom-Thimphu-Trip" class="px-5 py-2.5 rounded-full border border-[#0B2A22] text-[#0B2A22] hover:bg-[#F7EDD8] text-xs font-bold transition">
+            Tailor Thimphu Itinerary
+          </a>
+        </div>
+      </div>
+      <div class="lg:col-span-6 relative rounded-2xl overflow-hidden h-[340px] sm:h-[420px] order-1 lg:order-2">
+        <img src="assets/images/thimphu-festival.webp" alt="Thimphu Valley & Festival" class="w-full h-full object-cover">
+        <div class="absolute top-4 left-4 bg-[#0B2A22]/90 backdrop-blur-md text-[#E4C87E] text-xs font-extrabold px-3 py-1 rounded-full uppercase">
+          Capital City · 2,334m
+        </div>
+        <div class="absolute bottom-4 left-4 right-4 bg-black/60 backdrop-blur-sm p-3 rounded-xl text-white text-xs">
+          ★ Home to Tashichho Dzong, Buddha Point, and weekend artisanal markets
+        </div>
+      </div>
+    </article>
+
+    <!-- Destination 3: Punakha -->
+    <article id="punakha" class="scroll-mt-24 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center bg-white rounded-3xl p-6 sm:p-10 border border-[#E7DCC4] shadow-sm">
+      <div class="lg:col-span-6 relative rounded-2xl overflow-hidden h-[340px] sm:h-[420px]">
+        <img src="assets/images/punakha-dzong.webp" alt="Punakha Dzong & Rivers" class="w-full h-full object-cover">
+        <div class="absolute top-4 left-4 bg-[#0B2A22]/90 backdrop-blur-md text-[#E4C87E] text-xs font-extrabold px-3 py-1 rounded-full uppercase">
+          Sub-Tropical Valley · 1,242m
+        </div>
+        <div class="absolute bottom-4 left-4 right-4 bg-black/60 backdrop-blur-sm p-3 rounded-xl text-white text-xs">
+          ★ The Palace of Great Bliss (Pungtang Dechen Photrang) at the river junction
+        </div>
+      </div>
+      <div class="lg:col-span-6 space-y-4">
+        <span class="text-xs font-extrabold text-[#C9A24B] uppercase tracking-widest">Winter Capital & River Sanctuary</span>
+        <h2 class="font-serif text-3xl sm:text-4xl font-bold text-[#0B2A22] leading-tight">
+          Punakha: Jacaranda Blossoms & Fortress of Bliss
+        </h2>
+        <p class="text-sm sm:text-base text-[#66706A] leading-relaxed">
+          At an elevation of just 1,242 meters, Punakha is warm, lush, and filled with orange orchards and terraced rice paddies. Punakha Dzong, built in 1637, sits majestically at the confluence of the Pho Chhu (Male) and Mo Chhu (Female) rivers and is widely celebrated as the most breathtaking dzong in Bhutan.
+        </p>
+        <div class="grid grid-cols-2 gap-3 pt-3 border-t border-[#E7DCC4] text-xs font-semibold text-[#101613]">
+          <div><span class="text-[#C9A24B] font-bold">Climate:</span> Warm & Sub-tropical (T-shirt weather)</div>
+          <div><span class="text-[#C9A24B] font-bold">Via:</span> Dochula Pass (108 Stupas)</div>
+          <div><span class="text-[#C9A24B] font-bold">Bridge:</span> 160m Long Suspension Bridge</div>
+          <div><span class="text-[#C9A24B] font-bold">Adventures:</span> Gentle White Water Rafting</div>
+        </div>
+        <div class="pt-4 flex flex-wrap gap-3">
+          <a href="tours.html?cat=Luxury" class="px-5 py-2.5 rounded-full bg-[#0B2A22] hover:bg-[#123A30] text-white text-xs font-bold transition shadow-sm">
+            View Punakha Luxury Packages
+          </a>
+          <a href="contact.html?tour=Custom-Punakha-Trip" class="px-5 py-2.5 rounded-full border border-[#0B2A22] text-[#0B2A22] hover:bg-[#F7EDD8] text-xs font-bold transition">
+            Book River Valley Escape
+          </a>
+        </div>
+      </div>
+    </article>
+
+    <!-- Destination 4: Phobjikha -->
+    <article id="phobjikha" class="scroll-mt-24 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center bg-white rounded-3xl p-6 sm:p-10 border border-[#E7DCC4] shadow-sm">
+      <div class="lg:col-span-6 space-y-4 order-2 lg:order-1">
+        <span class="text-xs font-extrabold text-[#C9A24B] uppercase tracking-widest">Valley of the Black-Necked Cranes</span>
+        <h2 class="font-serif text-3xl sm:text-4xl font-bold text-[#0B2A22] leading-tight">
+          Phobjikha & Gangtey: Vast Glacial Alpine Peace
+        </h2>
+        <p class="text-sm sm:text-base text-[#66706A] leading-relaxed">
+          A broad, U-shaped glacial valley of quiet beauty without overhead powerlines (buried underground to protect the birds). Every winter, hundreds of sacred Black-Necked Cranes fly over the Himalayas from Tibet to roost here, circling Gangtey Monastery three times upon arrival and departure.
+        </p>
+        <div class="grid grid-cols-2 gap-3 pt-3 border-t border-[#E7DCC4] text-xs font-semibold text-[#101613]">
+          <div><span class="text-[#C9A24B] font-bold">Altitude:</span> 3,000m / 9,840ft</div>
+          <div><span class="text-[#C9A24B] font-bold">Crane Season:</span> Late Oct – Early March</div>
+          <div><span class="text-[#C9A24B] font-bold">Hike:</span> Gangtey Nature Trail (1.5 hrs)</div>
+          <div><span class="text-[#C9A24B] font-bold">Monastery:</span> 17th-century Gangtey Goemba</div>
+        </div>
+        <div class="pt-4 flex flex-wrap gap-3">
+          <a href="festivals.html#cranes" class="px-5 py-2.5 rounded-full bg-[#0B2A22] hover:bg-[#123A30] text-white text-xs font-bold transition shadow-sm">
+            Crane Festival Tour
+          </a>
+          <a href="contact.html?tour=Custom-Phobjikha-Trip" class="px-5 py-2.5 rounded-full border border-[#0B2A22] text-[#0B2A22] hover:bg-[#F7EDD8] text-xs font-bold transition">
+            Inquire Gangtey Stays
+          </a>
+        </div>
+      </div>
+      <div class="lg:col-span-6 relative rounded-2xl overflow-hidden h-[340px] sm:h-[420px] order-1 lg:order-2">
+        <img src="assets/images/phobjikha-cranes.webp" alt="Phobjikha Valley & Cranes" class="w-full h-full object-cover">
+        <div class="absolute top-4 left-4 bg-[#0B2A22]/90 backdrop-blur-md text-[#E4C87E] text-xs font-extrabold px-3 py-1 rounded-full uppercase">
+          Glacial Valley · 3,000m
+        </div>
+        <div class="absolute bottom-4 left-4 right-4 bg-black/60 backdrop-blur-sm p-3 rounded-xl text-white text-xs">
+          ★ Winter haven for the endangered Black-Necked Cranes & pine ridge walks
+        </div>
+      </div>
+    </article>
+
   </main>
 
-  <!-- FOOTER -->
-  <footer class="tour-footer">
-    <div class="tour-container">
-      <div class="footer-bottom-row">
-        <div>&copy; 2027 Bhutan Fast Rate Tours. All Rights Reserved. Kingdom of Bhutan.</div>
-        <div>Department of Tourism Licensed Operator #DOT-2024-884</div>
+  <!-- Destination Comparison Table -->
+  <section class="max-w-[1360px] mx-auto px-4 sm:px-6 py-12">
+    <div class="bg-white rounded-3xl p-6 sm:p-8 border border-[#E7DCC4] shadow-sm">
+      <div class="max-w-2xl">
+        <span class="text-xs font-extrabold text-[#C9A24B] uppercase tracking-wider">Trip Planning Matrix</span>
+        <h3 class="font-serif text-2xl sm:text-3xl font-bold text-[#0B2A22] mt-1">
+          Comparing Bhutan’s Major Regions
+        </h3>
+        <p class="text-sm text-[#66706A] mt-2">
+          Use this overview to decide how many days to spend in each valley based on your travel goals.
+        </p>
+      </div>
+
+      <div class="mt-8 overflow-x-auto">
+        <table class="w-full text-left border-collapse text-xs sm:text-sm">
+          <thead>
+            <tr class="border-b-2 border-[#0B2A22] text-[#0B2A22] font-serif font-bold text-sm sm:text-base">
+              <th class="py-3 px-4">Destination</th>
+              <th class="py-3 px-4">Elevation</th>
+              <th class="py-3 px-4">Drive Time from Paro</th>
+              <th class="py-3 px-4">Best For</th>
+              <th class="py-3 px-4">Recommended Stay</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-[#E7DCC4] text-[#101613]">
+            <tr class="hover:bg-[#FFF8EC]">
+              <td class="py-3.5 px-4 font-bold text-[#0B2A22]">Paro Valley</td>
+              <td class="py-3.5 px-4">2,250m</td>
+              <td class="py-3.5 px-4">0 hrs (Airport Hub)</td>
+              <td class="py-3.5 px-4">Tiger's Nest hike, Ta Dzong, farmstays</td>
+              <td class="py-3.5 px-4 font-semibold text-[#0B2A22]">2 – 3 Nights</td>
+            </tr>
+            <tr class="hover:bg-[#FFF8EC]">
+              <td class="py-3.5 px-4 font-bold text-[#0B2A22]">Thimphu Capital</td>
+              <td class="py-3.5 px-4">2,334m</td>
+              <td class="py-3.5 px-4">1 hr 15 mins</td>
+              <td class="py-3.5 px-4">Giant Buddha, craft schools, Tashichho Dzong</td>
+              <td class="py-3.5 px-4 font-semibold text-[#0B2A22]">2 Nights</td>
+            </tr>
+            <tr class="hover:bg-[#FFF8EC]">
+              <td class="py-3.5 px-4 font-bold text-[#0B2A22]">Punakha & Wangdue</td>
+              <td class="py-3.5 px-4">1,242m</td>
+              <td class="py-3.5 px-4">3 hrs (via Dochula)</td>
+              <td class="py-3.5 px-4">River dzong, rafting, warm valleys, suspension bridge</td>
+              <td class="py-3.5 px-4 font-semibold text-[#0B2A22]">2 Nights</td>
+            </tr>
+            <tr class="hover:bg-[#FFF8EC]">
+              <td class="py-3.5 px-4 font-bold text-[#0B2A22]">Phobjikha Valley</td>
+              <td class="py-3.5 px-4">3,000m</td>
+              <td class="py-3.5 px-4">5 hrs</td>
+              <td class="py-3.5 px-4">Black-Necked Cranes, alpine walks, silence</td>
+              <td class="py-3.5 px-4 font-semibold text-[#0B2A22]">1 – 2 Nights</td>
+            </tr>
+            <tr class="hover:bg-[#FFF8EC]">
+              <td class="py-3.5 px-4 font-bold text-[#0B2A22]">Bumthang Valley</td>
+              <td class="py-3.5 px-4">2,800m</td>
+              <td class="py-3.5 px-4">8 hrs (or 35 min flight)</td>
+              <td class="py-3.5 px-4">Ancient 7th-century shrines, cheese, honey</td>
+              <td class="py-3.5 px-4 font-semibold text-[#0B2A22]">3 Nights</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="bg-[#0B2A22] text-white border-t border-[#123A30] pt-16 pb-12 mt-16">
+    <div class="max-w-[1360px] mx-auto px-4 sm:px-6">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10 pb-12 border-b border-white/10">
+        <div class="lg:col-span-2">
+          <div class="flex items-center gap-2.5">
+            <span class="w-10 h-10 rounded-full bg-[#123A30] border border-[#C9A24B]/40 text-[#C9A24B] grid place-items-center font-serif text-xl font-bold">B</span>
+            <span class="leading-none">
+              <span class="block font-serif text-[22px] font-bold tracking-tight text-white">BHUTAN FAST RATE</span>
+              <span class="block text-[10px] tracking-[0.24em] text-[#C9A24B] font-extrabold">TOURS · EST. PARO</span>
+            </span>
+          </div>
+          <p class="mt-4 text-sm text-white/70 max-w-sm leading-relaxed">
+            The Kingdom of Bhutan’s trusted luxury & bespoke tour operator. Full SDF management, direct Drukair airline bookings, and licensed local cultural guides.
+          </p>
+          <div class="mt-6 flex items-center gap-3 text-xs text-[#E4C87E] font-semibold bg-white/5 border border-white/10 px-4 py-2.5 rounded-2xl w-fit">
+            <span>🇧🇹 Licensed by Department of Tourism · License #BT-8842</span>
+          </div>
+        </div>
+
+        <div>
+          <h4 class="font-serif text-base font-bold text-[#E4C87E] mb-4">Tour Packages</h4>
+          <ul class="space-y-2.5 text-sm text-white/70">
+            <li><a href="tours.html?cat=Classic" class="hover:text-white transition">Classic Bhutan (6D)</a></li>
+            <li><a href="festivals.html" class="hover:text-white transition">Festival Tshechus (8D)</a></li>
+            <li><a href="tours.html?cat=Luxury" class="hover:text-white transition">Luxury Himalayan (7D)</a></li>
+            <li><a href="tours.html?cat=Honeymoon" class="hover:text-white transition">Bhutan Honeymoon (7D)</a></li>
+            <li><a href="tours.html?cat=Trek" class="hover:text-white transition">Druk Path High Trek (9D)</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="font-serif text-base font-bold text-[#E4C87E] mb-4">Destinations</h4>
+          <ul class="space-y-2.5 text-sm text-white/70">
+            <li><a href="destinations.html#paro" class="hover:text-white transition">Paro & Tiger's Nest</a></li>
+            <li><a href="destinations.html#thimphu" class="hover:text-white transition">Thimphu Capital</a></li>
+            <li><a href="destinations.html#punakha" class="hover:text-white transition">Punakha River Valley</a></li>
+            <li><a href="destinations.html#phobjikha" class="hover:text-white transition">Phobjikha & Cranes</a></li>
+            <li><a href="destinations.html#bumthang" class="hover:text-white transition">Bumthang Valley</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="font-serif text-base font-bold text-[#E4C87E] mb-4">Travel Help</h4>
+          <ul class="space-y-2.5 text-sm text-white/70">
+            <li><a href="services.html#sdf" class="hover:text-white transition">SDF Fee Guide ($100/day)</a></li>
+            <li><a href="services.html#flights" class="hover:text-white transition">Drukair Flight Booking</a></li>
+            <li><a href="services.html#visa" class="hover:text-white transition">Bhutan Visa Processing</a></li>
+            <li><a href="about.html" class="hover:text-white transition">Why Choose Us</a></li>
+            <li><a href="contact.html" class="hover:text-white transition">Contact & Support</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="mt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-white/50">
+        <p>© 2026 Bhutan Fast Rate Tours Ltd. All rights reserved. Paro & Thimphu, Kingdom of Bhutan.</p>
+        <div class="flex items-center gap-6">
+          <a href="services.html#terms" class="hover:text-white">Terms of Travel</a>
+          <a href="services.html#privacy" class="hover:text-white">Privacy Policy</a>
+          <a href="services.html#sdf" class="hover:text-white">Bhutan Tourism Law</a>
+        </div>
       </div>
     </div>
   </footer>
 
-  <!-- SCRIPT -->
-  <div id="itineraryModal" class="modal-overlay">
-    <div class="modal-dialog">
-      <button type="button" class="modal-close-btn" onclick="closeModal('itineraryModal')">&times;</button>
-      <div id="itineraryModalContent"></div>
-    </div>
-  </div>
-  <script src="js/main.js"></script>
+  <script>
+    const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+    const closeDrawerBtn = document.getElementById('closeDrawerBtn');
+    const mobileDrawer = document.getElementById('mobileDrawer');
+    mobileMenuBtn?.addEventListener('click', () => mobileDrawer.classList.remove('hidden'));
+    closeDrawerBtn?.addEventListener('click', () => mobileDrawer.classList.add('hidden'));
+    mobileDrawer?.addEventListener('click', (e) => {
+      if (e.target === mobileDrawer) mobileDrawer.classList.add('hidden');
+    });
+  </script>
 </body>
 </html>

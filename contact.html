@@ -2,220 +2,463 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Contact &amp; Offices | Bhutan Fast Rate Tours</title>
-  <meta name="description" content="Contact Bhutan Fast Rate Tours. Offices in Thimphu and Paro. Direct WhatsApp support, 24/7 tourist helpline, and online travel inquiry form.">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Contact & Inquire — Bhutan Fast Rate Tours | Custom Itinerary & Direct Support</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700;9..144,800&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            forest: '#0B2A22',
+            forest2: '#123A30',
+            gold: '#C9A24B',
+            gold2: '#E4C87E',
+            cream: '#FFF8EC',
+            cream2: '#F7EDD8',
+            ink: '#101613',
+            muted: '#66706A',
+            line: '#E7DCC4',
+            surface: '#FFF8EC',
+            card: '#FFFFFF',
+          },
+          fontFamily: {
+            serif: ['Fraunces', 'serif'],
+            sans: ['Manrope', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+  <link rel="stylesheet" href="css/tour-theme.css">
 </head>
-<body>
+<body class="min-h-screen bg-[var(--cream)] text-[var(--ink)] font-sans antialiased overflow-x-hidden">
 
-  <!-- TOPBAR -->
-  <aside class="tour-topbar">
-    <div class="tour-container tour-topbar-inner">
-      <div class="topbar-info">
-        <span class="topbar-badge">🇧🇹 Department of Tourism Certified #DOT-2024-884</span>
-        <span>📍 Thimphu &amp; Paro, Kingdom of Bhutan</span>
-      </div>
-      <div class="topbar-actions">
-        <select class="currency-picker">
-          <option value="USD">USD ($)</option>
-          <option value="BTN">Nu. (BTN)</option>
-          <option value="INR">INR (₹)</option>
-          <option value="EUR">EUR (€)</option>
-          <option value="GBP">GBP (£)</option>
-        </select>
-      </div>
+  <!-- Top Announcement Bar -->
+  <div class="bg-[#0B2A22] text-white text-[12px] sm:text-[13px] border-b border-[#123A30]">
+    <div class="max-w-[1360px] mx-auto px-4 sm:px-6 py-2.5 flex flex-wrap gap-x-6 gap-y-1 justify-between items-center">
+      <span class="font-semibold flex items-center gap-1.5">
+        <span class="text-[#E4C87E]">✓</span> Direct Paro Head Office · Instant WhatsApp Support (+975 17 654 321)
+      </span>
+      <span class="hidden md:flex items-center gap-4 text-white/80">
+        <span>Average Response Time: Under 2 Hours</span>
+        <span>•</span>
+        <span>Free Customized Day-by-Day Route Planning</span>
+      </span>
+      <span class="text-[#E4C87E] font-bold flex items-center gap-1">
+        <span>★ 4.9</span>
+        <span class="text-white/70 font-normal">(2,400+ travellers)</span>
+      </span>
     </div>
-  </aside>
+  </div>
 
-  <!-- NAVBAR -->
-  <header class="tour-navbar">
-    <div class="tour-container tour-navbar-inner">
-      <a href="index.html" class="tour-brand">
-        <div class="brand-emblem">ༀ</div>
-        <div class="brand-text-col">
-          <span class="brand-title">Bhutan Fast Rate Tours</span>
-          <span class="brand-sub">Himalayan Kingdom Expeditions</span>
-        </div>
+  <!-- Header Navigation -->
+  <header class="sticky top-0 z-40 bg-[#FFF8EC]/95 backdrop-blur-md border-b border-[#E7DCC4] transition-all">
+    <div class="max-w-[1360px] mx-auto px-4 sm:px-6 h-[72px] flex items-center justify-between gap-4">
+      <button id="mobileMenuBtn" class="lg:hidden p-2 rounded-xl text-[#0B2A22] hover:bg-[#F7EDD8]" aria-label="Open navigation menu">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+      </button>
+
+      <a href="index.html" class="flex items-center gap-2.5 shrink-0">
+        <span class="w-10 h-10 rounded-full bg-[#0B2A22] text-[#C9A24B] grid place-items-center font-serif text-xl font-bold shadow-sm">B</span>
+        <span class="leading-none">
+          <span class="block font-serif text-[18px] sm:text-[22px] font-bold tracking-tight text-[#0B2A22]">BHUTAN FAST RATE</span>
+          <span class="block text-[10px] tracking-[0.24em] text-[#C9A24B] font-extrabold">TOURS · EST. PARO</span>
+        </span>
       </a>
 
-      <nav aria-label="Main Navigation">
-        <ul class="nav-menu-desktop">
-          <li><a href="index.html" class="nav-link">Home</a></li>
-          <li><a href="tours.html" class="nav-link">Tour Packages</a></li>
-          <li><a href="destinations.html" class="nav-link">Destinations</a></li>
-          <li><a href="festivals.html" class="nav-link">Festivals 2027</a></li>
-          <li><a href="services.html" class="nav-link">Services &amp; Flights</a></li>
-          <li><a href="about.html" class="nav-link">About Bhutan</a></li>
-          <li><a href="contact.html" class="nav-link active">Contact</a></li>
-        </ul>
+      <nav class="hidden lg:flex items-center gap-1 text-[15px] font-semibold text-[#101613]">
+        <a href="index.html" class="px-3.5 py-2 rounded-full hover:bg-[#F7EDD8] transition-colors">Home</a>
+        <a href="tours.html" class="px-3.5 py-2 rounded-full hover:bg-[#F7EDD8] transition-colors">Tours</a>
+        <a href="destinations.html" class="px-3.5 py-2 rounded-full hover:bg-[#F7EDD8] transition-colors">Destinations</a>
+        <a href="festivals.html" class="px-3.5 py-2 rounded-full hover:bg-[#F7EDD8] transition-colors">Festivals</a>
+        <a href="services.html" class="px-3.5 py-2 rounded-full hover:bg-[#F7EDD8] transition-colors">Visa & SDF</a>
+        <a href="about.html" class="px-3.5 py-2 rounded-full hover:bg-[#F7EDD8] transition-colors">About Us</a>
+        <a href="contact.html" class="px-3.5 py-2 rounded-full bg-[#0B2A22] text-white shadow-sm transition-colors">Contact</a>
       </nav>
 
-      <div class="nav-actions">
-        <button type="button" class="btn-gold-cta" onclick="openBookingModal('General Inquiry', 1899)">
-          <span>Inquire Online &rarr;</span>
-        </button>
-        <button type="button" id="menuToggleBtn" class="btn-menu-toggle">☰</button>
+      <div class="flex items-center gap-3">
+        <a href="services.html#calculator" class="hidden sm:inline-flex items-center gap-1.5 text-xs font-bold text-[#0B2A22] bg-[#F7EDD8] hover:bg-[#EADFC8] px-3.5 py-2 rounded-full border border-[#E7DCC4] transition">
+          <svg class="w-4 h-4 text-[#C9A24B]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>
+          SDF Calculator
+        </a>
+        <a href="#inquire" class="inline-flex items-center gap-1.5 text-xs sm:text-sm font-bold bg-[#C9A24B] hover:bg-[#E4C87E] text-[#0B2A22] px-4 sm:px-5 py-2.5 rounded-full shadow-sm transition transform active:scale-95">
+          Build My Route
+        </a>
       </div>
     </div>
   </header>
 
-  <div id="mobileOverlay" class="mobile-drawer-overlay"></div>
-  <aside id="mobileDrawer" class="mobile-drawer">
-    <div class="mobile-drawer-header">
-      <div class="brand-text-col">
-        <span class="brand-title" style="font-size: 1.15rem;">Bhutan Fast Rate Tours</span>
-        <span class="brand-sub">Kingdom Expeditions</span>
+  <!-- Mobile Drawer Menu -->
+  <div id="mobileDrawer" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm hidden transition-opacity">
+    <div class="fixed top-0 bottom-0 left-0 w-[300px] max-w-[85vw] bg-[#FFF8EC] shadow-2xl p-6 flex flex-col justify-between overflow-y-auto">
+      <div>
+        <div class="flex items-center justify-between pb-5 border-b border-[#E7DCC4]">
+          <div class="flex items-center gap-2">
+            <span class="w-9 h-9 rounded-full bg-[#0B2A22] text-[#C9A24B] grid place-items-center font-serif text-lg font-bold">B</span>
+            <span class="font-serif text-lg font-bold text-[#0B2A22]">BHUTAN FAST RATE</span>
+          </div>
+          <button id="closeDrawerBtn" class="p-2 text-[#0B2A22] hover:bg-[#F7EDD8] rounded-xl" aria-label="Close menu">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+          </button>
+        </div>
+        <nav class="mt-6 space-y-2 text-base font-semibold">
+          <a href="index.html" class="block px-3 py-2.5 rounded-xl text-[#101613] hover:bg-[#F7EDD8]">Home</a>
+          <a href="tours.html" class="block px-3 py-2.5 rounded-xl text-[#101613] hover:bg-[#F7EDD8]">Tours & Packages</a>
+          <a href="destinations.html" class="block px-3 py-2.5 rounded-xl text-[#101613] hover:bg-[#F7EDD8]">Destinations</a>
+          <a href="festivals.html" class="block px-3 py-2.5 rounded-xl text-[#101613] hover:bg-[#F7EDD8]">Festival Calendar</a>
+          <a href="services.html" class="block px-3 py-2.5 rounded-xl text-[#101613] hover:bg-[#F7EDD8]">Visa, SDF & Flights</a>
+          <a href="about.html" class="block px-3 py-2.5 rounded-xl text-[#101613] hover:bg-[#F7EDD8]">About Us</a>
+          <a href="contact.html" class="block px-3 py-2.5 rounded-xl bg-[#0B2A22] text-white">Contact & Inquiry</a>
+        </nav>
       </div>
-      <button type="button" id="drawerCloseBtn" class="drawer-close-btn">&times;</button>
-    </div>
-    <ul class="drawer-nav-list">
-      <li><a href="index.html" class="drawer-nav-link">Home <span>&rarr;</span></a></li>
-      <li><a href="tours.html" class="drawer-nav-link">Tour Packages <span>&rarr;</span></a></li>
-      <li><a href="destinations.html" class="drawer-nav-link">Destinations <span>&rarr;</span></a></li>
-      <li><a href="festivals.html" class="drawer-nav-link">Festivals 2027 <span>&rarr;</span></a></li>
-      <li><a href="services.html" class="drawer-nav-link">Services &amp; Flights <span>&rarr;</span></a></li>
-      <li><a href="about.html" class="drawer-nav-link">About Bhutan <span>&rarr;</span></a></li>
-      <li><a href="contact.html" class="drawer-nav-link active">Contact &amp; Offices <span>&rarr;</span></a></li>
-    </ul>
-  </aside>
-
-  <!-- BANNER -->
-  <div style="background: linear-gradient(180deg, var(--forest-dark), var(--forest)); color: #fff; padding: 60px 0 50px; text-align: center; border-bottom: 2px solid rgba(201,162,75,0.3);">
-    <div class="tour-container">
-      <span class="slide-kicker">We Welcome Your Message</span>
-      <h1 style="font-family: var(--font-serif); font-size: clamp(2rem, 4vw, 3.2rem); margin-bottom: 12px; color: #fff;">
-        Contact Bhutan Fast Rate Tours
-      </h1>
-      <p style="max-width: 680px; margin: 0 auto; color: var(--cream2); font-size: 1rem;">
-        Speak directly with our native Bhutanese travel planners. We provide comprehensive itinerary advice, flight bookings, and visa guidance.
-      </p>
+      <div class="pt-6 border-t border-[#E7DCC4] space-y-3">
+        <a href="services.html#calculator" class="block text-center w-full py-2.5 rounded-xl font-bold bg-[#F7EDD8] text-[#0B2A22] text-sm">
+          SDF Fee Calculator
+        </a>
+        <a href="#inquire" class="block text-center w-full py-3 rounded-xl font-bold bg-[#C9A24B] text-[#0B2A22] text-sm">
+          Custom Itinerary Request
+        </a>
+      </div>
     </div>
   </div>
 
-  <!-- CONTACT GRID -->
-  <main class="tour-container section-py">
-    <div style="display: grid; grid-template-columns: 1fr 1.3fr; gap: 40px; margin-bottom: 60px;">
-      
-      <!-- Contact Info Cards -->
-      <div style="display: flex; flex-direction: column; gap: 20px;">
-        <div style="background: #fff; border-radius: var(--radius-md); border: 1px solid var(--line); padding: 28px; box-shadow: var(--shadow-sm);">
-          <div style="font-size: 1.8rem; margin-bottom: 8px;">🏛️</div>
-          <h3 style="font-family: var(--font-serif); font-size: 1.25rem; color: var(--forest); margin-bottom: 6px;">Thimphu Headquarters</h3>
-          <p style="font-size: 0.88rem; color: #4b5563; line-height: 1.5; margin-bottom: 10px;">
-            Level 3, Pema Pelbar Tower, Norzin Lam<br>
-            Near Clock Tower Square, Thimphu 11001, Bhutan
+  <!-- Hero Header -->
+  <section class="relative bg-[#0B2A22] text-white py-14 sm:py-20 overflow-hidden">
+    <div class="absolute inset-0 opacity-15 pointer-events-none">
+      <img src="assets/images/phobjikha-cranes.webp" alt="Bhutan landscape" class="w-full h-full object-cover">
+    </div>
+    <div class="relative max-w-[1360px] mx-auto px-4 sm:px-6">
+      <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/10 border border-white/15 text-[#E4C87E] text-xs font-bold tracking-widest uppercase mb-4">
+        ★ Let's Plan Your Himalayan Journey
+      </div>
+      <h1 class="font-serif text-3xl sm:text-5xl lg:text-6xl font-bold tracking-tight max-w-3xl leading-tight">
+        Connect With Our Team in Paro & Thimphu.
+      </h1>
+      <p class="mt-4 text-base sm:text-lg text-white/80 max-w-2xl leading-relaxed">
+        Speak directly with licensed Bhutanese travel planners. We craft custom itineraries, arrange international flights, process your visas, and tailor every detail to your pace.
+      </p>
+    </div>
+  </section>
+
+  <!-- Main Contact & Inquiry Hub -->
+  <main id="inquire" class="max-w-[1360px] mx-auto px-4 sm:px-6 -mt-8 relative z-10 scroll-mt-24">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+
+      <!-- Left Column: Inquiry Form -->
+      <div class="lg:col-span-8 bg-white rounded-3xl p-6 sm:p-10 border border-[#E7DCC4] shadow-2xl">
+        <div class="mb-8">
+          <span class="text-xs font-extrabold text-[#C9A24B] uppercase tracking-wider">Direct Booking & Custom Request</span>
+          <h2 class="font-serif text-2xl sm:text-3xl font-bold text-[#0B2A22] mt-1">
+            Build Your Tailor-Made Bhutan Itinerary
+          </h2>
+          <p class="text-xs sm:text-sm text-[#66706A] mt-1.5">
+            Fill out your preferences below. Our head of travel will email you a complete day-by-day route proposal with official SDF cost calculation within 2 hours.
           </p>
-          <div style="font-size: 0.82rem; color: var(--gold-dark); font-weight: 700;">
-            Phone: +975 2 334 890 / +975 2 334 891
-          </div>
         </div>
 
-        <div style="background: #fff; border-radius: var(--radius-md); border: 1px solid var(--line); padding: 28px; box-shadow: var(--shadow-sm);">
-          <div style="font-size: 1.8rem; margin-bottom: 8px;">🏔️</div>
-          <h3 style="font-family: var(--font-serif); font-size: 1.25rem; color: var(--forest); margin-bottom: 6px;">Paro Airport Operations</h3>
-          <p style="font-size: 0.88rem; color: #4b5563; line-height: 1.5; margin-bottom: 10px;">
-            Bondey Commercial Complex, Airport Highway<br>
-            Paro Valley, Kingdom of Bhutan
-          </p>
-          <div style="font-size: 0.82rem; color: var(--gold-dark); font-weight: 700;">
-            Direct Airport Rep: +975 17 889 015
+        <form id="inquiryForm" class="space-y-6">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+            <div>
+              <label class="block text-xs font-bold text-[#0B2A22] mb-1.5">Full Name *</label>
+              <input type="text" id="custName" required placeholder="e.g. Eleanor Vance" class="w-full px-4 py-3 rounded-xl border border-[#E7DCC4] bg-[#FFF8EC]/40 text-sm focus:outline-none focus:ring-2 focus:ring-[#C9A24B]">
+            </div>
+            <div>
+              <label class="block text-xs font-bold text-[#0B2A22] mb-1.5">Email Address *</label>
+              <input type="email" id="custEmail" required placeholder="eleanor@example.com" class="w-full px-4 py-3 rounded-xl border border-[#E7DCC4] bg-[#FFF8EC]/40 text-sm focus:outline-none focus:ring-2 focus:ring-[#C9A24B]">
+            </div>
           </div>
-        </div>
 
-        <div style="background: #fff; border-radius: var(--radius-md); border: 1px solid var(--line); padding: 28px; box-shadow: var(--shadow-sm);">
-          <div style="font-size: 1.8rem; margin-bottom: 8px;">💬</div>
-          <h3 style="font-family: var(--font-serif); font-size: 1.25rem; color: var(--forest); margin-bottom: 6px;">Instant Messaging &amp; Helpline</h3>
-          <p style="font-size: 0.88rem; color: #4b5563; line-height: 1.5; margin-bottom: 10px;">
-            Official WhatsApp direct desk for immediate questions, visa status checks, and flight rebooking assistance.
-          </p>
-          <div style="font-size: 0.88rem; color: var(--forest); font-weight: 800;">
-            WhatsApp: +975 17 889 012<br>
-            Email: info@bhutanfastratetours.com
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+            <div>
+              <label class="block text-xs font-bold text-[#0B2A22] mb-1.5">Phone / WhatsApp *</label>
+              <input type="tel" id="custPhone" required placeholder="+1 555 123 4567" class="w-full px-4 py-3 rounded-xl border border-[#E7DCC4] bg-[#FFF8EC]/40 text-sm focus:outline-none focus:ring-2 focus:ring-[#C9A24B]">
+            </div>
+            <div>
+              <label class="block text-xs font-bold text-[#0B2A22] mb-1.5">Selected Tour Package</label>
+              <select id="custTour" class="w-full px-4 py-3 rounded-xl border border-[#E7DCC4] bg-[#FFF8EC]/40 text-sm font-semibold text-[#0B2A22] focus:outline-none focus:ring-2 focus:ring-[#C9A24B]">
+                <option value="Classic-Bhutan-Discovery">Classic Bhutan Discovery (6 Days)</option>
+                <option value="Thimphu-Tshechu-Festival">Thimphu Tshechu Festival (8 Days)</option>
+                <option value="Luxury-Himalayan-Escape">Luxury Himalayan Escape (7 Days)</option>
+                <option value="Bhutan-Honeymoon-Romance">Bhutan Honeymoon Romance (7 Days)</option>
+                <option value="Druk-Path-Trek">Druk Path High Altitude Trek (9 Days)</option>
+                <option value="Family-Himalayan-Adventure">Family Himalayan Adventure (8 Days)</option>
+                <option value="Custom-Tailor-Made">Custom Tailor-Made Journey</option>
+              </select>
+            </div>
           </div>
-        </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-5">
+            <div>
+              <label class="block text-xs font-bold text-[#0B2A22] mb-1.5">Estimated Travel Month</label>
+              <select id="custMonth" class="w-full px-4 py-3 rounded-xl border border-[#E7DCC4] bg-[#FFF8EC]/40 text-sm font-semibold focus:outline-none">
+                <option value="Oct-Nov-2026">Autumn 2026 (Oct–Nov)</option>
+                <option value="Dec-Feb-2027">Winter 2026/27 (Dec–Feb)</option>
+                <option value="Mar-May-2027">Spring 2027 (Mar–May)</option>
+                <option value="Jun-Aug-2027">Summer / Monsoon (Jun–Aug)</option>
+                <option value="Autumn-2027">Autumn 2027 (Sep–Nov)</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-xs font-bold text-[#0B2A22] mb-1.5">Number of Travellers</label>
+              <select id="custTravellers" class="w-full px-4 py-3 rounded-xl border border-[#E7DCC4] bg-[#FFF8EC]/40 text-sm font-semibold focus:outline-none">
+                <option value="Solo">Solo Traveler</option>
+                <option value="Couple" selected>Couple (2 Adults)</option>
+                <option value="SmallGroup">Small Group (3–6)</option>
+                <option value="Family">Family with Children</option>
+                <option value="LargeGroup">Group 7+</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-xs font-bold text-[#0B2A22] mb-1.5">Hotel Tier Preference</label>
+              <select id="custHotel" class="w-full px-4 py-3 rounded-xl border border-[#E7DCC4] bg-[#FFF8EC]/40 text-sm font-semibold focus:outline-none">
+                <option value="3-Star-Boutique">3★ A-Grade Heritage / Farm</option>
+                <option value="4-Star-Luxury">4★ Boutique Luxury Lodges</option>
+                <option value="5-Star-Amankora">5★ Ultra-Luxury (Amankora/Six Senses)</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Special Interests -->
+          <div>
+            <label class="block text-xs font-bold text-[#0B2A22] mb-2">Interests (Select all that apply)</label>
+            <div class="flex flex-wrap gap-2 text-xs font-semibold">
+              <label class="px-3.5 py-2 rounded-full border border-[#E7DCC4] bg-[#FFF8EC] text-[#0B2A22] cursor-pointer hover:bg-[#F7EDD8] flex items-center gap-1.5">
+                <input type="checkbox" checked class="accent-[#0B2A22]"> Tiger’s Nest Hike
+              </label>
+              <label class="px-3.5 py-2 rounded-full border border-[#E7DCC4] bg-[#FFF8EC] text-[#0B2A22] cursor-pointer hover:bg-[#F7EDD8] flex items-center gap-1.5">
+                <input type="checkbox" checked class="accent-[#0B2A22]"> Festival Masked Dances
+              </label>
+              <label class="px-3.5 py-2 rounded-full border border-[#E7DCC4] bg-[#FFF8EC] text-[#0B2A22] cursor-pointer hover:bg-[#F7EDD8] flex items-center gap-1.5">
+                <input type="checkbox" class="accent-[#0B2A22]"> Hot Stone Herbal Bath
+              </label>
+              <label class="px-3.5 py-2 rounded-full border border-[#E7DCC4] bg-[#FFF8EC] text-[#0B2A22] cursor-pointer hover:bg-[#F7EDD8] flex items-center gap-1.5">
+                <input type="checkbox" class="accent-[#0B2A22]"> Monastic Meditation
+              </label>
+              <label class="px-3.5 py-2 rounded-full border border-[#E7DCC4] bg-[#FFF8EC] text-[#0B2A22] cursor-pointer hover:bg-[#F7EDD8] flex items-center gap-1.5">
+                <input type="checkbox" class="accent-[#0B2A22]"> White Water Rafting
+              </label>
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-xs font-bold text-[#0B2A22] mb-1.5">Your Travel Vision / Questions</label>
+            <textarea id="custNotes" rows="3" placeholder="Tell us if you need international Drukair flights, special dietary requirements, or specific dates..." class="w-full px-4 py-3 rounded-xl border border-[#E7DCC4] bg-[#FFF8EC]/40 text-sm focus:outline-none focus:ring-2 focus:ring-[#C9A24B]"></textarea>
+          </div>
+
+          <div id="submitSuccessMsg" class="hidden p-4 rounded-2xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs sm:text-sm font-semibold flex items-center gap-3">
+            <span class="text-xl">✅</span>
+            <span>Kadrinchey la! Your custom inquiry has been received. Our Paro team will review and reply within 2 hours with your itinerary proposal.</span>
+          </div>
+
+          <button type="submit" class="w-full py-4 rounded-full font-bold bg-[#C9A24B] hover:bg-[#E4C87E] text-[#0B2A22] text-sm sm:text-base shadow-md transition transform active:scale-[0.99]">
+            Submit Custom Itinerary Request →
+          </button>
+          <p class="text-[11px] text-[#66706A] text-center">
+            Zero commitment · 100% official Bhutanese Department of Tourism licensed operator · Data strictly confidential.
+          </p>
+        </form>
       </div>
 
-      <!-- Contact Form -->
-      <div style="background: #fff; border-radius: var(--radius-md); border: 1px solid var(--line); padding: 36px; box-shadow: var(--shadow-sm);">
-        <span class="section-kicker">Direct Inquiry</span>
-        <h2 style="font-family: var(--font-serif); font-size: 1.8rem; color: var(--forest); margin-bottom: 6px;">Send Us an Inquiry</h2>
-        <p style="font-size: 0.88rem; color: var(--muted); margin-bottom: 24px;">
-          Our senior travel planner in Thimphu will reply within 2 business hours with a complete customized itinerary and pricing quotation.
-        </p>
+      <!-- Right Column: Direct Contacts & Office Details -->
+      <div class="lg:col-span-4 space-y-6">
 
-        <form id="contactPageForm">
-          <div style="margin-bottom: 16px;">
-            <label style="display: block; font-size: 0.78rem; font-weight: 800; text-transform: uppercase; color: var(--muted); margin-bottom: 4px;">Full Name *</label>
-            <input type="text" name="name" required placeholder="Your full name" class="filter-input" style="background: #fff;">
-          </div>
-
-          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 16px;">
+        <!-- WhatsApp Quick Connect -->
+        <div class="bg-[#0B2A22] text-white rounded-3xl p-6 sm:p-8 border border-[#123A30] shadow-xl">
+          <div class="flex items-center gap-3 mb-4">
+            <span class="w-10 h-10 rounded-full bg-emerald-500/20 text-emerald-400 grid place-items-center font-bold text-xl">💬</span>
             <div>
-              <label style="display: block; font-size: 0.78rem; font-weight: 800; text-transform: uppercase; color: var(--muted); margin-bottom: 4px;">Email Address *</label>
-              <input type="email" name="email" required placeholder="your.email@example.com" class="filter-input" style="background: #fff;">
-            </div>
-            <div>
-              <label style="display: block; font-size: 0.78rem; font-weight: 800; text-transform: uppercase; color: var(--muted); margin-bottom: 4px;">WhatsApp Number</label>
-              <input type="tel" name="phone" placeholder="+1 (555) 000-0000" class="filter-input" style="background: #fff;">
+              <span class="text-xs text-white/70 block">Instant Chat</span>
+              <h3 class="font-serif text-lg font-bold text-white">Live WhatsApp Desk</h3>
             </div>
           </div>
+          <p class="text-xs text-white/80 leading-relaxed">
+            Prefer to text our team directly? Chat with our licensed senior guide in Paro right now for quick questions on flight seatings or festival dates.
+          </p>
+          <a href="https://wa.me/97517654321" target="_blank" rel="noopener" class="mt-5 inline-flex items-center justify-center gap-2 w-full py-3 rounded-full font-bold bg-emerald-500 hover:bg-emerald-400 text-white text-xs transition shadow-sm">
+            <span>Open WhatsApp (+975 17 654 321)</span>
+          </a>
+        </div>
 
-          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 16px;">
-            <div>
-              <label style="display: block; font-size: 0.78rem; font-weight: 800; text-transform: uppercase; color: var(--muted); margin-bottom: 4px;">Preferred Month</label>
-              <select name="travelMonth" class="filter-select" style="background: #fff;">
-                <option value="Spring 2027">Spring 2027 (Mar–May)</option>
-                <option value="Autumn 2027">Autumn 2027 (Sep–Nov)</option>
-                <option value="Winter 2027">Winter 2027 (Dec–Feb)</option>
-                <option value="Summer 2027">Summer 2027 (Jun–Aug)</option>
-              </select>
-            </div>
-            <div>
-              <label style="display: block; font-size: 0.78rem; font-weight: 800; text-transform: uppercase; color: var(--muted); margin-bottom: 4px;">Travel Style</label>
-              <select name="style" class="filter-select" style="background: #fff;">
-                <option value="Classic Cultural">Classic Cultural Tour</option>
-                <option value="Festival & Cham">Festival &amp; Cham Dance</option>
-                <option value="5-Star Luxury">5-Star Ultra Luxury (Amankora)</option>
-                <option value="Trekking">Druk Path High Trek</option>
-                <option value="Honeymoon">Romantic Honeymoon</option>
-                <option value="Family">Family Adventure</option>
-              </select>
-            </div>
+        <!-- Office Details -->
+        <div class="bg-white rounded-3xl p-6 sm:p-8 border border-[#E7DCC4] shadow-sm space-y-5 text-sm">
+          <div>
+            <span class="text-xs font-extrabold text-[#C9A24B] uppercase tracking-wider">Paro Headquarters</span>
+            <h4 class="font-serif font-bold text-base text-[#0B2A22] mt-0.5">Bhutan Fast Rate Tours Ltd.</h4>
+            <p class="text-xs text-[#66706A] mt-1">Paro Town Center, Next to Rinpung Bridge, Paro Valley, Kingdom of Bhutan</p>
           </div>
 
-          <div style="margin-bottom: 24px;">
-            <label style="display: block; font-size: 0.78rem; font-weight: 800; text-transform: uppercase; color: var(--muted); margin-bottom: 4px;">Your Travel Vision &amp; Questions</label>
-            <textarea name="message" rows="4" placeholder="Tell us about your travel dates, group size, special dietary needs, or bucket list experiences..." class="filter-input" style="background: #fff;"></textarea>
+          <div class="pt-4 border-t border-[#E7DCC4]">
+            <span class="text-xs font-extrabold text-[#C9A24B] uppercase tracking-wider">Thimphu Operations</span>
+            <p class="text-xs text-[#66706A] mt-1">Norzin Lam, Clock Tower Square, Capital City Thimphu, Bhutan</p>
           </div>
 
-          <button type="submit" class="btn-gold-cta" style="width: 100%; justify-content: center; padding: 14px;">
-            Send Inquiry to Native Planners &rarr;
-          </button>
-        </form>
+          <div class="pt-4 border-t border-[#E7DCC4] space-y-2 text-xs">
+            <div class="flex items-center gap-2">
+              <span class="text-[#0B2A22] font-bold">Email:</span>
+              <a href="mailto:tours@bhutanfastrate.com" class="text-[#C9A24B] hover:underline font-semibold">tours@bhutanfastrate.com</a>
+            </div>
+            <div class="flex items-center gap-2">
+              <span class="text-[#0B2A22] font-bold">Desk Phone:</span>
+              <span class="text-[#66706A]">+975 8 271 890</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <span class="text-[#0B2A22] font-bold">Office Hours:</span>
+              <span class="text-[#66706A]">Mon – Sat: 8:30 AM – 7:30 PM (BST)</span>
+            </div>
+          </div>
+        </div>
+
       </div>
 
     </div>
   </main>
 
-  <footer class="tour-footer">
-    <div class="tour-container">
-      <div class="footer-bottom-row">
-        <div>&copy; 2027 Bhutan Fast Rate Tours. All Rights Reserved. Kingdom of Bhutan.</div>
-        <div>Department of Tourism Licensed Operator #DOT-2024-884</div>
+  <!-- FAQ Accordion Section -->
+  <section class="max-w-[1360px] mx-auto px-4 sm:px-6 py-16">
+    <div class="bg-white rounded-3xl p-6 sm:p-10 border border-[#E7DCC4] shadow-sm">
+      <div class="max-w-2xl mb-8">
+        <span class="text-xs font-extrabold text-[#C9A24B] uppercase tracking-wider">Frequently Asked Questions</span>
+        <h3 class="font-serif text-2xl sm:text-3xl font-bold text-[#0B2A22] mt-1">
+          Everything You Need to Know Before Visiting
+        </h3>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="p-5 rounded-2xl bg-[#FFF8EC] border border-[#E7DCC4]">
+          <h4 class="font-serif font-bold text-base text-[#0B2A22]">How difficult is the Tiger’s Nest (Taktsang) hike?</h4>
+          <p class="text-xs text-[#66706A] mt-2 leading-relaxed">
+            The hike takes roughly 4 to 5 hours round-trip. It is a moderate uphill trail through fragrant pine forests. For guests who prefer not to walk the full ascent, we arrange gentle horseback / pony rides up to the halfway cafeteria viewpoint.
+          </p>
+        </div>
+
+        <div class="p-5 rounded-2xl bg-[#FFF8EC] border border-[#E7DCC4]">
+          <h4 class="font-serif font-bold text-base text-[#0B2A22]">Is Bhutan safe for solo or female travelers?</h4>
+          <p class="text-xs text-[#66706A] mt-2 leading-relaxed">
+            Bhutan is consistently ranked as one of the safest nations on Earth. Violent crime is virtually non-existent, and Buddhist cultural values emphasize mutual respect and hospitality. You are accompanied by a dedicated certified guide and driver.
+          </p>
+        </div>
+
+        <div class="p-5 rounded-2xl bg-[#FFF8EC] border border-[#E7DCC4]">
+          <h4 class="font-serif font-bold text-base text-[#0B2A22]">What currency is accepted in Bhutan?</h4>
+          <p class="text-xs text-[#66706A] mt-2 leading-relaxed">
+            The national currency is the Bhutanese Ngultrum (Nu.), which is pegged 1:1 to the Indian Rupee (INR). Indian Rupees are widely accepted everywhere. Major international credit cards are accepted at all luxury hotels and handicraft emporiums.
+          </p>
+        </div>
+
+        <div class="p-5 rounded-2xl bg-[#FFF8EC] border border-[#E7DCC4]">
+          <h4 class="font-serif font-bold text-base text-[#0B2A22]">Can I customize any of your standard tour routes?</h4>
+          <p class="text-xs text-[#66706A] mt-2 leading-relaxed">
+            Absolutely. Every tour can be customized with extra days, preferred boutique or 5-star lodges (Amankora / Six Senses / Pemako), private monk blessings, photography expeditions, or helicopter transfers.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="bg-[#0B2A22] text-white border-t border-[#123A30] pt-16 pb-12 mt-16">
+    <div class="max-w-[1360px] mx-auto px-4 sm:px-6">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10 pb-12 border-b border-white/10">
+        <div class="lg:col-span-2">
+          <div class="flex items-center gap-2.5">
+            <span class="w-10 h-10 rounded-full bg-[#123A30] border border-[#C9A24B]/40 text-[#C9A24B] grid place-items-center font-serif text-xl font-bold">B</span>
+            <span class="leading-none">
+              <span class="block font-serif text-[22px] font-bold tracking-tight text-white">BHUTAN FAST RATE</span>
+              <span class="block text-[10px] tracking-[0.24em] text-[#C9A24B] font-extrabold">TOURS · EST. PARO</span>
+            </span>
+          </div>
+          <p class="mt-4 text-sm text-white/70 max-w-sm leading-relaxed">
+            The Kingdom of Bhutan’s trusted luxury & bespoke tour operator. Full SDF management, direct Drukair airline bookings, and licensed local cultural guides.
+          </p>
+          <div class="mt-6 flex items-center gap-3 text-xs text-[#E4C87E] font-semibold bg-white/5 border border-white/10 px-4 py-2.5 rounded-2xl w-fit">
+            <span>🇧🇹 Licensed by Department of Tourism · License #BT-8842</span>
+          </div>
+        </div>
+
+        <div>
+          <h4 class="font-serif text-base font-bold text-[#E4C87E] mb-4">Tour Packages</h4>
+          <ul class="space-y-2.5 text-sm text-white/70">
+            <li><a href="tours.html?cat=Classic" class="hover:text-white transition">Classic Bhutan (6D)</a></li>
+            <li><a href="festivals.html" class="hover:text-white transition">Festival Tshechus (8D)</a></li>
+            <li><a href="tours.html?cat=Luxury" class="hover:text-white transition">Luxury Himalayan (7D)</a></li>
+            <li><a href="tours.html?cat=Honeymoon" class="hover:text-white transition">Bhutan Honeymoon (7D)</a></li>
+            <li><a href="tours.html?cat=Trek" class="hover:text-white transition">Druk Path High Trek (9D)</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="font-serif text-base font-bold text-[#E4C87E] mb-4">Destinations</h4>
+          <ul class="space-y-2.5 text-sm text-white/70">
+            <li><a href="destinations.html#paro" class="hover:text-white transition">Paro & Tiger's Nest</a></li>
+            <li><a href="destinations.html#thimphu" class="hover:text-white transition">Thimphu Capital</a></li>
+            <li><a href="destinations.html#punakha" class="hover:text-white transition">Punakha River Valley</a></li>
+            <li><a href="destinations.html#phobjikha" class="hover:text-white transition">Phobjikha & Cranes</a></li>
+            <li><a href="destinations.html#bumthang" class="hover:text-white transition">Bumthang Valley</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="font-serif text-base font-bold text-[#E4C87E] mb-4">Travel Help</h4>
+          <ul class="space-y-2.5 text-sm text-white/70">
+            <li><a href="services.html#sdf" class="hover:text-white transition">SDF Fee Guide ($100/day)</a></li>
+            <li><a href="services.html#flights" class="hover:text-white transition">Drukair Flight Booking</a></li>
+            <li><a href="services.html#visa" class="hover:text-white transition">Bhutan Visa Processing</a></li>
+            <li><a href="about.html" class="hover:text-white transition">Why Choose Us</a></li>
+            <li><a href="contact.html" class="hover:text-white transition">Contact & Support</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="mt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-white/50">
+        <p>© 2026 Bhutan Fast Rate Tours Ltd. All rights reserved. Paro & Thimphu, Kingdom of Bhutan.</p>
+        <div class="flex items-center gap-6">
+          <a href="services.html#terms" class="hover:text-white">Terms of Travel</a>
+          <a href="services.html#privacy" class="hover:text-white">Privacy Policy</a>
+          <a href="services.html#sdf" class="hover:text-white">Bhutan Tourism Law</a>
+        </div>
       </div>
     </div>
   </footer>
 
-  <script src="js/main.js"></script>
   <script>
-    document.getElementById('contactPageForm')?.addEventListener('submit', (e) => {
+    // Form submission handling
+    const inquiryForm = document.getElementById('inquiryForm');
+    const submitSuccessMsg = document.getElementById('submitSuccessMsg');
+    inquiryForm.addEventListener('submit', (e) => {
       e.preventDefault();
-      showToast('Thank you! Your travel inquiry has been received. Our Thimphu team will contact you within 2 hours.');
-      e.target.reset();
+      submitSuccessMsg.classList.remove('hidden');
+      inquiryForm.reset();
+      submitSuccessMsg.scrollIntoView({ behavior: 'smooth' });
+    });
+
+    // Auto-select tour from URL param
+    window.addEventListener('DOMContentLoaded', () => {
+      const urlParams = new URLSearchParams(window.location.search);
+      const tourParam = urlParams.get('tour');
+      if (tourParam) {
+        const select = document.getElementById('custTour');
+        for (let i = 0; i < select.options.length; i++) {
+          if (select.options[i].value.toLowerCase().includes(tourParam.toLowerCase()) || 
+              select.options[i].text.toLowerCase().includes(tourParam.toLowerCase())) {
+            select.selectedIndex = i;
+            break;
+          }
+        }
+      }
+    });
+
+    // Mobile Drawer Toggle
+    const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+    const closeDrawerBtn = document.getElementById('closeDrawerBtn');
+    const mobileDrawer = document.getElementById('mobileDrawer');
+    mobileMenuBtn?.addEventListener('click', () => mobileDrawer.classList.remove('hidden'));
+    closeDrawerBtn?.addEventListener('click', () => mobileDrawer.classList.add('hidden'));
+    mobileDrawer?.addEventListener('click', (e) => {
+      if (e.target === mobileDrawer) mobileDrawer.classList.add('hidden');
     });
   </script>
 </body>

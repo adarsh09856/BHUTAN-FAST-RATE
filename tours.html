@@ -2,174 +2,837 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Tour Packages &amp; Itineraries | Bhutan Fast Rate Tours</title>
-  <meta name="description" content="Explore handcrafted Bhutan tour packages. Cultural discoveries, festival journeys, high Himalayan treks, and luxury escapes. All inclusive with official SDF &amp; visa.">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Tour Packages — Bhutan Fast Rate Tours | Official Licensed Operator</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700;9..144,800&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            forest: '#0B2A22',
+            forest2: '#123A30',
+            gold: '#C9A24B',
+            gold2: '#E4C87E',
+            cream: '#FFF8EC',
+            cream2: '#F7EDD8',
+            ink: '#101613',
+            muted: '#66706A',
+            line: '#E7DCC4',
+            surface: '#FFF8EC',
+            card: '#FFFFFF',
+          },
+          fontFamily: {
+            serif: ['Fraunces', 'serif'],
+            sans: ['Manrope', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+  <link rel="stylesheet" href="css/tour-theme.css">
 </head>
-<body>
+<body class="min-h-screen bg-[var(--cream)] text-[var(--ink)] font-sans antialiased overflow-x-hidden">
 
-  <!-- TOP UTILITY BAR -->
-  <aside class="tour-topbar">
-    <div class="tour-container tour-topbar-inner">
-      <div class="topbar-info">
-        <span class="topbar-badge">🇧🇹 Department of Tourism Certified #DOT-2024-884</span>
-        <span>📍 Thimphu &amp; Paro, Kingdom of Bhutan</span>
-        <span>📞 +975 2 334 890 / WhatsApp: +975 17 889 012</span>
-      </div>
-      <div class="topbar-actions">
-        <span>Daily SDF Included Guarantee</span>
-        <select class="currency-picker">
-          <option value="USD">USD ($)</option>
-          <option value="BTN">Nu. (BTN)</option>
-          <option value="INR">INR (₹)</option>
-          <option value="EUR">EUR (€)</option>
-          <option value="GBP">GBP (£)</option>
-        </select>
-      </div>
+  <!-- Top Announcement Bar -->
+  <div class="bg-[#0B2A22] text-white text-[12px] sm:text-[13px] border-b border-[#123A30]">
+    <div class="max-w-[1360px] mx-auto px-4 sm:px-6 py-2.5 flex flex-wrap gap-x-6 gap-y-1 justify-between items-center">
+      <span class="font-semibold flex items-center gap-1.5">
+        <span class="text-[#E4C87E]">✓</span> SDF fee included · Licensed Bhutan operator #BT-8842
+      </span>
+      <span class="hidden md:flex items-center gap-4 text-white/80">
+        <span>USD & INR Accepted</span>
+        <span>•</span>
+        <span>Direct Drukair & Bhutan Airlines Booking</span>
+        <span>•</span>
+        <span>Live Support 9am–8pm Bhutan Time</span>
+      </span>
+      <span class="text-[#E4C87E] font-bold flex items-center gap-1">
+        <span>★ 4.9</span>
+        <span class="text-white/70 font-normal">(2,400+ travellers)</span>
+      </span>
     </div>
-  </aside>
+  </div>
 
-  <!-- MAIN NAVIGATION BAR -->
-  <header class="tour-navbar">
-    <div class="tour-container tour-navbar-inner">
-      <a href="index.html" class="tour-brand">
-        <div class="brand-emblem">ༀ</div>
-        <div class="brand-text-col">
-          <span class="brand-title">Bhutan Fast Rate Tours</span>
-          <span class="brand-sub">Himalayan Kingdom Expeditions</span>
-        </div>
+  <!-- Header Navigation -->
+  <header class="sticky top-0 z-40 bg-[#FFF8EC]/95 backdrop-blur-md border-b border-[#E7DCC4] transition-all">
+    <div class="max-w-[1360px] mx-auto px-4 sm:px-6 h-[72px] flex items-center justify-between gap-4">
+      <!-- Mobile Menu Button -->
+      <button id="mobileMenuBtn" class="lg:hidden p-2 rounded-xl text-[#0B2A22] hover:bg-[#F7EDD8]" aria-label="Open navigation menu">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+      </button>
+
+      <!-- Brand Logo -->
+      <a href="index.html" class="flex items-center gap-2.5 shrink-0">
+        <span class="w-10 h-10 rounded-full bg-[#0B2A22] text-[#C9A24B] grid place-items-center font-serif text-xl font-bold shadow-sm">B</span>
+        <span class="leading-none">
+          <span class="block font-serif text-[18px] sm:text-[22px] font-bold tracking-tight text-[#0B2A22]">BHUTAN FAST RATE</span>
+          <span class="block text-[10px] tracking-[0.24em] text-[#C9A24B] font-extrabold">TOURS · EST. PARO</span>
+        </span>
       </a>
 
-      <nav aria-label="Main Navigation">
-        <ul class="nav-menu-desktop">
-          <li><a href="index.html" class="nav-link">Home</a></li>
-          <li><a href="tours.html" class="nav-link active">Tour Packages</a></li>
-          <li><a href="destinations.html" class="nav-link">Destinations</a></li>
-          <li><a href="festivals.html" class="nav-link">Festivals 2027</a></li>
-          <li><a href="services.html" class="nav-link">Services &amp; Flights</a></li>
-          <li><a href="about.html" class="nav-link">About Bhutan</a></li>
-          <li><a href="contact.html" class="nav-link">Contact</a></li>
-        </ul>
+      <!-- Desktop Navigation -->
+      <nav class="hidden lg:flex items-center gap-1 text-[15px] font-semibold text-[#101613]">
+        <a href="index.html" class="px-3.5 py-2 rounded-full hover:bg-[#F7EDD8] transition-colors">Home</a>
+        <a href="tours.html" class="px-3.5 py-2 rounded-full bg-[#0B2A22] text-white shadow-sm transition-colors">Tours</a>
+        <a href="destinations.html" class="px-3.5 py-2 rounded-full hover:bg-[#F7EDD8] transition-colors">Destinations</a>
+        <a href="festivals.html" class="px-3.5 py-2 rounded-full hover:bg-[#F7EDD8] transition-colors">Festivals</a>
+        <a href="services.html" class="px-3.5 py-2 rounded-full hover:bg-[#F7EDD8] transition-colors">Visa & SDF</a>
+        <a href="about.html" class="px-3.5 py-2 rounded-full hover:bg-[#F7EDD8] transition-colors">About Us</a>
+        <a href="contact.html" class="px-3.5 py-2 rounded-full hover:bg-[#F7EDD8] transition-colors">Contact</a>
       </nav>
 
-      <div class="nav-actions">
-        <button type="button" class="btn-gold-cta" onclick="openBookingModal('Custom Tour Inquiry', 1899)">
-          <span>Plan Custom Tour &rarr;</span>
-        </button>
-        <button type="button" id="menuToggleBtn" class="btn-menu-toggle" aria-label="Open Mobile Menu">☰</button>
+      <!-- Right Header Actions -->
+      <div class="flex items-center gap-3">
+        <a href="services.html#calculator" class="hidden sm:inline-flex items-center gap-1.5 text-xs font-bold text-[#0B2A22] bg-[#F7EDD8] hover:bg-[#EADFC8] px-3.5 py-2 rounded-full border border-[#E7DCC4] transition">
+          <svg class="w-4 h-4 text-[#C9A24B]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>
+          SDF Calculator
+        </a>
+        <a href="contact.html#inquire" class="inline-flex items-center gap-1.5 text-xs sm:text-sm font-bold bg-[#C9A24B] hover:bg-[#E4C87E] text-[#0B2A22] px-4 sm:px-5 py-2.5 rounded-full shadow-sm transition transform active:scale-95">
+          Build My Route
+        </a>
       </div>
     </div>
   </header>
 
-  <!-- MOBILE DRAWER MENU -->
-  <div id="mobileOverlay" class="mobile-drawer-overlay"></div>
-  <aside id="mobileDrawer" class="mobile-drawer">
-    <div class="mobile-drawer-header">
-      <div class="brand-text-col">
-        <span class="brand-title" style="font-size: 1.15rem;">Bhutan Fast Rate Tours</span>
-        <span class="brand-sub">Kingdom Expeditions</span>
+  <!-- Mobile Drawer Menu -->
+  <div id="mobileDrawer" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm hidden transition-opacity">
+    <div class="fixed top-0 bottom-0 left-0 w-[300px] max-w-[85vw] bg-[#FFF8EC] shadow-2xl p-6 flex flex-col justify-between overflow-y-auto">
+      <div>
+        <div class="flex items-center justify-between pb-5 border-b border-[#E7DCC4]">
+          <div class="flex items-center gap-2">
+            <span class="w-9 h-9 rounded-full bg-[#0B2A22] text-[#C9A24B] grid place-items-center font-serif text-lg font-bold">B</span>
+            <span class="font-serif text-lg font-bold text-[#0B2A22]">BHUTAN FAST RATE</span>
+          </div>
+          <button id="closeDrawerBtn" class="p-2 text-[#0B2A22] hover:bg-[#F7EDD8] rounded-xl" aria-label="Close menu">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+          </button>
+        </div>
+        <nav class="mt-6 space-y-2 text-base font-semibold">
+          <a href="index.html" class="block px-3 py-2.5 rounded-xl text-[#101613] hover:bg-[#F7EDD8]">Home</a>
+          <a href="tours.html" class="block px-3 py-2.5 rounded-xl bg-[#0B2A22] text-white">Tours & Packages</a>
+          <a href="destinations.html" class="block px-3 py-2.5 rounded-xl text-[#101613] hover:bg-[#F7EDD8]">Destinations</a>
+          <a href="festivals.html" class="block px-3 py-2.5 rounded-xl text-[#101613] hover:bg-[#F7EDD8]">Festival Calendar</a>
+          <a href="services.html" class="block px-3 py-2.5 rounded-xl text-[#101613] hover:bg-[#F7EDD8]">Visa, SDF & Flights</a>
+          <a href="about.html" class="block px-3 py-2.5 rounded-xl text-[#101613] hover:bg-[#F7EDD8]">About Us</a>
+          <a href="contact.html" class="block px-3 py-2.5 rounded-xl text-[#101613] hover:bg-[#F7EDD8]">Contact & Inquiry</a>
+        </nav>
       </div>
-      <button type="button" id="drawerCloseBtn" class="drawer-close-btn">&times;</button>
-    </div>
-    <ul class="drawer-nav-list">
-      <li><a href="index.html" class="drawer-nav-link">Home <span>&rarr;</span></a></li>
-      <li><a href="tours.html" class="drawer-nav-link active">Tour Packages <span>&rarr;</span></a></li>
-      <li><a href="destinations.html" class="drawer-nav-link">Destinations <span>&rarr;</span></a></li>
-      <li><a href="festivals.html" class="drawer-nav-link">Festivals 2027 <span>&rarr;</span></a></li>
-      <li><a href="services.html" class="drawer-nav-link">Services &amp; Flights <span>&rarr;</span></a></li>
-      <li><a href="about.html" class="drawer-nav-link">About Bhutan <span>&rarr;</span></a></li>
-      <li><a href="contact.html" class="drawer-nav-link">Contact &amp; Offices <span>&rarr;</span></a></li>
-    </ul>
-  </aside>
-
-  <!-- PAGE HEADER BANNER -->
-  <div style="background: linear-gradient(180deg, var(--forest-dark), var(--forest)); color: #fff; padding: 60px 0 50px; text-align: center; border-bottom: 2px solid rgba(201,162,75,0.3);">
-    <div class="tour-container">
-      <span class="slide-kicker">All Inclusive Himalayan Itineraries</span>
-      <h1 style="font-family: var(--font-serif); font-size: clamp(2rem, 4vw, 3.2rem); margin-bottom: 12px; color: #fff;">
-        Bhutan Tour Packages &amp; Expeditions
-      </h1>
-      <p style="max-width: 680px; margin: 0 auto; color: var(--cream2); font-size: 1rem;">
-        Browse our 2027 certified itineraries below. Filter by style or duration, and click any package for full day-by-day itineraries, highlights, and direct booking.
-      </p>
+      <div class="pt-6 border-t border-[#E7DCC4] space-y-3">
+        <a href="services.html#calculator" class="block text-center w-full py-2.5 rounded-xl font-bold bg-[#F7EDD8] text-[#0B2A22] text-sm">
+          SDF Fee Calculator
+        </a>
+        <a href="contact.html#inquire" class="block text-center w-full py-3 rounded-xl font-bold bg-[#C9A24B] text-[#0B2A22] text-sm">
+          Custom Itinerary Request
+        </a>
+      </div>
     </div>
   </div>
 
-  <!-- TOURS CATALOG CONTENT -->
-  <main class="tour-container section-py">
-    <!-- Category Tabs Filter -->
-    <div class="category-tabs-nav">
-      <button type="button" class="cat-tab-btn active" data-cat="All">All Packages</button>
-      <button type="button" class="cat-tab-btn" data-cat="Classic">Classic Cultural</button>
-      <button type="button" class="cat-tab-btn" data-cat="Festival">Festival Tours</button>
-      <button type="button" class="cat-tab-btn" data-cat="Luxury">Luxury Lodges</button>
-      <button type="button" class="cat-tab-btn" data-cat="Trekking">High Treks</button>
-      <button type="button" class="cat-tab-btn" data-cat="Honeymoon">Honeymoon</button>
-      <button type="button" class="cat-tab-btn" data-cat="Family">Family</button>
-      <button type="button" class="cat-tab-btn" data-cat="Adventure">Adventure</button>
+  <!-- Hero Header -->
+  <section class="relative bg-[#0B2A22] text-white py-14 sm:py-20 overflow-hidden">
+    <div class="absolute inset-0 opacity-15 pointer-events-none">
+      <img src="assets/images/tigers-nest.webp" alt="Bhutan mountains" class="w-full h-full object-cover">
     </div>
+    <div class="relative max-w-[1360px] mx-auto px-4 sm:px-6">
+      <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/10 border border-white/15 text-[#E4C87E] text-xs font-bold tracking-widest uppercase mb-4">
+        ★ Hand-crafted Journeys · SDF Included
+      </div>
+      <h1 class="font-serif text-3xl sm:text-5xl lg:text-6xl font-bold tracking-tight max-w-3xl leading-tight">
+        Discover the Last Shangri-La with Bhutan’s Premier Licensed Operator.
+      </h1>
+      <p class="mt-4 text-base sm:text-lg text-white/80 max-w-2xl leading-relaxed">
+        Every journey includes your official Bhutan Visa clearance, daily Sustainable Development Fee (SDF), certified English-speaking guides, private transport, and hand-selected heritage stays.
+      </p>
 
-    <!-- Tours Grid -->
-    <div id="toursGrid" class="tours-cards-grid">
-      <!-- Injected by JavaScript -->
+      <!-- Category Filter Pills -->
+      <div class="mt-8 flex flex-wrap gap-2 pt-4 border-t border-white/10" id="categoryFilterContainer">
+        <button class="cat-pill active px-4 py-2 rounded-full text-xs sm:text-sm font-bold bg-[#C9A24B] text-[#0B2A22] transition shadow-sm" data-cat="All">All Tours (8)</button>
+        <button class="cat-pill px-4 py-2 rounded-full text-xs sm:text-sm font-bold bg-white/10 hover:bg-white/20 text-white transition" data-cat="Classic">Classic Discovery</button>
+        <button class="cat-pill px-4 py-2 rounded-full text-xs sm:text-sm font-bold bg-white/10 hover:bg-white/20 text-white transition" data-cat="Festival">Festival Tshechus</button>
+        <button class="cat-pill px-4 py-2 rounded-full text-xs sm:text-sm font-bold bg-white/10 hover:bg-white/20 text-white transition" data-cat="Luxury">Luxury & Private</button>
+        <button class="cat-pill px-4 py-2 rounded-full text-xs sm:text-sm font-bold bg-white/10 hover:bg-white/20 text-white transition" data-cat="Honeymoon">Honeymoon Romance</button>
+        <button class="cat-pill px-4 py-2 rounded-full text-xs sm:text-sm font-bold bg-white/10 hover:bg-white/20 text-white transition" data-cat="Trek">Himalayan Treks</button>
+        <button class="cat-pill px-4 py-2 rounded-full text-xs sm:text-sm font-bold bg-white/10 hover:bg-white/20 text-white transition" data-cat="Family">Family Adventures</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Search & Filter Controls -->
+  <section class="max-w-[1360px] mx-auto px-4 sm:px-6 -mt-6 relative z-10">
+    <div class="bg-white rounded-2xl p-4 sm:p-5 shadow-xl border border-[#E7DCC4] flex flex-col md:flex-row gap-4 items-center justify-between">
+      <div class="relative w-full md:w-96">
+        <svg class="w-5 h-5 absolute left-3.5 top-1/2 -translate-y-1/2 text-[#66706A]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+        <input id="searchInput" type="text" placeholder="Search route, dzong, festival, days..." class="w-full pl-11 pr-4 py-2.5 rounded-xl border border-[#E7DCC4] bg-[#FFF8EC]/50 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-[#C9A24B]">
+      </div>
+      <div class="flex flex-wrap items-center gap-3 w-full md:w-auto justify-end">
+        <div class="flex items-center gap-2 text-xs font-bold text-[#66706A]">
+          <span>Duration:</span>
+          <select id="durationSelect" class="bg-[#FFF8EC] border border-[#E7DCC4] px-3 py-2 rounded-xl text-xs font-semibold focus:outline-none">
+            <option value="all">Any Duration</option>
+            <option value="short">4 – 6 Days</option>
+            <option value="medium">7 – 9 Days</option>
+            <option value="long">10+ Days</option>
+          </select>
+        </div>
+        <div class="flex items-center gap-2 text-xs font-bold text-[#66706A]">
+          <span>Sort:</span>
+          <select id="sortSelect" class="bg-[#FFF8EC] border border-[#E7DCC4] px-3 py-2 rounded-xl text-xs font-semibold focus:outline-none">
+            <option value="popular">Most Popular</option>
+            <option value="price-low">Price: Low to High</option>
+            <option value="price-high">Price: High to Low</option>
+            <option value="days">Duration: Longest First</option>
+          </select>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Main Tour Grid -->
+  <main class="max-w-[1360px] mx-auto px-4 sm:px-6 py-12">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="tourGrid">
+      
+      <!-- Tour 1 -->
+      <div class="tour-card bg-white rounded-3xl overflow-hidden border border-[#E7DCC4] shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between" data-cat="Classic" data-days="6" data-price="1899" data-name="Classic Bhutan Discovery">
+        <div>
+          <div class="relative h-[240px] overflow-hidden group">
+            <img src="assets/images/tigers-nest.webp" alt="Classic Bhutan Discovery" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
+            <span class="absolute top-4 left-4 bg-[#0B2A22]/90 backdrop-blur-md text-[#E4C87E] text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">
+              Classic · 6 Days
+            </span>
+            <span class="absolute top-4 right-4 bg-white/95 text-[#0B2A22] text-xs font-extrabold px-2.5 py-1 rounded-full shadow-sm">
+              ★ 4.9
+            </span>
+            <div class="absolute bottom-3 left-3 right-3 bg-gradient-to-t from-black/80 to-transparent p-2 rounded-xl text-white text-xs">
+              <span class="font-bold">Route:</span> Paro • Thimphu • Punakha • Dochula
+            </div>
+          </div>
+          <div class="p-6">
+            <div class="flex items-baseline justify-between mb-2">
+              <span class="text-xs font-extrabold text-[#C9A24B] uppercase tracking-wider">Small group · max 12</span>
+              <span class="text-xs text-[#66706A] font-semibold">SDF Included</span>
+            </div>
+            <h3 class="font-serif text-2xl font-bold text-[#0B2A22] leading-snug">
+              Classic Bhutan Discovery
+            </h3>
+            <p class="mt-2 text-sm text-[#66706A] line-clamp-2">
+              The essential first journey — hike to cliffside Tiger’s Nest, explore capital culture in Thimphu, and cross scenic Dochula Pass to Punakha Dzong.
+            </p>
+            <ul class="mt-4 space-y-1.5 text-xs text-[#101613] font-medium border-t border-[#E7DCC4] pt-3">
+              <li class="flex items-center gap-2">
+                <span class="text-[#C9A24B] font-bold">✓</span> Tiger’s Nest Monastery cliff hike with pony option
+              </li>
+              <li class="flex items-center gap-2">
+                <span class="text-[#C9A24B] font-bold">✓</span> Buddha Dordenma 169ft giant golden statue
+              </li>
+              <li class="flex items-center gap-2">
+                <span class="text-[#C9A24B] font-bold">✓</span> Punakha river fortress & 160m suspension bridge
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="p-6 pt-0 border-t border-[#E7DCC4]/60 mt-4 flex items-center justify-between">
+          <div>
+            <span class="block text-xs text-[#66706A] font-medium">All-inclusive from</span>
+            <span class="font-serif text-2xl font-bold text-[#0B2A22]">$1,899</span>
+            <span class="text-xs text-[#66706A]">/ person</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <button onclick="openItineraryModal(1)" class="px-3.5 py-2 rounded-full border border-[#0B2A22] text-[#0B2A22] hover:bg-[#F7EDD8] text-xs font-bold transition">
+              Itinerary
+            </button>
+            <a href="contact.html?tour=Classic-Bhutan-Discovery" class="px-4 py-2 rounded-full bg-[#0B2A22] hover:bg-[#123A30] text-white text-xs font-bold transition shadow-sm">
+              Inquire
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tour 2 -->
+      <div class="tour-card bg-white rounded-3xl overflow-hidden border border-[#E7DCC4] shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between" data-cat="Festival" data-days="8" data-price="2499" data-name="Thimphu Tshechu Festival">
+        <div>
+          <div class="relative h-[240px] overflow-hidden group">
+            <img src="assets/images/thimphu-festival.webp" alt="Thimphu Tshechu Festival" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
+            <span class="absolute top-4 left-4 bg-[#C9A24B] text-[#0B2A22] text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">
+              Festival · 8 Days
+            </span>
+            <span class="absolute top-4 right-4 bg-white/95 text-[#0B2A22] text-xs font-extrabold px-2.5 py-1 rounded-full shadow-sm">
+              ★ 4.9
+            </span>
+            <div class="absolute bottom-3 left-3 right-3 bg-gradient-to-t from-black/80 to-transparent p-2 rounded-xl text-white text-xs">
+              <span class="font-bold">Route:</span> Paro • Thimphu • Punakha • Wangdue
+            </div>
+          </div>
+          <div class="p-6">
+            <div class="flex items-baseline justify-between mb-2">
+              <span class="text-xs font-extrabold text-[#C9A24B] uppercase tracking-wider">Festival group · max 14</span>
+              <span class="text-xs text-[#66706A] font-semibold">VIP Seating</span>
+            </div>
+            <h3 class="font-serif text-2xl font-bold text-[#0B2A22] leading-snug">
+              Thimphu Tshechu Festival Tour
+            </h3>
+            <p class="mt-2 text-sm text-[#66706A] line-clamp-2">
+              Witness sacred masked Cham dances, black-hat dancers, and receive blessings alongside Bhutanese families in festive traditional dress.
+            </p>
+            <ul class="mt-4 space-y-1.5 text-xs text-[#101613] font-medium border-t border-[#E7DCC4] pt-3">
+              <li class="flex items-center gap-2">
+                <span class="text-[#C9A24B] font-bold">✓</span> 2 full days reserved festival seating & monk blessing
+              </li>
+              <li class="flex items-center gap-2">
+                <span class="text-[#C9A24B] font-bold">✓</span> Local cultural storyteller & festival etiquette guide
+              </li>
+              <li class="flex items-center gap-2">
+                <span class="text-[#C9A24B] font-bold">✓</span> Tiger’s Nest hike & traditional archery demonstration
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="p-6 pt-0 border-t border-[#E7DCC4]/60 mt-4 flex items-center justify-between">
+          <div>
+            <span class="block text-xs text-[#66706A] font-medium">All-inclusive from</span>
+            <span class="font-serif text-2xl font-bold text-[#0B2A22]">$2,499</span>
+            <span class="text-xs text-[#66706A]">/ person</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <button onclick="openItineraryModal(2)" class="px-3.5 py-2 rounded-full border border-[#0B2A22] text-[#0B2A22] hover:bg-[#F7EDD8] text-xs font-bold transition">
+              Itinerary
+            </button>
+            <a href="contact.html?tour=Thimphu-Tshechu-Festival" class="px-4 py-2 rounded-full bg-[#0B2A22] hover:bg-[#123A30] text-white text-xs font-bold transition shadow-sm">
+              Inquire
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tour 3 -->
+      <div class="tour-card bg-white rounded-3xl overflow-hidden border border-[#E7DCC4] shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between" data-cat="Luxury" data-days="7" data-price="4299" data-name="Luxury Himalayan Escape">
+        <div>
+          <div class="relative h-[240px] overflow-hidden group">
+            <img src="assets/images/punakha-dzong.webp" alt="Luxury Himalayan Escape" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
+            <span class="absolute top-4 left-4 bg-[#0B2A22]/90 backdrop-blur-md text-[#E4C87E] text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">
+              Luxury · 7 Days
+            </span>
+            <span class="absolute top-4 right-4 bg-white/95 text-[#0B2A22] text-xs font-extrabold px-2.5 py-1 rounded-full shadow-sm">
+              ★ 5.0
+            </span>
+            <div class="absolute bottom-3 left-3 right-3 bg-gradient-to-t from-black/80 to-transparent p-2 rounded-xl text-white text-xs">
+              <span class="font-bold">Route:</span> Paro • Thimphu • Punakha Valley
+            </div>
+          </div>
+          <div class="p-6">
+            <div class="flex items-baseline justify-between mb-2">
+              <span class="text-xs font-extrabold text-[#C9A24B] uppercase tracking-wider">Private · 2–6 Guests</span>
+              <span class="text-xs text-[#66706A] font-semibold">5-Star Lodges</span>
+            </div>
+            <h3 class="font-serif text-2xl font-bold text-[#0B2A22] leading-snug">
+              Luxury Himalayan Escape
+            </h3>
+            <p class="mt-2 text-sm text-[#66706A] line-clamp-2">
+              Stay at iconic lodges (Amankora / Six Senses / Pemako), experience private head lama blessings, outdoor riverside banquets, and daily spa therapies.
+            </p>
+            <ul class="mt-4 space-y-1.5 text-xs text-[#101613] font-medium border-t border-[#E7DCC4] pt-3">
+              <li class="flex items-center gap-2">
+                <span class="text-[#C9A24B] font-bold">✓</span> 5-star mountain luxury suites with valley panoramas
+              </li>
+              <li class="flex items-center gap-2">
+                <span class="text-[#C9A24B] font-bold">✓</span> Private luxury SUV & Senior Master cultural guide
+              </li>
+              <li class="flex items-center gap-2">
+                <span class="text-[#C9A24B] font-bold">✓</span> Authentic riverbank hot-stone herbal bath experience
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="p-6 pt-0 border-t border-[#E7DCC4]/60 mt-4 flex items-center justify-between">
+          <div>
+            <span class="block text-xs text-[#66706A] font-medium">All-inclusive from</span>
+            <span class="font-serif text-2xl font-bold text-[#0B2A22]">$4,299</span>
+            <span class="text-xs text-[#66706A]">/ person</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <button onclick="openItineraryModal(3)" class="px-3.5 py-2 rounded-full border border-[#0B2A22] text-[#0B2A22] hover:bg-[#F7EDD8] text-xs font-bold transition">
+              Itinerary
+            </button>
+            <a href="contact.html?tour=Luxury-Himalayan-Escape" class="px-4 py-2 rounded-full bg-[#0B2A22] hover:bg-[#123A30] text-white text-xs font-bold transition shadow-sm">
+              Inquire
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tour 4 -->
+      <div class="tour-card bg-white rounded-3xl overflow-hidden border border-[#E7DCC4] shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between" data-cat="Honeymoon" data-days="7" data-price="3499" data-name="Bhutan Honeymoon Romance">
+        <div>
+          <div class="relative h-[240px] overflow-hidden group">
+            <img src="assets/images/dochula-pass.webp" alt="Bhutan Honeymoon Romance" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
+            <span class="absolute top-4 left-4 bg-[#0B2A22]/90 backdrop-blur-md text-[#E4C87E] text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">
+              Honeymoon · 7 Days
+            </span>
+            <span class="absolute top-4 right-4 bg-white/95 text-[#0B2A22] text-xs font-extrabold px-2.5 py-1 rounded-full shadow-sm">
+              ★ 5.0
+            </span>
+            <div class="absolute bottom-3 left-3 right-3 bg-gradient-to-t from-black/80 to-transparent p-2 rounded-xl text-white text-xs">
+              <span class="font-bold">Route:</span> Paro • Dochula Pass • Punakha
+            </div>
+          </div>
+          <div class="p-6">
+            <div class="flex items-baseline justify-between mb-2">
+              <span class="text-xs font-extrabold text-[#C9A24B] uppercase tracking-wider">Private Couple Tour</span>
+              <span class="text-xs text-[#66706A] font-semibold">Candlelit Dining</span>
+            </div>
+            <h3 class="font-serif text-2xl font-bold text-[#0B2A22] leading-snug">
+              Bhutan Honeymoon Romance
+            </h3>
+            <p class="mt-2 text-sm text-[#66706A] line-clamp-2">
+              A deeply intimate spiritual retreat — receive a butter-lamp marital blessing at a 15th-century monastery, slow valley picnics, and Dochula mountain sunrise.
+            </p>
+            <ul class="mt-4 space-y-1.5 text-xs text-[#101613] font-medium border-t border-[#E7DCC4] pt-3">
+              <li class="flex items-center gap-2">
+                <span class="text-[#C9A24B] font-bold">✓</span> Private monastery blessing & longevity silk scarves
+              </li>
+              <li class="flex items-center gap-2">
+                <span class="text-[#C9A24B] font-bold">✓</span> Riverside 4-course dinner under Himalayan stars
+              </li>
+              <li class="flex items-center gap-2">
+                <span class="text-[#C9A24B] font-bold">✓</span> Couples herbal hot stone bath & champagne picnic
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="p-6 pt-0 border-t border-[#E7DCC4]/60 mt-4 flex items-center justify-between">
+          <div>
+            <span class="block text-xs text-[#66706A] font-medium">All-inclusive from</span>
+            <span class="font-serif text-2xl font-bold text-[#0B2A22]">$3,499</span>
+            <span class="text-xs text-[#66706A]">/ person</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <button onclick="openItineraryModal(4)" class="px-3.5 py-2 rounded-full border border-[#0B2A22] text-[#0B2A22] hover:bg-[#F7EDD8] text-xs font-bold transition">
+              Itinerary
+            </button>
+            <a href="contact.html?tour=Bhutan-Honeymoon-Romance" class="px-4 py-2 rounded-full bg-[#0B2A22] hover:bg-[#123A30] text-white text-xs font-bold transition shadow-sm">
+              Inquire
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tour 5 -->
+      <div class="tour-card bg-white rounded-3xl overflow-hidden border border-[#E7DCC4] shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between" data-cat="Trek" data-days="9" data-price="2199" data-name="Druk Path High Altitude Trek">
+        <div>
+          <div class="relative h-[240px] overflow-hidden group">
+            <img src="assets/images/phobjikha-cranes.webp" alt="Druk Path High Altitude Trek" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
+            <span class="absolute top-4 left-4 bg-[#0B2A22]/90 backdrop-blur-md text-[#E4C87E] text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">
+              Trek · 9 Days
+            </span>
+            <span class="absolute top-4 right-4 bg-white/95 text-[#0B2A22] text-xs font-extrabold px-2.5 py-1 rounded-full shadow-sm">
+              ★ 4.8
+            </span>
+            <div class="absolute bottom-3 left-3 right-3 bg-gradient-to-t from-black/80 to-transparent p-2 rounded-xl text-white text-xs">
+              <span class="font-bold">Route:</span> Paro • Jimilangtsho Lakes • Thimphu
+            </div>
+          </div>
+          <div class="p-6">
+            <div class="flex items-baseline justify-between mb-2">
+              <span class="text-xs font-extrabold text-[#C9A24B] uppercase tracking-wider">Trek group · max 10</span>
+              <span class="text-xs text-[#66706A] font-semibold">Full Crew & Camp</span>
+            </div>
+            <h3 class="font-serif text-2xl font-bold text-[#0B2A22] leading-snug">
+              Druk Path High Alpine Trek
+            </h3>
+            <p class="mt-2 text-sm text-[#66706A] line-clamp-2">
+              Cross virgin rhododendron forests, camp along pristine crystal trout lakes, and gaze at Mount Gangkar Puensum from dramatic high mountain passes.
+            </p>
+            <ul class="mt-4 space-y-1.5 text-xs text-[#101613] font-medium border-t border-[#E7DCC4] pt-3">
+              <li class="flex items-center gap-2">
+                <span class="text-[#C9A24B] font-bold">✓</span> Full wilderness camping crew, private cook & pack horses
+              </li>
+              <li class="flex items-center gap-2">
+                <span class="text-[#C9A24B] font-bold">✓</span> Jimilangtsho & Simkota alpine high lake crossings
+              </li>
+              <li class="flex items-center gap-2">
+                <span class="text-[#C9A24B] font-bold">✓</span> Acclimatization days in Paro & recovery spa in Thimphu
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="p-6 pt-0 border-t border-[#E7DCC4]/60 mt-4 flex items-center justify-between">
+          <div>
+            <span class="block text-xs text-[#66706A] font-medium">All-inclusive from</span>
+            <span class="font-serif text-2xl font-bold text-[#0B2A22]">$2,199</span>
+            <span class="text-xs text-[#66706A]">/ person</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <button onclick="openItineraryModal(5)" class="px-3.5 py-2 rounded-full border border-[#0B2A22] text-[#0B2A22] hover:bg-[#F7EDD8] text-xs font-bold transition">
+              Itinerary
+            </button>
+            <a href="contact.html?tour=Druk-Path-Trek" class="px-4 py-2 rounded-full bg-[#0B2A22] hover:bg-[#123A30] text-white text-xs font-bold transition shadow-sm">
+              Inquire
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tour 6 -->
+      <div class="tour-card bg-white rounded-3xl overflow-hidden border border-[#E7DCC4] shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between" data-cat="Family" data-days="8" data-price="2250" data-name="Family Himalayan Adventure">
+        <div>
+          <div class="relative h-[240px] overflow-hidden group">
+            <img src="assets/images/tigers-nest.webp" alt="Family Himalayan Adventure" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
+            <span class="absolute top-4 left-4 bg-[#0B2A22]/90 backdrop-blur-md text-[#E4C87E] text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">
+              Family · 8 Days
+            </span>
+            <span class="absolute top-4 right-4 bg-white/95 text-[#0B2A22] text-xs font-extrabold px-2.5 py-1 rounded-full shadow-sm">
+              ★ 4.9
+            </span>
+            <div class="absolute bottom-3 left-3 right-3 bg-gradient-to-t from-black/80 to-transparent p-2 rounded-xl text-white text-xs">
+              <span class="font-bold">Route:</span> Paro • Thimphu • Punakha Valley
+            </div>
+          </div>
+          <div class="p-6">
+            <div class="flex items-baseline justify-between mb-2">
+              <span class="text-xs font-extrabold text-[#C9A24B] uppercase tracking-wider">Family Private Tour</span>
+              <span class="text-xs text-[#66706A] font-semibold">Child SDF Discount</span>
+            </div>
+            <h3 class="font-serif text-2xl font-bold text-[#0B2A22] leading-snug">
+              Family Himalayan Adventure
+            </h3>
+            <p class="mt-2 text-sm text-[#66706A] line-clamp-2">
+              Crafted for all ages — visit the sacred Takin wildlife preserve, learn traditional archery, take gentle raft floats down Mo Chhu river, and cook with local farmers.
+            </p>
+            <ul class="mt-4 space-y-1.5 text-xs text-[#101613] font-medium border-t border-[#E7DCC4] pt-3">
+              <li class="flex items-center gap-2">
+                <span class="text-[#C9A24B] font-bold">✓</span> Kid-friendly hiking pace & Takin national animal sanctuary
+              </li>
+              <li class="flex items-center gap-2">
+                <span class="text-[#C9A24B] font-bold">✓</span> Hands-on farmhouse cheese-making & archery games
+              </li>
+              <li class="flex items-center gap-2">
+                <span class="text-[#C9A24B] font-bold">✓</span> Safe scenic raft float past Punakha fortress
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="p-6 pt-0 border-t border-[#E7DCC4]/60 mt-4 flex items-center justify-between">
+          <div>
+            <span class="block text-xs text-[#66706A] font-medium">All-inclusive from</span>
+            <span class="font-serif text-2xl font-bold text-[#0B2A22]">$2,250</span>
+            <span class="text-xs text-[#66706A]">/ person</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <button onclick="openItineraryModal(6)" class="px-3.5 py-2 rounded-full border border-[#0B2A22] text-[#0B2A22] hover:bg-[#F7EDD8] text-xs font-bold transition">
+              Itinerary
+            </button>
+            <a href="contact.html?tour=Family-Himalayan-Adventure" class="px-4 py-2 rounded-full bg-[#0B2A22] hover:bg-[#123A30] text-white text-xs font-bold transition shadow-sm">
+              Inquire
+            </a>
+          </div>
+        </div>
+      </div>
+
     </div>
   </main>
 
-  <!-- FOOTER -->
-  <footer class="tour-footer">
-    <div class="tour-container">
-      <div class="footer-bottom-row">
-        <div>&copy; 2027 Bhutan Fast Rate Tours. All Rights Reserved. Kingdom of Bhutan.</div>
-        <div>Licensed Tour Operator #DOT-2024-884 &bull; ABTO Member #249</div>
+  <!-- Interactive Day-by-Day Itinerary Modal -->
+  <div id="itineraryModal" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm hidden flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl max-w-2xl w-full max-h-[90vh] overflow-hidden flex flex-col shadow-2xl border border-[#E7DCC4]">
+      <div class="bg-[#0B2A22] text-white p-6 flex items-start justify-between">
+        <div>
+          <span class="text-xs font-bold text-[#C9A24B] uppercase tracking-wider" id="modalTourCat">Category</span>
+          <h3 class="font-serif text-2xl font-bold mt-1" id="modalTourTitle">Tour Title</h3>
+          <p class="text-xs text-white/80 mt-1" id="modalTourRoute">Route</p>
+        </div>
+        <button onclick="closeItineraryModal()" class="text-white/70 hover:text-white p-1 rounded-full hover:bg-white/10" aria-label="Close dialog">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+        </button>
+      </div>
+      <div class="p-6 overflow-y-auto space-y-4" id="modalTimeline">
+        <!-- Dynamically injected itinerary days -->
+      </div>
+      <div class="p-5 bg-[#FFF8EC] border-t border-[#E7DCC4] flex items-center justify-between">
+        <div>
+          <span class="text-xs text-[#66706A]">Total package cost</span>
+          <span class="block font-serif text-xl font-bold text-[#0B2A22]" id="modalTourPrice">$1,899 / person</span>
+        </div>
+        <a id="modalBookLink" href="contact.html" class="px-6 py-2.5 rounded-full font-bold bg-[#C9A24B] hover:bg-[#E4C87E] text-[#0B2A22] text-sm shadow-sm transition">
+          Book This Tour
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="bg-[#0B2A22] text-white border-t border-[#123A30] pt-16 pb-12 mt-16">
+    <div class="max-w-[1360px] mx-auto px-4 sm:px-6">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10 pb-12 border-b border-white/10">
+        <!-- Col 1: Brand -->
+        <div class="lg:col-span-2">
+          <div class="flex items-center gap-2.5">
+            <span class="w-10 h-10 rounded-full bg-[#123A30] border border-[#C9A24B]/40 text-[#C9A24B] grid place-items-center font-serif text-xl font-bold">B</span>
+            <span class="leading-none">
+              <span class="block font-serif text-[22px] font-bold tracking-tight text-white">BHUTAN FAST RATE</span>
+              <span class="block text-[10px] tracking-[0.24em] text-[#C9A24B] font-extrabold">TOURS · EST. PARO</span>
+            </span>
+          </div>
+          <p class="mt-4 text-sm text-white/70 max-w-sm leading-relaxed">
+            The Kingdom of Bhutan’s trusted luxury & bespoke tour operator. Full SDF management, direct Drukair airline bookings, and licensed local cultural guides.
+          </p>
+          <div class="mt-6 flex items-center gap-3 text-xs text-[#E4C87E] font-semibold bg-white/5 border border-white/10 px-4 py-2.5 rounded-2xl w-fit">
+            <span>🇧🇹 Licensed by Department of Tourism · License #BT-8842</span>
+          </div>
+        </div>
+
+        <!-- Col 2: Tours -->
+        <div>
+          <h4 class="font-serif text-base font-bold text-[#E4C87E] mb-4">Tour Packages</h4>
+          <ul class="space-y-2.5 text-sm text-white/70">
+            <li><a href="tours.html?cat=Classic" class="hover:text-white transition">Classic Bhutan (6D)</a></li>
+            <li><a href="festivals.html" class="hover:text-white transition">Festival Tshechus (8D)</a></li>
+            <li><a href="tours.html?cat=Luxury" class="hover:text-white transition">Luxury Himalayan (7D)</a></li>
+            <li><a href="tours.html?cat=Honeymoon" class="hover:text-white transition">Bhutan Honeymoon (7D)</a></li>
+            <li><a href="tours.html?cat=Trek" class="hover:text-white transition">Druk Path High Trek (9D)</a></li>
+          </ul>
+        </div>
+
+        <!-- Col 3: Destinations -->
+        <div>
+          <h4 class="font-serif text-base font-bold text-[#E4C87E] mb-4">Destinations</h4>
+          <ul class="space-y-2.5 text-sm text-white/70">
+            <li><a href="destinations.html#paro" class="hover:text-white transition">Paro & Tiger's Nest</a></li>
+            <li><a href="destinations.html#thimphu" class="hover:text-white transition">Thimphu Capital</a></li>
+            <li><a href="destinations.html#punakha" class="hover:text-white transition">Punakha River Valley</a></li>
+            <li><a href="destinations.html#phobjikha" class="hover:text-white transition">Phobjikha & Cranes</a></li>
+            <li><a href="destinations.html#bumthang" class="hover:text-white transition">Bumthang Valley</a></li>
+          </ul>
+        </div>
+
+        <!-- Col 4: Services -->
+        <div>
+          <h4 class="font-serif text-base font-bold text-[#E4C87E] mb-4">Travel Help</h4>
+          <ul class="space-y-2.5 text-sm text-white/70">
+            <li><a href="services.html#sdf" class="hover:text-white transition">SDF Fee Guide ($100/day)</a></li>
+            <li><a href="services.html#flights" class="hover:text-white transition">Drukair Flight Booking</a></li>
+            <li><a href="services.html#visa" class="hover:text-white transition">Bhutan Visa Processing</a></li>
+            <li><a href="about.html" class="hover:text-white transition">Why Choose Us</a></li>
+            <li><a href="contact.html" class="hover:text-white transition">Contact & Support</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="mt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-white/50">
+        <p>© 2026 Bhutan Fast Rate Tours Ltd. All rights reserved. Paro & Thimphu, Kingdom of Bhutan.</p>
+        <div class="flex items-center gap-6">
+          <a href="services.html#terms" class="hover:text-white">Terms of Travel</a>
+          <a href="services.html#privacy" class="hover:text-white">Privacy Policy</a>
+          <a href="services.html#sdf" class="hover:text-white">Bhutan Tourism Law</a>
+        </div>
       </div>
     </div>
   </footer>
 
-  <!-- ITINERARY MODAL -->
-  <div id="itineraryModal" class="modal-overlay">
-    <div class="modal-dialog">
-      <button type="button" class="modal-close-btn" onclick="closeModal('itineraryModal')">&times;</button>
-      <div id="itineraryModalContent"></div>
-    </div>
-  </div>
+  <!-- Page Interactivity Scripts -->
+  <script>
+    // Itinerary data store
+    const itineraries = {
+      1: {
+        cat: "Classic Discovery · 6 Days / 5 Nights",
+        title: "Classic Bhutan Discovery",
+        route: "Paro • Thimphu • Dochula Pass • Punakha • Tiger’s Nest",
+        price: "$1,899 / person",
+        days: [
+          { day: "Day 1", title: "Arrival in Paro & Drive to Thimphu", desc: "Spectacular Himalayan descent into Paro Valley. Meet your private guide, drive along the Pa Chhu river to Thimphu, visit Memorial Chorten and enjoy a welcome Bhutanese dinner." },
+          { day: "Day 2", title: "Capital Heritage & Buddha Dordenma", desc: "Marvel at the 169ft Buddha Dordenma commanding the valley. Visit the National Textile Museum, Folk Heritage Farmhouse, and the Takin Wildlife Preserve." },
+          { day: "Day 3", title: "Dochula Pass & Punakha Golden Dzong", desc: "Cross Dochula Pass (3,100m) with 108 chortens and Himalayan vistas. Descend into sub-tropical Punakha and visit the majestic Punakha Dzong at the confluence of Pho & Mo Chhu rivers." },
+          { day: "Day 4", title: "Chimi Lhakhang & Rural Farmhouse Lunch", desc: "Morning walk through terraced rice fields to Chimi Lhakhang (Temple of the Divine Madman). Traditional organic lunch with a local farming family before returning to Paro." },
+          { day: "Day 5", title: "Pilgrimage Hike to Tiger’s Nest (Taktsang)", desc: "Hike up through scented pine forests to the cliff-hanging Paro Taktsang monastery (3,120m). Evening celebration dinner with a traditional hot stone herbal bath." },
+          { day: "Day 6", title: "Departure from Paro International Airport", desc: "Morning breakfast and transfer to Paro airport for your scenic flight home with memories to cherish forever." }
+        ]
+      },
+      2: {
+        cat: "Festival Tshechu · 8 Days / 7 Nights",
+        title: "Thimphu Tshechu Festival Tour",
+        route: "Paro • Thimphu • Dochula • Punakha • Wangdue",
+        price: "$2,499 / person",
+        days: [
+          { day: "Day 1", title: "Arrive Paro & Festival Briefing in Thimphu", desc: "Transfer to Thimphu hotel. Evening briefing on Buddhist festival customs and traditional dress etiquette." },
+          { day: "Day 2", title: "Thimphu Tshechu Day 1 — Sacred Masked Dances", desc: "Reserved VIP seating in the courtyard of Tashichho Dzong. Witness Guru Tshengye dances and the vibrant Black Hat Cham dancers." },
+          { day: "Day 3", title: "Festival Day 2 & Monastic Blessings", desc: "Full day festival experience, receive sacred threads from the high monks, and interact with local Bhutanese families in their finest silk kiras and ghos." },
+          { day: "Day 4", title: "Dochula Pass & Punakha Fortress", desc: "Cross the 108 stupas of Dochula Pass and explore the regal Punakha Dzong." },
+          { day: "Day 5", title: "Suspension Bridge & Traditional Archery Match", desc: "Walk the 160m Punakha suspension bridge and participate in an authentic bamboo bow archery contest." },
+          { day: "Day 6", title: "Return to Paro & Farmstead Cultural Evening", desc: "Drive back along the scenic valley. Visit Kyichu Lhakhang, one of Bhutan’s oldest 7th-century shrines." },
+          { day: "Day 7", title: "Taktsang (Tiger’s Nest) Cliff Monastery Hike", desc: "Ascend to the breathtaking Tiger’s Nest monastery. Farewell festival banquet in Paro." },
+          { day: "Day 8", title: "Departure Flight", desc: "Farewell Tashi Delek from your team at Paro Airport." }
+        ]
+      },
+      3: {
+        cat: "Luxury & Private · 7 Days / 6 Nights",
+        title: "Luxury Himalayan Escape",
+        route: "Paro • Thimphu • Punakha Valley (Amankora / Six Senses)",
+        price: "$4,299 / person",
+        days: [
+          { day: "Day 1", title: "VIP Airport Meet & Luxury Lodge Check-in", desc: "Expedited immigration, private luxury SUV escort to Six Senses Thimphu. Valley sunset cocktails." },
+          { day: "Day 2", title: "Private Monastery Blessing & Art Curators", desc: "Private audience with a senior Rinpoche (abbot) for personal blessing. Curated visit to royal weaving ateliers." },
+          { day: "Day 3", title: "Helicopter or Scenic Drive to Punakha Valley", desc: "Arrival at Amankora Punakha. Afternoon riverside champagne picnic and private farm walk." },
+          { day: "Day 4", title: "Punakha Dzong & Private Evening Banquet", desc: "Exclusive early morning access to Punakha Dzong before public hours. Multi-course chef banquet under pine lanterns." },
+          { day: "Day 5", title: "Drive to Paro & Spa Sanctuary", desc: "Check-in to luxury lodge in Paro. Dotsho hot stone herbal bath and Bhutanese deep tissue massage." },
+          { day: "Day 6", title: "Private Tiger’s Nest Trek with Pony & Gourmet Camp", desc: "Guided hike with horseback support option and champagne breakfast halfway up the ridge." },
+          { day: "Day 7", title: "First-Class Departure Escort", desc: "Private tarmac escort and seamless boarding at Paro." }
+        ]
+      },
+      4: {
+        cat: "Honeymoon Romance · 7 Days / 6 Nights",
+        title: "Bhutan Honeymoon Romance",
+        route: "Paro • Dochula Pass • Punakha Valley",
+        price: "$3,499 / person",
+        days: [
+          { day: "Day 1", title: "Romantic Arrival & Silk Scarf Welcome", desc: "Traditional ceremonial white silk scarves (Khadar) and check-in to boutique valley suite." },
+          { day: "Day 2", title: "Thimphu Viewpoints & Couple's Astrology Reading", desc: "Private Buddhist astrological compatibility reading by monastic astrologer at Pangri Zampa temple." },
+          { day: "Day 3", title: "Dochula Sunrise & Journey to Punakha", desc: "Witness Himalayan pink sunrise over Dochula's 108 chortens with hot spiced butter tea." },
+          { day: "Day 4", title: "Temple of Fertility & Candlelit River Dinner", desc: "Walk through idyllic rice fields to Chimi Lhakhang. Candlelit 4-course banquet on the riverbank." },
+          { day: "Day 5", title: "Paro Pine Valley & Herbal Bath for Two", desc: "Outdoor twin wooden tub hot-stone bath heated with river boulders and medicinal Artemisia leaves." },
+          { day: "Day 6", title: "Tiger’s Nest Hike & Butter Lamp Ceremony", desc: "Hang personalized prayer flags together on the mountain ridge. Light 108 golden butter lamps." },
+          { day: "Day 7", title: "Farewell Blessing & Departure", desc: "Final blessing and return flight." }
+        ]
+      },
+      5: {
+        cat: "Himalayan Treks · 9 Days / 8 Nights",
+        title: "Druk Path High Alpine Trek",
+        route: "Paro • Ta Dzong • Jimilangtsho Lakes • Phajoding • Thimphu",
+        price: "$2,199 / person",
+        days: [
+          { day: "Day 1", title: "Arrive Paro & Acclimatization Hike", desc: "Warm-up hike to Zuri Dzong overlooking the valley." },
+          { day: "Day 2", title: "Trek Day 1: Ta Dzong to Jele Dzong (3,450m)", desc: "Gradual climb through alpine pine and fir forests to historic Jele Dzong ridge camp." },
+          { day: "Day 3", title: "Trek Day 2: Jele Dzong to Jangchulakha (3,780m)", desc: "Ridge walking with views of Mount Jomolhari across dwarf rhododendron meadows." },
+          { day: "Day 4", title: "Trek Day 3: Jangchulakha to Jimilangtsho Lake (3,880m)", desc: "Descent to the sacred trout lake of Jimilangtsho. Camp on crystal sandy shores." },
+          { day: "Day 5", title: "Trek Day 4: Jimilangtsho to Simkotra Tsho (4,110m)", desc: "High alpine crossing passing yak herder camps to pristine Simkotra Lake." },
+          { day: "Day 6", title: "Trek Day 5: Simkotra to Phajoding & Thimphu", desc: "Descend past Phajoding monastery with panoramic views of Thimphu valley below. Hotel shower & feast." },
+          { day: "Day 7", title: "Thimphu Recovery & Valley Sights", desc: "Full day rest, hot baths, and visits to Tashichho Dzong." },
+          { day: "Day 8", title: "Tiger’s Nest Monastery & Paro Celebration", desc: "Final triumphant hike to Tiger’s Nest." },
+          { day: "Day 9", title: "Departure", desc: "Transfer to Paro Airport." }
+        ]
+      },
+      6: {
+        cat: "Family Adventures · 8 Days / 7 Nights",
+        title: "Family Himalayan Adventure",
+        route: "Paro • Thimphu • Punakha Valley",
+        price: "$2,250 / person",
+        days: [
+          { day: "Day 1", title: "Paro Arrival & Gentle Riverside Walk", desc: "Kid-friendly welcome and gentle riverside walk to feed river fish." },
+          { day: "Day 2", title: "Takin Sanctuary & Archery Masterclass", desc: "Visit Bhutan’s unique national animal and learn archery from national instructors." },
+          { day: "Day 3", title: "Dochula Snow Pass & Rice Field Treks", desc: "Explore the 108 fairy-tale stupas and enjoy gentle downhill walks in Punakha." },
+          { day: "Day 4", title: "Scenic Family Raft Float & Farmhouse Cooking", desc: "Gentle Grade I-II raft float past Punakha Dzong, followed by traditional cookie and cheese making." },
+          { day: "Day 5", title: "Suspension Bridge Adventure & Return to Paro", desc: "Cross Bhutan’s longest swinging suspension bridge." },
+          { day: "Day 6", title: "Tiger’s Nest Hike with Pony Support", desc: "Gentle pony ride to the halfway cafeteria with majestic views for the little ones." },
+          { day: "Day 7", title: "Traditional Costume Dress-up & Farewell Dinner", desc: "Try on handwoven Ghos and Kiras for family portraits." },
+          { day: "Day 8", title: "Departure", desc: "Depart Paro Airport." }
+        ]
+      }
+    };
 
-  <!-- BOOKING MODAL -->
-  <div id="bookingModal" class="modal-overlay">
-    <div class="modal-dialog" style="max-width: 580px;">
-      <button type="button" class="modal-close-btn" onclick="closeModal('bookingModal')">&times;</button>
-      <div class="modal-content-body">
-        <span class="slide-kicker">Official Booking Request</span>
-        <h3 style="font-family: var(--font-serif); font-size: 1.6rem; color: var(--forest); margin-bottom: 6px;">Plan Your Bhutan Journey</h3>
-        <form id="bookingModalForm">
-          <input type="hidden" id="bookingPkgName" value="Classic Bhutan Discovery">
-          <div style="margin-bottom: 14px;">
-            <label style="display: block; font-size: 0.78rem; font-weight: 800; text-transform: uppercase; color: var(--muted); margin-bottom: 4px;">Full Name *</label>
-            <input type="text" name="clientName" required class="filter-input" style="background: #fff;">
-          </div>
-          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 14px;">
-            <div>
-              <label style="display: block; font-size: 0.78rem; font-weight: 800; text-transform: uppercase; color: var(--muted); margin-bottom: 4px;">Email *</label>
-              <input type="email" name="clientEmail" required class="filter-input" style="background: #fff;">
-            </div>
-            <div>
-              <label style="display: block; font-size: 0.78rem; font-weight: 800; text-transform: uppercase; color: var(--muted); margin-bottom: 4px;">Phone / WhatsApp</label>
-              <input type="tel" name="clientPhone" class="filter-input" style="background: #fff;">
-            </div>
-          </div>
-          <div style="margin-bottom: 20px;">
-            <label style="display: block; font-size: 0.78rem; font-weight: 800; text-transform: uppercase; color: var(--muted); margin-bottom: 4px;">Special Wishes</label>
-            <textarea name="clientMessage" rows="3" class="filter-input" style="background: #fff;"></textarea>
-          </div>
-          <button type="submit" class="btn-gold-cta" style="width: 100%; justify-content: center; padding: 13px;">Submit Booking Request &rarr;</button>
-        </form>
-      </div>
-    </div>
-  </div>
+    // Modal logic
+    function openItineraryModal(id) {
+      const tour = itineraries[id];
+      if (!tour) return;
+      document.getElementById('modalTourCat').innerText = tour.cat;
+      document.getElementById('modalTourTitle').innerText = tour.title;
+      document.getElementById('modalTourRoute').innerText = tour.route;
+      document.getElementById('modalTourPrice').innerText = tour.price;
+      document.getElementById('modalBookLink').href = `contact.html?tour=${encodeURIComponent(tour.title)}`;
 
-  <script src="js/main.js"></script>
+      const timelineEl = document.getElementById('modalTimeline');
+      timelineEl.innerHTML = tour.days.map((d, i) => `
+        <div class="flex gap-4 items-start border-l-2 border-[#C9A24B] pl-4 ml-2 py-1">
+          <div class="shrink-0 w-8 h-8 rounded-full bg-[#FFF8EC] border border-[#C9A24B] text-[#0B2A22] font-bold text-xs grid place-items-center -ml-[25px]">
+            ${i+1}
+          </div>
+          <div>
+            <div class="flex items-center gap-2">
+              <span class="text-xs font-extrabold text-[#C9A24B]">${d.day}</span>
+              <h4 class="font-serif font-bold text-base text-[#0B2A22]">${d.title}</h4>
+            </div>
+            <p class="text-xs sm:text-sm text-[#66706A] mt-1 leading-relaxed">${d.desc}</p>
+          </div>
+        </div>
+      `).join('');
+
+      document.getElementById('itineraryModal').classList.remove('hidden');
+    }
+
+    function closeItineraryModal() {
+      document.getElementById('itineraryModal').classList.add('hidden');
+    }
+
+    // Category Filtering
+    const pills = document.querySelectorAll('.cat-pill');
+    const cards = document.querySelectorAll('.tour-card');
+    pills.forEach(pill => {
+      pill.addEventListener('click', () => {
+        pills.forEach(p => {
+          p.classList.remove('bg-[#C9A24B]', 'text-[#0B2A22]');
+          p.classList.add('bg-white/10', 'text-white');
+        });
+        pill.classList.remove('bg-white/10', 'text-white');
+        pill.classList.add('bg-[#C9A24B]', 'text-[#0B2A22]');
+
+        const cat = pill.getAttribute('data-cat');
+        cards.forEach(card => {
+          if (cat === 'All' || card.getAttribute('data-cat') === cat) {
+            card.style.display = 'flex';
+          } else {
+            card.style.display = 'none';
+          }
+        });
+      });
+    });
+
+    // Search Filtering
+    const searchInput = document.getElementById('searchInput');
+    searchInput.addEventListener('input', (e) => {
+      const query = e.target.value.toLowerCase();
+      cards.forEach(card => {
+        const text = card.innerText.toLowerCase();
+        if (text.includes(query)) {
+          card.style.display = 'flex';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    });
+
+    // Duration Filtering
+    const durationSelect = document.getElementById('durationSelect');
+    durationSelect.addEventListener('change', (e) => {
+      const val = e.target.value;
+      cards.forEach(card => {
+        const days = parseInt(card.getAttribute('data-days'), 10);
+        let match = true;
+        if (val === 'short' && (days < 4 || days > 6)) match = false;
+        if (val === 'medium' && (days < 7 || days > 9)) match = false;
+        if (val === 'long' && days < 10) match = false;
+        card.style.display = match ? 'flex' : 'none';
+      });
+    });
+
+    // Mobile Drawer Toggle
+    const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+    const closeDrawerBtn = document.getElementById('closeDrawerBtn');
+    const mobileDrawer = document.getElementById('mobileDrawer');
+    mobileMenuBtn?.addEventListener('click', () => mobileDrawer.classList.remove('hidden'));
+    closeDrawerBtn?.addEventListener('click', () => mobileDrawer.classList.add('hidden'));
+    mobileDrawer?.addEventListener('click', (e) => {
+      if (e.target === mobileDrawer) mobileDrawer.classList.add('hidden');
+    });
+
+    // Check URL parameters for cat filter
+    window.addEventListener('DOMContentLoaded', () => {
+      const urlParams = new URLSearchParams(window.location.search);
+      const catParam = urlParams.get('cat');
+      if (catParam) {
+        const targetPill = document.querySelector(`.cat-pill[data-cat="${catParam}"]`);
+        if (targetPill) targetPill.click();
+      }
+    });
+  </script>
 </body>
 </html>
