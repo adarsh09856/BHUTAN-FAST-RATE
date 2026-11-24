@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light only">
+  <title>Confirmed Itinerary — Client Portal | Bhutan Fast Rate Tours</title>
+  <link rel="stylesheet" href="../css/tour-theme.css">
+  <style>
+    :root, html, body { color-scheme: light !important; }
+    input, textarea, select {
+      color-scheme: light !important;
+      background-color: #ffffff !important;
+      color: #1f2923 !important;
+      -webkit-text-fill-color: #1f2923 !important;
+    }
+  </style>
+</head>
+<body class="bg-[#F8FAF9] text-[#1F2923] min-h-screen flex flex-col font-sans antialiased">
+  <header class="sticky top-0 z-50 bg-[#14231E] text-white border-b border-white/10 shadow-md">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
+      <a href="dashboard.html" class="flex items-center gap-3">
+        <div class="w-8 h-8 rounded-lg bg-[#E05A47] text-white font-black flex items-center justify-center text-sm">B</div>
+        <div class="font-extrabold text-sm uppercase">Traveler Portal</div>
+      </a>
+      <nav class="flex items-center gap-4 text-xs font-bold uppercase tracking-wider text-zinc-300">
+        <a href="dashboard.html" class="hover:text-white">My Trip</a>
+        <a href="documents.html" class="hover:text-white">Documents</a>
+        <a href="itinerary.html" class="text-[#E05A47]">Itinerary</a>
+        <a href="../index.html" class="hover:text-white text-zinc-400">Exit</a>
+      </nav>
+    </div>
+  </header>
+  <main class="py-10 max-w-6xl mx-auto px-4 sm:px-6 flex-1 space-y-6 w-full">
+    
+  <div class="bg-white p-8 rounded-2xl border border-zinc-200 shadow-sm space-y-6">
+    <div class="flex items-center justify-between pb-4 border-b border-zinc-200">
+      <div>
+        <h1 class="text-2xl font-black text-[#14231E]">Confirmed Day-by-Day Itinerary</h1>
+        <p class="text-xs text-zinc-500">7 Days / 6 Nights Essential Bhutan Heritage</p>
+      </div>
+      <button onclick="window.print()" class="px-4 py-2 rounded-lg bg-zinc-800 text-white font-bold text-xs uppercase hover:bg-zinc-700">
+        Print Itinerary
+      </button>
+    </div>
+    <div class="space-y-4 text-xs">
+      <div class="p-4 rounded-xl bg-zinc-50 border border-zinc-200 space-y-1">
+        <span class="font-black text-[#E05A47]">DAY 1 — PARO TO THIMPHU CAPITAL</span>
+        <p class="text-zinc-700">Arrive at Paro International Airport. Private pickup and scenic transfer to Thimphu. Check-in at Druk Hotel Thimphu (4-Star).</p>
+      </div>
+      <div class="p-4 rounded-xl bg-zinc-50 border border-zinc-200 space-y-1">
+        <span class="font-black text-[#E05A47]">DAY 5 — TIGER’S NEST PILGRIMAGE</span>
+        <p class="text-zinc-700">Private guided ascent to Paro Taktsang cliffside monastery. Evening Dotsho hot stone herbal bath at Zhiwa Ling Heritage Hotel.</p>
+      </div>
+    </div>
+  </div>
+
+  </main>
+  <footer class="bg-[#0E1915] text-zinc-400 py-6 text-center text-xs border-t border-white/10">
+    &copy; 2026 Bhutan Fast Rate Tours • Client Self-Service Portal • Hotline: +975 17 654 321
+  </footer>
+  <script src="../js/api-client.js"></script>
+</body>
+</html>

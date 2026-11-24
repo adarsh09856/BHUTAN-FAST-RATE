@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light only">
+  <title>Staff Login — Bhutan Fast Rate Operations Center</title>
+  <link rel="stylesheet" href="../css/tour-theme.css">
+  <link rel="stylesheet" href="css/admin-theme.css">
+</head>
+<body class="bg-[#0B1120] min-h-screen flex items-center justify-center p-4">
+  <div class="w-full max-w-md bg-[#1E293B] border border-[#334155] p-8 rounded-2xl shadow-2xl space-y-6">
+    <div class="text-center space-y-2">
+      <div class="w-14 h-14 rounded-2xl bg-[#E05A47] text-white font-black text-2xl flex items-center justify-center mx-auto shadow-lg">B</div>
+      <h1 class="text-xl font-extrabold text-white tracking-wider">OPERATIONS CENTER</h1>
+      <p class="text-xs text-zinc-400">Department of Tourism Certified Back-Office Portal</p>
+    </div>
+
+    <form id="loginForm" class="space-y-4">
+      <div>
+        <label class="block text-xs font-bold text-zinc-300 mb-1">Staff Email Address</label>
+        <input type="email" id="loginEmail" value="admin@bhutanfastratetours.bt" required class="w-full px-4 py-3 rounded-lg border border-zinc-600 text-sm font-medium">
+      </div>
+      <div>
+        <label class="block text-xs font-bold text-zinc-300 mb-1">Password</label>
+        <input type="password" id="loginPass" value="admin123" required class="w-full px-4 py-3 rounded-lg border border-zinc-600 text-sm font-medium">
+      </div>
+
+      <button type="submit" class="w-full py-3.5 rounded-lg bg-[#E05A47] hover:bg-[#C94937] text-white font-black text-xs uppercase tracking-wider transition-all shadow-md">
+        Sign In to Operations
+      </button>
+    </form>
+
+    <div class="p-4 rounded-xl bg-zinc-800/80 border border-zinc-700 text-xs text-zinc-400 space-y-1">
+      <div class="font-bold text-zinc-200">Demo Staff Credentials:</div>
+      <div>• <strong>Admin:</strong> admin@bhutanfastratetours.bt / admin123</div>
+      <div>• <strong>Concierge:</strong> dechen@bhutanfastratetours.bt / concierge123</div>
+      <div>• <strong>Guide:</strong> kinley@bhutanfastratetours.bt / guide123</div>
+    </div>
+  </div>
+
+  <script src="../js/api-client.js"></script>
+  <script src="js/admin-app.js"></script>
+  <script>
+    document.getElementById('loginForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const email = document.getElementById('loginEmail').value;
+      const pass = document.getElementById('loginPass').value;
+
+      const res = await window.ApiClient.adminLogin(email, pass);
+      if (res && res.success) {
+        localStorage.setItem('bfr_admin_user', JSON.stringify(res.user));
+        localStorage.setItem('bfr_admin_token', res.token);
+        window.location.href = 'dashboard.html';
+      } else {
+        alert(res ? res.error : 'Login failed. Check credentials.');
+      }
+    });
+  </script>
+</body>
+</html>

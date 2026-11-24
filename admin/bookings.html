@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light only">
+  <title>Bookings Pipeline — Bhutan Fast Rate Operations</title>
+  <link rel="stylesheet" href="../css/tour-theme.css">
+  <link rel="stylesheet" href="css/admin-theme.css">
+  <style>
+    input, select, textarea {
+      color-scheme: light !important;
+      background-color: #ffffff !important;
+      color: #1f2923 !important;
+    }
+  </style>
+</head>
+<body class="admin-layout">
+  <!-- Dynamic Sidebar -->
+  <aside id="adminSidebar" class="admin-sidebar"></aside>
+
+  <!-- Main Workspace -->
+  <div class="admin-main">
+    <header class="admin-header">
+      <div class="flex items-center gap-3">
+        <button id="sidebarToggle" class="lg:hidden p-2 text-zinc-400 hover:text-white rounded">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+        </button>
+        <div>
+          <h1 class="text-base font-extrabold text-white">Bookings &amp; Reservations Pipeline</h1>
+          <p class="text-[11px] text-zinc-400">Live booking records synced from public booking engines and inquiries</p>
+        </div>
+      </div>
+      <div class="flex items-center gap-4 text-xs">
+        <span class="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 font-bold">API Online</span>
+        <a href="notifications.html" class="p-2 rounded-lg bg-zinc-800 text-zinc-300 hover:text-white">🔔</a>
+      </div>
+    </header>
+
+    <main class="p-6 sm:p-8 space-y-6">
+      
+      <div class="stat-card space-y-4">
+        <div class="flex flex-wrap items-center justify-between gap-4 pb-2 border-b border-zinc-800">
+          <div class="flex items-center gap-3">
+            <input type="text" id="bookingSearch" placeholder="Search by name, ref, or tour..." class="px-3 py-2 rounded-lg border border-zinc-700 text-xs w-64 focus:outline-none focus:border-[#E05A47]">
+            <select id="bookingStatusFilter" class="px-3 py-2 rounded-lg border border-zinc-700 text-xs focus:outline-none">
+              <option value="All">All Statuses</option>
+              <option value="inquiry">Inquiry</option>
+              <option value="deposit_paid">Deposit Paid</option>
+              <option value="documents_complete">Docs Complete</option>
+              <option value="visa_approved">Visa Approved</option>
+              <option value="fully_paid">Fully Paid</option>
+              <option value="active_trip">Active Trip</option>
+              <option value="completed">Completed</option>
+            </select>
+          </div>
+          <div class="flex items-center gap-2">
+            <button onclick="exportCsv()" class="px-4 py-2 rounded-lg bg-zinc-800 hover:bg-zinc-700 text-white text-xs font-bold border border-zinc-600">
+              Export CSV
+            </button>
+          </div>
+        </div>
+
+        <div class="overflow-x-auto">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>Ref ID</th>
+                <th>Lead Traveler</th>
+                <th>Tour Package</th>
+                <th>Travel Dates</th>
+                <th>Guests</th>
+                <th>Total ($)</th>
+                <th>Booking Status</th>
+                <th>Visa Status</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="bookingsTableBody">
+              <tr>
+                <td colspan="9" class="py-8 text-center text-zinc-400">Loading bookings from database...</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </main>
+  </div>
+
+  <script src="../js/api-client.js"></script>
+  <script src="js/admin-app.js"></script>
+  <script>
+    AdminApp.requireAuth();
+    AdminApp.renderSidebar('bookings');
+    const toggle = document.getElementById('sidebarToggle');
+    if (toggle) {
+      toggle.addEventListener('click', () => {
+        document.getElementById('adminSidebar').classList.toggle('open');
+      });
+    }
+
+    let loadedBookings = [];
+
+    async function loadBookings() {
+      try {
+        const search = document.getElementById('bookingSearch').value.trim();
+        const status = document.getElementById('bookingStatusFilter').value;
+
+        const res = await ApiClient.getAdminBookings({ search, status });
+        loadedBookings = res.data || [];
+        renderTable(loadedBookings);
+      } catch (err) {
+        console.error('Failed to load bookings:', err);
+        document.getElementById('bookingsTableBody').innerHTML = `
+          <tr><td colspan="9" class="py-6 text-center text-red-400">Failed to load bookings. Verify server connection.</td></tr>
+        `;
+      }
+    }
+
+    function renderTable(bookings) {
+      const tbody = document.getElementById('bookingsTableBody');
+      if (!bookings || bookings.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="9" class="py-8 text-center text-zinc-400">No bookings found.</td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = bookings.map(b => {
+        let bStatusBadge = '<span class="badge badge-zinc">' + b.booking_status + '</span>';
+        if (b.booking_status === 'confirmed' || b.booking_status === 'fully_paid') {
+          bStatusBadge = '<span class="badge badge-green">Confirmed</span>';
+        } else if (b.booking_status === 'active_trip') {
+          bStatusBadge = '<span class="badge badge-blue">Active Trip</span>';
+        } else if (b.booking_status === 'deposit_paid' || b.booking_status === 'documents_complete') {
+          bStatusBadge = '<span class="badge badge-amber">' + b.booking_status.replace('_', ' ') + '</span>';
+        }
+
+        let vStatusBadge = '<span class="text-zinc-500 text-xs font-mono">Not Started</span>';
+        if (b.visa_status === 'approved' || b.visa_status === 'clearance_letter_issued') {
+          vStatusBadge = '<span class="badge badge-green">Cleared</span>';
+        } else if (b.visa_status === 'submitted_to_doi') {
+          vStatusBadge = '<span class="badge badge-amber">DoI Review</span>';
+        } else if (b.visa_status === 'under_review') {
+          vStatusBadge = '<span class="badge badge-blue">Docs Review</span>';
+        }
+
+        return `
+          <tr>
+            <td class="font-mono font-bold text-white">
+              <a href="booking-detail.html?id=${b.id}" class="text-[#E05A47] hover:underline">${b.id}</a>
+            </td>
+            <td>
+              <div class="font-bold text-white text-xs">${b.lead_name}</div>
+              <div class="text-[10px] text-zinc-400">${b.lead_country || 'International'} · ${b.lead_email}</div>
+            </td>
+            <td>
+              <div class="text-xs text-zinc-200 max-w-[200px] truncate">${b.tour_title}</div>
+              <div class="text-[10px] text-zinc-400">${b.hotel_tier || '3-Star Standard'}</div>
+            </td>
+            <td><span class="text-xs text-zinc-300 font-mono">${b.travel_date_start} → ${b.travel_date_end}</span></td>
+            <td><span class="text-xs text-zinc-300">${b.total_travelers}</span></td>
+            <td class="font-bold text-white text-xs">$${Number(b.total_price_usd).toLocaleString()}</td>
+            <td>${bStatusBadge}</td>
+            <td>${vStatusBadge}</td>
+            <td>
+              <a href="booking-detail.html?id=${b.id}" class="text-xs text-[#E05A47] font-bold hover:underline">Manage →</a>
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    function exportCsv() {
+      if (!loadedBookings.length) return AdminApp.showToast('No bookings to export.');
+      const headers = ['ID', 'Lead Name', 'Email', 'Tour', 'Start Date', 'End Date', 'Travelers', 'Total USD', 'Booking Status', 'Visa Status'];
+      const rows = loadedBookings.map(b => [
+        b.id,
+        `"${b.lead_name}"`,
+        b.lead_email,
+        `"${b.tour_title}"`,
+        b.travel_date_start,
+        b.travel_date_end,
+        b.total_travelers,
+        b.total_price_usd,
+        b.booking_status,
+        b.visa_status
+      ]);
+      const csvContent = 'data:text/csv;charset=utf-8,' + [headers.join(','), ...rows.map(r => r.join(','))].join('\n');
+      const encodedUri = encodeURI(csvContent);
+      const link = document.createElement('a');
+      link.setAttribute('href', encodedUri);
+      link.setAttribute('download', `bhutan_bookings_${new Date().toISOString().split('T')[0]}.csv`);
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      AdminApp.showToast('Bookings CSV exported successfully.');
+    }
+
+    document.getElementById('bookingSearch').addEventListener('input', loadBookings);
+    document.getElementById('bookingStatusFilter').addEventListener('change', loadBookings);
+
+    document.addEventListener('DOMContentLoaded', loadBookings);
+  </script>
+</body>
+</html>

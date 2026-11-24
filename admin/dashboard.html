@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light only">
+  <title>Executive Dashboard — Bhutan Fast Rate Operations</title>
+  <link rel="stylesheet" href="../css/tour-theme.css">
+  <link rel="stylesheet" href="css/admin-theme.css">
+</head>
+<body class="admin-layout">
+  <!-- Dynamic Sidebar -->
+  <aside id="adminSidebar" class="admin-sidebar"></aside>
+
+  <!-- Main Workspace -->
+  <div class="admin-main">
+    <header class="admin-header">
+      <div class="flex items-center gap-3">
+        <button id="sidebarToggle" class="lg:hidden p-2 text-zinc-400 hover:text-white rounded">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+        </button>
+        <h1 class="text-base font-extrabold text-white">Executive Dashboard</h1>
+      </div>
+      <div class="flex items-center gap-4 text-xs">
+        <span class="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 font-bold">API Online</span>
+        <a href="notifications.html" class="p-2 rounded-lg bg-zinc-800 text-zinc-300 hover:text-white">🔔</a>
+      </div>
+    </header>
+
+    <main class="p-6 sm:p-8 space-y-6">
+      
+  <!-- KPI Metrics Grid -->
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+    <div class="stat-card space-y-1">
+      <span class="text-xs font-bold text-zinc-400 uppercase tracking-wider">Total Revenue (USD)</span>
+      <div id="statRev" class="text-3xl font-black text-white">$84,600</div>
+      <span class="text-[11px] text-emerald-400 font-bold">↑ 18% vs previous month</span>
+    </div>
+    <div class="stat-card space-y-1">
+      <span class="text-xs font-bold text-zinc-400 uppercase tracking-wider">Active Bookings</span>
+      <div id="statBookings" class="text-3xl font-black text-white">24</div>
+      <span class="text-[11px] text-zinc-400">4 active on trail right now</span>
+    </div>
+    <div class="stat-card space-y-1">
+      <span class="text-xs font-bold text-zinc-400 uppercase tracking-wider">Visas Pending Clearance</span>
+      <div id="statVisas" class="text-3xl font-black text-amber-400">3</div>
+      <span class="text-[11px] text-zinc-400">Department of Immigration queue</span>
+    </div>
+    <div class="stat-card space-y-1">
+      <span class="text-xs font-bold text-zinc-400 uppercase tracking-wider">New Client Leads</span>
+      <div id="statInq" class="text-3xl font-black text-[#E05A47]">7</div>
+      <span class="text-[11px] text-zinc-400">Require itinerary proposals</span>
+    </div>
+  </div>
+
+  <!-- Booking Pipeline Overview -->
+  <div class="stat-card space-y-4">
+    <div class="flex items-center justify-between">
+      <h2 class="text-base font-extrabold text-white">Live Booking Pipeline by Stage</h2>
+      <a href="bookings.html" class="text-xs font-bold text-[#E05A47] hover:underline">View Pipeline Table →</a>
+    </div>
+    <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 text-xs">
+      <div class="p-3 bg-zinc-800 rounded-lg border border-zinc-700">
+        <span class="text-zinc-400">New Inquiries</span>
+        <div class="text-xl font-bold text-white mt-1">6</div>
+      </div>
+      <div class="p-3 bg-zinc-800 rounded-lg border border-zinc-700">
+        <span class="text-zinc-400">Payment Pending</span>
+        <div class="text-xl font-bold text-amber-400 mt-1">4</div>
+      </div>
+      <div class="p-3 bg-zinc-800 rounded-lg border border-zinc-700">
+        <span class="text-zinc-400">Visa Submitted</span>
+        <div class="text-xl font-bold text-blue-400 mt-1">3</div>
+      </div>
+      <div class="p-3 bg-zinc-800 rounded-lg border border-zinc-700">
+        <span class="text-zinc-400">Visa Approved</span>
+        <div class="text-xl font-bold text-emerald-400 mt-1">7</div>
+      </div>
+      <div class="p-3 bg-zinc-800 rounded-lg border border-zinc-700">
+        <span class="text-zinc-400">Active on Trail</span>
+        <div class="text-xl font-bold text-purple-400 mt-1">4</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Recent Audit Feed -->
+  <div class="stat-card space-y-4">
+    <h2 class="text-base font-extrabold text-white">Recent Operational Actions</h2>
+    <div id="activityFeed" class="space-y-2 text-xs">
+      <div class="p-3 bg-zinc-800/60 rounded-lg border border-zinc-700 flex justify-between items-center">
+        <span><strong>Sonam Dorji</strong> verified visa clearance for <strong>BFR-2026-8841</strong></span>
+        <span class="text-zinc-400">Today</span>
+      </div>
+      <div class="p-3 bg-zinc-800/60 rounded-lg border border-zinc-700 flex justify-between items-center">
+        <span><strong>Dechen Wangmo</strong> assigned Kinley Tshering to <strong>BFR-2026-8850</strong></span>
+        <span class="text-zinc-400">Yesterday</span>
+      </div>
+      <div class="p-3 bg-zinc-800/60 rounded-lg border border-zinc-700 flex justify-between items-center">
+        <span><strong>System</strong> recorded $5,180 wire transfer for <strong>BFR-2026-8841</strong></span>
+        <span class="text-zinc-400">2 days ago</span>
+      </div>
+    </div>
+  </div>
+
+    </main>
+  </div>
+
+  <script src="../js/api-client.js"></script>
+  <script src="js/admin-app.js"></script>
+  <script>
+    AdminApp.requireAuth();
+    AdminApp.renderSidebar('dashboard');
+    const toggle = document.getElementById('sidebarToggle');
+    if (toggle) {
+      toggle.addEventListener('click', () => {
+        document.getElementById('adminSidebar').classList.toggle('open');
+      });
+    }
+  </script>
+</body>
+</html>

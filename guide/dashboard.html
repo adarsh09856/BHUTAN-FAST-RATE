@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light only">
+  <title>Field Dashboard — Kinley Tshering | Certified Guide</title>
+  <link rel="stylesheet" href="../css/tour-theme.css">
+</head>
+<body class="bg-[#F8FAF9] text-[#1F2923] min-h-screen flex flex-col font-sans antialiased">
+  <header class="bg-[#14231E] text-white py-4 px-6 border-b border-white/10 flex items-center justify-between">
+    <div class="flex items-center gap-3">
+      <div class="w-8 h-8 rounded-lg bg-[#E05A47] text-white font-black flex items-center justify-center text-sm">B</div>
+      <span class="font-extrabold text-sm uppercase">Guide Field Operations</span>
+    </div>
+    <div class="text-xs text-zinc-300">
+      Guide: <strong class="text-white">Kinley Tshering</strong> (License #GD/2012/441)
+    </div>
+  </header>
+
+  <main class="py-8 max-w-5xl mx-auto px-4 sm:px-6 flex-1 space-y-6 w-full">
+    <!-- Active Trip Card -->
+    <div class="bg-white p-6 sm:p-8 rounded-2xl border border-zinc-200 shadow-sm space-y-4">
+      <div class="flex items-center justify-between">
+        <span class="px-2.5 py-0.5 rounded bg-emerald-100 text-emerald-800 font-bold text-xs uppercase">ACTIVE EXPEDITION</span>
+        <span class="text-xs text-zinc-500 font-bold">Booking: BFR-2026-8841</span>
+      </div>
+      <h2 class="text-xl font-black text-[#14231E]">Essential Bhutan Heritage (7 Days)</h2>
+      <p class="text-xs text-zinc-600">Guests: <strong>Dr. Evelyn Martinez &amp; Robert Martinez (USA)</strong> • Assigned SUV: <strong>BP-1-A8921</strong></p>
+      
+      <div class="p-4 rounded-xl bg-orange-50 border border-orange-200 space-y-2">
+        <div class="font-bold text-xs text-[#E05A47] uppercase">Daily Field Check-In</div>
+        <p class="text-xs text-zinc-600">Report location and road conditions back to Thimphu operations desk.</p>
+        <div class="flex gap-2">
+          <input type="text" id="guideLoc" placeholder="Current Location (e.g. Dochula Pass, 3,100m - Clear weather)" class="flex-1 px-3 py-2 rounded-lg border border-zinc-300 text-xs">
+          <button onclick="alert('Field check-in transmitted to Thimphu desk.');" class="px-4 py-2 rounded-lg bg-[#E05A47] text-white font-bold text-xs uppercase hover:bg-[#c94937]">
+            Check-In
+          </button>
+        </div>
+      </div>
+      <a href="trip-detail.html?id=BFR-2026-8841" class="inline-block text-xs font-bold text-[#E05A47] hover:underline">
+        View Full Guest Roster &amp; Dietary Notes →
+      </a>
+    </div>
+  </main>
+</body>
+</html>

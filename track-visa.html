@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light only">
+  <title>Live Bhutan Visa & Booking Status Tracker — Bhutan Fast Rate Tours</title>
+  <meta name="description" content="Track your Royal Government tourist visa approval and trip confirmation status live using your booking reference.">
+  <link rel="stylesheet" href="css/tour-theme.css">
+  <style>
+    /* Strict Input Protection - Prevents Dark Mode Inversion */
+    :root, html, body {
+      color-scheme: light !important;
+    }
+    input, textarea, select {
+      color-scheme: light !important;
+      background-color: #ffffff !important;
+      background: #ffffff !important;
+      color: #1f2923 !important;
+      -webkit-text-fill-color: #1f2923 !important;
+      caret-color: #e05a47 !important;
+      opacity: 1 !important;
+    }
+    input::placeholder, textarea::placeholder {
+      color: #71717a !important;
+      -webkit-text-fill-color: #71717a !important;
+      opacity: 1 !important;
+    }
+    input:focus, textarea:focus {
+      background-color: #ffffff !important;
+      color: #1f2923 !important;
+      -webkit-text-fill-color: #1f2923 !important;
+      outline: none !important;
+    }
+  </style>
+</head>
+<body class="bg-[#FBF9F5] text-[#1F2923] min-h-screen flex flex-col font-sans antialiased">
+
+  <!-- Top Official Royal Bar -->
+  <aside aria-label="Official Licensing" class="bg-[#0E1915] text-white text-[11px] py-2 px-4 border-b border-white/10">
+    <div class="max-w-7xl mx-auto flex flex-wrap justify-between items-center gap-2">
+      <div class="flex items-center gap-2">
+        <span class="px-2 py-0.5 rounded bg-[#E05A47] text-white font-extrabold text-[10px] uppercase tracking-wider">ROYAL GOVT LICENSED #TR/2018/9882</span>
+        <span class="text-zinc-300">Department of Tourism Certified • Fast-Track 24-48h SDF Tourist Visa Guarantee</span>
+      </div>
+      <div class="flex items-center gap-4 text-zinc-300 text-xs">
+        <a href="tel:+97517654321" class="hover:text-[#E05A47] flex items-center gap-1">
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
+          +975 17 654 321
+        </a>
+        <span>•</span>
+        <a href="track-visa.html" class="hover:text-[#E05A47] font-bold text-emerald-400">Track Visa Status</a>
+        <span>•</span>
+        <a href="admin/login.html" class="hover:text-white text-zinc-400">Staff Portal</a>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Sticky Luxury Header -->
+  <header class="sticky top-0 z-50 bg-[#14231E]/95 backdrop-blur-md border-b border-white/10 text-white shadow-lg">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-20">
+        <a href="index.html" class="flex items-center gap-3">
+          <div class="w-11 h-11 rounded-xl bg-[#E05A47] flex items-center justify-center font-black text-white text-xl shadow-md">
+            B
+          </div>
+          <div>
+            <div class="font-black text-base sm:text-lg tracking-wider uppercase leading-none">
+              BHUTAN FAST RATE TOURS
+            </div>
+            <div class="text-[9px] font-bold text-[#E05A47] tracking-widest uppercase mt-0.5">
+              OFFICIAL ROYAL KINGDOM TOUR OPERATOR
+            </div>
+          </div>
+        </a>
+
+        <!-- Desktop Navigation Menu -->
+        <nav class="hidden lg:flex items-center gap-6 text-xs font-bold uppercase tracking-wider text-zinc-200">
+          <a href="index.html" class="hover:text-[#E05A47] transition-colors py-2">Home</a>
+          <a href="tours.html" class="hover:text-[#E05A47] transition-colors py-2">Tour Packages</a>
+          <a href="destinations.html" class="hover:text-[#E05A47] transition-colors py-2">Destinations</a>
+          <a href="festivals.html" class="hover:text-[#E05A47] transition-colors py-2">Festivals</a>
+          <a href="services.html" class="hover:text-[#E05A47] transition-colors py-2">SDF &amp; Services</a>
+          <a href="sdf-calculator.html" class="hover:text-[#E05A47] transition-colors py-2 text-emerald-400">SDF Calculator</a>
+          <a href="about.html" class="hover:text-[#E05A47] transition-colors py-2">About Us</a>
+          <a href="contact.html" class="hover:text-[#E05A47] transition-colors py-2">Contact</a>
+        </nav>
+
+        <!-- Right Quick Actions -->
+        <div class="flex items-center gap-3">
+          <a href="contact.html" class="hidden sm:inline-flex items-center justify-center px-5 py-2.5 rounded-lg text-xs font-black uppercase tracking-wider text-white bg-[#E05A47] hover:bg-[#c94937] shadow-sm transition-all">
+            Plan My Trip
+          </a>
+          <button id="tourMobileBtn" aria-label="Toggle Navigation" class="lg:hidden p-2 rounded-lg text-white hover:bg-white/10 border border-white/20">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"/></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Mobile Drawer Menu -->
+    <div id="tourMobileMenu" class="hidden lg:hidden bg-[#0e1915] border-b border-white/10 px-4 pt-3 pb-6">
+      <div class="flex flex-col gap-2 text-sm font-bold text-zinc-200">
+        <a href="index.html" class="px-3 py-2 rounded hover:bg-white/5">Home</a>
+        <a href="tours.html" class="px-3 py-2 rounded hover:bg-white/5">All Tour Packages</a>
+        <a href="destinations.html" class="px-3 py-2 rounded hover:bg-white/5">Valley Destinations</a>
+        <a href="festivals.html" class="px-3 py-2 rounded hover:bg-white/5">Sacred Festivals</a>
+        <a href="services.html" class="px-3 py-2 rounded hover:bg-white/5">SDF Tax &amp; Travel Services</a>
+        <a href="sdf-calculator.html" class="px-3 py-2 rounded text-emerald-400 hover:bg-white/5">SDF Cost Calculator</a>
+        <a href="track-visa.html" class="px-3 py-2 rounded text-emerald-400 hover:bg-white/5">Live Visa Tracker</a>
+        <a href="visa-guide.html" class="px-3 py-2 rounded hover:bg-white/5">Visa Requirements Guide</a>
+        <a href="about.html" class="px-3 py-2 rounded hover:bg-white/5">About Operator</a>
+        <a href="contact.html" class="px-3 py-2 rounded hover:bg-white/5">Contact Booking Desk</a>
+        <a href="contact.html" class="mt-2 text-center py-3 rounded-lg text-white bg-[#E05A47] hover:bg-[#c94937] font-black uppercase text-xs tracking-wider">
+          Plan My Trip
+        </a>
+      </div>
+    </div>
+  </header>
+
+
+  <section class="bg-[#14231E] text-white py-14 border-b border-white/10 text-center">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <span class="px-2.5 py-0.5 rounded bg-emerald-500 text-black font-black text-[10px] uppercase">CLIENT SELF-SERVICE</span>
+      <h1 class="text-3xl sm:text-4xl font-extrabold mt-3">Live Visa &amp; Booking Tracker</h1>
+      <p class="text-xs sm:text-sm text-zinc-300 mt-2 max-w-md mx-auto">
+        Enter your booking reference to view Department of Immigration clearance letters and trip details.
+      </p>
+    </div>
+  </section>
+
+  <main class="py-16 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 flex-1">
+    <!-- Lookup Form -->
+    <div class="bg-white p-6 sm:p-8 rounded-2xl border border-zinc-200 shadow-sm space-y-4">
+      <form id="trackForm" class="flex flex-wrap sm:flex-nowrap gap-3">
+        <input type="text" id="trackRef" placeholder="Booking Ref (e.g. BFR-2026-8841)" value="BFR-2026-8841" required class="flex-1 px-4 py-3 rounded-lg border border-zinc-300 text-sm font-bold uppercase">
+        <button type="submit" class="w-full sm:w-auto px-6 py-3 rounded-lg bg-[#E05A47] text-white font-black text-xs uppercase tracking-wider hover:bg-[#c94937]">
+          Track Status
+        </button>
+      </form>
+      <div class="flex items-center gap-2 text-xs text-zinc-500">
+        <span>Try verified sample references:</span>
+        <button type="button" onclick="lookupRef('BFR-2026-8841')" class="text-[#E05A47] font-bold underline">BFR-2026-8841</button>
+        <span>•</span>
+        <button type="button" onclick="lookupRef('BFR-2026-8850')" class="text-[#E05A47] font-bold underline">BFR-2026-8850</button>
+      </div>
+    </div>
+
+    <!-- Live Status Result Container -->
+    <div id="trackResult" class="mt-8"></div>
+  </main>
+
+  <script>
+    function lookupRef(ref) {
+      document.getElementById('trackRef').value = ref;
+      fetchStatus(ref);
+    }
+
+    async function fetchStatus(ref) {
+      const container = document.getElementById('trackResult');
+      container.innerHTML = '<div class="p-8 text-center text-zinc-500 font-bold">Querying Department of Tourism database...</div>';
+      
+      const res = await window.ApiClient.trackBooking(ref);
+      if (res && res.success && res.booking) {
+        const b = res.booking;
+        container.innerHTML = `
+          <div class="bg-white p-8 rounded-2xl border border-zinc-200 shadow-md space-y-6">
+            <div class="flex flex-wrap justify-between items-start gap-4 pb-6 border-b border-zinc-200">
+              <div>
+                <span class="px-2.5 py-0.5 rounded bg-emerald-100 text-emerald-800 font-bold text-xs uppercase">${b.booking_status.replace(/_/g, ' ').toUpperCase()}</span>
+                <h2 class="text-2xl font-black text-[#14231E] mt-2">${b.tour_title}</h2>
+                <p class="text-xs text-zinc-500 mt-1">Lead Traveler: <strong>${b.lead_name}</strong> • Dates: <strong>${b.travel_dates}</strong></p>
+              </div>
+              <div class="text-right">
+                <span class="text-xs text-zinc-400">Total Package</span>
+                <div class="text-2xl font-black text-[#E05A47]">$${b.total_price_usd.toLocaleString()}</div>
+                <span class="text-xs text-emerald-600 font-bold">${b.payment_status}</span>
+              </div>
+            </div>
+
+            <!-- Visa Status Box -->
+            <div class="p-6 rounded-xl bg-orange-50 border border-orange-200 space-y-2">
+              <div class="flex items-center justify-between">
+                <span class="text-xs font-bold uppercase text-[#E05A47]">BHUTAN IMMIGRATION VISA STATUS</span>
+                <span class="font-black text-sm text-[#14231E]">${b.visa_status.toUpperCase()}</span>
+              </div>
+              ${b.visa_clearance_number ? `
+                <div class="text-xs text-zinc-700">Official Visa Clearance Number: <strong class="text-emerald-700 text-sm font-mono">${b.visa_clearance_number}</strong></div>
+                <div class="text-[11px] text-zinc-500">Cleared for entry via Paro International Airport (PBH). Letter active in immigration border system.</div>
+              ` : '<p class="text-xs text-zinc-600">Application received. Waiting for document verification from concierge.</p>'}
+            </div>
+
+            ${b.guide ? `
+              <div class="flex items-center justify-between text-xs p-4 rounded-xl bg-zinc-50 border border-zinc-200">
+                <div>
+                  <strong>Assigned Senior Guide:</strong> ${b.guide.name} (${b.guide.phone})
+                </div>
+                <div>
+                  <strong>Vehicle:</strong> ${b.guide.vehicle || 'Toyota Luxury Coaster'}
+                </div>
+              </div>
+            ` : ''}
+          </div>
+        `;
+      } else {
+        container.innerHTML = '<div class="p-8 text-center text-red-600 bg-red-50 rounded-2xl border border-red-200 font-bold">Booking reference not found. Please double-check your code.</div>';
+      }
+    }
+
+    document.getElementById('trackForm').addEventListener('submit', (e) => {
+      e.preventDefault();
+      fetchStatus(document.getElementById('trackRef').value);
+    });
+
+    // Check URL parameters or default
+    const urlParams = new URLSearchParams(window.location.search);
+    const initialRef = urlParams.get('ref') || 'BFR-2026-8841';
+    document.getElementById('trackRef').value = initialRef;
+    fetchStatus(initialRef);
+  </script>
+  
+
+  <footer class="bg-[#0E1915] text-white pt-16 pb-8 border-t border-white/10 mt-auto">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10 pb-12 border-b border-white/10">
+        
+        <!-- Company Info -->
+        <div class="lg:col-span-2">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-xl bg-[#E05A47] flex items-center justify-center font-black text-white text-lg">B</div>
+            <div>
+              <div class="font-black text-base uppercase leading-tight">BHUTAN FAST RATE TOURS</div>
+              <div class="text-[9px] text-[#E05A47] tracking-widest font-bold">ROYAL GOVERNMENT LICENSED #TR/2018/9882</div>
+            </div>
+          </div>
+          <p class="mt-4 text-xs text-zinc-400 leading-relaxed max-w-sm">
+            Official licensed inbound tour operator registered under the Department of Tourism, Kingdom of Bhutan. Guaranteed fast-track visa processing, certified local guides, and 100% refundable bookings.
+          </p>
+          <div class="mt-4 text-xs text-zinc-400 space-y-1">
+            <p><strong>Hotline (WhatsApp):</strong> +975 17 654 321</p>
+            <p><strong>Central Desk:</strong> reservations@bhutanfastratetours.bt</p>
+            <p><strong>Headquarters:</strong> Norzin Lam, Opposite Clock Tower Square, Thimphu, Bhutan</p>
+          </div>
+        </div>
+
+        <!-- Featured Tours -->
+        <div>
+          <h4 class="text-xs font-black uppercase tracking-wider text-[#E05A47] mb-4">Top Tour Packages</h4>
+          <ul class="space-y-2 text-xs text-zinc-300">
+            <li><a href="tour-essential-bhutan-7d.html" class="hover:text-white">Essential Bhutan (7 Days)</a></li>
+            <li><a href="tour-druk-path-trek.html" class="hover:text-white">Druk Path Alpine Trek (9 Days)</a></li>
+            <li><a href="tour-thimphu-tshechu.html" class="hover:text-white">Thimphu Tshechu Festival (8D)</a></li>
+            <li><a href="tour-snowman-trek.html" class="hover:text-white">The Snowman Trek (25 Days)</a></li>
+            <li><a href="tour-punakha-escape.html" class="hover:text-white">Punakha Luxury Escape (5 Days)</a></li>
+            <li><a href="tour-gangtey-crane-valley.html" class="hover:text-white">Gangtey Crane Sanctuary (6D)</a></li>
+            <li><a href="tour-paro-spring-festival.html" class="hover:text-white">Paro Spring Festival (8 Days)</a></li>
+          </ul>
+        </div>
+
+        <!-- Valley Destinations -->
+        <div>
+          <h4 class="text-xs font-black uppercase tracking-wider text-[#E05A47] mb-4">Valley Guides</h4>
+          <ul class="space-y-2 text-xs text-zinc-300">
+            <li><a href="destination-paro.html" class="hover:text-white">Paro Valley (Tiger’s Nest)</a></li>
+            <li><a href="destination-thimphu.html" class="hover:text-white">Thimphu Capital</a></li>
+            <li><a href="destination-punakha.html" class="hover:text-white">Punakha Valley (Palace of Bliss)</a></li>
+            <li><a href="destination-phobjikha.html" class="hover:text-white">Phobjikha (Crane Sanctuary)</a></li>
+            <li><a href="destination-bumthang.html" class="hover:text-white">Bumthang Spiritual Heartland</a></li>
+            <li><a href="destination-haa.html" class="hover:text-white">Haa Alpine Frontier</a></li>
+          </ul>
+        </div>
+
+        <!-- Travel Tools & Legal -->
+        <div>
+          <h4 class="text-xs font-black uppercase tracking-wider text-[#E05A47] mb-4">Travel Tools &amp; Legal</h4>
+          <ul class="space-y-2 text-xs text-zinc-300">
+            <li><a href="sdf-calculator.html" class="text-emerald-400 hover:text-emerald-300 font-bold">Interactive SDF Calculator</a></li>
+            <li><a href="track-visa.html" class="text-emerald-400 hover:text-emerald-300 font-bold">Live Visa Tracker</a></li>
+            <li><a href="visa-guide.html" class="hover:text-white">Bhutan Visa Guide &amp; Photo Specs</a></li>
+            <li><a href="packing-guide.html" class="hover:text-white">Himalayan Packing Checklist</a></li>
+            <li><a href="faq.html" class="hover:text-white">40+ Bhutan FAQs</a></li>
+            <li><a href="reviews.html" class="hover:text-white">Verified Traveler Reviews</a></li>
+            <li><a href="terms.html" class="hover:text-white">Booking Terms &amp; 100% Refund</a></li>
+            <li><a href="privacy.html" class="hover:text-white">Privacy Policy</a></li>
+            <li><a href="admin/login.html" class="hover:text-white text-zinc-500">Staff Admin Login</a></li>
+          </ul>
+        </div>
+
+      </div>
+
+      <div class="pt-8 flex flex-wrap justify-between items-center gap-4 text-xs text-zinc-400">
+        <p>&copy; 2026 Bhutan Fast Rate Tours. Royal Government of Bhutan Tourism License #TR/2018/9882. All rights reserved.</p>
+        <div class="flex items-center gap-4">
+          <span class="text-emerald-400 font-bold">Carbon Neutral Travel</span>
+          <span>•</span>
+          <span>SDF Compliant</span>
+          <span>•</span>
+          <span>Certified Guides</span>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+<script src="js/api-client.js"></script>
+<script>
+  // Mobile Menu Toggle
+  const btn = document.getElementById('tourMobileBtn');
+  const menu = document.getElementById('tourMobileMenu');
+  if (btn && menu) {
+    btn.addEventListener('click', () => menu.classList.toggle('hidden'));
+  }
+</script>
+</body>
+</html>

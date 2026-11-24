@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light only">
+  <title>Finance & SDF Ledger — Bhutan Fast Rate Operations</title>
+  <link rel="stylesheet" href="../css/tour-theme.css">
+  <link rel="stylesheet" href="css/admin-theme.css">
+</head>
+<body class="admin-layout">
+  <!-- Dynamic Sidebar -->
+  <aside id="adminSidebar" class="admin-sidebar"></aside>
+
+  <!-- Main Workspace -->
+  <div class="admin-main">
+    <header class="admin-header">
+      <div class="flex items-center gap-3">
+        <button id="sidebarToggle" class="lg:hidden p-2 text-zinc-400 hover:text-white rounded">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+        </button>
+        <h1 class="text-base font-extrabold text-white">Finance & SDF Ledger</h1>
+      </div>
+      <div class="flex items-center gap-4 text-xs">
+        <span class="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 font-bold">API Online</span>
+        <a href="notifications.html" class="p-2 rounded-lg bg-zinc-800 text-zinc-300 hover:text-white">🔔</a>
+      </div>
+    </header>
+
+    <main class="p-6 sm:p-8 space-y-6">
+      
+  <div class="space-y-6">
+    <div class="stat-card space-y-4">
+      <div class="flex items-center justify-between">
+        <h2 class="text-base font-extrabold text-white">Royal Government SDF Remittance Ledger</h2>
+        <button onclick="AdminApp.showToast('Financial ledger exported to CSV.')" class="px-4 py-2 rounded-lg bg-zinc-800 hover:bg-zinc-700 text-white text-xs font-bold border border-zinc-600">
+          Export Ledger
+        </button>
+      </div>
+
+      <div class="grid sm:grid-cols-3 gap-4 text-xs">
+        <div class="p-4 bg-zinc-800 rounded-xl border border-zinc-700">
+          <span class="text-zinc-400">Total SDF Collected</span>
+          <div class="text-2xl font-black text-white mt-1">$22,400</div>
+        </div>
+        <div class="p-4 bg-zinc-800 rounded-xl border border-zinc-700">
+          <span class="text-zinc-400">Remitted to RMA / Dept of Tourism</span>
+          <div class="text-2xl font-black text-emerald-400 mt-1">$19,600</div>
+        </div>
+        <div class="p-4 bg-zinc-800 rounded-xl border border-zinc-700">
+          <span class="text-zinc-400">Pending Government Remittance</span>
+          <div class="text-2xl font-black text-amber-400 mt-1">$2,800</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+    </main>
+  </div>
+
+  <script src="../js/api-client.js"></script>
+  <script src="js/admin-app.js"></script>
+  <script>
+    AdminApp.requireAuth();
+    AdminApp.renderSidebar('finance');
+    const toggle = document.getElementById('sidebarToggle');
+    if (toggle) {
+      toggle.addEventListener('click', () => {
+        document.getElementById('adminSidebar').classList.toggle('open');
+      });
+    }
+  </script>
+</body>
+</html>

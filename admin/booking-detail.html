@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light only">
+  <title>Booking File Inspection — Bhutan Fast Rate Operations</title>
+  <link rel="stylesheet" href="../css/tour-theme.css">
+  <link rel="stylesheet" href="css/admin-theme.css">
+  <style>
+    input, select, textarea {
+      color-scheme: light !important;
+      background-color: #ffffff !important;
+      color: #1f2923 !important;
+    }
+  </style>
+</head>
+<body class="admin-layout">
+  <!-- Dynamic Sidebar -->
+  <aside id="adminSidebar" class="admin-sidebar"></aside>
+
+  <!-- Main Workspace -->
+  <div class="admin-main">
+    <header class="admin-header">
+      <div class="flex items-center gap-3">
+        <button id="sidebarToggle" class="lg:hidden p-2 text-zinc-400 hover:text-white rounded">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+        </button>
+        <div>
+          <h1 class="text-base font-extrabold text-white">Booking Inspection &amp; Operations File</h1>
+          <p class="text-[11px] text-zinc-400">Department of Tourism clearance, assigned guide, and financial ledger</p>
+        </div>
+      </div>
+      <div class="flex items-center gap-4 text-xs">
+        <span class="px-2.5 py-1 rounded bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 font-bold">API Online</span>
+        <a href="notifications.html" class="p-2 rounded-lg bg-zinc-800 text-zinc-300 hover:text-white">🔔</a>
+      </div>
+    </header>
+
+    <main class="p-6 sm:p-8 space-y-6">
+      
+      <div class="space-y-6" id="bookingDetailContent">
+        <div class="py-16 text-center text-zinc-400">
+          <div class="inline-block w-8 h-8 border-4 border-[#E05A47] border-t-transparent rounded-full animate-spin mb-3"></div>
+          <div>Loading Booking File from Database...</div>
+        </div>
+      </div>
+
+    </main>
+  </div>
+
+  <script src="../js/api-client.js"></script>
+  <script src="js/admin-app.js"></script>
+  <script>
+    AdminApp.requireAuth();
+    AdminApp.renderSidebar('bookings');
+    const toggle = document.getElementById('sidebarToggle');
+    if (toggle) {
+      toggle.addEventListener('click', () => {
+        document.getElementById('adminSidebar').classList.toggle('open');
+      });
+    }
+
+    let currentBooking = null;
+
+    async function loadBookingDetail() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const refId = urlParams.get('id') || 'BFR-2026-8841';
+
+      try {
+        const res = await ApiClient.getAdminBooking(refId);
+        if (!res.success || !res.booking) {
+          document.getElementById('bookingDetailContent').innerHTML = `
+            <div class="stat-card text-center py-12">
+              <h2 class="text-xl font-bold text-red-400">Booking File Not Found</h2>
+              <p class="text-xs text-zinc-400 mt-2">Could not locate reference "${refId}".</p>
+              <a href="bookings.html" class="inline-block mt-4 px-4 py-2 rounded bg-zinc-800 text-white font-bold text-xs">Return to Bookings</a>
+            </div>
+          `;
+          return;
+        }
+
+        currentBooking = res.booking;
+        renderBooking(currentBooking);
+      } catch (err) {
+        console.error('Failed to load booking:', err);
+        document.getElementById('bookingDetailContent').innerHTML = `
+          <div class="stat-card text-center py-12 text-red-400">Failed to connect to API server.</div>
+        `;
+      }
+    }
+
+    function renderBooking(b) {
+      const isApproved = ['approved', 'clearance_letter_issued'].includes(b.visa_status);
+      const isFullyPaid = b.deposit_paid_usd >= b.total_price_usd;
+
+      document.getElementById('bookingDetailContent').innerHTML = `
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div>
+            <a href="bookings.html" class="text-xs font-bold text-[#E05A47] hover:underline">← Back to Bookings Pipeline</a>
+            <h2 class="text-2xl font-black text-white mt-1">Booking Ref: ${b.id}</h2>
+            <p class="text-xs text-zinc-400">${b.lead_name} (${b.lead_country || 'International'}) • ${b.tour_title}</p>
+          </div>
+          <div class="flex flex-wrap items-center gap-2">
+            <a href="../track-visa.html?ref=${b.id}" target="_blank" class="px-3.5 py-2 rounded-lg bg-zinc-800 hover:bg-zinc-700 text-emerald-400 text-xs font-bold border border-zinc-700 transition">
+              Client Tracker ↗
+            </a>
+            ${isApproved ? `
+              <button onclick="AdminApp.showToast('Clearance Letter VCL generated & dispatched.')" class="px-4 py-2 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold transition">
+                Print Clearance PDF
+              </button>
+            ` : `
+              <button onclick="quickApproveVisa()" class="px-4 py-2 rounded-lg bg-[#E05A47] hover:bg-[#c94b39] text-white text-xs font-bold transition">
+                Approve Visa &amp; Issue Clearance
+              </button>
+            `}
+          </div>
+        </div>
+
+        <!-- Details Grid -->
+        <div class="grid lg:grid-cols-12 gap-6">
+          <div class="lg:col-span-8 space-y-6">
+            
+            <!-- Metadata Card -->
+            <div class="stat-card space-y-4">
+              <h3 class="text-sm font-bold text-white uppercase tracking-wider border-b border-zinc-800 pb-2">Traveler &amp; Tour File</h3>
+              <div class="grid grid-cols-2 sm:grid-cols-3 gap-4 text-xs">
+                <div>
+                  <span class="text-zinc-400 block">Lead Guest:</span>
+                  <div class="font-bold text-white text-sm mt-0.5">${b.lead_name}</div>
+                  <div class="text-[10px] text-zinc-500">${b.lead_email}</div>
+                  <div class="text-[10px] text-zinc-500">${b.lead_phone || '-'}</div>
+                </div>
+                <div>
+                  <span class="text-zinc-400 block">Passport Number:</span>
+                  <div class="font-bold text-white font-mono text-sm mt-0.5">${b.lead_passport_no || 'On File'}</div>
+                  <div class="text-[10px] text-zinc-500">Origin: ${b.lead_country || 'International'}</div>
+                </div>
+                <div>
+                  <span class="text-zinc-400 block">Travelers Breakdown:</span>
+                  <div class="font-bold text-white text-sm mt-0.5">${b.total_travelers} Guest(s)</div>
+                  <div class="text-[10px] text-zinc-500">${b.adults_count || b.total_travelers} Adults, ${b.children_6_12 || 0} Children</div>
+                </div>
+                <div>
+                  <span class="text-zinc-400 block">Travel Dates:</span>
+                  <div class="font-bold text-white font-mono mt-0.5">${b.travel_date_start} → ${b.travel_date_end}</div>
+                  <div class="text-[10px] text-zinc-500">${b.total_nights} Nights</div>
+                </div>
+                <div>
+                  <span class="text-zinc-400 block">Accommodation Tier:</span>
+                  <div class="font-bold text-white mt-0.5">${b.hotel_tier || '3-Star Standard Heritage'}</div>
+                </div>
+                <div>
+                  <span class="text-zinc-400 block">Assigned Guide:</span>
+                  <div class="font-bold ${b.assigned_guide_id ? 'text-emerald-400' : 'text-amber-400'} mt-0.5">
+                    ${b.guide ? b.guide.full_name : (b.assigned_guide_id ? 'Guide #' + b.assigned_guide_id : 'Pending Assignment')}
+                  </div>
+                  <div class="text-[10px] text-zinc-500">${b.assigned_vehicle || 'Vehicle Unassigned'}</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Visa State Machine Operations -->
+            <div class="stat-card space-y-4 border-l-4 ${isApproved ? 'border-l-emerald-500' : 'border-l-amber-500'}">
+              <div class="flex items-center justify-between">
+                <h3 class="text-sm font-bold text-white uppercase tracking-wider">Bhutan Immigration Clearance Control</h3>
+                <span class="badge ${isApproved ? 'badge-green' : 'badge-amber'}">${(b.visa_status || 'draft').toUpperCase()}</span>
+              </div>
+              
+              <div class="p-4 bg-zinc-800/80 rounded-xl space-y-3 text-xs">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                  <div>
+                    <div class="text-zinc-400">Clearance Document Number:</div>
+                    <div class="font-mono font-bold text-base ${isApproved ? 'text-emerald-400' : 'text-zinc-400'}">
+                      ${b.visa_clearance_number || 'Awaiting DoI Approval'}
+                    </div>
+                  </div>
+                  ${b.visa_approved_date ? `
+                    <div class="text-right">
+                      <span class="text-zinc-500 text-[10px]">Approved On:</span>
+                      <div class="text-zinc-300 font-mono">${b.visa_approved_date}</div>
+                    </div>
+                  ` : ''}
+                </div>
+
+                <!-- Status Update Form -->
+                <div class="flex flex-wrap items-center gap-3 pt-3 border-t border-zinc-700">
+                  <span class="text-zinc-400 font-bold">Advance State:</span>
+                  <select id="actionVisaStatus" class="px-3 py-1.5 rounded border border-zinc-600 text-xs font-bold">
+                    <option value="under_review" ${b.visa_status === 'under_review' ? 'selected' : ''}>Under Review</option>
+                    <option value="submitted_to_doi" ${b.visa_status === 'submitted_to_doi' ? 'selected' : ''}>Submitted to DoI</option>
+                    <option value="approved" ${b.visa_status === 'approved' ? 'selected' : ''}>Approved by DoI</option>
+                    <option value="clearance_letter_issued" ${b.visa_status === 'clearance_letter_issued' ? 'selected' : ''}>Issue Official Clearance Letter</option>
+                  </select>
+                  <button onclick="updateVisaState()" class="px-4 py-1.5 rounded bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs transition">
+                    Save Visa State
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Booking Status & Guide Assignment Controls -->
+            <div class="stat-card space-y-4">
+              <h3 class="text-sm font-bold text-white uppercase tracking-wider border-b border-zinc-800 pb-2">Operational Workflow Controls</h3>
+              <div class="grid sm:grid-cols-2 gap-4 text-xs">
+                <div class="space-y-2">
+                  <label class="block font-bold text-zinc-400">Booking Lifecycle Status:</label>
+                  <div class="flex items-center gap-2">
+                    <select id="actionBookingStatus" class="w-full px-3 py-2 rounded border border-zinc-600 text-xs font-bold">
+                      <option value="inquiry" ${b.booking_status === 'inquiry' ? 'selected' : ''}>Inquiry</option>
+                      <option value="deposit_paid" ${b.booking_status === 'deposit_paid' ? 'selected' : ''}>Deposit Paid</option>
+                      <option value="documents_complete" ${b.booking_status === 'documents_complete' ? 'selected' : ''}>Docs Complete</option>
+                      <option value="visa_approved" ${b.booking_status === 'visa_approved' ? 'selected' : ''}>Visa Approved</option>
+                      <option value="fully_paid" ${b.booking_status === 'fully_paid' ? 'selected' : ''}>Fully Paid</option>
+                      <option value="active_trip" ${b.booking_status === 'active_trip' ? 'selected' : ''}>Active Trip (In Country)</option>
+                      <option value="completed" ${b.booking_status === 'completed' ? 'selected' : ''}>Trip Completed</option>
+                    </select>
+                    <button onclick="updateBookingState()" class="px-4 py-2 rounded bg-zinc-700 hover:bg-zinc-600 text-white font-bold shrink-0">
+                      Update
+                    </button>
+                  </div>
+                </div>
+
+                <div class="space-y-2">
+                  <label class="block font-bold text-zinc-400">Assign Certified Guide &amp; Chauffeur:</label>
+                  <div class="flex items-center gap-2">
+                    <select id="actionGuideSelect" class="w-full px-3 py-2 rounded border border-zinc-600 text-xs font-bold">
+                      <option value="3">Kinley Tshering (Cultural Senior Guide)</option>
+                      <option value="4">Dorji Penjor (High Mountain Trek Specialist)</option>
+                    </select>
+                    <button onclick="assignGuideAction()" class="px-4 py-2 rounded bg-[#E05A47] hover:bg-[#c94b39] text-white font-bold shrink-0">
+                      Assign
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Financial Ledger Sidebar -->
+          <div class="lg:col-span-4 stat-card space-y-4">
+            <h3 class="text-sm font-bold text-white uppercase tracking-wider border-b border-zinc-800 pb-2">Financial Accounting</h3>
+            <div class="space-y-3 text-xs border-b border-zinc-700 pb-4">
+              <div class="flex justify-between">
+                <span class="text-zinc-400">Tour Package Base:</span>
+                <span class="font-bold text-white">$${Number(b.base_price_usd || 0).toLocaleString()}</span>
+              </div>
+              <div class="flex justify-between">
+                <span class="text-zinc-400">Royal SDF Tourism Tax:</span>
+                <span class="font-bold text-white">$${Number(b.sdf_total_usd || 0).toLocaleString()}</span>
+              </div>
+              <div class="flex justify-between">
+                <span class="text-zinc-400">Visa Processing Fee:</span>
+                <span class="font-bold text-white">$${Number(b.visa_fee_usd || 0).toLocaleString()}</span>
+              </div>
+              <div class="flex justify-between text-base font-black text-white pt-2 border-t border-zinc-700">
+                <span>Total Invoice:</span>
+                <span class="text-[#E05A47]">$${Number(b.total_price_usd || 0).toLocaleString()}</span>
+              </div>
+              <div class="flex justify-between text-xs font-bold text-emerald-400">
+                <span>Paid to Date:</span>
+                <span>$${Number(b.deposit_paid_usd || 0).toLocaleString()}</span>
+              </div>
+              <div class="flex justify-between text-xs font-bold text-amber-400">
+                <span>Outstanding Balance:</span>
+                <span>$${Math.max(0, (b.total_price_usd || 0) - (b.deposit_paid_usd || 0)).toLocaleString()}</span>
+              </div>
+            </div>
+
+            <!-- Payment Status Badge -->
+            <div class="p-3 ${isFullyPaid ? 'bg-emerald-500/10 border-emerald-500/30 text-emerald-400' : 'bg-amber-500/10 border-amber-500/30 text-amber-300'} border rounded-xl text-xs font-bold text-center">
+              ${isFullyPaid ? '✓ 100% Fully Settled' : '⚠️ Deposit Paid - Balance Due'}
+            </div>
+
+            <!-- Quick Record Payment Form -->
+            <div class="pt-2 space-y-2 border-t border-zinc-800">
+              <span class="block text-xs font-bold text-zinc-300">Record Incoming Wire Payment</span>
+              <div class="flex items-center gap-2">
+                <input type="number" id="payAmount" placeholder="Amount USD" class="w-full px-3 py-1.5 rounded border border-zinc-600 text-xs font-bold" value="${Math.max(0, (b.total_price_usd || 0) - (b.deposit_paid_usd || 0))}">
+                <button onclick="recordPaymentAction()" class="px-4 py-1.5 rounded bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs shrink-0">
+                  Record
+                </button>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      `;
+    }
+
+    async function quickApproveVisa() {
+      if (!currentBooking) return;
+      try {
+        const staff = AdminApp.getStaffUser();
+        const res = await ApiClient.updateVisaStatus(currentBooking.id, 'approved', '', staff ? staff.name : 'Visa Officer');
+        if (res.success) {
+          AdminApp.showToast(`Visa Approved! Clearance: ${res.visa_clearance_number}`);
+          loadBookingDetail();
+        } else {
+          AdminApp.showToast(res.error || 'Failed to approve', 'error');
+        }
+      } catch (err) {
+        AdminApp.showToast(err.message, 'error');
+      }
+    }
+
+    async function updateVisaState() {
+      if (!currentBooking) return;
+      const val = document.getElementById('actionVisaStatus').value;
+      try {
+        const staff = AdminApp.getStaffUser();
+        const res = await ApiClient.updateVisaStatus(currentBooking.id, val, '', staff ? staff.name : 'Visa Officer');
+        if (res.success) {
+          AdminApp.showToast(`Visa state updated to ${val}`);
+          loadBookingDetail();
+        } else {
+          AdminApp.showToast(res.error || 'Failed to update', 'error');
+        }
+      } catch (err) {
+        AdminApp.showToast(err.message, 'error');
+      }
+    }
+
+    async function updateBookingState() {
+      if (!currentBooking) return;
+      const status = document.getElementById('actionBookingStatus').value;
+      try {
+        const staff = AdminApp.getStaffUser();
+        const res = await ApiClient.updateBookingStatus(currentBooking.id, status, staff ? staff.name : 'Staff');
+        if (res.success) {
+          AdminApp.showToast(`Booking status updated to ${status}`);
+          loadBookingDetail();
+        } else {
+          AdminApp.showToast(res.error || 'Failed to update', 'error');
+        }
+      } catch (err) {
+        AdminApp.showToast(err.message, 'error');
+      }
+    }
+
+    async function assignGuideAction() {
+      if (!currentBooking) return;
+      const guideId = document.getElementById('actionGuideSelect').value;
+      try {
+        const staff = AdminApp.getStaffUser();
+        const res = await ApiClient.assignGuide(currentBooking.id, guideId, 'Toyota Land Cruiser (BP-1-A8921)', staff ? staff.name : 'Operations');
+        if (res.success) {
+          AdminApp.showToast(`Guide assigned successfully!`);
+          loadBookingDetail();
+        } else {
+          AdminApp.showToast(res.error || 'Failed to assign', 'error');
+        }
+      } catch (err) {
+        AdminApp.showToast(err.message, 'error');
+      }
+    }
+
+    async function recordPaymentAction() {
+      if (!currentBooking) return;
+      const amount = document.getElementById('payAmount').value;
+      if (!amount || amount <= 0) return AdminApp.showToast('Enter valid amount', 'error');
+      try {
+        const staff = AdminApp.getStaffUser();
+        const res = await ApiClient.recordPayment(currentBooking.id, {
+          amount_usd: amount,
+          payment_type: 'bank_wire',
+          payment_method: 'Bank of Bhutan Wire Transfer',
+          user_name: staff ? staff.name : 'Finance Officer'
+        });
+        if (res.success) {
+          AdminApp.showToast(res.message);
+          loadBookingDetail();
+        } else {
+          AdminApp.showToast(res.error || 'Failed to record payment', 'error');
+        }
+      } catch (err) {
+        AdminApp.showToast(err.message, 'error');
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', loadBookingDetail);
+  </script>
+</body>
+</html>

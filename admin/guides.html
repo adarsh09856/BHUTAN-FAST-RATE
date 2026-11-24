@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light only">
+  <title>Guide Roster — Bhutan Fast Rate Operations</title>
+  <link rel="stylesheet" href="../css/tour-theme.css">
+  <link rel="stylesheet" href="css/admin-theme.css">
+</head>
+<body class="admin-layout">
+  <!-- Dynamic Sidebar -->
+  <aside id="adminSidebar" class="admin-sidebar"></aside>
+
+  <!-- Main Workspace -->
+  <div class="admin-main">
+    <header class="admin-header">
+      <div class="flex items-center gap-3">
+        <button id="sidebarToggle" class="lg:hidden p-2 text-zinc-400 hover:text-white rounded">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+        </button>
+        <h1 class="text-base font-extrabold text-white">Guide Roster</h1>
+      </div>
+      <div class="flex items-center gap-4 text-xs">
+        <span class="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 font-bold">API Online</span>
+        <a href="notifications.html" class="p-2 rounded-lg bg-zinc-800 text-zinc-300 hover:text-white">🔔</a>
+      </div>
+    </header>
+
+    <main class="p-6 sm:p-8 space-y-6">
+      
+  <div class="stat-card space-y-4">
+    <div class="flex items-center justify-between">
+      <h2 class="text-base font-extrabold text-white">Licensed Guides &amp; Field Staff Roster</h2>
+      <button onclick="AdminApp.showToast('Guide registration form opened.')" class="px-4 py-2 rounded-lg bg-[#E05A47] text-white text-xs font-bold">
+        + Register Certified Guide
+      </button>
+    </div>
+
+    <div class="grid md:grid-cols-2 gap-4">
+      <div class="p-5 bg-zinc-800 rounded-xl border border-zinc-700 space-y-3">
+        <div class="flex items-center justify-between">
+          <div>
+            <h3 class="font-bold text-white text-base">Kinley Tshering</h3>
+            <p class="text-xs text-[#E05A47] font-bold">Senior Cultural &amp; Trekking Guide (License #GD/2012/441)</p>
+          </div>
+          <span class="badge badge-green">Available</span>
+        </div>
+        <div class="text-xs text-zinc-300 space-y-1">
+          <p><strong>Languages:</strong> English (Fluent), Japanese (Conversational), Dzongkha</p>
+          <p><strong>Hotline:</strong> +975 77 123 456 • kinley@bhutanfastratetours.bt</p>
+          <p><strong>Assigned Trips:</strong> 42 Completed • Rating: 5.0 ★★★★★</p>
+        </div>
+      </div>
+      <div class="p-5 bg-zinc-800 rounded-xl border border-zinc-700 space-y-3">
+        <div class="flex items-center justify-between">
+          <div>
+            <h3 class="font-bold text-white text-base">Tashi Namgyal</h3>
+            <p class="text-xs text-[#E05A47] font-bold">High-Altitude Snowman Specialist (License #GD/2015/892)</p>
+          </div>
+          <span class="badge badge-blue">On Trail (Lunana)</span>
+        </div>
+        <div class="text-xs text-zinc-300 space-y-1">
+          <p><strong>Languages:</strong> English, French (Basic), Dzongkha</p>
+          <p><strong>Hotline:</strong> +975 17 999 111</p>
+          <p><strong>Assigned Trips:</strong> 28 Completed • Wilderness First Responder Certified</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+    </main>
+  </div>
+
+  <script src="../js/api-client.js"></script>
+  <script src="js/admin-app.js"></script>
+  <script>
+    AdminApp.requireAuth();
+    AdminApp.renderSidebar('guides');
+    const toggle = document.getElementById('sidebarToggle');
+    if (toggle) {
+      toggle.addEventListener('click', () => {
+        document.getElementById('adminSidebar').classList.toggle('open');
+      });
+    }
+  </script>
+</body>
+</html>

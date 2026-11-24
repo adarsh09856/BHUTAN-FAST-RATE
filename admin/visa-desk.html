@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light only">
+  <title>Visa Clearance Desk — Bhutan Fast Rate Operations</title>
+  <link rel="stylesheet" href="../css/tour-theme.css">
+  <link rel="stylesheet" href="css/admin-theme.css">
+  <style>
+    input, select, textarea {
+      color-scheme: light !important;
+      background-color: #ffffff !important;
+      color: #1f2923 !important;
+    }
+  </style>
+</head>
+<body class="admin-layout">
+  <!-- Dynamic Sidebar -->
+  <aside id="adminSidebar" class="admin-sidebar"></aside>
+
+  <!-- Main Workspace -->
+  <div class="admin-main">
+    <header class="admin-header">
+      <div class="flex items-center gap-3">
+        <button id="sidebarToggle" class="lg:hidden p-2 text-zinc-400 hover:text-white rounded">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+        </button>
+        <div>
+          <h1 class="text-base font-extrabold text-white">Department of Immigration — Visa Clearance Desk</h1>
+          <p class="text-[11px] text-zinc-400">Royal Government of Bhutan official clearance workflow &amp; e-visa clearance generation</p>
+        </div>
+      </div>
+      <div class="flex items-center gap-4 text-xs">
+        <span class="px-2.5 py-1 rounded bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 font-bold">DoI Gateway Online</span>
+        <a href="notifications.html" class="p-2 rounded-lg bg-zinc-800 text-zinc-300 hover:text-white">🔔</a>
+      </div>
+    </header>
+
+    <main class="p-6 sm:p-8 space-y-6">
+      
+      <!-- Statistics KPI Cards -->
+      <div class="grid grid-cols-1 sm:grid-cols-4 gap-4">
+        <div class="stat-card p-4">
+          <div class="text-[10px] text-zinc-400 font-bold uppercase tracking-wider">Total Visa Applications</div>
+          <div class="text-2xl font-black text-white mt-1" id="statTotalVisas">-</div>
+        </div>
+        <div class="stat-card p-4">
+          <div class="text-[10px] text-zinc-400 font-bold uppercase tracking-wider">Pending Review / DoI</div>
+          <div class="text-2xl font-black text-amber-400 mt-1" id="statPendingVisas">-</div>
+        </div>
+        <div class="stat-card p-4">
+          <div class="text-[10px] text-zinc-400 font-bold uppercase tracking-wider">Approved &amp; Cleared</div>
+          <div class="text-2xl font-black text-emerald-400 mt-1" id="statClearedVisas">-</div>
+        </div>
+        <div class="stat-card p-4">
+          <div class="text-[10px] text-zinc-400 font-bold uppercase tracking-wider">SDF Revenue Verified</div>
+          <div class="text-2xl font-black text-[#E4C87E] mt-1" id="statTotalSdf">-</div>
+        </div>
+      </div>
+
+      <!-- Main Queue Table Card -->
+      <div class="stat-card space-y-4">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-2 border-b border-zinc-800">
+          <div class="flex flex-wrap items-center gap-3">
+            <input type="text" id="visaSearchInput" placeholder="Search ref, guest name, or passport..." class="px-3.5 py-2 rounded-lg border border-zinc-700 text-xs w-64 focus:outline-none focus:border-[#E05A47]">
+            <select id="visaStatusFilter" class="px-3 py-2 rounded-lg border border-zinc-700 text-xs focus:outline-none">
+              <option value="All">All Visa States</option>
+              <option value="documents_complete">Docs Complete</option>
+              <option value="submitted_to_doi">Submitted to DoI</option>
+              <option value="approved">Approved</option>
+              <option value="clearance_letter_issued">Letter Issued</option>
+            </select>
+          </div>
+          <button onclick="batchSubmitToDoi()" class="px-4 py-2.5 rounded-lg bg-[#E05A47] hover:bg-[#c94b39] text-white text-xs font-bold transition shadow-lg">
+            ⚡ Batch Submit All Complete to DoI
+          </button>
+        </div>
+
+        <div class="overflow-x-auto">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>Booking Ref</th>
+                <th>Lead Guest &amp; Country</th>
+                <th>Tour Package</th>
+                <th>SDF Verified</th>
+                <th>DoI Status</th>
+                <th>Clearance Number</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="visaTableBody">
+              <tr>
+                <td colspan="7" class="py-8 text-center text-zinc-400">Loading Visa Applications from Database...</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </main>
+  </div>
+
+  <script src="../js/api-client.js"></script>
+  <script src="js/admin-app.js"></script>
+  <script>
+    AdminApp.requireAuth();
+    AdminApp.renderSidebar('visa');
+    const toggle = document.getElementById('sidebarToggle');
+    if (toggle) {
+      toggle.addEventListener('click', () => {
+        document.getElementById('adminSidebar').classList.toggle('open');
+      });
+    }
+
+    let allBookings = [];
+
+    async function loadVisaDesk() {
+      try {
+        const res = await ApiClient.getAdminBookings();
+        allBookings = res.data || [];
+        
+        // Calculate stats
+        const pending = allBookings.filter(b => ['documents_complete', 'under_review', 'submitted_to_doi', 'not_started'].includes(b.visa_status)).length;
+        const cleared = allBookings.filter(b => ['approved', 'clearance_letter_issued'].includes(b.visa_status)).length;
+        const totalSdf = allBookings.reduce((sum, b) => sum + (Number(b.sdf_total_usd) || 0), 0);
+
+        document.getElementById('statTotalVisas').innerText = allBookings.length;
+        document.getElementById('statPendingVisas').innerText = pending;
+        document.getElementById('statClearedVisas').innerText = cleared;
+        document.getElementById('statTotalSdf').innerText = '$' + totalSdf.toLocaleString();
+
+        renderTable();
+      } catch (err) {
+        console.error('Failed to load visa desk data:', err);
+        document.getElementById('visaTableBody').innerHTML = `
+          <tr><td colspan="7" class="py-6 text-center text-red-400">Error connecting to Visa Operations API.</td></tr>
+        `;
+      }
+    }
+
+    function renderTable() {
+      const search = (document.getElementById('visaSearchInput')?.value || '').toLowerCase().trim();
+      const statusFilter = document.getElementById('visaStatusFilter')?.value || 'All';
+
+      let filtered = [...allBookings];
+
+      if (statusFilter !== 'All') {
+        filtered = filtered.filter(b => b.visa_status === statusFilter);
+      }
+
+      if (search) {
+        filtered = filtered.filter(b => {
+          return (b.id || '').toLowerCase().includes(search) ||
+                 (b.lead_name || '').toLowerCase().includes(search) ||
+                 (b.lead_country || '').toLowerCase().includes(search) ||
+                 (b.lead_passport_no || '').toLowerCase().includes(search);
+        });
+      }
+
+      const tbody = document.getElementById('visaTableBody');
+      if (filtered.length === 0) {
+        tbody.innerHTML = `
+          <tr><td colspan="7" class="py-8 text-center text-zinc-400">No applications found matching criteria.</td></tr>
+        `;
+        return;
+      }
+
+      tbody.innerHTML = filtered.map(b => {
+        const isApproved = ['approved', 'clearance_letter_issued'].includes(b.visa_status);
+        const isSubmitted = b.visa_status === 'submitted_to_doi';
+        
+        let badge = '<span class="badge badge-zinc">Draft</span>';
+        if (isApproved) {
+          badge = '<span class="badge badge-green">Cleared (DoI Approved)</span>';
+        } else if (isSubmitted) {
+          badge = '<span class="badge badge-amber">Submitted to DoI</span>';
+        } else if (b.visa_status === 'under_review' || b.visa_status === 'documents_complete') {
+          badge = '<span class="badge badge-blue">Ready for DoI</span>';
+        }
+
+        const sdfPaid = b.deposit_paid_usd > 0
+          ? `<span class="text-emerald-400 font-bold">$${Number(b.sdf_total_usd || 0).toLocaleString()} (Paid)</span>`
+          : '<span class="text-amber-400 font-bold">Unpaid</span>';
+
+        const clearanceBadge = b.visa_clearance_number 
+          ? `<span class="font-mono text-emerald-400 font-bold text-xs">${b.visa_clearance_number}</span>`
+          : `<span class="text-zinc-500 font-mono text-xs">Pending Issuance</span>`;
+
+        return `
+          <tr>
+            <td>
+              <a href="booking-detail.html?id=${b.id}" class="font-mono font-bold text-[#E05A47] hover:underline">${b.id}</a>
+              <div class="text-[10px] text-zinc-400">${b.travel_date_start} → ${b.travel_date_end}</div>
+            </td>
+            <td>
+              <div class="font-bold text-white text-xs">${b.lead_name}</div>
+              <div class="text-[10px] text-zinc-400">${b.lead_country} · Pass: ${b.lead_passport_no || 'On File'}</div>
+            </td>
+            <td>
+              <div class="text-xs text-zinc-300 max-w-[180px] truncate">${b.tour_title}</div>
+              <div class="text-[10px] text-zinc-500">${b.total_travelers} Traveler(s) · ${b.total_nights} Nights</div>
+            </td>
+            <td>${sdfPaid}</td>
+            <td>${badge}</td>
+            <td>${clearanceBadge}</td>
+            <td>
+              <div class="flex items-center gap-1.5">
+                ${!isApproved ? `
+                  <button onclick="approveVisa('${b.id}')" class="px-3 py-1 rounded bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold transition shadow">
+                    Approve Visa
+                  </button>
+                  ${!isSubmitted ? `
+                    <button onclick="submitToDoi('${b.id}')" class="px-2.5 py-1 rounded bg-zinc-800 hover:bg-zinc-700 text-zinc-300 text-xs font-bold border border-zinc-700">
+                      Send to DoI
+                    </button>
+                  ` : ''}
+                ` : `
+                  <a href="../track-visa.html?ref=${b.id}" target="_blank" class="px-2.5 py-1 rounded bg-zinc-800 hover:bg-zinc-700 text-emerald-400 text-xs font-bold border border-zinc-700">
+                    View Letter ↗
+                  </a>
+                `}
+                <a href="booking-detail.html?id=${b.id}" class="p-1 text-zinc-400 hover:text-white" title="Manage Details">
+                  ⚙️
+                </a>
+              </div>
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    async function submitToDoi(bookingId) {
+      try {
+        const staff = AdminApp.getStaffUser();
+        const res = await ApiClient.updateVisaStatus(bookingId, 'submitted_to_doi', '', staff ? staff.name : 'Visa Officer');
+        if (res.success) {
+          AdminApp.showToast(`Application ${bookingId} submitted to Bhutan Department of Immigration!`);
+          loadVisaDesk();
+        } else {
+          AdminApp.showToast(res.error || 'Failed to submit', 'error');
+        }
+      } catch (err) {
+        AdminApp.showToast(err.message, 'error');
+      }
+    }
+
+    async function approveVisa(bookingId) {
+      try {
+        const staff = AdminApp.getStaffUser();
+        const res = await ApiClient.updateVisaStatus(bookingId, 'approved', '', staff ? staff.name : 'Visa Officer');
+        if (res.success) {
+          AdminApp.showToast(`Visa APPROVED for ${bookingId}! Clearance: ${res.visa_clearance_number}`);
+          loadVisaDesk();
+        } else {
+          AdminApp.showToast(res.error || 'Failed to approve visa', 'error');
+        }
+      } catch (err) {
+        AdminApp.showToast(err.message, 'error');
+      }
+    }
+
+    async function batchSubmitToDoi() {
+      const pending = allBookings.filter(b => ['documents_complete', 'under_review'].includes(b.visa_status));
+      if (pending.length === 0) {
+        AdminApp.showToast('All documents are already submitted or approved.');
+        return;
+      }
+      for (const b of pending) {
+        await ApiClient.updateVisaStatus(b.id, 'submitted_to_doi');
+      }
+      AdminApp.showToast(`Batch of ${pending.length} applications submitted to Department of Immigration!`);
+      loadVisaDesk();
+    }
+
+    document.getElementById('visaSearchInput')?.addEventListener('input', renderTable);
+    document.getElementById('visaStatusFilter')?.addEventListener('change', renderTable);
+
+    document.addEventListener('DOMContentLoaded', loadVisaDesk);
+  </script>
+</body>
+</html>

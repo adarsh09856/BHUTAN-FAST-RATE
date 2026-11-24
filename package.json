@@ -1,0 +1,29 @@
+{
+  "name": "bhutan-fast-rate-tours",
+  "version": "2.0.0",
+  "description": "Production-Grade Full-Stack Tour Operator Platform for Bhutan Fast Rate Tours with PostgreSQL & SQLite Dual Engine",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "seed": "node database/seed.js",
+    "test": "node scratch/test_api.js",
+    "test:crud": "node scratch/test_real_crud.js"
+  },
+  "keywords": [
+    "bhutan",
+    "tour-operator",
+    "sdf",
+    "travel",
+    "crm",
+    "postgresql",
+    "sqlite"
+  ],
+  "author": "Bhutan Fast Rate Tours (License #TR/2018/9882)",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "pg": "^8.13.1"
+  }
+}
