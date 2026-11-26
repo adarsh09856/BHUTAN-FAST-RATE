@@ -453,7 +453,7 @@
     return `
       <div class="bg-[#0B2A22] text-white text-[12px] sm:text-[13px]" id="top">
         <div class="max-w-[1360px] mx-auto px-4 sm:px-6 py-2 flex flex-wrap gap-x-5 gap-y-1 justify-between">
-          <span class="font-semibold">✓ SDF fee included · Licensed Bhutan operator #<span data-bfr-license>${esc(cleanLic)}</span></span>
+          <span class="font-semibold">✓ SDF fee included · Licensed Bhutan operator <span data-bfr-license>#${esc(cleanLic)}</span></span>
           <span class="hidden md:block">USD &amp; INR · English · Live help 9am–7pm Bhutan time</span>
           <span class="text-[#E4C87E] font-bold">★ ${esc(avg)} · ${esc(totalReviews)}</span>
         </div>
@@ -713,20 +713,21 @@
         <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-5 mt-7">
           ${fests.map((f) => {
             const img = safeUrl(f.cover_image, FALLBACK_IMAGES.festival);
+            const festName = f.name || f.title || 'Bhutan Tshechu Festival';
             const festHref = resolveFestivalPageHref(f);
             const bookHref = f.related_tour_id ? `book.html?tour=${encodeURIComponent(f.related_tour_id)}` : 'festivals.html';
             return `
               <article class="bg-white rounded-[24px] overflow-hidden border border-[var(--line)] card-lift flex flex-col">
                 <a href="${esc(festHref)}" class="block relative overflow-hidden cursor-crosshair h-[240px] sm:h-[260px] bfr-lens-box" data-img="${esc(img)}">
-                  <div role="img" aria-label="${esc(f.title)}" class="w-full h-full bg-cover bg-center" style="background-image:url('${esc(img)}')"></div>
+                  <div role="img" aria-label="${esc(festName)}" class="w-full h-full bg-cover bg-center" style="background-image:url('${esc(img)}')"></div>
                   <div class="bfr-lens-circle hidden pointer-events-none absolute z-10 w-[150px] h-[150px] rounded-full border-4 border-white shadow-2xl" style="transform:translate(-50%,-50%);background-image:url('${esc(img)}');background-size:420% 420%"></div>
                   <div class="bfr-lens-pill hidden absolute bottom-3 left-3 bg-[#0B2A22]/90 text-white text-xs font-bold px-3 py-2 rounded-full items-center gap-1">
                     ${svgIcon('eye', 14)} Looking glass · zoomed view
                   </div>
                 </a>
                 <div class="p-4 flex-1 flex flex-col">
-                  <span class="text-xs font-extrabold text-[#C9A24B]">${esc(f.dates_label || f.season || '2027 Season')}</span>
-                  <h3 class="font-serif text-2xl mt-1"><a href="${esc(festHref)}" class="hover:text-[#C9A24B]">${esc(f.title)}</a></h3>
+                  <span class="text-xs font-extrabold text-[#C9A24B]">${esc(f.dates_label || f.best_months || f.season || '2027 Season')}</span>
+                  <h3 class="font-serif text-2xl mt-1"><a href="${esc(festHref)}" class="hover:text-[#C9A24B]">${esc(festName)}</a></h3>
                   <p class="text-sm text-[var(--muted)] mt-1 flex items-center gap-1">${svgIcon('mapPin', 14)} ${esc(f.venue || f.dzongkhag || 'Bhutan')}</p>
                   <p class="text-sm mt-2 flex-1">${esc(f.summary || '')}</p>
                   <div class="flex justify-between items-center mt-4 pt-3 border-t border-[var(--line)]">
@@ -970,18 +971,22 @@
         </div>
 
         <div class="grid md:grid-cols-3 gap-5 mt-7">
-          ${revs.map((r) => `
+          ${revs.map((r) => {
+            const guestName = r.author_name || r.reviewer_name || r.guest_name || 'Verified Guest';
+            const tourInfo = [r.tour_taken || r.tour_title, r.author_country].filter(Boolean).join(' · ') || 'Bhutan Journey';
+            return `
             <blockquote class="bg-white border border-[var(--line)] rounded-[24px] p-6 flex flex-col justify-between">
               <div>
                 <div class="text-[#C9A24B] text-sm font-bold">${'★'.repeat(Math.max(1, Math.min(5, Number(r.rating) || 5)))}</div>
                 <p class="mt-3 text-sm leading-relaxed">“${esc(r.comment || r.review_text || '')}”</p>
               </div>
               <footer class="mt-5 pt-3 border-t border-[var(--line)] text-xs">
-                <strong class="block text-sm text-[#0B2A22]">${esc(r.reviewer_name || r.guest_name || 'Verified Guest')}</strong>
-                <span class="text-[var(--muted)]">${esc(r.tour_title || r.country || 'Bhutan Journey')}</span>
+                <strong class="block text-sm text-[#0B2A22]">${esc(guestName)}</strong>
+                <span class="text-[var(--muted)]">${esc(tourInfo)}</span>
               </footer>
             </blockquote>
-          `).join('')}
+          `;
+          }).join('')}
         </div>
 
         <div class="grid grid-cols-2 md:grid-cols-4 gap-3 mt-10">
@@ -1042,7 +1047,7 @@
               Email: <span data-bfr-email>${esc(email)}</span>
             </p>
             <a href="${esc(waHref)}" target="_blank" rel="noopener noreferrer" data-bfr-whatsapp class="inline-block mt-3 text-xs font-extrabold text-[#E4C87E] hover:underline">Open WhatsApp Desk →</a>
-            <p class="text-xs text-white/55 mt-4">SDF included · Licensed operator #<span data-bfr-license>${esc(lic)}</span></p>
+            <p class="text-xs text-white/55 mt-4">SDF included · Licensed operator <span data-bfr-license>#${esc(lic)}</span></p>
           </div>
         </div>
         <div class="border-t border-white/10 py-5 text-center text-xs text-white/50">
@@ -1261,15 +1266,15 @@
       render();
       try {
         const res = await global.ApiClient.submitInquiry({
+          source: 'website_custom_builder',
           inquiry_type: 'custom_itinerary',
           name: state.customForm.name.trim(),
           email: state.customForm.email.trim(),
           phone: state.customForm.phone.trim(),
           preferred_dates: state.customForm.dates.trim(),
-          group_size: state.customForm.travellers,
-          budget_usd: state.customForm.budget,
+          travelers_count: parseInt(state.customForm.travellers, 10) || 2,
+          budget_range: `$${Number(state.customForm.budget || 2400).toLocaleString('en-US')}/person (${state.customForm.pace})`,
           interests: state.customForm.interests.join(', '),
-          travel_pace: state.customForm.pace,
           message: state.customForm.message.trim() || `Custom trip inquiry (${state.customForm.interests.join(', ')})`
         });
         state.customResult = res;

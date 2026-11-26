@@ -41,7 +41,7 @@
   <div class="bg-[#0B2A22] text-white text-[12px] sm:text-[13px] border-b border-[#123A30]">
     <div class="max-w-[1360px] mx-auto px-4 sm:px-6 py-2.5 flex flex-wrap gap-x-6 gap-y-1 justify-between items-center">
       <span class="font-semibold flex items-center gap-1.5">
-        <span class="text-[#E4C87E]">✓</span> SDF fee included · Licensed Bhutan operator #<span data-bfr-license>TR/2018/9882</span>
+        <span class="text-[#E4C87E]">✓</span> SDF fee included · Licensed Bhutan operator <span data-bfr-license>#TR/2018/9882</span>
       </span>
       <span class="hidden md:flex items-center gap-4 text-white/80">
         <span>USD & INR Accepted</span>
@@ -210,7 +210,7 @@
           <h3 class="font-serif text-2xl font-bold mt-1" id="modalTourTitle">Tour Title</h3>
           <p class="text-xs text-white/80 mt-1" id="modalTourRoute">Route</p>
         </div>
-        <button onclick="closeItineraryModal()" class="text-white/70 hover:text-white p-1 rounded-full hover:bg-white/10" aria-label="Close dialog">
+        <button type="button" id="closeItineraryModalBtn" class="text-white/70 hover:text-white p-1 rounded-full hover:bg-white/10" aria-label="Close dialog">
           <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
         </button>
       </div>
@@ -246,7 +246,7 @@
             The Kingdom of Bhutan’s trusted luxury & bespoke tour operator. Full SDF management, direct Drukair airline bookings, and licensed local cultural guides.
           </p>
           <div class="mt-6 flex items-center gap-3 text-xs text-[#E4C87E] font-semibold bg-white/5 border border-white/10 px-4 py-2.5 rounded-2xl w-fit">
-            <span>🇧🇹 Licensed by Department of Tourism · License #<span data-bfr-license>TR/2018/9882</span></span>
+            <span>🇧🇹 Licensed by Department of Tourism · License <span data-bfr-license>#TR/2018/9882</span></span>
           </div>
         </div>
 
@@ -545,6 +545,7 @@
       }
     }
 
+    document.getElementById('closeItineraryModalBtn')?.addEventListener('click', closeItineraryModal);
     document.getElementById('mobileMenuBtn')?.addEventListener('click', () => document.getElementById('mobileDrawer')?.classList.remove('hidden'));
     document.getElementById('closeDrawerBtn')?.addEventListener('click', () => document.getElementById('mobileDrawer')?.classList.add('hidden'));
     document.getElementById('mobileDrawer')?.addEventListener('click', (e) => {

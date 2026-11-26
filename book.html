@@ -125,7 +125,7 @@
 <body>
   <div class="topbar">
     <div class="wrap topbar-inner">
-      <span>✓ Official DoI SDF Included · Licensed Operator #<span data-bfr-license>TR/2018/9882</span></span>
+      <span>✓ Official DoI SDF Included · Licensed Operator <span data-bfr-license>#TR/2018/9882</span></span>
       <span>USD &amp; Regional INR Accepted · 24–48h Bhutan Visa Clearance</span>
     </div>
   </div>
@@ -185,8 +185,8 @@
                 </select>
               </label>
               <label class="fld" id="bkCustomRateWrap">
-                Custom Daily Package Rate (USD/night/adult)
-                <input id="bkCustomRate" type="number" min="150" step="10" value="320" class="inp">
+                Bespoke Tier Pricing Basis
+                <input id="bkCustomRateInfo" type="text" readonly value="Official Server Tier Rates ($220 / $295 / $490 USD per night)" class="inp">
               </label>
             </div>
 
@@ -242,8 +242,8 @@
 
             <div class="grid-3" style="margin-bottom:16px;">
               <label class="fld">
-                Adults (13+ yrs)
-                <input id="bkAdults" type="number" min="0" max="20" value="2" class="inp">
+                Adults (13+ yrs) <span class="req">*</span>
+                <input id="bkAdults" type="number" min="1" max="20" value="2" class="inp">
               </label>
               <label class="fld">
                 Children (6–12 yrs · 50% SDF)
@@ -384,7 +384,7 @@
 
   <footer class="site-ftr">
     <div class="wrap" style="display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;">
-      <span>© <span id="ftrYear">2026</span> Bhutan Fast Rate Tours · Licensed Operator #<span data-bfr-license>TR/2018/9882</span></span>
+      <span>© <span id="ftrYear">2026</span> Bhutan Fast Rate Tours · Licensed Operator <span data-bfr-license>#TR/2018/9882</span></span>
       <span>Hotline: <span data-bfr-phone>+975 17 654 321</span> · <span data-bfr-email>reservations@bhutanfastratetours.bt</span></span>
     </div>
   </footer>
@@ -571,7 +571,7 @@
         if (titleEl) titleEl.textContent = state.isCustom ? 'Custom Bespoke Bhutan Trip' : (tour ? tour.title : 'Bhutan Expedition');
         if (metaEl) metaEl.textContent = `${state.nights} nights (${state.startDate} → ${state.endDate}) · ${state.hotelTier} · ${state.adults}A/${state.children612}C/${state.childrenUnder6}U6`;
 
-        // Update tier preview prices from selected tour
+        // Update tier preview prices from selected tour or authoritative server custom rates
         if (!state.isCustom && tour) {
           const p3 = Number(tour.price_3star_usd || tour.price_usd || 0);
           const p4 = Number(tour.price_4star_usd || Math.round(p3 * 1.25));
@@ -580,12 +580,15 @@
           document.getElementById('tierPrice4').textContent = `$${p4.toLocaleString('en-US')} / adult`;
           document.getElementById('tierPrice5').textContent = `$${p5.toLocaleString('en-US')} / adult`;
         } else {
-          document.getElementById('tierPrice3').textContent = `$${state.customDailyRate}/night base`;
-          document.getElementById('tierPrice4').textContent = `+$${Number(state.settings.hotel_4star_surcharge_usd || 95)}/night`;
-          document.getElementById('tierPrice5').textContent = `+$${Number(state.settings.hotel_5star_surcharge_usd || 280)}/night`;
+          const c3 = Number(state.settings.custom_daily_rate_3star_usd || state.settings.custom_daily_rate_3star || 220);
+          const c4 = Number(state.settings.custom_daily_rate_4star_usd || state.settings.custom_daily_rate_4star || 295);
+          const c5 = Number(state.settings.custom_daily_rate_5star_usd || state.settings.custom_daily_rate_5star || 490);
+          document.getElementById('tierPrice3').textContent = `$${c3.toLocaleString('en-US')} / night / adult`;
+          document.getElementById('tierPrice4').textContent = `$${c4.toLocaleString('en-US')} / night / adult`;
+          document.getElementById('tierPrice5').textContent = `$${c5.toLocaleString('en-US')} / night / adult`;
         }
 
-        if (state.adults + state.children612 + state.childrenUnder6 < 1) return;
+        if (state.adults < 1) return;
 
         try {
           const payload = {
@@ -596,9 +599,7 @@
             nationality_type: state.nationalityType,
             hotel_tier: state.hotelTier
           };
-          if (state.isCustom) {
-            payload.custom_daily_rate = state.customDailyRate;
-          } else if (tour) {
+          if (!state.isCustom && tour) {
             payload.tour_id = tour.id;
           }
           const q = await window.ApiClient.calculateSDF(payload);
@@ -658,7 +659,7 @@
         showError('');
         if (target >= 2) {
           if (!state.startDate || state.nights < 1) return showError('Please choose a valid travel start date and duration.');
-          if (state.adults + state.children612 + state.childrenUnder6 < 1) return showError('At least 1 traveler is required.');
+          if (state.adults < 1) return showError('At least 1 adult traveler (13+ yrs) is required per DoI visa rules.');
         }
         if (target >= 3) {
           if (!state.lead.name.trim() || !state.lead.email.trim() || !state.lead.phone.trim()) {
@@ -698,7 +699,6 @@
           const payload = {
             tour_id: state.isCustom ? null : state.selectedTourId,
             is_custom_trip: state.isCustom,
-            custom_daily_rate: state.isCustom ? state.customDailyRate : undefined,
             travel_date_start: state.startDate,
             travel_date_end: state.endDate,
             nights: state.nights,
@@ -723,7 +723,7 @@
               passport_number: t.passport_number.trim() || null,
               passport_expiry: t.passport_expiry.trim() || null,
               date_of_birth: t.date_of_birth.trim() || null,
-              dietary_notes: t.dietary_notes.trim() || null,
+              dietary_needs: t.dietary_notes.trim() || null,
               is_lead: idx === 0
             }))
           };
@@ -758,12 +758,11 @@
         const sp = new URLSearchParams(window.location.search);
 
         if (sp.get('custom') === '1') state.isCustom = true;
-        if (sp.get('daily_rate') && Number(sp.get('daily_rate')) > 0) state.customDailyRate = Number(sp.get('daily_rate'));
         if (sp.get('tier')) state.hotelTier = sp.get('tier');
         if (sp.get('nationality') || sp.get('nation')) state.nationalityType = (sp.get('nationality') || sp.get('nation')).toLowerCase().includes('ind') ? 'india' : 'international';
-        if (sp.get('start')) state.startDate = sp.get('start');
+        if (sp.get('date') || sp.get('start')) state.startDate = sp.get('date') || sp.get('start');
         if (sp.get('nights') && Number(sp.get('nights')) > 0) state.nights = Number(sp.get('nights'));
-        if (sp.get('adults') !== null && !Number.isNaN(Number(sp.get('adults')))) state.adults = Math.max(0, Number(sp.get('adults')));
+        if (sp.get('adults') !== null && !Number.isNaN(Number(sp.get('adults')))) state.adults = Math.max(1, Number(sp.get('adults')));
         if (sp.get('children_6_12') || sp.get('children612')) state.children612 = Math.max(0, Number(sp.get('children_6_12') || sp.get('children612')));
         if (sp.get('children_under_6') || sp.get('childrenUnder6')) state.childrenUnder6 = Math.max(0, Number(sp.get('children_under_6') || sp.get('childrenUnder6')));
 
@@ -775,14 +774,23 @@
           state.tours = Array.isArray(toursList) ? toursList : [];
           state.settings = (pubSettings && pubSettings.data) || {};
 
-          if (state.settings.cancellation_policy_30plus) {
+          if (state.settings.cancellation_free_days || state.settings.cancellation_partial_days) {
+            const freeDays = Number(state.settings.cancellation_free_days || 30);
+            const partDays = Number(state.settings.cancellation_partial_days || 15);
+            const partPct = Number(state.settings.cancellation_partial_refund_percent || 50);
+            const dueDays = Number(state.settings.final_payment_due_days || 14);
             document.getElementById('cancellationTermsList').innerHTML = `
-              <li><strong>30+ days prior:</strong> ${esc(state.settings.cancellation_policy_30plus)}</li>
-              <li><strong>15–29 days prior:</strong> ${esc(state.settings.cancellation_policy_15_29 || '50% refundable / transferable')}</li>
-              <li><strong>Under 15 days:</strong> ${esc(state.settings.cancellation_policy_under15 || 'Non-refundable SDF commitments')}</li>
-              <li><strong>DoI Rule:</strong> Passports must remain valid at least 6 calendar months beyond your departure date.</li>
+              <li><strong>${freeDays}+ days prior:</strong> 100% refundable minus bank/wire handling charges.</li>
+              <li><strong>${partDays}–${freeDays - 1} days prior:</strong> ${partPct}% refund or complimentary date transfer within 12 months.</li>
+              <li><strong>Under ${partDays} days:</strong> Non-refundable SDF/hotel commitments unless approved by DoI.</li>
+              <li><strong>Final Balance &amp; DoI Rule:</strong> Full settlement due ${dueDays} days prior; passports valid 6+ calendar months beyond departure date.</li>
             `;
           }
+          const c3 = Number(state.settings.custom_daily_rate_3star_usd || state.settings.custom_daily_rate_3star || 220);
+          const c4 = Number(state.settings.custom_daily_rate_4star_usd || state.settings.custom_daily_rate_4star || 295);
+          const c5 = Number(state.settings.custom_daily_rate_5star_usd || state.settings.custom_daily_rate_5star || 490);
+          const customInfo = document.getElementById('bkCustomRateInfo');
+          if (customInfo) customInfo.value = `Official Server Tier Rates ($${c3} 3★ / $${c4} 4★ / $${c5} 5★ USD/night)`;
 
           const tourSel = document.getElementById('bkTour');
           tourSel.innerHTML = state.tours.map((t) => `<option value="${esc(t.id)}">${esc(t.title)} (${t.duration_days}D · $${Number(t.price_3star_usd || t.price_usd)} USD)</option>`).join('') +
@@ -807,7 +815,6 @@
         // Sync inputs
         document.getElementById('bkStartDate').value = state.startDate;
         document.getElementById('bkNights').value = state.nights;
-        document.getElementById('bkCustomRate').value = state.customDailyRate;
         document.getElementById('bkCustomRateWrap').classList.toggle('hidden', !state.isCustom);
         document.getElementById('bkAdults').value = state.adults;
         document.getElementById('bkChild612').value = state.children612;
@@ -834,14 +841,9 @@
           refreshServerQuote();
         });
 
-        document.getElementById('bkCustomRate').addEventListener('input', (e) => {
-          invalidateIdempotency();
-          state.customDailyRate = Math.max(100, Number(e.target.value) || 320);
-          refreshServerQuote();
-        });
         document.getElementById('bkStartDate').addEventListener('change', (e) => { invalidateIdempotency(); state.startDate = e.target.value; refreshServerQuote(); });
         document.getElementById('bkNights').addEventListener('change', (e) => { invalidateIdempotency(); state.nights = Math.max(1, Math.min(30, Number(e.target.value) || 1)); refreshServerQuote(); });
-        document.getElementById('bkAdults').addEventListener('change', (e) => { invalidateIdempotency(); state.adults = Math.max(0, Number(e.target.value) || 0); refreshServerQuote(); });
+        document.getElementById('bkAdults').addEventListener('change', (e) => { invalidateIdempotency(); state.adults = Math.max(1, Number(e.target.value) || 1); e.target.value = state.adults; refreshServerQuote(); });
         document.getElementById('bkChild612').addEventListener('change', (e) => { invalidateIdempotency(); state.children612 = Math.max(0, Number(e.target.value) || 0); refreshServerQuote(); });
         document.getElementById('bkChildU6').addEventListener('change', (e) => { invalidateIdempotency(); state.childrenUnder6 = Math.max(0, Number(e.target.value) || 0); refreshServerQuote(); });
 
