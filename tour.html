@@ -163,10 +163,7 @@
   <script src="js/tour-detail.js"></script>
   <script>
     (function () {
-      const btn = document.getElementById('tourMobileBtn');
-      const menu = document.getElementById('tourMobileMenu');
-      if (btn && menu) btn.addEventListener('click', () => menu.classList.toggle('hidden'));
-      document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', () => {
         if (window.SiteShell) window.SiteShell.init();
       });
     })();

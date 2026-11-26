@@ -97,8 +97,11 @@ async function run() {
       assert(!pat.re.test(html), `${rel} matched forbidden pattern: ${pat.name}`);
     }
 
-    // Double hash check around [data-bfr-license]
+    // Double hash check around [data-bfr-license] & no duplicate #tourMobileBtn listeners alongside site-shell.js
     assert(!/#<span[^>]*data-bfr-license/i.test(html), `${rel} has double # before data-bfr-license`);
+    if (html.includes('site-shell.js')) {
+      assert(!/getElementById\('tourMobileBtn'\)[\s\S]{0,160}toggle\('hidden'\)/i.test(html), `${rel} duplicates tourMobileBtn toggle already bound by SiteShell`);
+    }
 
     // Check relative links (href / src) ignoring JS template expressions ${...}
     const dirOfFile = path.dirname(absPath);

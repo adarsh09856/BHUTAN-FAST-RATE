@@ -307,11 +307,11 @@
           <div class="pt-4 border-t border-[#E7DCC4] space-y-2 text-xs">
             <div class="flex items-center gap-2">
               <span class="text-[#0B2A22] font-bold">Email:</span>
-              <a href="mailto:tours@bhutanfastrate.com" class="text-[#C9A24B] hover:underline font-semibold">tours@bhutanfastrate.com</a>
+              <a href="mailto:reservations@bhutanfastratetours.bt" data-bfr-email class="text-[#C9A24B] hover:underline font-semibold">reservations@bhutanfastratetours.bt</a>
             </div>
             <div class="flex items-center gap-2">
               <span class="text-[#0B2A22] font-bold">Desk Phone:</span>
-              <span class="text-[#66706A]">+975 8 271 890</span>
+              <span data-bfr-phone class="text-[#66706A]">+975 17 654 321</span>
             </div>
             <div class="flex items-center gap-2">
               <span class="text-[#0B2A22] font-bold">Office Hours:</span>
@@ -471,12 +471,17 @@
 
         if (tourParam && select) {
           const q = tourParam.toLowerCase();
+          let matched = false;
           for (let i = 0; i < select.options.length; i++) {
             const opt = select.options[i];
             if (opt.value.toLowerCase().includes(q) || opt.text.toLowerCase().includes(q)) {
               select.selectedIndex = i;
+              matched = true;
               break;
             }
+          }
+          if (!matched && q.includes('custom')) {
+            select.value = 'Custom-Tailor-Made';
           }
         }
 
@@ -528,7 +533,7 @@
               phone,
               tour_interest: tourVal || tourText,
               preferred_dates: month,
-              travelers_count: parseTravelerCount(adultsParam || travellers),
+              travelers_count: parseTravelerCount(adultsParam || travellers) + (Number(childrenParam) || 0),
               budget_range: hotel,
               interests: checkedInterests.join(', '),
               message: `${notes}\nHotel Preference: ${hotel}${checkedInterests.length ? `\nInterests: ${checkedInterests.join(', ')}` : ''}`.trim()
