@@ -41,7 +41,7 @@
   <div class="bg-[#0B2A22] text-white text-[12px] sm:text-[13px] border-b border-[#123A30]">
     <div class="max-w-[1360px] mx-auto px-4 sm:px-6 py-2.5 flex flex-wrap gap-x-6 gap-y-1 justify-between items-center">
       <span class="font-semibold flex items-center gap-1.5">
-        <span class="text-[#E4C87E]">✓</span> SDF fee included · Licensed Bhutan operator #BT-8842
+        <span class="text-[#E4C87E]">✓</span> SDF fee included · Licensed Bhutan operator <span data-bfr-license>#TR/2018/9882</span>
       </span>
       <span class="hidden md:flex items-center gap-4 text-white/80">
         <span>Festival VIP Reserved Courtyard Seating</span>
@@ -180,7 +180,7 @@
             <span class="text-xs text-[#66706A]">Next Dates:</span>
             <span class="block font-serif text-lg font-bold text-[#0B2A22]">Sep 21 – 24, 2027</span>
           </div>
-          <a href="contact.html?tour=Thimphu-Tshechu-Booking" class="px-5 py-2.5 rounded-full bg-[#0B2A22] hover:bg-[#123A30] text-white text-xs font-bold transition shadow-sm">
+          <a href="book.html?tour=thimphu-tshechu-8d" class="px-5 py-2.5 rounded-full bg-[#0B2A22] hover:bg-[#123A30] text-white text-xs font-bold transition shadow-sm">
             Book Festival Tour
           </a>
         </div>
@@ -218,7 +218,7 @@
             <span class="text-xs text-[#66706A]">Next Dates:</span>
             <span class="block font-serif text-lg font-bold text-[#0B2A22]">Mar 28 – Apr 1, 2027</span>
           </div>
-          <a href="contact.html?tour=Paro-Tshechu-Booking" class="px-5 py-2.5 rounded-full bg-[#0B2A22] hover:bg-[#123A30] text-white text-xs font-bold transition shadow-sm">
+          <a href="book.html?tour=paro-spring-festival-8d" class="px-5 py-2.5 rounded-full bg-[#0B2A22] hover:bg-[#123A30] text-white text-xs font-bold transition shadow-sm">
             Book Festival Tour
           </a>
         </div>
@@ -256,7 +256,7 @@
             <span class="text-xs text-[#66706A]">Next Dates:</span>
             <span class="block font-serif text-lg font-bold text-[#0B2A22]">Feb 22 – 26, 2027</span>
           </div>
-          <a href="contact.html?tour=Punakha-Drubchen-Booking" class="px-5 py-2.5 rounded-full bg-[#0B2A22] hover:bg-[#123A30] text-white text-xs font-bold transition shadow-sm">
+          <a href="book.html?custom=1" class="px-5 py-2.5 rounded-full bg-[#0B2A22] hover:bg-[#123A30] text-white text-xs font-bold transition shadow-sm">
             Book Festival Tour
           </a>
         </div>
@@ -294,7 +294,7 @@
             <span class="text-xs text-[#66706A]">Next Dates:</span>
             <span class="block font-serif text-lg font-bold text-[#0B2A22]">November 11, 2026 / 2027</span>
           </div>
-          <a href="contact.html?tour=Crane-Festival-Booking" class="px-5 py-2.5 rounded-full bg-[#0B2A22] hover:bg-[#123A30] text-white text-xs font-bold transition shadow-sm">
+          <a href="book.html?custom=1" class="px-5 py-2.5 rounded-full bg-[#0B2A22] hover:bg-[#123A30] text-white text-xs font-bold transition shadow-sm">
             Book Festival Tour
           </a>
         </div>
@@ -332,7 +332,7 @@
             <span class="text-xs text-[#66706A]">Next Dates:</span>
             <span class="block font-serif text-lg font-bold text-[#0B2A22]">Oct 28 – Nov 1, 2027</span>
           </div>
-          <a href="contact.html?tour=Jambay-Lhakhang-Booking" class="px-5 py-2.5 rounded-full bg-[#0B2A22] hover:bg-[#123A30] text-white text-xs font-bold transition shadow-sm">
+          <a href="book.html?tour=bumthang-spiritual-pilgrimage-10d" class="px-5 py-2.5 rounded-full bg-[#0B2A22] hover:bg-[#123A30] text-white text-xs font-bold transition shadow-sm">
             Book Festival Tour
           </a>
         </div>
@@ -428,7 +428,7 @@
             The Kingdom of Bhutan’s trusted luxury & bespoke tour operator. Full SDF management, direct Drukair airline bookings, and licensed local cultural guides.
           </p>
           <div class="mt-6 flex items-center gap-3 text-xs text-[#E4C87E] font-semibold bg-white/5 border border-white/10 px-4 py-2.5 rounded-2xl w-fit">
-            <span>🇧🇹 Licensed by Department of Tourism · License #BT-8842</span>
+            <span>🇧🇹 Licensed by Department of Tourism · License <span data-bfr-license>#TR/2018/9882</span></span>
           </div>
         </div>
 
@@ -486,6 +486,48 @@
     mobileDrawer?.addEventListener('click', (e) => {
       if (e.target === mobileDrawer) mobileDrawer.classList.add('hidden');
     });
+  </script>
+
+  <script src="js/api-client.js"></script>
+  <script src="js/site-shell.js"></script>
+  <script>
+
+    (function(){
+      const esc = (v) => (window.SiteShell ? window.SiteShell.escapeHtml(v) : String(v || ''));
+      document.addEventListener('DOMContentLoaded', async () => {
+        if (window.SiteShell) window.SiteShell.init();
+        try {
+          const res = await window.ApiClient.getFestivals();
+          const fests = (res && res.data) || [];
+          const grid = document.querySelector('main .grid');
+          if (grid && fests.length > 0 && !document.getElementById('liveFestivalBanner')) {
+            const box = document.createElement('div');
+            box.id = 'liveFestivalBanner';
+            box.className = 'col-span-full bg-white rounded-3xl p-6 border border-[#E7DCC4] shadow-sm';
+            box.innerHTML = `
+              <div class="flex flex-wrap items-center justify-between gap-3 mb-4">
+                <div>
+                  <span class="text-xs font-extrabold text-[#C9A24B] uppercase tracking-wider">LIVE 2027 CALENDAR</span>
+                  <h3 class="font-serif text-2xl font-bold text-[#0B2A22]">Verified Tshechu Dates (${fests.length} Active Festivals)</h3>
+                </div>
+                <a href="book.html?tour=thimphu-tshechu-8d" class="px-5 py-2.5 rounded-full bg-[#0B2A22] text-white text-xs font-bold">Reserve Festival Seat →</a>
+              </div>
+              <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                ${fests.map(fest => `
+                  <div class="p-4 rounded-2xl bg-[#FFF8EC] border border-[#E7DCC4] flex flex-col justify-between">
+                    <div>
+                      <div class="text-[11px] font-extrabold text-[#C9A24B]">${esc(fest.best_months || fest.dates_label || fest.season || '2027')}</div>
+                      <a href="${esc((fest.slug || '').endsWith('.html') ? fest.slug : 'festival-' + fest.id + '.html')}" class="block font-serif text-lg font-bold text-[#0B2A22] mt-1">${esc(fest.name)}</a>
+                      <p class="text-xs text-[#66706A] mt-1">${esc(fest.venue || fest.dzongkhag || 'Bhutan')}</p>
+                    </div>
+                    <a href="book.html?tour=${encodeURIComponent(fest.related_tour_id || 'thimphu-tshechu')}" class="mt-3 text-xs font-bold text-[#0B2A22] underline">Book Linked Tour →</a>
+                  </div>`).join('')}
+              </div>`;
+            grid.prepend(box);
+          }
+        } catch (_) {}
+      });
+    })();
   </script>
 </body>
 </html>

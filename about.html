@@ -41,7 +41,7 @@
   <div class="bg-[#0B2A22] text-white text-[12px] sm:text-[13px] border-b border-[#123A30]">
     <div class="max-w-[1360px] mx-auto px-4 sm:px-6 py-2.5 flex flex-wrap gap-x-6 gap-y-1 justify-between items-center">
       <span class="font-semibold flex items-center gap-1.5">
-        <span class="text-[#E4C87E]">✓</span> 100% Bhutanese Owned & Operated · License #BT-8842
+        <span class="text-[#E4C87E]">✓</span> 100% Bhutanese Owned & Operated · License <span data-bfr-license>#TR/2018/9882</span>
       </span>
       <span class="hidden md:flex items-center gap-4 text-white/80">
         <span>Preserving the Living Heritage of Druk Yul</span>
@@ -237,7 +237,7 @@
         <div class="p-5 rounded-2xl bg-white/5 border border-white/10">
           <span class="text-2xl mb-2 block">🇧🇹</span>
           <h4 class="font-bold text-white text-sm">Department of Tourism</h4>
-          <p class="text-xs text-white/70 mt-1">Full license #BT-8842 issued under the Tourism Act of Bhutan.</p>
+          <p class="text-xs text-white/70 mt-1">Full license <span data-bfr-license>#TR/2018/9882</span> issued under the Tourism Act of Bhutan.</p>
         </div>
         <div class="p-5 rounded-2xl bg-white/5 border border-white/10">
           <span class="text-2xl mb-2 block">✈️</span>
@@ -270,7 +270,7 @@
             The Kingdom of Bhutan’s trusted luxury & bespoke tour operator. Full SDF management, direct Drukair airline bookings, and licensed local cultural guides.
           </p>
           <div class="mt-6 flex items-center gap-3 text-xs text-[#E4C87E] font-semibold bg-white/5 border border-white/10 px-4 py-2.5 rounded-2xl w-fit">
-            <span>🇧🇹 Licensed by Department of Tourism · License #BT-8842</span>
+            <span>🇧🇹 Licensed by Department of Tourism · License <span data-bfr-license>#TR/2018/9882</span></span>
           </div>
         </div>
 
@@ -328,6 +328,17 @@
     mobileDrawer?.addEventListener('click', (e) => {
       if (e.target === mobileDrawer) mobileDrawer.classList.add('hidden');
     });
+  </script>
+
+  <script src="js/api-client.js"></script>
+  <script src="js/site-shell.js"></script>
+  <script>
+
+    (function(){
+      document.addEventListener('DOMContentLoaded', async () => {
+        if (window.SiteShell) window.SiteShell.init();
+      });
+    })();
   </script>
 </body>
 </html>

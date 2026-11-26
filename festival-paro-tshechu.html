@@ -40,13 +40,13 @@
   <aside aria-label="Official Licensing" class="bg-[#0E1915] text-white text-[11px] py-2 px-4 border-b border-white/10">
     <div class="max-w-7xl mx-auto flex flex-wrap justify-between items-center gap-2">
       <div class="flex items-center gap-2">
-        <span class="px-2 py-0.5 rounded bg-[#E05A47] text-white font-extrabold text-[10px] uppercase tracking-wider">ROYAL GOVT LICENSED #TR/2018/9882</span>
+        <span class="px-2 py-0.5 rounded bg-[#E05A47] text-white font-extrabold text-[10px] uppercase tracking-wider">ROYAL GOVT LICENSED <span data-bfr-license>#TR/2018/9882</span></span>
         <span class="text-zinc-300">Department of Tourism Certified • Fast-Track 24-48h SDF Tourist Visa Guarantee</span>
       </div>
       <div class="flex items-center gap-4 text-zinc-300 text-xs">
         <a href="tel:+97517654321" class="hover:text-[#E05A47] flex items-center gap-1">
           <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
-          +975 17 654 321
+          <span data-bfr-phone>+975 17 654 321</span>
         </a>
         <span>•</span>
         <a href="track-visa.html" class="hover:text-[#E05A47] font-bold text-emerald-400">Track Visa Status</a>
@@ -171,15 +171,15 @@
             <div class="w-10 h-10 rounded-xl bg-[#E05A47] flex items-center justify-center font-black text-white text-lg">B</div>
             <div>
               <div class="font-black text-base uppercase leading-tight">BHUTAN FAST RATE TOURS</div>
-              <div class="text-[9px] text-[#E05A47] tracking-widest font-bold">ROYAL GOVERNMENT LICENSED #TR/2018/9882</div>
+              <div class="text-[9px] text-[#E05A47] tracking-widest font-bold">ROYAL GOVERNMENT LICENSED <span data-bfr-license>#TR/2018/9882</span></div>
             </div>
           </div>
           <p class="mt-4 text-xs text-zinc-400 leading-relaxed max-w-sm">
             Official licensed inbound tour operator registered under the Department of Tourism, Kingdom of Bhutan. Guaranteed fast-track visa processing, certified local guides, and 100% refundable bookings.
           </p>
           <div class="mt-4 text-xs text-zinc-400 space-y-1">
-            <p><strong>Hotline (WhatsApp):</strong> +975 17 654 321</p>
-            <p><strong>Central Desk:</strong> reservations@bhutanfastratetours.bt</p>
+            <p><strong>Hotline (WhatsApp):</strong> <span data-bfr-phone>+975 17 654 321</span></p>
+            <p><strong>Central Desk:</strong> <span data-bfr-email>reservations@bhutanfastratetours.bt</span></p>
             <p><strong>Headquarters:</strong> Norzin Lam, Opposite Clock Tower Square, Thimphu, Bhutan</p>
           </div>
         </div>
@@ -230,7 +230,7 @@
       </div>
 
       <div class="pt-8 flex flex-wrap justify-between items-center gap-4 text-xs text-zinc-400">
-        <p>&copy; 2026 Bhutan Fast Rate Tours. Royal Government of Bhutan Tourism License #TR/2018/9882. All rights reserved.</p>
+        <p>&copy; 2026 Bhutan Fast Rate Tours. Royal Government of Bhutan Tourism License <span data-bfr-license>#TR/2018/9882</span>. All rights reserved.</p>
         <div class="flex items-center gap-4">
           <span class="text-emerald-400 font-bold">Carbon Neutral Travel</span>
           <span>•</span>
@@ -242,7 +242,6 @@
     </div>
   </footer>
 
-<script src="js/api-client.js"></script>
 <script>
   // Mobile Menu Toggle
   const btn = document.getElementById('tourMobileBtn');
@@ -251,5 +250,44 @@
     btn.addEventListener('click', () => menu.classList.toggle('hidden'));
   }
 </script>
+
+  <script src="js/api-client.js"></script>
+  <script src="js/site-shell.js"></script>
+  <script>
+
+    (function(){
+      const esc = (v) => (window.SiteShell ? window.SiteShell.escapeHtml(v) : String(v || ''));
+      document.addEventListener('DOMContentLoaded', async () => {
+        if (window.SiteShell) window.SiteShell.init();
+        try {
+          const res = await window.ApiClient.getFestival("festival-paro-tshechu");
+          const fest = res && res.data;
+          if (!fest) return;
+          const h1 = document.querySelector('section h1');
+          if (h1 && fest.name) h1.textContent = fest.name;
+          const sigP = document.querySelector('main h2 + p');
+          if (sigP && fest.summary) sigP.textContent = fest.summary;
+          if (fest.related_tour && fest.related_tour.id) {
+            const card = document.querySelector('main .max-w-4xl');
+            if (card && !card.querySelector('[data-live-fest-book]')) {
+              const bar = document.createElement('div');
+              bar.setAttribute('data-live-fest-book', '1');
+              bar.className = 'mt-6 pt-5 border-t border-zinc-200 flex flex-wrap items-center justify-between gap-4';
+              bar.innerHTML = `
+                <div>
+                  <span class="text-xs font-bold uppercase text-[#E05A47]">LIVE LINKED FESTIVAL PACKAGE</span>
+                  <div class="font-bold text-base text-[#14231E]">${esc(fest.related_tour.title)} · From $${Number(fest.related_tour.price_3star_usd || fest.related_tour.price_usd || 0).toLocaleString('en-US')}</div>
+                </div>
+                <div class="flex gap-2">
+                  <a href="${esc((fest.related_tour.slug && /\.html$/i.test(fest.related_tour.slug)) ? fest.related_tour.slug : ('tour-' + encodeURIComponent(fest.related_tour.slug || fest.related_tour.id) + '.html'))}" class="px-4 py-2.5 rounded-lg border border-zinc-300 text-xs font-bold text-[#14231E]">View Itinerary</a>
+                  <a href="book.html?tour=${encodeURIComponent(fest.related_tour.id)}" class="px-5 py-2.5 rounded-lg bg-[#E05A47] text-white text-xs font-black uppercase">Book Festival Tour →</a>
+                </div>`;
+              card.appendChild(bar);
+            }
+          }
+        } catch (_) {}
+      });
+    })();
+  </script>
 </body>
 </html>

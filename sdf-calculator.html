@@ -189,68 +189,109 @@
             <span id="outGrand" class="text-3xl font-black text-[#E05A47]">$4,280</span>
           </div>
         </div>
-        <a href="contact.html" class="block text-center py-3.5 rounded-lg bg-[#E05A47] text-white font-black text-xs uppercase tracking-wider hover:bg-[#c94937] transition-all">
-          Request Official Invoice &amp; Quote
-        </a>
+        <div class="space-y-3">
+          <a id="sdfReserveBookBtn" href="book.html?custom=1&nights=7&adults=2" class="block text-center py-3.5 rounded-lg bg-[#E05A47] text-white font-black text-xs uppercase tracking-wider hover:bg-[#c94937] transition-all">
+            Reserve Custom Dates →
+          </a>
+          <a id="sdfQuoteContactBtn" href="contact.html?nights=7&adults=2" class="block text-center py-2.5 rounded-lg border border-white/25 text-white font-bold text-xs uppercase tracking-wider hover:bg-white/10 transition-all">
+            Request Specialist Quote →
+          </a>
+        </div>
       </div>
     </div>
   </main>
 
   <script src="js/api-client.js"></script>
+  <script src="js/site-shell.js"></script>
   <script>
-    let liveSettings = {
-      sdf_usd_adult: 100,
-      sdf_inr_adult: 1200,
-      visa_fee_usd: 40,
-      sdf_child_discount_pct: 50
-    };
+    (function () {
+      'use strict';
+      let liveSettings = {
+        sdf_rate_international: 100,
+        sdf_rate_india: 1200,
+        visa_fee_usd: 40,
+        sdf_child_6_12_discount: 0.5,
+        usd_to_inr_rate: 85
+      };
 
-    async function initSettings() {
-      try {
-        const res = await ApiClient.getPublicSettings();
-        if (res.success && res.data) {
-          liveSettings.sdf_usd_adult = Number(res.data.sdf_usd_adult) || 100;
-          liveSettings.sdf_inr_adult = Number(res.data.sdf_inr_adult) || 1200;
-          liveSettings.visa_fee_usd = Number(res.data.visa_fee_usd) || 40;
-          liveSettings.sdf_child_discount_pct = Number(res.data.sdf_child_discount_pct) || 50;
+      async function initSettings() {
+        if (window.SiteShell) window.SiteShell.init();
+        try {
+          const res = await window.ApiClient.getPublicSettings();
+          if (res && res.success && res.data) {
+            const d = res.data;
+            liveSettings.sdf_rate_international = Number(d.sdf_rate_international || 100);
+            liveSettings.sdf_rate_india = Number(d.sdf_rate_india || 1200);
+            liveSettings.visa_fee_usd = Number(d.visa_fee_usd || 40);
+            const disc = Number(d.sdf_child_6_12_discount ?? 0.5);
+            liveSettings.sdf_child_6_12_discount = disc > 1 ? disc / 100 : disc;
+            liveSettings.usd_to_inr_rate = Number(d.usd_to_inr_rate || 85);
 
-          // Update option labels if changed
-          const intOpt = document.querySelector('#calcNation option[value="international"]');
-          if (intOpt) intOpt.innerText = `International Tourist ($${liveSettings.sdf_usd_adult} USD / adult / night)`;
-          const indOpt = document.querySelector('#calcNation option[value="india"]');
-          if (indOpt) indOpt.innerText = `Indian National (₹${liveSettings.sdf_inr_adult.toLocaleString()} INR / adult / night)`;
-        }
-      } catch (e) {
-        console.warn('Using default government rates:', e);
+            const intOpt = document.querySelector('#calcNation option[value="international"]');
+            if (intOpt) intOpt.innerText = `International Tourist ($${liveSettings.sdf_rate_international} USD / adult / night)`;
+            const indOpt = document.querySelector('#calcNation option[value="india"]');
+            if (indOpt) indOpt.innerText = `Indian National (₹${liveSettings.sdf_rate_india.toLocaleString('en-IN')} INR / adult / night)`;
+          }
+        } catch (_) {}
+        updateCalc();
       }
-      updateCalc();
-    }
 
-    function updateCalc() {
-      const isIndia = document.getElementById('calcNation').value === 'india';
-      const nights = parseInt(document.getElementById('calcNights').value) || 1;
-      const adults = parseInt(document.getElementById('calcAdults').value) || 1;
-      const c1 = parseInt(document.getElementById('calcChildren').value) || 0;
+      function syncLinks(nation, nights, adults, c612, cu6) {
+        const resBtn = document.getElementById('sdfReserveBookBtn');
+        const qBtn = document.getElementById('sdfQuoteContactBtn');
+        if (resBtn) {
+          resBtn.href = `book.html?custom=1&nights=${nights}&adults=${adults}&children_6_12=${c612}&children_under_6=${cu6}&nationality=${nation}`;
+        }
+        if (qBtn) {
+          qBtn.href = `contact.html?nights=${nights}&adults=${adults}&children=${c612}&nation=${nation}`;
+        }
+      }
 
-      const rate = isIndia ? liveSettings.sdf_inr_adult : liveSettings.sdf_usd_adult;
-      const cur = isIndia ? '₹' : '$';
-      const childDiscountRatio = (100 - liveSettings.sdf_child_discount_pct) / 100;
-      const sdf = (adults * nights * rate) + (c1 * nights * rate * childDiscountRatio);
-      const visa = isIndia ? 0 : (adults + c1) * liveSettings.visa_fee_usd;
-      const pkg = adults * nights * (isIndia ? 6000 : 200);
+      async function updateCalc() {
+        const nation = document.getElementById('calcNation').value === 'india' ? 'india' : 'international';
+        const nights = Math.max(1, parseInt(document.getElementById('calcNights').value, 10) || 1);
+        const adults = Math.max(1, parseInt(document.getElementById('calcAdults').value, 10) || 1);
+        const c612 = Math.max(0, parseInt(document.getElementById('calcChildren').value, 10) || 0);
+        const cu6 = Math.max(0, parseInt(document.getElementById('calcInfants').value, 10) || 0);
+        syncLinks(nation, nights, adults, c612, cu6);
 
-      document.getElementById('outSdf').innerText = cur + Math.round(sdf).toLocaleString();
-      document.getElementById('outVisa').innerText = cur + Math.round(visa).toLocaleString();
-      document.getElementById('outPackage').innerText = cur + Math.round(pkg).toLocaleString();
-      document.getElementById('outGrand').innerText = cur + Math.round(sdf + visa + pkg).toLocaleString();
-    }
+        try {
+          const q = await window.ApiClient.calculateSDF({
+            nights,
+            adults,
+            children_6_12: c612,
+            children_under_6: cu6,
+            nationality_type: nation,
+            hotel_tier: '3-star'
+          });
+          const cur = q.currency || (nation === 'india' ? 'INR' : 'USD');
+          document.getElementById('outSdf').innerText = window.ApiClient.formatCurrency(q.total_sdf_local, cur);
+          document.getElementById('outVisa').innerText = q.visa_fee_local > 0
+            ? window.ApiClient.formatCurrency(q.visa_fee_local, cur)
+            : (nation === 'india' ? '₹0 (Entry Permit)' : window.ApiClient.formatCurrency(0, cur));
+          document.getElementById('outPackage').innerText = window.ApiClient.formatCurrency(q.package_total_local, cur);
+          document.getElementById('outGrand').innerText = window.ApiClient.formatCurrency(q.total_price_local, cur);
+        } catch (_) {
+          const isIndia = nation === 'india';
+          const rate = isIndia ? liveSettings.sdf_rate_india : liveSettings.sdf_rate_international;
+          const sdf = (adults * nights * rate) + (c612 * nights * rate * (1 - liveSettings.sdf_child_6_12_discount));
+          const visa = isIndia ? 0 : (adults + c612) * liveSettings.visa_fee_usd;
+          const pkg = (adults * nights * (isIndia ? 220 * liveSettings.usd_to_inr_rate : 220));
+          const cur = isIndia ? 'INR' : 'USD';
+          document.getElementById('outSdf').innerText = window.ApiClient.formatCurrency(sdf, cur);
+          document.getElementById('outVisa').innerText = window.ApiClient.formatCurrency(visa, cur);
+          document.getElementById('outPackage').innerText = window.ApiClient.formatCurrency(pkg, cur);
+          document.getElementById('outGrand').innerText = window.ApiClient.formatCurrency(sdf + visa + pkg, cur);
+        }
+      }
 
-    ['calcNation', 'calcNights', 'calcAdults', 'calcChildren', 'calcInfants'].forEach(id => {
-      document.getElementById(id).addEventListener('input', updateCalc);
-    });
+      ['calcNation', 'calcNights', 'calcAdults', 'calcChildren', 'calcInfants'].forEach((id) => {
+        document.getElementById(id)?.addEventListener('input', updateCalc);
+        document.getElementById(id)?.addEventListener('change', updateCalc);
+      });
 
-    document.addEventListener('DOMContentLoaded', initSettings);
-  </script>
+      document.addEventListener('DOMContentLoaded', initSettings);
+    })();
   </script>
   
 
@@ -335,9 +376,7 @@
     </div>
   </footer>
 
-<script src="js/api-client.js"></script>
 <script>
-  // Mobile Menu Toggle
   const btn = document.getElementById('tourMobileBtn');
   const menu = document.getElementById('tourMobileMenu');
   if (btn && menu) {

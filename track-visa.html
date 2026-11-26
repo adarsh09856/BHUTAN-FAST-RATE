@@ -132,91 +132,134 @@
   <main class="py-16 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 flex-1">
     <!-- Lookup Form -->
     <div class="bg-white p-6 sm:p-8 rounded-2xl border border-zinc-200 shadow-sm space-y-4">
-      <form id="trackForm" class="flex flex-wrap sm:flex-nowrap gap-3">
-        <input type="text" id="trackRef" placeholder="Booking Ref (e.g. BFR-2026-8841)" value="BFR-2026-8841" required class="flex-1 px-4 py-3 rounded-lg border border-zinc-300 text-sm font-bold uppercase">
-        <button type="submit" class="w-full sm:w-auto px-6 py-3 rounded-lg bg-[#E05A47] text-white font-black text-xs uppercase tracking-wider hover:bg-[#c94937]">
+      <form id="trackForm" class="grid sm:grid-cols-12 gap-3">
+        <input type="text" id="trackRef" placeholder="Booking Ref (e.g. BFR-2026-XXXX)" required class="sm:col-span-5 px-4 py-3 rounded-lg border border-zinc-300 text-sm font-bold uppercase" style="color-scheme:light;background:#fff;color:#0f172a;">
+        <input type="email" id="trackEmail" placeholder="Lead Email (optional for doc summary)" class="sm:col-span-4 px-4 py-3 rounded-lg border border-zinc-300 text-sm font-medium" style="color-scheme:light;background:#fff;color:#0f172a;">
+        <button type="submit" class="sm:col-span-3 px-6 py-3 rounded-lg bg-[#E05A47] text-white font-black text-xs uppercase tracking-wider hover:bg-[#c94937]">
           Track Status
         </button>
       </form>
-      <div class="flex items-center gap-2 text-xs text-zinc-500">
-        <span>Try verified sample references:</span>
-        <button type="button" onclick="lookupRef('BFR-2026-8841')" class="text-[#E05A47] font-bold underline">BFR-2026-8841</button>
-        <span>•</span>
-        <button type="button" onclick="lookupRef('BFR-2026-8850')" class="text-[#E05A47] font-bold underline">BFR-2026-8850</button>
-      </div>
+      <p class="text-xs text-zinc-500">
+        For guest privacy, public reference lookups display masked status only. Add your lead booking email (or open the <a href="client/login.html" class="text-[#E05A47] font-bold underline">Client Portal</a>) for passport readiness and printable DoI Clearance Letters.
+      </p>
     </div>
 
     <!-- Live Status Result Container -->
     <div id="trackResult" class="mt-8"></div>
   </main>
 
+  <script src="js/api-client.js"></script>
+  <script src="js/site-shell.js"></script>
   <script>
-    function lookupRef(ref) {
-      document.getElementById('trackRef').value = ref;
-      fetchStatus(ref);
-    }
+    (function () {
+      'use strict';
+      const esc = (v) => (window.SiteShell ? window.SiteShell.escapeHtml(v) : String(v || '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c])));
 
-    async function fetchStatus(ref) {
-      const container = document.getElementById('trackResult');
-      container.innerHTML = '<div class="p-8 text-center text-zinc-500 font-bold">Querying Department of Tourism database...</div>';
-      
-      const res = await window.ApiClient.trackBooking(ref);
-      if (res && res.success && res.booking) {
-        const b = res.booking;
-        container.innerHTML = `
-          <div class="bg-white p-8 rounded-2xl border border-zinc-200 shadow-md space-y-6">
-            <div class="flex flex-wrap justify-between items-start gap-4 pb-6 border-b border-zinc-200">
-              <div>
-                <span class="px-2.5 py-0.5 rounded bg-emerald-100 text-emerald-800 font-bold text-xs uppercase">${b.booking_status.replace(/_/g, ' ').toUpperCase()}</span>
-                <h2 class="text-2xl font-black text-[#14231E] mt-2">${b.tour_title}</h2>
-                <p class="text-xs text-zinc-500 mt-1">Lead Traveler: <strong>${b.lead_name}</strong> • Dates: <strong>${b.travel_dates}</strong></p>
-              </div>
-              <div class="text-right">
-                <span class="text-xs text-zinc-400">Total Package</span>
-                <div class="text-2xl font-black text-[#E05A47]">$${b.total_price_usd.toLocaleString()}</div>
-                <span class="text-xs text-emerald-600 font-bold">${b.payment_status}</span>
-              </div>
-            </div>
+      const STEPS = [
+        { key: 'pending_docs', label: 'Awaiting Scans' },
+        { key: 'documents_complete', label: 'Docs Complete' },
+        { key: 'submitted_to_doi', label: 'Submitted to DoI' },
+        { key: 'under_review', label: 'DoI Review' },
+        { key: 'approved', label: 'Visa Cleared' }
+      ];
 
-            <!-- Visa Status Box -->
-            <div class="p-6 rounded-xl bg-orange-50 border border-orange-200 space-y-2">
-              <div class="flex items-center justify-between">
-                <span class="text-xs font-bold uppercase text-[#E05A47]">BHUTAN IMMIGRATION VISA STATUS</span>
-                <span class="font-black text-sm text-[#14231E]">${b.visa_status.toUpperCase()}</span>
-              </div>
-              ${b.visa_clearance_number ? `
-                <div class="text-xs text-zinc-700">Official Visa Clearance Number: <strong class="text-emerald-700 text-sm font-mono">${b.visa_clearance_number}</strong></div>
-                <div class="text-[11px] text-zinc-500">Cleared for entry via Paro International Airport (PBH). Letter active in immigration border system.</div>
-              ` : '<p class="text-xs text-zinc-600">Application received. Waiting for document verification from concierge.</p>'}
-            </div>
-
-            ${b.guide ? `
-              <div class="flex items-center justify-between text-xs p-4 rounded-xl bg-zinc-50 border border-zinc-200">
-                <div>
-                  <strong>Assigned Senior Guide:</strong> ${b.guide.name} (${b.guide.phone})
-                </div>
-                <div>
-                  <strong>Vehicle:</strong> ${b.guide.vehicle || 'Toyota Luxury Coaster'}
-                </div>
-              </div>
-            ` : ''}
-          </div>
-        `;
-      } else {
-        container.innerHTML = '<div class="p-8 text-center text-red-600 bg-red-50 rounded-2xl border border-red-200 font-bold">Booking reference not found. Please double-check your code.</div>';
+      function stepIndexFor(visaStatus) {
+        const s = String(visaStatus || 'pending_docs').toLowerCase();
+        if (s === 'approved' || s === 'clearance_letter_issued') return 4;
+        if (s === 'under_review') return 3;
+        if (s === 'submitted_to_doi') return 2;
+        if (s === 'documents_complete' || s === 'docs_received' || s === 'payment_verified') return 1;
+        return 0;
       }
-    }
 
-    document.getElementById('trackForm').addEventListener('submit', (e) => {
-      e.preventDefault();
-      fetchStatus(document.getElementById('trackRef').value);
-    });
+      async function fetchStatus(ref, email) {
+        const container = document.getElementById('trackResult');
+        if (!ref || !container) return;
+        container.innerHTML = '<div class="p-8 text-center text-zinc-500 font-bold bg-white rounded-2xl border border-zinc-200">Querying Bhutan Fast Rate Tours Visa Desk…</div>';
 
-    // Check URL parameters or default
-    const urlParams = new URLSearchParams(window.location.search);
-    const initialRef = urlParams.get('ref') || 'BFR-2026-8841';
-    document.getElementById('trackRef').value = initialRef;
-    fetchStatus(initialRef);
+        try {
+          const res = await window.ApiClient.trackBooking(ref.trim(), (email || '').trim() || undefined);
+          const b = (res && (res.booking || res.data)) || null;
+          if (!res || !res.success || !b) {
+            container.innerHTML = '<div class="p-8 text-center text-red-700 bg-red-50 rounded-2xl border border-red-200 font-bold">Booking reference not found. Please verify your BFR-YYYY-XXXX code.</div>';
+            return;
+          }
+
+          const activeStep = stepIndexFor(b.visa_status);
+          const isRejected = String(b.visa_status || '').toLowerCase() === 'rejected';
+          const portalHref = `client/login.html?ref=${encodeURIComponent(b.id)}${email ? `&email=${encodeURIComponent(email.trim())}` : ''}`;
+
+          container.innerHTML = `
+            <div class="bg-white p-8 rounded-2xl border border-zinc-200 shadow-md space-y-6">
+              <div class="flex flex-wrap justify-between items-start gap-4 pb-6 border-b border-zinc-200">
+                <div>
+                  <span class="px-2.5 py-0.5 rounded bg-emerald-100 text-emerald-800 font-bold text-xs uppercase">${esc(String(b.booking_status || 'pending').replace(/_/g, ' ').toUpperCase())}</span>
+                  <h2 class="text-2xl font-black text-[#14231E] mt-2">${esc(b.tour_title || b.id)}</h2>
+                  <p class="text-xs text-zinc-500 mt-1">
+                    Reference: <strong>${esc(b.id)}</strong> • Travel Dates: <strong>${esc(b.travel_dates || `${b.travel_date_start || 'TBD'} → ${b.travel_date_end || 'TBD'}`)}</strong>
+                    ${b.lead_name ? ` • Lead: <strong>${esc(b.lead_name)}</strong>` : ''}
+                  </p>
+                </div>
+                <div class="text-right">
+                  <span class="text-xs text-zinc-400">Travelers</span>
+                  <div class="text-xl font-black text-[#14231E]">${Number(b.total_travelers || 1)} Guest(s)</div>
+                  <span class="text-xs font-bold text-[#E05A47]">${b.nationality_type === 'india' ? 'Regional Entry Permit' : 'DoI e-Visa Track'}</span>
+                </div>
+              </div>
+
+              <!-- Progress Stepper -->
+              <div class="grid grid-cols-2 sm:grid-cols-5 gap-2">
+                ${STEPS.map((st, idx) => `
+                  <div class="p-3 rounded-xl border text-center ${idx <= activeStep && !isRejected ? 'bg-[#14231E] text-white border-[#14231E]' : 'bg-zinc-50 text-zinc-500 border-zinc-200'}">
+                    <div class="text-[10px] font-black uppercase">Step ${idx + 1}</div>
+                    <div class="text-xs font-bold mt-0.5">${esc(st.label)}</div>
+                  </div>
+                `).join('')}
+              </div>
+
+              <!-- Visa Status Box -->
+              <div class="p-6 rounded-xl ${isRejected ? 'bg-red-50 border-red-200' : 'bg-orange-50 border-orange-200'} border space-y-2">
+                <div class="flex items-center justify-between">
+                  <span class="text-xs font-bold uppercase text-[#E05A47]">BHUTAN IMMIGRATION VISA / PERMIT STATUS</span>
+                  <span class="font-black text-sm text-[#14231E]">${esc(String(b.visa_status || 'pending_docs').replace(/_/g, ' ').toUpperCase())}</span>
+                </div>
+                ${b.visa_clearance_number ? `<div class="text-xs text-zinc-700">Official Clearance Number: <strong class="text-emerald-700 text-sm font-mono">${esc(b.visa_clearance_number)}</strong></div>` : ''}
+                ${b.doc_readiness ? `<div class="text-xs text-zinc-700">Passport / Permit Readiness: <strong>${Number(b.doc_readiness.ready_count || 0)} / ${Number(b.doc_readiness.total_count || b.total_travelers || 1)} travelers cleared</strong> (${b.full_paid ? '100% Settled' : 'Payment balance open'})</div>` : ''}
+                ${isRejected && b.visa_rejection_reason ? `<div class="text-xs text-red-700 font-bold">Rejection Note: ${esc(b.visa_rejection_reason)}</div>` : ''}
+              </div>
+
+              <div class="flex flex-wrap gap-3">
+                <a href="${esc(portalHref)}" class="inline-flex items-center px-5 py-2.5 rounded-lg bg-[#E05A47] hover:bg-[#c94937] text-white font-bold text-xs uppercase tracking-wider">
+                  Open Client Portal (Upload Docs &amp; Download Clearance) →
+                </a>
+                <a href="book.html" class="inline-flex items-center px-4 py-2.5 rounded-lg border border-zinc-300 text-zinc-700 font-bold text-xs uppercase tracking-wider hover:bg-zinc-50">
+                  Book New Journey
+                </a>
+              </div>
+            </div>
+          `;
+        } catch (err) {
+          container.innerHTML = `<div class="p-8 text-center text-red-700 bg-red-50 rounded-2xl border border-red-200 font-bold">${esc(err.message || 'Unable to verify reference right now.')}</div>`;
+        }
+      }
+
+      document.addEventListener('DOMContentLoaded', () => {
+        if (window.SiteShell) window.SiteShell.init();
+        const form = document.getElementById('trackForm');
+        form?.addEventListener('submit', (e) => {
+          e.preventDefault();
+          fetchStatus(document.getElementById('trackRef').value, document.getElementById('trackEmail').value);
+        });
+        const sp = new URLSearchParams(window.location.search);
+        const refParam = sp.get('ref');
+        const emailParam = sp.get('email');
+        if (refParam) {
+          document.getElementById('trackRef').value = refParam;
+          if (emailParam) document.getElementById('trackEmail').value = emailParam;
+          fetchStatus(refParam, emailParam || '');
+        }
+      });
+    })();
   </script>
   
 
@@ -301,9 +344,7 @@
     </div>
   </footer>
 
-<script src="js/api-client.js"></script>
 <script>
-  // Mobile Menu Toggle
   const btn = document.getElementById('tourMobileBtn');
   const menu = document.getElementById('tourMobileMenu');
   if (btn && menu) {

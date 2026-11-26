@@ -121,33 +121,19 @@
 
   <section class="bg-[#14231E] text-white py-14 border-b border-white/10 text-center">
     <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-      <span class="px-2.5 py-0.5 rounded bg-amber-400 text-black font-black text-[10px] uppercase">5.0 / 5.0 RATING ON TRIPADVISOR</span>
+      <span id="reviewsBadge" class="px-2.5 py-0.5 rounded bg-amber-400 text-black font-black text-[10px] uppercase">VERIFIED GUEST RATINGS</span>
       <h1 class="text-3xl sm:text-4xl font-extrabold mt-3">Verified Traveler Reviews</h1>
-      <p class="text-xs sm:text-sm text-zinc-300 mt-2">Real testimonials from guests who experienced Bhutan with our certified guides.</p>
+      <p class="text-xs sm:text-sm text-zinc-300 mt-2">Real published testimonials moderated and verified against completed Bhutan bookings.</p>
+      <div class="mt-5">
+        <a href="client/login.html" class="inline-flex items-center px-5 py-2.5 rounded-lg bg-[#E05A47] hover:bg-[#c94937] text-white text-xs font-bold uppercase tracking-wider">
+          Completed a Trip? Submit Verified Review →
+        </a>
+      </div>
     </div>
   </section>
 
-  <main class="py-16 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 flex-1 space-y-6">
-    <div class="bg-white p-8 rounded-2xl border border-zinc-200 shadow-sm space-y-3">
-      <div class="flex items-center justify-between">
-        <div>
-          <h3 class="font-bold text-base text-[#14231E]">Dr. Michael Chen (Canada)</h3>
-          <p class="text-xs text-zinc-500">Essential Bhutan Heritage &amp; Tiger’s Nest</p>
-        </div>
-        <span class="text-amber-500 text-lg">★★★★★</span>
-      </div>
-      <p class="text-sm text-zinc-600 leading-relaxed">"From the minute we landed in Paro, Bhutan Fast Rate Tours took care of everything. Our guide Kinley was a treasure trove of Buddhist philosophy and local folklore. The hike to Tiger’s Nest was the highlight of my traveling life."</p>
-    </div>
-    <div class="bg-white p-8 rounded-2xl border border-zinc-200 shadow-sm space-y-3">
-      <div class="flex items-center justify-between">
-        <div>
-          <h3 class="font-bold text-base text-[#14231E]">Sarah &amp; Liam O’Connor (Ireland)</h3>
-          <p class="text-xs text-zinc-500">Druk Path High Alpine Wilderness Trek</p>
-        </div>
-        <span class="text-amber-500 text-lg">★★★★★</span>
-      </div>
-      <p class="text-sm text-zinc-600 leading-relaxed">"Camping next to Jimilangtsho lake at almost 4,000m with mountain mist rising over crystal waters is unforgettable. The cook whipped up delicious 3-course warm meals in freezing temperatures. 10/10 service!"</p>
-    </div>
+  <main id="reviewsContainer" class="py-16 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 flex-1 space-y-6">
+    <div class="bg-white p-8 rounded-2xl border border-zinc-200 text-center text-sm text-zinc-500">Loading verified guest reviews…</div>
   </main>
   
 
@@ -233,13 +219,44 @@
   </footer>
 
 <script src="js/api-client.js"></script>
+<script src="js/site-shell.js"></script>
 <script>
-  // Mobile Menu Toggle
+  const esc = (v) => (window.SiteShell ? window.SiteShell.escapeHtml(v) : String(v || '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c])));
   const btn = document.getElementById('tourMobileBtn');
   const menu = document.getElementById('tourMobileMenu');
-  if (btn && menu) {
-    btn.addEventListener('click', () => menu.classList.toggle('hidden'));
-  }
+  if (btn && menu) btn.addEventListener('click', () => menu.classList.toggle('hidden'));
+
+  document.addEventListener('DOMContentLoaded', async () => {
+    if (window.SiteShell) window.SiteShell.init();
+    const box = document.getElementById('reviewsContainer');
+    const badge = document.getElementById('reviewsBadge');
+    try {
+      const res = await window.ApiClient.getReviews();
+      const rows = (res && res.data) || [];
+      const avg = Number((res && res.average_rating) || 4.9).toFixed(1);
+      if (badge) badge.textContent = `★ ${avg} / 5.0 · ${rows.length} VERIFIED REVIEWS`;
+      if (!rows.length) {
+        box.innerHTML = '<div class="bg-white p-8 rounded-2xl border border-zinc-200 text-center text-sm text-zinc-500">No published reviews yet.</div>';
+        return;
+      }
+      box.innerHTML = rows.map((r) => `
+        <article class="bg-white p-8 rounded-2xl border border-zinc-200 shadow-sm space-y-3">
+          <div class="flex flex-wrap items-center justify-between gap-2">
+            <div>
+              <h3 class="font-bold text-base text-[#14231E]">${esc(r.author_name || 'Verified Traveler')}${r.author_country ? ` (${esc(r.author_country)})` : ''}</h3>
+              <p class="text-xs text-zinc-500">${esc(r.tour_taken || 'Bhutan Expedition')}${r.travel_month ? ` · ${esc(r.travel_month)}` : ''}</p>
+            </div>
+            <span class="text-amber-500 text-lg">${'★'.repeat(Math.max(1, Math.min(5, Number(r.rating) || 5)))}</span>
+          </div>
+          ${r.title ? `<h4 class="font-bold text-sm text-[#14231E]">${esc(r.title)}</h4>` : ''}
+          <p class="text-sm text-zinc-600 leading-relaxed">“${esc(r.comment || '')}”</p>
+          ${r.admin_response ? `<div class="mt-3 p-4 rounded-xl bg-[#F8FAF9] border border-zinc-200 text-xs text-zinc-700"><strong class="text-[#14231E]">Bhutan Fast Rate Tours Response:</strong> ${esc(r.admin_response)}</div>` : ''}
+        </article>
+      `).join('');
+    } catch (err) {
+      if (box) box.innerHTML = `<div class="bg-red-50 border border-red-200 text-red-700 p-6 rounded-2xl text-sm font-bold">${esc(err.message || 'Could not load reviews.')}</div>`;
+    }
+  });
 </script>
 </body>
 </html>

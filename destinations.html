@@ -41,7 +41,7 @@
   <div class="bg-[#0B2A22] text-white text-[12px] sm:text-[13px] border-b border-[#123A30]">
     <div class="max-w-[1360px] mx-auto px-4 sm:px-6 py-2.5 flex flex-wrap gap-x-6 gap-y-1 justify-between items-center">
       <span class="font-semibold flex items-center gap-1.5">
-        <span class="text-[#E4C87E]">✓</span> SDF fee included · Licensed Bhutan operator #BT-8842
+        <span class="text-[#E4C87E]">✓</span> SDF fee included · Licensed Bhutan operator <span data-bfr-license>#TR/2018/9882</span>
       </span>
       <span class="hidden md:flex items-center gap-4 text-white/80">
         <span>USD & INR Accepted</span>
@@ -387,7 +387,7 @@
             The Kingdom of Bhutan’s trusted luxury & bespoke tour operator. Full SDF management, direct Drukair airline bookings, and licensed local cultural guides.
           </p>
           <div class="mt-6 flex items-center gap-3 text-xs text-[#E4C87E] font-semibold bg-white/5 border border-white/10 px-4 py-2.5 rounded-2xl w-fit">
-            <span>🇧🇹 Licensed by Department of Tourism · License #BT-8842</span>
+            <span>🇧🇹 Licensed by Department of Tourism · License <span data-bfr-license>#TR/2018/9882</span></span>
           </div>
         </div>
 
@@ -445,6 +445,40 @@
     mobileDrawer?.addEventListener('click', (e) => {
       if (e.target === mobileDrawer) mobileDrawer.classList.add('hidden');
     });
+  </script>
+
+  <script src="js/api-client.js"></script>
+  <script src="js/site-shell.js"></script>
+  <script>
+
+    (function(){
+      const esc = (v) => (window.SiteShell ? window.SiteShell.escapeHtml(v) : String(v || ''));
+      document.addEventListener('DOMContentLoaded', async () => {
+        if (window.SiteShell) window.SiteShell.init();
+        try {
+          const res = await window.ApiClient.getDestinations();
+          const dests = (res && res.data) || [];
+          const main = document.querySelector('main');
+          if (main && dests.length > 0 && !document.getElementById('liveDestDirectory')) {
+            const sec = document.createElement('div');
+            sec.id = 'liveDestDirectory';
+            sec.className = 'bg-white rounded-3xl p-6 sm:p-8 border border-[#E7DCC4] shadow-sm';
+            sec.innerHTML = `
+              <span class="text-xs font-extrabold text-[#C9A24B] uppercase tracking-wider">LIVE DIRECTORY FROM PARO DESK</span>
+              <h3 class="font-serif text-2xl font-bold text-[#0B2A22] mt-1 mb-5">Active Bhutan Destinations (${dests.length})</h3>
+              <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                ${dests.map(d => `
+                  <a href="${esc((d.slug && /\.html$/i.test(d.slug)) ? d.slug : ('destination-' + encodeURIComponent(d.slug || d.id) + '.html'))}" class="block p-4 rounded-2xl bg-[#FFF8EC] border border-[#E7DCC4] hover:border-[#0B2A22] transition">
+                    <div class="font-serif text-lg font-bold text-[#0B2A22]">${esc(d.name)}</div>
+                    <div class="text-xs text-[#C9A24B] font-bold mt-0.5">${esc(d.best_months || d.tagline || '')}</div>
+                    <p class="text-xs text-[#66706A] mt-1.5">${esc(d.tagline || d.description || '')}</p>
+                  </a>`).join('')}
+              </div>`;
+            main.appendChild(sec);
+          }
+        } catch (_) {}
+      });
+    })();
   </script>
 </body>
 </html>

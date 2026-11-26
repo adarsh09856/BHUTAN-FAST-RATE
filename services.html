@@ -180,27 +180,27 @@
             <div class="bg-[#FFF8EC] p-4 rounded-2xl border border-[#E7DCC4]">
               <label class="block text-xs font-bold text-[#0B2A22] mb-1">Nights in Bhutan</label>
               <div class="flex items-center justify-between mt-2">
-                <button type="button" onclick="adjustCount('nights', -1)" class="w-8 h-8 rounded-full bg-white border border-[#E7DCC4] text-[#0B2A22] font-bold text-base hover:bg-[#F7EDD8]">−</button>
+                <button type="button" data-adjust="nights:-1" class="w-8 h-8 rounded-full bg-white border border-[#E7DCC4] text-[#0B2A22] font-bold text-base hover:bg-[#F7EDD8]">−</button>
                 <span id="nightsVal" class="font-serif text-xl font-bold text-[#0B2A22]">6</span>
-                <button type="button" onclick="adjustCount('nights', 1)" class="w-8 h-8 rounded-full bg-white border border-[#E7DCC4] text-[#0B2A22] font-bold text-base hover:bg-[#F7EDD8]">+</button>
+                <button type="button" data-adjust="nights:1" class="w-8 h-8 rounded-full bg-white border border-[#E7DCC4] text-[#0B2A22] font-bold text-base hover:bg-[#F7EDD8]">+</button>
               </div>
             </div>
 
             <div class="bg-[#FFF8EC] p-4 rounded-2xl border border-[#E7DCC4]">
-              <label class="block text-xs font-bold text-[#0B2A22] mb-1">Adults (12+ yrs)</label>
+              <label class="block text-xs font-bold text-[#0B2A22] mb-1">Adults (13+ yrs)</label>
               <div class="flex items-center justify-between mt-2">
-                <button type="button" onclick="adjustCount('adults', -1)" class="w-8 h-8 rounded-full bg-white border border-[#E7DCC4] text-[#0B2A22] font-bold text-base hover:bg-[#F7EDD8]">−</button>
+                <button type="button" data-adjust="adults:-1" class="w-8 h-8 rounded-full bg-white border border-[#E7DCC4] text-[#0B2A22] font-bold text-base hover:bg-[#F7EDD8]">−</button>
                 <span id="adultsVal" class="font-serif text-xl font-bold text-[#0B2A22]">2</span>
-                <button type="button" onclick="adjustCount('adults', 1)" class="w-8 h-8 rounded-full bg-white border border-[#E7DCC4] text-[#0B2A22] font-bold text-base hover:bg-[#F7EDD8]">+</button>
+                <button type="button" data-adjust="adults:1" class="w-8 h-8 rounded-full bg-white border border-[#E7DCC4] text-[#0B2A22] font-bold text-base hover:bg-[#F7EDD8]">+</button>
               </div>
             </div>
 
             <div class="bg-[#FFF8EC] p-4 rounded-2xl border border-[#E7DCC4]">
               <label class="block text-xs font-bold text-[#0B2A22] mb-1">Children (6–12 yrs, 50%)</label>
               <div class="flex items-center justify-between mt-2">
-                <button type="button" onclick="adjustCount('children', -1)" class="w-8 h-8 rounded-full bg-white border border-[#E7DCC4] text-[#0B2A22] font-bold text-base hover:bg-[#F7EDD8]">−</button>
+                <button type="button" data-adjust="children:-1" class="w-8 h-8 rounded-full bg-white border border-[#E7DCC4] text-[#0B2A22] font-bold text-base hover:bg-[#F7EDD8]">−</button>
                 <span id="childrenVal" class="font-serif text-xl font-bold text-[#0B2A22]">0</span>
-                <button type="button" onclick="adjustCount('children', 1)" class="w-8 h-8 rounded-full bg-white border border-[#E7DCC4] text-[#0B2A22] font-bold text-base hover:bg-[#F7EDD8]">+</button>
+                <button type="button" data-adjust="children:1" class="w-8 h-8 rounded-full bg-white border border-[#E7DCC4] text-[#0B2A22] font-bold text-base hover:bg-[#F7EDD8]">+</button>
               </div>
             </div>
           </div>
@@ -240,11 +240,14 @@
           </div>
 
           <div class="mt-8 space-y-3">
-            <a href="contact.html" class="block w-full text-center py-3.5 rounded-full font-bold bg-[#C9A24B] hover:bg-[#E4C87E] text-[#0B2A22] text-sm shadow-sm transition">
-              Inquire With This Estimate
+            <a id="svcReserveBookBtn" href="book.html?custom=1&nights=6&adults=2" class="block w-full text-center py-3.5 rounded-full font-bold bg-[#C9A24B] hover:bg-[#E4C87E] text-[#0B2A22] text-sm shadow-sm transition">
+              Reserve Custom Dates →
+            </a>
+            <a id="svcQuoteContactBtn" href="contact.html?nights=6&adults=2" class="block w-full text-center py-2.5 rounded-full border border-white/25 text-white hover:bg-white/10 font-bold text-xs transition">
+              Request Specialist Quote →
             </a>
             <p class="text-[11px] text-white/50 text-center">
-              No deposit required to check flight availability and lodge openings.
+              Authoritative USD &amp; INR SDF quotes · No deposit to inspect schedules.
             </p>
           </div>
         </div>
@@ -341,7 +344,7 @@
             The Kingdom of Bhutan’s trusted luxury & bespoke tour operator. Full SDF management, direct Drukair airline bookings, and licensed local cultural guides.
           </p>
           <div class="mt-6 flex items-center gap-3 text-xs text-[#E4C87E] font-semibold bg-white/5 border border-white/10 px-4 py-2.5 rounded-2xl w-fit">
-            <span>🇧🇹 Licensed by Department of Tourism · License #BT-8842</span>
+            <span>🇧🇹 Licensed by Department of Tourism · License <span data-bfr-license>#TR/2018/9882</span></span>
           </div>
         </div>
 
@@ -390,84 +393,91 @@
     </div>
   </footer>
 
+  <script src="js/api-client.js"></script>
+  <script src="js/site-shell.js"></script>
   <script>
-    // State for calculator
-    let guestType = 'international';
-    let nights = 6;
-    let adults = 2;
-    let children = 0;
+    (function () {
+      'use strict';
+      let guestType = 'international';
+      let nights = 6;
+      let adults = 2;
+      let children = 0;
 
-    function updateCalc() {
-      document.getElementById('nightsVal').innerText = nights;
-      document.getElementById('adultsVal').innerText = adults;
-      document.getElementById('childrenVal').innerText = children;
-
-      if (guestType === 'international') {
-        const adultSdf = adults * nights * 100;
-        const childSdf = children * nights * 50;
-        const totalSdf = adultSdf + childSdf;
-        const totalVisa = (adults + children) * 40;
-        const tourServices = (adults * nights * 195) + (children * nights * 90);
-        const grandTotal = totalSdf + totalVisa + tourServices;
-
-        document.getElementById('sdfTotal').innerText = '$' + totalSdf.toLocaleString() + ' USD';
-        document.getElementById('visaTotal').innerText = '$' + totalVisa.toLocaleString() + ' USD';
-        document.getElementById('tourTotal').innerText = '$' + tourServices.toLocaleString() + ' USD';
-        document.getElementById('grandTotal').innerText = '$' + grandTotal.toLocaleString() + ' USD';
-      } else {
-        const adultSdf = adults * nights * 1200;
-        const childSdf = children * nights * 600;
-        const totalSdf = adultSdf + childSdf;
-        const totalVisa = 0; // Regional exempt
-        const tourServices = (adults * nights * 6500) + (children * nights * 3000);
-        const grandTotal = totalSdf + totalVisa + tourServices;
-
-        document.getElementById('sdfTotal').innerText = '₹' + totalSdf.toLocaleString() + ' INR';
-        document.getElementById('visaTotal').innerText = '₹0 (Entry Permit)';
-        document.getElementById('tourTotal').innerText = '₹' + tourServices.toLocaleString() + ' INR';
-        document.getElementById('grandTotal').innerText = '₹' + grandTotal.toLocaleString() + ' INR';
+      function syncServiceLinks() {
+        const resBtn = document.getElementById('svcReserveBookBtn');
+        const qBtn = document.getElementById('svcQuoteContactBtn');
+        if (resBtn) resBtn.href = `book.html?custom=1&nights=${nights}&adults=${adults}&children_6_12=${children}&nationality=${guestType}`;
+        if (qBtn) qBtn.href = `contact.html?nights=${nights}&adults=${adults}&children=${children}&nation=${guestType}`;
       }
-    }
 
-    function adjustCount(field, delta) {
-      if (field === 'nights') nights = Math.max(1, Math.min(30, nights + delta));
-      if (field === 'adults') adults = Math.max(1, Math.min(20, adults + delta));
-      if (field === 'children') children = Math.max(0, Math.min(10, children + delta));
-      updateCalc();
-    }
+      async function updateCalc() {
+        document.getElementById('nightsVal').innerText = nights;
+        document.getElementById('adultsVal').innerText = adults;
+        document.getElementById('childrenVal').innerText = children;
+        syncServiceLinks();
 
-    const typeIntBtn = document.getElementById('typeInternational');
-    const typeRegBtn = document.getElementById('typeRegional');
+        try {
+          const q = await window.ApiClient.calculateSDF({
+            nights,
+            adults,
+            children_6_12: children,
+            children_under_6: 0,
+            nationality_type: guestType,
+            hotel_tier: '3-star'
+          });
+          const cur = q.currency || (guestType === 'india' ? 'INR' : 'USD');
+          document.getElementById('sdfTotal').innerText = `${window.ApiClient.formatCurrency(q.total_sdf_local, cur)} ${cur}`;
+          document.getElementById('visaTotal').innerText = q.visa_fee_local > 0
+            ? `${window.ApiClient.formatCurrency(q.visa_fee_local, cur)} ${cur}`
+            : '₹0 (Entry Permit)';
+          document.getElementById('tourTotal').innerText = `${window.ApiClient.formatCurrency(q.package_total_local, cur)} ${cur}`;
+          document.getElementById('grandTotal').innerText = `${window.ApiClient.formatCurrency(q.total_price_local, cur)} ${cur}`;
+        } catch (_) {}
+      }
 
-    typeIntBtn.addEventListener('click', () => {
-      guestType = 'international';
-      typeIntBtn.classList.add('bg-[#0B2A22]', 'text-white', 'border-[#0B2A22]');
-      typeIntBtn.classList.remove('bg-[#FFF8EC]', 'text-[#101613]', 'border-[#E7DCC4]');
-      typeRegBtn.classList.remove('bg-[#0B2A22]', 'text-white', 'border-[#0B2A22]');
-      typeRegBtn.classList.add('bg-[#FFF8EC]', 'text-[#101613]', 'border-[#E7DCC4]');
-      updateCalc();
-    });
+      document.querySelectorAll('[data-adjust]').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          const [field, deltaStr] = btn.getAttribute('data-adjust').split(':');
+          const delta = Number(deltaStr) || 0;
+          if (field === 'nights') nights = Math.max(1, Math.min(30, nights + delta));
+          if (field === 'adults') adults = Math.max(1, Math.min(20, adults + delta));
+          if (field === 'children') children = Math.max(0, Math.min(10, children + delta));
+          updateCalc();
+        });
+      });
 
-    typeRegBtn.addEventListener('click', () => {
-      guestType = 'regional';
-      typeRegBtn.classList.add('bg-[#0B2A22]', 'text-white', 'border-[#0B2A22]');
-      typeRegBtn.classList.remove('bg-[#FFF8EC]', 'text-[#101613]', 'border-[#E7DCC4]');
-      typeIntBtn.classList.remove('bg-[#0B2A22]', 'text-white', 'border-[#0B2A22]');
-      typeIntBtn.classList.add('bg-[#FFF8EC]', 'text-[#101613]', 'border-[#E7DCC4]');
-      updateCalc();
-    });
+      const typeIntBtn = document.getElementById('typeInternational');
+      const typeRegBtn = document.getElementById('typeRegional');
 
-    // Mobile Drawer Toggle
-    const mobileMenuBtn = document.getElementById('mobileMenuBtn');
-    const closeDrawerBtn = document.getElementById('closeDrawerBtn');
-    const mobileDrawer = document.getElementById('mobileDrawer');
-    mobileMenuBtn?.addEventListener('click', () => mobileDrawer.classList.remove('hidden'));
-    closeDrawerBtn?.addEventListener('click', () => mobileDrawer.classList.add('hidden'));
-    mobileDrawer?.addEventListener('click', (e) => {
-      if (e.target === mobileDrawer) mobileDrawer.classList.add('hidden');
-    });
+      typeIntBtn?.addEventListener('click', () => {
+        guestType = 'international';
+        typeIntBtn.classList.add('bg-[#0B2A22]', 'text-white', 'border-[#0B2A22]');
+        typeIntBtn.classList.remove('bg-[#FFF8EC]', 'text-[#101613]', 'border-[#E7DCC4]');
+        typeRegBtn.classList.remove('bg-[#0B2A22]', 'text-white', 'border-[#0B2A22]');
+        typeRegBtn.classList.add('bg-[#FFF8EC]', 'text-[#101613]', 'border-[#E7DCC4]');
+        updateCalc();
+      });
 
-    updateCalc();
+      typeRegBtn?.addEventListener('click', () => {
+        guestType = 'india';
+        typeRegBtn.classList.add('bg-[#0B2A22]', 'text-white', 'border-[#0B2A22]');
+        typeRegBtn.classList.remove('bg-[#FFF8EC]', 'text-[#101613]', 'border-[#E7DCC4]');
+        typeIntBtn.classList.remove('bg-[#0B2A22]', 'text-white', 'border-[#0B2A22]');
+        typeIntBtn.classList.add('bg-[#FFF8EC]', 'text-[#101613]', 'border-[#E7DCC4]');
+        updateCalc();
+      });
+
+      document.getElementById('mobileMenuBtn')?.addEventListener('click', () => document.getElementById('mobileDrawer')?.classList.remove('hidden'));
+      document.getElementById('closeDrawerBtn')?.addEventListener('click', () => document.getElementById('mobileDrawer')?.classList.add('hidden'));
+      document.getElementById('mobileDrawer')?.addEventListener('click', (e) => {
+        if (e.target.id === 'mobileDrawer') document.getElementById('mobileDrawer').classList.add('hidden');
+      });
+
+      document.addEventListener('DOMContentLoaded', () => {
+        if (window.SiteShell) window.SiteShell.init();
+        updateCalc();
+      });
+    })();
   </script>
 </body>
 </html>

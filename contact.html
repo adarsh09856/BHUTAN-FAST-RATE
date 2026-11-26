@@ -249,12 +249,20 @@
             <textarea id="custNotes" rows="3" placeholder="Tell us if you need international Drukair flights, special dietary requirements, or specific dates..." class="w-full px-4 py-3 rounded-xl border border-[#E7DCC4] bg-[#FFF8EC]/40 text-sm focus:outline-none focus:ring-2 focus:ring-[#C9A24B]"></textarea>
           </div>
 
-          <div id="submitSuccessMsg" class="hidden p-4 rounded-2xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs sm:text-sm font-semibold flex items-center gap-3">
-            <span class="text-xl">✅</span>
-            <span>Kadrinchey la! Your custom inquiry has been received. Our Paro team will review and reply within 2 hours with your itinerary proposal.</span>
+          <div id="submitErrorMsg" class="hidden p-4 rounded-2xl bg-red-50 border border-red-200 text-red-800 text-xs sm:text-sm font-semibold"></div>
+
+          <div id="submitSuccessMsg" class="hidden p-4 rounded-2xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs sm:text-sm font-semibold space-y-2">
+            <div class="flex items-center gap-2">
+              <span class="text-xl">✅</span>
+              <span id="submitSuccessText">Kadrinchey la! Your custom inquiry has been received.</span>
+            </div>
+            <div class="flex flex-wrap gap-3 pt-1">
+              <a id="submitWaLink" href="https://wa.me/97517654321" target="_blank" rel="noopener noreferrer" class="inline-flex items-center px-4 py-2 rounded-full bg-emerald-600 text-white text-xs font-bold hover:bg-emerald-700">Continue on WhatsApp Desk →</a>
+              <a href="book.html?custom=1" class="inline-flex items-center px-4 py-2 rounded-full bg-[#0B2A22] text-white text-xs font-bold hover:bg-[#123A30]">Or Reserve Dates Online →</a>
+            </div>
           </div>
 
-          <button type="submit" class="w-full py-4 rounded-full font-bold bg-[#C9A24B] hover:bg-[#E4C87E] text-[#0B2A22] text-sm sm:text-base shadow-md transition transform active:scale-[0.99]">
+          <button id="inquirySubmitBtn" type="submit" class="w-full py-4 rounded-full font-bold bg-[#C9A24B] hover:bg-[#E4C87E] text-[#0B2A22] text-sm sm:text-base shadow-md transition transform active:scale-[0.99]">
             Submit Custom Itinerary Request →
           </button>
           <p class="text-[11px] text-[#66706A] text-center">
@@ -375,7 +383,7 @@
             The Kingdom of Bhutan’s trusted luxury & bespoke tour operator. Full SDF management, direct Drukair airline bookings, and licensed local cultural guides.
           </p>
           <div class="mt-6 flex items-center gap-3 text-xs text-[#E4C87E] font-semibold bg-white/5 border border-white/10 px-4 py-2.5 rounded-2xl w-fit">
-            <span>🇧🇹 Licensed by Department of Tourism · License #BT-8842</span>
+            <span>🇧🇹 Licensed by Department of Tourism · License <span data-bfr-license>#TR/2018/9882</span></span>
           </div>
         </div>
 
@@ -424,42 +432,142 @@
     </div>
   </footer>
 
+  <script src="js/api-client.js"></script>
+  <script src="js/site-shell.js"></script>
   <script>
-    // Form submission handling
-    const inquiryForm = document.getElementById('inquiryForm');
-    const submitSuccessMsg = document.getElementById('submitSuccessMsg');
-    inquiryForm.addEventListener('submit', (e) => {
-      e.preventDefault();
-      submitSuccessMsg.classList.remove('hidden');
-      inquiryForm.reset();
-      submitSuccessMsg.scrollIntoView({ behavior: 'smooth' });
-    });
+    (function () {
+      'use strict';
+      const esc = (v) => (window.SiteShell ? window.SiteShell.escapeHtml(v) : String(v || ''));
 
-    // Auto-select tour from URL param
-    window.addEventListener('DOMContentLoaded', () => {
-      const urlParams = new URLSearchParams(window.location.search);
-      const tourParam = urlParams.get('tour');
-      if (tourParam) {
+      function parseTravelerCount(val) {
+        if (val === 'Solo') return 1;
+        if (val === 'Couple') return 2;
+        if (val === 'SmallGroup') return 4;
+        if (val === 'Family') return 4;
+        if (val === 'LargeGroup') return 8;
+        const n = parseInt(val, 10);
+        return Number.isFinite(n) && n > 0 ? n : 2;
+      }
+
+      async function initContactPage() {
+        if (window.SiteShell) window.SiteShell.init();
+
         const select = document.getElementById('custTour');
-        for (let i = 0; i < select.options.length; i++) {
-          if (select.options[i].value.toLowerCase().includes(tourParam.toLowerCase()) || 
-              select.options[i].text.toLowerCase().includes(tourParam.toLowerCase())) {
-            select.selectedIndex = i;
-            break;
+        const urlParams = new URLSearchParams(window.location.search);
+        const tourParam = urlParams.get('tour') || '';
+        const nightsParam = urlParams.get('nights');
+        const adultsParam = urlParams.get('adults');
+        const childrenParam = urlParams.get('children');
+        const nationParam = urlParams.get('nation');
+
+        try {
+          const tours = await window.ApiClient.getTours();
+          if (select && Array.isArray(tours) && tours.length > 0) {
+            select.innerHTML = tours.map((t) =>
+              `<option value="${esc(t.id)}">${esc(t.title)} (${Number(t.duration_days) || 6} Days · $${Number(t.price_3star_usd || t.price_usd || 0)} USD)</option>`
+            ).join('') + '<option value="Custom-Tailor-Made">Custom Tailor-Made Journey</option>';
+          }
+        } catch (_) {}
+
+        if (tourParam && select) {
+          const q = tourParam.toLowerCase();
+          for (let i = 0; i < select.options.length; i++) {
+            const opt = select.options[i];
+            if (opt.value.toLowerCase().includes(q) || opt.text.toLowerCase().includes(q)) {
+              select.selectedIndex = i;
+              break;
+            }
           }
         }
-      }
-    });
 
-    // Mobile Drawer Toggle
-    const mobileMenuBtn = document.getElementById('mobileMenuBtn');
-    const closeDrawerBtn = document.getElementById('closeDrawerBtn');
-    const mobileDrawer = document.getElementById('mobileDrawer');
-    mobileMenuBtn?.addEventListener('click', () => mobileDrawer.classList.remove('hidden'));
-    closeDrawerBtn?.addEventListener('click', () => mobileDrawer.classList.add('hidden'));
-    mobileDrawer?.addEventListener('click', (e) => {
-      if (e.target === mobileDrawer) mobileDrawer.classList.add('hidden');
-    });
+        const prefillNotes = [];
+        if (nightsParam) prefillNotes.push(`Duration: ${nightsParam} nights`);
+        if (adultsParam) prefillNotes.push(`Adults: ${adultsParam}`);
+        if (childrenParam && Number(childrenParam) > 0) prefillNotes.push(`Children (6-12): ${childrenParam}`);
+        if (nationParam) prefillNotes.push(`Track: ${nationParam === 'india' ? 'Indian Regional INR' : 'International USD'}`);
+        const notesEl = document.getElementById('custNotes');
+        if (notesEl && prefillNotes.length > 0 && !notesEl.value.trim()) {
+          notesEl.value = `Estimate parameters — ${prefillNotes.join(', ')}. `;
+        }
+
+        const inquiryForm = document.getElementById('inquiryForm');
+        const submitBtn = document.getElementById('inquirySubmitBtn');
+        const errBox = document.getElementById('submitErrorMsg');
+        const okBox = document.getElementById('submitSuccessMsg');
+        const okText = document.getElementById('submitSuccessText');
+        const waBtn = document.getElementById('submitWaLink');
+
+        inquiryForm?.addEventListener('submit', async (e) => {
+          e.preventDefault();
+          errBox?.classList.add('hidden');
+          okBox?.classList.add('hidden');
+          if (submitBtn) {
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Sending to Paro Desk…';
+          }
+
+          try {
+            const name = document.getElementById('custName').value.trim();
+            const email = document.getElementById('custEmail').value.trim();
+            const phone = document.getElementById('custPhone').value.trim();
+            const tourVal = select ? select.value : '';
+            const tourText = select && select.selectedOptions[0] ? select.selectedOptions[0].text : tourVal;
+            const month = document.getElementById('custMonth')?.value || '';
+            const travellers = document.getElementById('custTravellers')?.value || 'Couple';
+            const hotel = document.getElementById('custHotel')?.value || '';
+            const checkedInterests = [...document.querySelectorAll('#inquiryForm input[type="checkbox"]:checked')]
+              .map((cb) => cb.parentElement ? cb.parentElement.textContent.trim() : '')
+              .filter(Boolean);
+            const notes = document.getElementById('custNotes')?.value.trim() || '';
+
+            const res = await window.ApiClient.submitInquiry({
+              source: 'website_contact',
+              inquiry_type: 'custom_itinerary',
+              name,
+              email,
+              phone,
+              tour_interest: tourVal || tourText,
+              preferred_dates: month,
+              travelers_count: parseTravelerCount(adultsParam || travellers),
+              budget_range: hotel,
+              interests: checkedInterests.join(', '),
+              message: `${notes}\nHotel Preference: ${hotel}${checkedInterests.length ? `\nInterests: ${checkedInterests.join(', ')}` : ''}`.trim()
+            });
+
+            if (okText) {
+              okText.textContent = `Kadrinchey la! Reference ${res.reference || 'SAVED'} recorded. Our Paro team will respond within 2 hours.`;
+            }
+            if (waBtn) {
+              const safeWa = /^https:\/\/wa\.me\//i.test(String(res.whatsapp_url || ''))
+                ? res.whatsapp_url
+                : window.ApiClient.buildWhatsAppUrl('97517654321', `Kuzu Zangpo! Inquiry Ref ${res.reference || ''} for ${tourText} (${name}).`);
+              waBtn.setAttribute('href', safeWa);
+            }
+            okBox?.classList.remove('hidden');
+            inquiryForm.reset();
+            okBox?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          } catch (err) {
+            if (errBox) {
+              errBox.textContent = err.message || 'Unable to submit your inquiry right now. Please try WhatsApp below.';
+              errBox.classList.remove('hidden');
+            }
+          } finally {
+            if (submitBtn) {
+              submitBtn.disabled = false;
+              submitBtn.textContent = 'Submit Custom Itinerary Request →';
+            }
+          }
+        });
+      }
+
+      document.getElementById('mobileMenuBtn')?.addEventListener('click', () => document.getElementById('mobileDrawer')?.classList.remove('hidden'));
+      document.getElementById('closeDrawerBtn')?.addEventListener('click', () => document.getElementById('mobileDrawer')?.classList.add('hidden'));
+      document.getElementById('mobileDrawer')?.addEventListener('click', (e) => {
+        if (e.target.id === 'mobileDrawer') document.getElementById('mobileDrawer').classList.add('hidden');
+      });
+
+      document.addEventListener('DOMContentLoaded', initContactPage);
+    })();
   </script>
 </body>
 </html>

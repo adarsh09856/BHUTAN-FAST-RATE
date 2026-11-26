@@ -127,18 +127,19 @@
   </section>
 
   <main class="py-16 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 flex-1 space-y-6">
-    <div class="bg-white p-6 rounded-2xl border border-zinc-200 shadow-sm space-y-2">
-      <h3 class="font-bold text-base text-[#14231E]">Q: What is the Sustainable Development Fee (SDF)?</h3>
-      <p class="text-sm text-zinc-600 leading-relaxed">The SDF is a mandatory Royal Government tourism tax of $100 USD per adult per night ($50 for kids 6-12, free under 6) that directly funds free universal healthcare, free education, national carbon-neutrality initiatives, and conservation infrastructure.</p>
+    <div class="bg-white p-5 rounded-2xl border border-zinc-200 shadow-sm space-y-4">
+      <input id="faqSearchInput" type="search" placeholder="Search FAQs (SDF, visa, passport 6 months, flights, altitude, cancellation…)" class="w-full px-4 py-3 rounded-xl border border-zinc-300 text-sm" style="color-scheme:light;background:#fff;color:#0f172a;">
+      <div class="flex flex-wrap gap-2" id="faqCatPills">
+        <button type="button" data-faq-cat="All" class="px-3.5 py-1.5 rounded-full text-xs font-bold bg-[#14231E] text-white">All Topics</button>
+        <button type="button" data-faq-cat="Visas" class="px-3.5 py-1.5 rounded-full text-xs font-bold bg-zinc-100 text-zinc-700">Visas</button>
+        <button type="button" data-faq-cat="SDF Tax" class="px-3.5 py-1.5 rounded-full text-xs font-bold bg-zinc-100 text-zinc-700">SDF Tax</button>
+        <button type="button" data-faq-cat="Health & Altitude" class="px-3.5 py-1.5 rounded-full text-xs font-bold bg-zinc-100 text-zinc-700">Health &amp; Altitude</button>
+        <button type="button" data-faq-cat="Flights" class="px-3.5 py-1.5 rounded-full text-xs font-bold bg-zinc-100 text-zinc-700">Flights</button>
+        <button type="button" data-faq-cat="Trekking" class="px-3.5 py-1.5 rounded-full text-xs font-bold bg-zinc-100 text-zinc-700">Trekking</button>
+        <button type="button" data-faq-cat="Payments" class="px-3.5 py-1.5 rounded-full text-xs font-bold bg-zinc-100 text-zinc-700">Payments &amp; Cancellation</button>
+      </div>
     </div>
-    <div class="bg-white p-6 rounded-2xl border border-zinc-200 shadow-sm space-y-2">
-      <h3 class="font-bold text-base text-[#14231E]">Q: Can I travel independently without a licensed guide?</h3>
-      <p class="text-sm text-zinc-600 leading-relaxed">No. Bhutanese tourism law mandates that all international travelers (except border-town transit under 24 hours) must be accompanied by a Department of Tourism certified guide and travel in registered tourist transport.</p>
-    </div>
-    <div class="bg-white p-6 rounded-2xl border border-zinc-200 shadow-sm space-y-2">
-      <h3 class="font-bold text-base text-[#14231E]">Q: How difficult is the hike to Tiger’s Nest (Paro Taktsang)?</h3>
-      <p class="text-sm text-zinc-600 leading-relaxed">The round-trip hike takes approximately 4 to 5 hours, covering 900 meters of elevation gain on a well-maintained trail. Horse riding is available for the first half up to the cafeteria viewpoint for travelers who prefer assistance.</p>
-    </div>
+    <div id="faqListContainer" class="space-y-4"></div>
   </main>
   
 
@@ -224,13 +225,87 @@
   </footer>
 
 <script src="js/api-client.js"></script>
+<script src="js/site-shell.js"></script>
 <script>
-  // Mobile Menu Toggle
-  const btn = document.getElementById('tourMobileBtn');
-  const menu = document.getElementById('tourMobileMenu');
-  if (btn && menu) {
-    btn.addEventListener('click', () => menu.classList.toggle('hidden'));
-  }
+  (function () {
+    'use strict';
+    const esc = (v) => (window.SiteShell ? window.SiteShell.escapeHtml(v) : String(v || ''));
+    const btn = document.getElementById('tourMobileBtn');
+    const menu = document.getElementById('tourMobileMenu');
+    if (btn && menu) btn.addEventListener('click', () => menu.classList.toggle('hidden'));
+
+    let cfg = { sdfInt: 100, sdfInd: 1200, visaUsd: 40, freeDays: 30, partDays: 15, partPct: 50, dueDays: 14 };
+    let selectedCat = 'All';
+    let searchQ = '';
+
+    function buildFaqs() {
+      return [
+        { cat: 'SDF Tax', q: 'What is the Sustainable Development Fee (SDF)?', a: `The SDF is Bhutan’s official Royal Government tourism levy: $${cfg.sdfInt} USD per adult per night for international guests (50% discount for ages 6–12, free under 6), funding carbon-negative forestry, free healthcare, and education.` },
+        { cat: 'SDF Tax', q: 'What is the SDF rate for Indian nationals?', a: `Indian citizens pay ₹${cfg.sdfInd.toLocaleString('en-IN')} INR per adult per night with ₹0 Entry Permit fee, payable in INR directly through our booking desk.` },
+        { cat: 'Visas', q: 'What is the 6-month passport validity rule?', a: 'All international visitors must hold a passport valid for at least 6 calendar months beyond their scheduled departure date from Bhutan. Our Client Portal automatically verifies this before DoI filing.' },
+        { cat: 'Visas', q: 'How does Indian Entry Permit approval work?', a: 'Indian nationals can travel with either a valid Passport or Voter ID Card (Passport recommended for air travel via Paro). We process the DoI Entry Permit seamlessly.' },
+        { cat: 'Flights', q: 'Who flies into Paro International Airport (PBH)?', a: 'Only Bhutan’s two national carriers — Drukair and Bhutan Airlines — fly into Paro from Delhi, Kolkata, Bangkok, Singapore, Kathmandu, Dhaka, and Bagdogra. Check Flight Assistance during checkout for zero-markup booking help.' },
+        { cat: 'Health & Altitude', q: 'How high do valleys go and how should I acclimatize?', a: 'Paro (2,280m) and Thimphu (2,334m) are mild. Dochula Pass reaches 3,100m on sightseeing drives; stays drop gently into subtropical Punakha (1,242m) on Day 3 for natural acclimatization.' },
+        { cat: 'Trekking', q: 'How hard is the Tiger’s Nest hike vs Druk Path Trek?', a: 'Tiger’s Nest is a 4–5 hour round-trip day hike (optional ponies halfway). Druk Path & Snowman Treks include certified mountain guides, camp cooks, pack animals, and alpine medical kits.' },
+        { cat: 'Payments', q: 'What is your deposit, final payment & cancellation schedule?', a: `Reserve dates with a 30% deposit; full balance is required ${cfg.dueDays} days prior before DoI visa submission. Cancellations ${cfg.freeDays}+ days out qualify for a 100% refund minus bank wire charges; ${cfg.partDays}–${cfg.freeDays - 1} days qualify for ${cfg.partPct}% refund or free date deferral.` }
+      ];
+    }
+
+    function renderFaqs() {
+      const box = document.getElementById('faqListContainer');
+      if (!box) return;
+      const items = buildFaqs().filter((item) => {
+        const catOk = selectedCat === 'All' || item.cat === selectedCat;
+        const qOk = !searchQ || `${item.cat} ${item.q} ${item.a}`.toLowerCase().includes(searchQ);
+        return catOk && qOk;
+      });
+      if (!items.length) {
+        box.innerHTML = '<div class="bg-white p-8 rounded-2xl border border-zinc-200 text-center text-sm text-zinc-500">No FAQs matched your search filter.</div>';
+        return;
+      }
+      box.innerHTML = items.map((item, idx) => `
+        <details class="bg-white p-6 rounded-2xl border border-zinc-200 shadow-sm" ${idx < 2 ? 'open' : ''}>
+          <summary class="font-bold text-base text-[#14231E] cursor-pointer flex items-center justify-between gap-4">
+            <span>${esc(item.q)}</span>
+            <span class="text-[11px] font-extrabold uppercase text-[#E05A47] shrink-0">${esc(item.cat)}</span>
+          </summary>
+          <p class="text-sm text-zinc-600 leading-relaxed mt-3">${esc(item.a)}</p>
+        </details>
+      `).join('');
+    }
+
+    document.addEventListener('DOMContentLoaded', async () => {
+      if (window.SiteShell) window.SiteShell.init();
+      try {
+        const res = await window.ApiClient.getPublicSettings();
+        if (res && res.data) {
+          cfg.sdfInt = Number(res.data.sdf_rate_international || 100);
+          cfg.sdfInd = Number(res.data.sdf_rate_india || 1200);
+          cfg.visaUsd = Number(res.data.visa_fee_usd || 40);
+          cfg.freeDays = Number(res.data.cancellation_free_days || 30);
+          cfg.partDays = Number(res.data.cancellation_partial_days || 15);
+          cfg.partPct = Number(res.data.cancellation_partial_refund_percent || 50);
+          cfg.dueDays = Number(res.data.final_payment_due_days || 14);
+        }
+      } catch (_) {}
+      renderFaqs();
+
+      document.getElementById('faqSearchInput')?.addEventListener('input', (e) => {
+        searchQ = e.target.value.trim().toLowerCase();
+        renderFaqs();
+      });
+      document.getElementById('faqCatPills')?.addEventListener('click', (e) => {
+        const pill = e.target.closest('button[data-faq-cat]');
+        if (!pill) return;
+        selectedCat = pill.getAttribute('data-faq-cat') || 'All';
+        document.querySelectorAll('#faqCatPills button').forEach((b) => {
+          const active = b === pill;
+          b.className = `px-3.5 py-1.5 rounded-full text-xs font-bold ${active ? 'bg-[#14231E] text-white' : 'bg-zinc-100 text-zinc-700'}`;
+        });
+        renderFaqs();
+      });
+    });
+  })();
 </script>
 </body>
 </html>
