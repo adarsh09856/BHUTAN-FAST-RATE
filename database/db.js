@@ -98,8 +98,14 @@ function getSqliteDb() {
 
   const toursCountRow = sqliteInstance.prepare('SELECT COUNT(*) as count FROM tours').get();
   const festivalsCountRow = sqliteInstance.prepare('SELECT COUNT(*) as count FROM festivals').get();
+  const usersCountRow = sqliteInstance.prepare('SELECT COUNT(*) as count FROM users').get();
+  const gaCountRow = sqliteInstance.prepare('SELECT COUNT(*) as count FROM guide_assignments').get();
   const needsFullSeed = isNew || !hasToursTable || Number(toursCountRow.count) === 0;
-  const needsUpgradeSeed = !needsFullSeed && Number(festivalsCountRow.count) === 0;
+  const needsUpgradeSeed = !needsFullSeed && (
+    Number(festivalsCountRow.count) === 0 ||
+    Number(usersCountRow.count) < 5 ||
+    Number(gaCountRow.count) < 3
+  );
 
   if (needsFullSeed || needsUpgradeSeed) {
     console.log(`[DB-SQLite] ${needsFullSeed ? 'Initializing schema and seed data...' : 'Upgrading schema and backfilling parity seed data...'}`);
@@ -194,7 +200,7 @@ function seedDatabase(db, { fullSeed = true } = {}) {
     }
 
     const bookingsCount = Number(db.prepare('SELECT COUNT(*) as count FROM bookings').get().count);
-    if (fullSeed || bookingsCount === 0) {
+    if (fullSeed || bookingsCount < seed.sampleBookings.length) {
       const insertBooking = db.prepare(`
         INSERT OR IGNORE INTO bookings (
           id, tour_id, tour_title, is_custom_trip,
@@ -282,14 +288,15 @@ function seedDatabase(db, { fullSeed = true } = {}) {
     }
 
     const gaCount = Number(db.prepare('SELECT COUNT(*) as count FROM guide_assignments').get().count);
-    if (gaCount === 0) {
+    if (gaCount < seed.sampleGuideAssignments.length) {
+      const hasGaForBooking = db.prepare('SELECT 1 FROM guide_assignments WHERE booking_id = ? LIMIT 1');
       const insertGa = db.prepare(`
         INSERT INTO guide_assignments (
           guide_id, booking_id, start_date, end_date, vehicle_plate, driver_name, daily_rate_usd, status, guide_notes
         ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
       `);
       for (const ga of seed.sampleGuideAssignments) {
-        if (existingBookings.has(ga.booking_id)) {
+        if (existingBookings.has(ga.booking_id) && !hasGaForBooking.get(ga.booking_id)) {
           insertGa.run(
             guideIdMap[ga.guide_id] || kinleyId, ga.booking_id, ga.start_date, ga.end_date,
             ga.vehicle_plate, ga.driver_name, ga.daily_rate_usd, ga.status, ga.guide_notes
@@ -325,17 +332,20 @@ function seedDatabase(db, { fullSeed = true } = {}) {
     }
 
     const notifCount = Number(db.prepare('SELECT COUNT(*) as count FROM notifications').get().count);
-    if (notifCount === 0) {
+    if (notifCount < seed.sampleNotifications.length) {
+      const hasNotifTitle = db.prepare('SELECT 1 FROM notifications WHERE title = ? LIMIT 1');
       const insertNotif = db.prepare(`
         INSERT INTO notifications (recipient_type, recipient_id, channel, category, title, message, action_url, whatsapp_url, metadata_json, is_read, is_sent, sent_at)
         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP)
       `);
       for (const n of seed.sampleNotifications) {
-        insertNotif.run(
-          n.recipient_type, n.recipient_id, n.channel, n.category,
-          n.title, n.message, n.action_url, n.whatsapp_url || null,
-          n.metadata_json || null, n.is_read ? 1 : 0, n.is_sent ? 1 : 0
-        );
+        if (!hasNotifTitle.get(n.title)) {
+          insertNotif.run(
+            n.recipient_type, n.recipient_id, n.channel, n.category,
+            n.title, n.message, n.action_url, n.whatsapp_url || null,
+            n.metadata_json || null, n.is_read ? 1 : 0, n.is_sent ? 1 : 0
+          );
+        }
       }
     }
 
