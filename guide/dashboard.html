@@ -4,44 +4,634 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="color-scheme" content="light only">
-  <title>Field Dashboard — Kinley Tshering | Certified Guide</title>
+  <title>Field Dashboard — Certified Guide Portal | Bhutan Fast Rate Tours</title>
   <link rel="stylesheet" href="../css/tour-theme.css">
+  <style>
+    :root, html, body { color-scheme: light !important; }
+    body {
+      margin: 0;
+      font-family: 'Manrope', ui-sans-serif, system-ui, -apple-system, sans-serif;
+      background-color: #F8FAF9;
+      color: #1F2923;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    h1, h2, h3, .font-display {
+      font-family: 'Fraunces', Georgia, serif;
+    }
+    input, textarea, select {
+      color-scheme: light !important;
+      background-color: #ffffff !important;
+      color: #1F2923 !important;
+      -webkit-text-fill-color: #1F2923 !important;
+      caret-color: #E05A47 !important;
+      opacity: 1 !important;
+    }
+    input::placeholder, textarea::placeholder {
+      color: #6b7280 !important;
+      -webkit-text-fill-color: #6b7280 !important;
+      opacity: 1 !important;
+    }
+    .portal-header {
+      position: sticky;
+      top: 0;
+      z-index: 40;
+      background-color: #14231E;
+      color: #ffffff;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.14);
+    }
+    .portal-card {
+      background-color: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 16px;
+      padding: 24px;
+      box-shadow: 0 2px 10px rgba(20, 35, 30, 0.04);
+    }
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 4px 10px;
+      border-radius: 9999px;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+    .badge-green { background-color: #dcfce7; color: #166534; border: 1px solid #bbf7d0; }
+    .badge-amber { background-color: #fef3c7; color: #92400e; border: 1px solid #fde68a; }
+    .badge-red { background-color: #fee2e2; color: #991b1b; border: 1px solid #fecaca; }
+    .badge-slate { background-color: #f1f5f9; color: #334155; border: 1px solid #cbd5e1; }
+    .badge-coral { background-color: #fff1ef; color: #b93826; border: 1px solid #fbd3cc; }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      padding: 10px 16px;
+      border-radius: 10px;
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      cursor: pointer;
+      border: 1px solid transparent;
+      text-decoration: none;
+      transition: all 0.15s ease;
+    }
+    .btn:disabled { opacity: 0.55; cursor: not-allowed; }
+    .btn-coral { background-color: #E05A47; color: #ffffff; }
+    .btn-coral:hover:not(:disabled) { background-color: #c94937; }
+    .btn-forest { background-color: #14231E; color: #ffffff; }
+    .btn-forest:hover:not(:disabled) { background-color: #0E1915; }
+    .btn-outline { background-color: #ffffff; color: #14231E; border-color: #cbd5e1; }
+    .btn-outline:hover:not(:disabled) { background-color: #f8fafc; border-color: #94a3b8; }
+    .btn-sm { padding: 7px 12px; font-size: 11px; border-radius: 8px; }
+    .portal-input {
+      width: 100%;
+      padding: 10px 12px;
+      border-radius: 8px;
+      border: 1px solid #cbd5e1;
+      font-size: 13px;
+      font-weight: 500;
+    }
+    .portal-input:focus {
+      outline: none;
+      border-color: #E05A47;
+      box-shadow: 0 0 0 3px rgba(224, 90, 71, 0.14);
+    }
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+    }
+    @media (min-width: 768px) {
+      .kpi-grid { grid-template-columns: repeat(4, 1fr); }
+    }
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      z-index: 60;
+      background-color: rgba(14, 25, 21, 0.72);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      overflow-y: auto;
+    }
+    .modal-backdrop.hidden { display: none; }
+    .modal-panel {
+      width: 100%;
+      max-width: 540px;
+      background-color: #ffffff;
+      border-radius: 18px;
+      border: 1px solid #e2e8f0;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.4);
+      overflow: hidden;
+    }
+    .alert-box {
+      border-radius: 12px;
+      padding: 12px 15px;
+      font-size: 13px;
+      line-height: 1.5;
+    }
+    .alert-danger { background-color: #fef2f2; border: 1px solid #fecaca; color: #991b1b; }
+    .alert-success { background-color: #ecfdf5; border: 1px solid #a7f3d0; color: #065f46; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+  </style>
 </head>
-<body class="bg-[#F8FAF9] text-[#1F2923] min-h-screen flex flex-col font-sans antialiased">
-  <header class="bg-[#14231E] text-white py-4 px-6 border-b border-white/10 flex items-center justify-between">
-    <div class="flex items-center gap-3">
-      <div class="w-8 h-8 rounded-lg bg-[#E05A47] text-white font-black flex items-center justify-center text-sm">B</div>
-      <span class="font-extrabold text-sm uppercase">Guide Field Operations</span>
-    </div>
-    <div class="text-xs text-zinc-300">
-      Guide: <strong class="text-white">Kinley Tshering</strong> (License #GD/2012/441)
+<body>
+  <header class="portal-header">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-4">
+      <a href="dashboard.html" class="flex items-center gap-3" style="text-decoration:none; color:#fff;">
+        <div class="w-9 h-9 rounded-lg flex items-center justify-center font-black text-sm" style="background-color:#E05A47; color:#fff;">B</div>
+        <div>
+          <div class="font-extrabold text-sm uppercase tracking-wider leading-none">Guide Field Operations</div>
+          <div class="text-[10px] tracking-wider uppercase" style="color:#cbd5e1;" data-bfr-license>#TR/2018/9882</div>
+        </div>
+      </a>
+      <div class="flex items-center gap-3 text-xs">
+        <div id="guideHeaderIdentity" class="hidden sm:block text-right" style="color:#cbd5e1;"></div>
+        <button type="button" id="guideLogoutBtn" class="btn btn-outline btn-sm" style="background:rgba(255,255,255,0.1); color:#fff; border-color:rgba(255,255,255,0.2);">Sign Out</button>
+      </div>
     </div>
   </header>
 
-  <main class="py-8 max-w-5xl mx-auto px-4 sm:px-6 flex-1 space-y-6 w-full">
-    <!-- Active Trip Card -->
-    <div class="bg-white p-6 sm:p-8 rounded-2xl border border-zinc-200 shadow-sm space-y-4">
-      <div class="flex items-center justify-between">
-        <span class="px-2.5 py-0.5 rounded bg-emerald-100 text-emerald-800 font-bold text-xs uppercase">ACTIVE EXPEDITION</span>
-        <span class="text-xs text-zinc-500 font-bold">Booking: BFR-2026-8841</span>
-      </div>
-      <h2 class="text-xl font-black text-[#14231E]">Essential Bhutan Heritage (7 Days)</h2>
-      <p class="text-xs text-zinc-600">Guests: <strong>Dr. Evelyn Martinez &amp; Robert Martinez (USA)</strong> • Assigned SUV: <strong>BP-1-A8921</strong></p>
-      
-      <div class="p-4 rounded-xl bg-orange-50 border border-orange-200 space-y-2">
-        <div class="font-bold text-xs text-[#E05A47] uppercase">Daily Field Check-In</div>
-        <p class="text-xs text-zinc-600">Report location and road conditions back to Thimphu operations desk.</p>
-        <div class="flex gap-2">
-          <input type="text" id="guideLoc" placeholder="Current Location (e.g. Dochula Pass, 3,100m - Clear weather)" class="flex-1 px-3 py-2 rounded-lg border border-zinc-300 text-xs">
-          <button onclick="alert('Field check-in transmitted to Thimphu desk.');" class="px-4 py-2 rounded-lg bg-[#E05A47] text-white font-bold text-xs uppercase hover:bg-[#c94937]">
-            Check-In
-          </button>
-        </div>
-      </div>
-      <a href="trip-detail.html?id=BFR-2026-8841" class="inline-block text-xs font-bold text-[#E05A47] hover:underline">
-        View Full Guest Roster &amp; Dietary Notes →
-      </a>
+  <main class="py-8 max-w-6xl mx-auto px-4 sm:px-6 flex-1 space-y-6 w-full" id="guideDashboardContent">
+    <div class="portal-card py-16 text-center" style="color:#64748b;">
+      <div class="inline-block w-8 h-8 border-4 rounded-full mb-3" style="border-color:#E05A47; border-top-color:transparent; animation: spin 0.8s linear infinite;"></div>
+      <div class="text-sm font-semibold">Loading Field Assignments &amp; Dispatch Alerts...</div>
     </div>
   </main>
+
+  <footer class="py-6 text-center text-xs border-t" style="background-color:#0E1915; color:#94a3b8; border-color:rgba(255,255,255,0.1);">
+    &copy; 2026 <span data-bfr-company>Bhutan Fast Rate Tours</span> (<span data-bfr-license>#TR/2018/9882</span>) • Guide Field Portal • Ops Desk: <span data-bfr-phone>+975 17 654 321</span>
+  </footer>
+
+  <!-- Field Check-In Modal -->
+  <div id="checkinModal" class="modal-backdrop hidden" role="dialog" aria-modal="true" aria-labelledby="checkinModalTitle">
+    <div class="modal-panel">
+      <div class="px-6 py-4 flex items-center justify-between border-b" style="background-color:#14231E; color:#fff;">
+        <div>
+          <h2 id="checkinModalTitle" class="text-lg font-bold m-0">Submit Daily Field Check-In</h2>
+          <p id="checkinModalSub" class="text-[11px] m-0" style="color:#cbd5e1;">Live location &amp; guest status report to Thimphu Ops</p>
+        </div>
+        <button type="button" id="closeCheckinModalBtn" aria-label="Close modal" style="background:transparent; border:none; color:#cbd5e1; font-size:18px; cursor:pointer;">✕</button>
+      </div>
+      <form id="checkinForm" class="p-6 space-y-4">
+        <div id="checkinFormAlert" class="hidden alert-box"></div>
+        <input type="hidden" id="checkinAssignmentId" value="">
+
+        <div>
+          <label for="checkinLocation" class="block text-xs font-bold mb-1" style="color:#334155;">Current Location / Pass / Hotel *</label>
+          <input type="text" id="checkinLocation" required class="portal-input" placeholder="e.g. Dochula Pass (3,100m) en route to Punakha">
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div>
+            <label for="checkinWeather" class="block text-xs font-bold mb-1" style="color:#334155;">Weather &amp; Road Conditions</label>
+            <input type="text" id="checkinWeather" class="portal-input" placeholder="e.g. Clear & Sunny, Roads Dry">
+          </div>
+          <div>
+            <label for="checkinGuestStatus" class="block text-xs font-bold mb-1" style="color:#334155;">Guest Wellness Status</label>
+            <select id="checkinGuestStatus" class="portal-input">
+              <option value="All Well">All Well</option>
+              <option value="Arrived Safely">Arrived Safely</option>
+              <option value="Minor Altitude Fatigue">Minor Altitude Fatigue</option>
+              <option value="Schedule Adjusted">Schedule Adjusted</option>
+              <option value="Medical Attention Needed">Medical Attention Needed</option>
+              <option value="Departed Safely">Departed Safely</option>
+            </select>
+          </div>
+        </div>
+
+        <div>
+          <label for="checkinNotes" class="block text-xs font-bold mb-1" style="color:#334155;">Field Notes for Operations Desk</label>
+          <textarea id="checkinNotes" rows="3" class="portal-input" placeholder="Hotel check-in status, road clearance, or special guest updates..."></textarea>
+        </div>
+
+        <div class="flex items-center justify-end gap-3 pt-2 border-t" style="border-color:#e2e8f0;">
+          <button type="button" id="cancelCheckinBtn" class="btn btn-outline btn-sm">Cancel</button>
+          <button type="submit" id="submitCheckinBtn" class="btn btn-coral btn-sm">Transmit Field Check-In</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="../js/api-client.js"></script>
+  <script src="../js/site-shell.js"></script>
+  <script>
+    (function () {
+      'use strict';
+
+      const container = document.getElementById('guideDashboardContent');
+      const headerIdentity = document.getElementById('guideHeaderIdentity');
+      const logoutBtn = document.getElementById('guideLogoutBtn');
+      const checkinModal = document.getElementById('checkinModal');
+      const checkinForm = document.getElementById('checkinForm');
+      const checkinFormAlert = document.getElementById('checkinFormAlert');
+      const submitCheckinBtn = document.getElementById('submitCheckinBtn');
+
+      const state = {
+        grouped: { active: [], upcoming: [], past: [] },
+        assignments: [],
+        notifications: [],
+        unreadCount: 0,
+        lastCheckinBanner: ''
+      };
+
+      function esc(val) {
+        if (window.SiteShell && typeof window.SiteShell.escapeHtml === 'function') {
+          return window.SiteShell.escapeHtml(val);
+        }
+        if (val === undefined || val === null) return '';
+        return String(val)
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/"/g, '&quot;')
+          .replace(/'/g, '&#39;');
+      }
+
+      function fmtDate(val) {
+        if (window.SiteShell && typeof window.SiteShell.formatDate === 'function') {
+          return window.SiteShell.formatDate(val);
+        }
+        return val ? String(val) : '';
+      }
+
+      function isSafeWhatsAppUrl(url) {
+        return /^https:\/\/wa\.me\//i.test(String(url || '').trim());
+      }
+
+      function renderHeaderIdentity() {
+        const g = window.ApiClient.getGuideUser();
+        if (!g || !headerIdentity) return;
+        headerIdentity.innerHTML = `
+          <div class="font-bold" style="color:#ffffff;">${esc(g.full_name || g.name || 'Certified Guide')}</div>
+          <div class="text-[11px]">${esc(g.license_no ? `License #${g.license_no}` : 'Department of Tourism Guide')}</div>
+        `;
+      }
+
+      function renderAssignmentCard(a, phase) {
+        const badgeMap = {
+          active: '<span class="badge badge-green">Active Expedition</span>',
+          upcoming: '<span class="badge badge-amber">Upcoming Assignment</span>',
+          past: '<span class="badge badge-slate">Completed Trip</span>'
+        };
+        const waUrl = a.lead_phone
+          ? window.ApiClient.buildWhatsAppUrl(a.lead_phone, `Kuzuzangpo La ${a.lead_name}! This is your Bhutan Fast Rate Tours guide regarding ${a.booking_id}.`)
+          : '';
+        const detailHref = `trip-detail.html?id=${encodeURIComponent(a.booking_id)}`;
+
+        return `
+          <article class="p-5 rounded-xl border space-y-3" style="background-color:${phase === 'active' ? '#f0fdf4' : '#ffffff'}; border-color:${phase === 'active' ? '#86efac' : '#e2e8f0'};">
+            <div class="flex flex-wrap items-center justify-between gap-2">
+              <div class="flex flex-wrap items-center gap-2">
+                ${badgeMap[phase] || ''}
+                <span class="badge badge-slate font-mono">${esc(a.booking_id)}</span>
+                <span class="badge badge-coral">Visa: ${esc(String(a.visa_status || 'pending').replace(/_/g, ' '))}</span>
+              </div>
+              <div class="text-xs font-bold" style="color:#475569;">
+                ${esc(a.start_date || a.travel_date_start)} → ${esc(a.end_date || a.travel_date_end)} (${esc(a.total_nights || '')}N)
+              </div>
+            </div>
+
+            <div>
+              <h3 class="text-lg font-bold m-0" style="color:#14231E;">${esc(a.tour_title || a.booking_id)}</h3>
+              <p class="text-xs m-0 mt-1" style="color:#334155;">
+                Lead Guest: <strong>${esc(a.lead_name)}</strong> (${esc(a.lead_country || 'International')}) •
+                Party: <strong>${esc(a.total_travelers)} Guest(s)</strong> •
+                Hotel Tier: <strong>${esc(a.hotel_tier || 'Standard')}</strong>
+              </p>
+              <p class="text-xs m-0 mt-1" style="color:#475569;">
+                Vehicle: <strong>${esc(a.vehicle_plate || 'Assigned at Dispatch')}</strong>
+                ${a.driver_name ? ` • Driver: <strong>${esc(a.driver_name)}</strong>` : ''}
+                • Check-ins Logged: <strong>${esc(a.checkins_count || 0)}</strong>
+              </p>
+              ${a.guide_notes ? `
+                <div class="mt-2 p-2.5 rounded-lg border text-xs" style="background-color:#F8FAF9; border-color:#e2e8f0; color:#334155;">
+                  <strong>Ops Dispatch Note:</strong> ${esc(a.guide_notes)}
+                </div>
+              ` : ''}
+            </div>
+
+            <div class="flex flex-wrap items-center gap-2 pt-1">
+              <a href="${esc(detailHref)}" class="btn btn-forest btn-sm">View Guest Roster &amp; Itinerary →</a>
+              ${phase !== 'past' ? `
+                <button
+                  type="button"
+                  data-action="open-checkin"
+                  data-assignment-id="${esc(a.id)}"
+                  data-booking-id="${esc(a.booking_id)}"
+                  data-tour-title="${esc(a.tour_title || a.booking_id)}"
+                  class="btn btn-coral btn-sm"
+                >Submit Field Check-In</button>
+              ` : ''}
+              ${isSafeWhatsAppUrl(waUrl) ? `
+                <a href="${esc(waUrl)}" target="_blank" rel="noopener" class="btn btn-outline btn-sm">WhatsApp Lead Guest</a>
+              ` : ''}
+            </div>
+          </article>
+        `;
+      }
+
+      function renderDashboard() {
+        const g = window.ApiClient.getGuideUser() || {};
+        const { active = [], upcoming = [], past = [] } = state.grouped || {};
+
+        container.innerHTML = `
+          <!-- Guide Welcome & KPI Strip -->
+          <section class="portal-card space-y-5">
+            <div class="flex flex-wrap items-center justify-between gap-4">
+              <div>
+                <div class="text-[11px] font-extrabold uppercase tracking-widest" style="color:#E05A47;">Field Operations Dashboard</div>
+                <h1 class="text-2xl sm:text-3xl font-bold m-0 mt-1" style="color:#14231E;">Kuzuzangpo La, ${esc(g.full_name || g.name || 'Guide')}</h1>
+                <p class="text-xs m-0 mt-1" style="color:#64748b;">
+                  ${g.specialty ? `${esc(g.specialty)} • ` : ''}${g.languages ? `Languages: ${esc(g.languages)}` : 'Certified Department of Tourism Guide'}
+                </p>
+              </div>
+              ${active.length > 0 ? `
+                <button
+                  type="button"
+                  data-action="open-checkin"
+                  data-assignment-id="${esc(active[0].id)}"
+                  data-booking-id="${esc(active[0].booking_id)}"
+                  data-tour-title="${esc(active[0].tour_title || active[0].booking_id)}"
+                  class="btn btn-coral btn-sm"
+                >+ Quick Active Trip Check-In</button>
+              ` : ''}
+            </div>
+
+            ${state.lastCheckinBanner ? `
+              <div class="alert-box alert-success">${esc(state.lastCheckinBanner)}</div>
+            ` : ''}
+
+            <div class="kpi-grid">
+              <div class="p-4 rounded-xl border" style="background-color:#f0fdf4; border-color:#bbf7d0;">
+                <div class="text-[11px] font-bold uppercase" style="color:#166534;">Today's Active</div>
+                <div class="text-2xl font-black mt-1" style="color:#14231E;">${esc(active.length)}</div>
+              </div>
+              <div class="p-4 rounded-xl border" style="background-color:#fffbeb; border-color:#fde68a;">
+                <div class="text-[11px] font-bold uppercase" style="color:#92400e;">Upcoming Trips</div>
+                <div class="text-2xl font-black mt-1" style="color:#14231E;">${esc(upcoming.length)}</div>
+              </div>
+              <div class="p-4 rounded-xl border" style="background-color:#F8FAF9; border-color:#e2e8f0;">
+                <div class="text-[11px] font-bold uppercase" style="color:#475569;">Past Completed</div>
+                <div class="text-2xl font-black mt-1" style="color:#14231E;">${esc(past.length)}</div>
+              </div>
+              <div class="p-4 rounded-xl border" style="background-color:#fff1ef; border-color:#fbd3cc;">
+                <div class="text-[11px] font-bold uppercase" style="color:#b93826;">Unread Alerts</div>
+                <div class="text-2xl font-black mt-1" style="color:#14231E;">${esc(state.unreadCount)}</div>
+              </div>
+            </div>
+          </section>
+
+          <!-- Today's Active Expedition -->
+          <section class="portal-card space-y-4">
+            <div class="flex items-center justify-between">
+              <h2 class="text-xl font-bold m-0" style="color:#14231E;">Today's Active Expedition</h2>
+              <span class="badge ${active.length ? 'badge-green' : 'badge-slate'}">${esc(active.length)} Active</span>
+            </div>
+            ${active.length === 0 ? `
+              <div class="p-5 rounded-xl border text-center text-xs" style="background-color:#F8FAF9; border-color:#e2e8f0; color:#64748b;">
+                No expedition is currently active today. Review your upcoming schedule below.
+              </div>
+            ` : `
+              <div class="space-y-4">
+                ${active.map((a) => renderAssignmentCard(a, 'active')).join('')}
+              </div>
+            `}
+          </section>
+
+          <!-- Upcoming Schedule -->
+          <section class="portal-card space-y-4">
+            <div class="flex items-center justify-between">
+              <h2 class="text-xl font-bold m-0" style="color:#14231E;">Upcoming Schedule</h2>
+              <span class="badge badge-amber">${esc(upcoming.length)} Scheduled</span>
+            </div>
+            ${upcoming.length === 0 ? `
+              <div class="p-5 rounded-xl border text-center text-xs" style="background-color:#F8FAF9; border-color:#e2e8f0; color:#64748b;">
+                No upcoming trips assigned yet.
+              </div>
+            ` : `
+              <div class="space-y-4">
+                ${upcoming.map((a) => renderAssignmentCard(a, 'upcoming')).join('')}
+              </div>
+            `}
+          </section>
+
+          <!-- Live Guide Notifications -->
+          <section class="portal-card space-y-4">
+            <div class="flex items-center justify-between">
+              <h2 class="text-xl font-bold m-0" style="color:#14231E;">Dispatch Notifications</h2>
+              <span class="badge ${state.unreadCount > 0 ? 'badge-coral' : 'badge-slate'}">${esc(state.unreadCount)} Unread</span>
+            </div>
+            ${state.notifications.length === 0 ? `
+              <div class="p-5 rounded-xl border text-center text-xs" style="background-color:#F8FAF9; border-color:#e2e8f0; color:#64748b;">
+                No notifications from Operations Desk.
+              </div>
+            ` : `
+              <div class="space-y-3">
+                ${state.notifications.map((n) => {
+                  const isUnread = Number(n.is_read) === 0;
+                  return `
+                    <div class="p-4 rounded-xl border flex flex-wrap items-start justify-between gap-3" style="background-color:${isUnread ? '#fffaf9' : '#ffffff'}; border-color:${isUnread ? '#fbd3cc' : '#e2e8f0'};">
+                      <div class="space-y-1 flex-1" style="min-width:220px;">
+                        <div class="flex flex-wrap items-center gap-2">
+                          <span class="badge ${isUnread ? 'badge-coral' : 'badge-slate'}">${isUnread ? 'New' : 'Read'}</span>
+                          <strong class="text-sm" style="color:#14231E;">${esc(n.title || n.category || 'Dispatch Alert')}</strong>
+                        </div>
+                        <p class="text-xs m-0" style="color:#475569;">${esc(n.message)}</p>
+                        <div class="text-[11px]" style="color:#64748b;">${esc(fmtDate(n.created_at))}</div>
+                      </div>
+                      ${isUnread ? `
+                        <button type="button" data-action="mark-notif-read" data-notif-id="${esc(n.id)}" class="btn btn-forest btn-sm">Mark Read</button>
+                      ` : ''}
+                    </div>
+                  `;
+                }).join('')}
+              </div>
+            `}
+          </section>
+
+          <!-- Past Completed Trips -->
+          <section class="portal-card space-y-4">
+            <div class="flex items-center justify-between">
+              <h2 class="text-xl font-bold m-0" style="color:#14231E;">Past Completed Trips</h2>
+              <span class="badge badge-slate">${esc(past.length)} Completed</span>
+            </div>
+            ${past.length === 0 ? `
+              <div class="p-5 rounded-xl border text-center text-xs" style="background-color:#F8FAF9; border-color:#e2e8f0; color:#64748b;">
+                No completed trips recorded yet.
+              </div>
+            ` : `
+              <div class="space-y-4">
+                ${past.map((a) => renderAssignmentCard(a, 'past')).join('')}
+              </div>
+            `}
+          </section>
+        `;
+      }
+
+      function openCheckinModal(assignmentId, bookingId, tourTitle) {
+        checkinFormAlert.className = 'hidden alert-box';
+        checkinFormAlert.textContent = '';
+        checkinForm.reset();
+        document.getElementById('checkinAssignmentId').value = assignmentId;
+        document.getElementById('checkinModalSub').textContent = `${bookingId} — ${tourTitle}`;
+        checkinModal.classList.remove('hidden');
+      }
+
+      function closeCheckinModal() {
+        checkinModal.classList.add('hidden');
+      }
+
+      async function handleCheckinSubmit(e) {
+        e.preventDefault();
+        checkinFormAlert.className = 'hidden alert-box';
+        checkinFormAlert.textContent = '';
+
+        const assignmentId = document.getElementById('checkinAssignmentId').value;
+        const location = document.getElementById('checkinLocation').value.trim();
+        const weather = document.getElementById('checkinWeather').value.trim();
+        const guestStatus = document.getElementById('checkinGuestStatus').value;
+        const notes = document.getElementById('checkinNotes').value.trim();
+
+        if (!location) {
+          checkinFormAlert.className = 'alert-box alert-danger';
+          checkinFormAlert.textContent = 'Check-in location is required.';
+          return;
+        }
+
+        submitCheckinBtn.disabled = true;
+        submitCheckinBtn.textContent = 'Transmitting...';
+
+        try {
+          const res = await window.ApiClient.submitGuideCheckin(assignmentId, {
+            location,
+            weather,
+            guest_status: guestStatus,
+            notes
+          });
+          if (res && res.success) {
+            closeCheckinModal();
+            state.lastCheckinBanner = `Field check-in recorded at "${location}" (${guestStatus}). Thimphu Operations Desk notified.`;
+            await loadGuideDashboard();
+            return;
+          }
+          checkinFormAlert.className = 'alert-box alert-danger';
+          checkinFormAlert.textContent = (res && res.error) || 'Failed to record check-in.';
+        } catch (err) {
+          checkinFormAlert.className = 'alert-box alert-danger';
+          checkinFormAlert.textContent = (err && err.message) || 'Error submitting check-in.';
+        } finally {
+          submitCheckinBtn.disabled = false;
+          submitCheckinBtn.textContent = 'Transmit Field Check-In';
+        }
+      }
+
+      async function markNotificationRead(notifId) {
+        try {
+          const res = await window.ApiClient.markGuideNotificationRead(notifId);
+          if (res && res.success) {
+            state.notifications = state.notifications.map((n) =>
+              String(n.id) === String(notifId) ? { ...n, is_read: 1 } : n
+            );
+            state.unreadCount = state.notifications.filter((n) => Number(n.is_read) === 0).length;
+            renderDashboard();
+          }
+        } catch (err) {
+          if (window.SiteShell && typeof window.SiteShell.toast === 'function') {
+            window.SiteShell.toast((err && err.message) || 'Unable to update notification.', 'error');
+          }
+        }
+      }
+
+      async function loadGuideDashboard() {
+        const token = window.ApiClient.getToken('guide');
+        if (!token) {
+          window.location.href = 'login.html';
+          return;
+        }
+
+        renderHeaderIdentity();
+
+        try {
+          const [assignRes, notifRes] = await Promise.all([
+            window.ApiClient.getGuideAssignments(),
+            window.ApiClient.getGuideNotifications().catch((err) => {
+              if (err && err.status === 401) throw err;
+              return null;
+            })
+          ]);
+
+          if (!assignRes || !assignRes.success) {
+            throw new Error((assignRes && assignRes.error) || 'Unable to load guide assignments.');
+          }
+
+          state.assignments = Array.isArray(assignRes.data) ? assignRes.data : [];
+          state.grouped = assignRes.grouped || { active: [], upcoming: [], past: [] };
+          state.notifications = (notifRes && Array.isArray(notifRes.data)) ? notifRes.data : [];
+          state.unreadCount = notifRes && notifRes.unread_count !== undefined
+            ? Number(notifRes.unread_count)
+            : state.notifications.filter((n) => Number(n.is_read) === 0).length;
+
+          renderDashboard();
+        } catch (err) {
+          if (err && err.status === 401) {
+            window.ApiClient.clearPortalSession('guide');
+            window.location.href = 'login.html';
+            return;
+          }
+          container.innerHTML = `
+            <div class="portal-card text-center space-y-4">
+              <div class="alert-box alert-danger">
+                <strong>Unable to load guide dashboard:</strong> ${esc((err && err.message) || 'Server unreachable.')}
+              </div>
+              <div class="flex justify-center gap-3">
+                <button type="button" data-action="retry-load" class="btn btn-coral btn-sm">Retry</button>
+                <a href="login.html" class="btn btn-outline btn-sm">Back to Sign In</a>
+              </div>
+            </div>
+          `;
+        }
+      }
+
+      container.addEventListener('click', (e) => {
+        const trigger = e.target && e.target.closest ? e.target.closest('[data-action]') : null;
+        if (!trigger) return;
+        const action = trigger.getAttribute('data-action');
+        if (action === 'open-checkin') {
+          openCheckinModal(
+            trigger.getAttribute('data-assignment-id'),
+            trigger.getAttribute('data-booking-id'),
+            trigger.getAttribute('data-tour-title')
+          );
+        } else if (action === 'mark-notif-read') {
+          const id = trigger.getAttribute('data-notif-id');
+          if (id) markNotificationRead(id);
+        } else if (action === 'retry-load') {
+          loadGuideDashboard();
+        }
+      });
+
+      document.getElementById('closeCheckinModalBtn').addEventListener('click', closeCheckinModal);
+      document.getElementById('cancelCheckinBtn').addEventListener('click', closeCheckinModal);
+      checkinModal.addEventListener('click', (e) => {
+        if (e.target === checkinModal) closeCheckinModal();
+      });
+      checkinForm.addEventListener('submit', handleCheckinSubmit);
+
+      logoutBtn.addEventListener('click', () => {
+        window.ApiClient.clearPortalSession('guide');
+        window.location.href = 'login.html';
+      });
+
+      document.addEventListener('DOMContentLoaded', loadGuideDashboard);
+    })();
+  </script>
 </body>
 </html>

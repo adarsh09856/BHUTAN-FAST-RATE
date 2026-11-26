@@ -4,29 +4,573 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="color-scheme" content="light only">
-  <title>Trip Roster &amp; Notes — Guide Portal</title>
+  <title>Trip Roster &amp; Field Operations — Guide Portal | Bhutan Fast Rate Tours</title>
   <link rel="stylesheet" href="../css/tour-theme.css">
+  <style>
+    :root, html, body { color-scheme: light !important; }
+    body {
+      margin: 0;
+      font-family: 'Manrope', ui-sans-serif, system-ui, -apple-system, sans-serif;
+      background-color: #F8FAF9;
+      color: #1F2923;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    h1, h2, h3, .font-display {
+      font-family: 'Fraunces', Georgia, serif;
+    }
+    input, textarea, select {
+      color-scheme: light !important;
+      background-color: #ffffff !important;
+      color: #1F2923 !important;
+      -webkit-text-fill-color: #1F2923 !important;
+      caret-color: #E05A47 !important;
+      opacity: 1 !important;
+    }
+    input::placeholder, textarea::placeholder {
+      color: #6b7280 !important;
+      -webkit-text-fill-color: #6b7280 !important;
+      opacity: 1 !important;
+    }
+    .portal-header {
+      position: sticky;
+      top: 0;
+      z-index: 40;
+      background-color: #14231E;
+      color: #ffffff;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.14);
+    }
+    .portal-card {
+      background-color: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 16px;
+      padding: 24px;
+      box-shadow: 0 2px 10px rgba(20, 35, 30, 0.04);
+    }
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 4px 10px;
+      border-radius: 9999px;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+    .badge-green { background-color: #dcfce7; color: #166534; border: 1px solid #bbf7d0; }
+    .badge-amber { background-color: #fef3c7; color: #92400e; border: 1px solid #fde68a; }
+    .badge-red { background-color: #fee2e2; color: #991b1b; border: 1px solid #fecaca; }
+    .badge-slate { background-color: #f1f5f9; color: #334155; border: 1px solid #cbd5e1; }
+    .badge-coral { background-color: #fff1ef; color: #b93826; border: 1px solid #fbd3cc; }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      padding: 10px 16px;
+      border-radius: 10px;
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      cursor: pointer;
+      border: 1px solid transparent;
+      text-decoration: none;
+      transition: all 0.15s ease;
+    }
+    .btn:disabled { opacity: 0.55; cursor: not-allowed; }
+    .btn-coral { background-color: #E05A47; color: #ffffff; }
+    .btn-coral:hover:not(:disabled) { background-color: #c94937; }
+    .btn-forest { background-color: #14231E; color: #ffffff; }
+    .btn-forest:hover:not(:disabled) { background-color: #0E1915; }
+    .btn-outline { background-color: #ffffff; color: #14231E; border-color: #cbd5e1; }
+    .btn-outline:hover:not(:disabled) { background-color: #f8fafc; border-color: #94a3b8; }
+    .btn-sm { padding: 7px 12px; font-size: 11px; border-radius: 8px; }
+    .portal-input {
+      width: 100%;
+      padding: 10px 12px;
+      border-radius: 8px;
+      border: 1px solid #cbd5e1;
+      font-size: 13px;
+      font-weight: 500;
+    }
+    .portal-input:focus {
+      outline: none;
+      border-color: #E05A47;
+      box-shadow: 0 0 0 3px rgba(224, 90, 71, 0.14);
+    }
+    .day-card {
+      background-color: #F8FAF9;
+      border: 1px solid #e2e8f0;
+      border-left: 4px solid #E05A47;
+      border-radius: 12px;
+      padding: 14px 16px;
+    }
+    .portal-grid-2 {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 20px;
+    }
+    @media (min-width: 900px) {
+      .portal-grid-2 { grid-template-columns: 1fr 1fr; }
+    }
+    .alert-box {
+      border-radius: 12px;
+      padding: 12px 15px;
+      font-size: 13px;
+      line-height: 1.5;
+    }
+    .alert-danger { background-color: #fef2f2; border: 1px solid #fecaca; color: #991b1b; }
+    .alert-success { background-color: #ecfdf5; border: 1px solid #a7f3d0; color: #065f46; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+  </style>
 </head>
-<body class="bg-[#F8FAF9] text-[#1F2923] min-h-screen flex flex-col font-sans antialiased">
-  <header class="bg-[#14231E] text-white py-4 px-6 border-b border-white/10 flex items-center justify-between">
-    <a href="dashboard.html" class="text-xs font-bold text-[#E05A47] hover:underline">← Back to Field Dashboard</a>
-    <div class="text-xs text-zinc-300">Trip Detail: BFR-2026-8841</div>
-  </header>
-  <main class="py-8 max-w-4xl mx-auto px-4 sm:px-6 flex-1 space-y-6 w-full">
-    <div class="bg-white p-8 rounded-2xl border border-zinc-200 shadow-sm space-y-6">
-      <h1 class="text-2xl font-black text-[#14231E]">Guest Roster &amp; Dietary Requirements</h1>
-      <div class="space-y-4 text-xs">
-        <div class="p-4 rounded-xl bg-zinc-50 border border-zinc-200 space-y-1">
-          <div class="font-bold text-sm text-[#14231E]">Dr. Evelyn Martinez (Lead Traveler)</div>
-          <p class="text-zinc-600"><strong>Dietary:</strong> Strictly Vegetarian (no onion/garlic preferred on puja days)</p>
-          <p class="text-zinc-600"><strong>Emergency Contact:</strong> +1 415 555 2671</p>
-        </div>
-        <div class="p-4 rounded-xl bg-zinc-50 border border-zinc-200 space-y-1">
-          <div class="font-bold text-sm text-[#14231E]">Robert Martinez</div>
-          <p class="text-zinc-600"><strong>Dietary:</strong> No food allergies. Prefers traditional Bhutanese chicken curries.</p>
-        </div>
+<body>
+  <header class="portal-header">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-4">
+      <div class="flex items-center gap-4">
+        <a href="dashboard.html" class="text-xs font-extrabold uppercase tracking-wider" style="color:#E05A47; text-decoration:none;">← Back to Dashboard</a>
+        <span id="headerTripRef" class="text-xs font-mono font-bold" style="color:#cbd5e1;"></span>
+      </div>
+      <div class="flex items-center gap-3">
+        <span id="headerGuideName" class="hidden sm:inline text-xs" style="color:#cbd5e1;"></span>
+        <button type="button" id="guideLogoutBtn" class="btn btn-outline btn-sm" style="background:rgba(255,255,255,0.1); color:#fff; border-color:rgba(255,255,255,0.2);">Sign Out</button>
       </div>
     </div>
+  </header>
+
+  <main class="py-8 max-w-6xl mx-auto px-4 sm:px-6 flex-1 space-y-6 w-full" id="tripDetailContent">
+    <div class="portal-card py-16 text-center" style="color:#64748b;">
+      <div class="inline-block w-8 h-8 border-4 rounded-full mb-3" style="border-color:#E05A47; border-top-color:transparent; animation: spin 0.8s linear infinite;"></div>
+      <div class="text-sm font-semibold">Loading Trip Roster, Itinerary &amp; Check-Ins...</div>
+    </div>
   </main>
+
+  <footer class="py-6 text-center text-xs border-t" style="background-color:#0E1915; color:#94a3b8; border-color:rgba(255,255,255,0.1);">
+    &copy; 2026 <span data-bfr-company>Bhutan Fast Rate Tours</span> (<span data-bfr-license>#TR/2018/9882</span>) • Guide Field Portal • Ops Desk: <span data-bfr-phone>+975 17 654 321</span>
+  </footer>
+
+  <script src="../js/api-client.js"></script>
+  <script src="../js/site-shell.js"></script>
+  <script>
+    (function () {
+      'use strict';
+
+      const container = document.getElementById('tripDetailContent');
+      const headerTripRef = document.getElementById('headerTripRef');
+      const headerGuideName = document.getElementById('headerGuideName');
+      const logoutBtn = document.getElementById('guideLogoutBtn');
+
+      const state = {
+        assignment: null,
+        trip: null,
+        checkinSuccess: ''
+      };
+
+      function esc(val) {
+        if (window.SiteShell && typeof window.SiteShell.escapeHtml === 'function') {
+          return window.SiteShell.escapeHtml(val);
+        }
+        if (val === undefined || val === null) return '';
+        return String(val)
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/"/g, '&quot;')
+          .replace(/'/g, '&#39;');
+      }
+
+      function fmtDate(val) {
+        if (window.SiteShell && typeof window.SiteShell.formatDate === 'function') {
+          return window.SiteShell.formatDate(val);
+        }
+        return val ? String(val) : '';
+      }
+
+      function isSafeWhatsAppUrl(url) {
+        return /^https:\/\/wa\.me\//i.test(String(url || '').trim());
+      }
+
+      function buildSafeTelHref(phone) {
+        const cleaned = String(phone || '').replace(/[^\d+]/g, '');
+        return cleaned ? `tel:${cleaned}` : '';
+      }
+
+      function buildSafeWaHref(phone, text) {
+        const digits = String(phone || '').replace(/\D+/g, '');
+        if (!digits) return '';
+        const url = window.ApiClient.buildWhatsAppUrl(digits, text || '');
+        return isSafeWhatsAppUrl(url) ? url : '';
+      }
+
+      function renderDayCard(item, idx) {
+        if (typeof item === 'string') {
+          return `
+            <div class="day-card space-y-1">
+              <div class="text-xs font-extrabold uppercase tracking-wider" style="color:#E05A47;">Day ${idx + 1}</div>
+              <p class="text-xs m-0" style="color:#334155; line-height:1.6;">${esc(item)}</p>
+            </div>
+          `;
+        }
+        const obj = item && typeof item === 'object' ? item : {};
+        const dayLabel = obj.day !== undefined && obj.day !== null
+          ? (/^day/i.test(String(obj.day)) ? String(obj.day) : `Day ${obj.day}`)
+          : `Day ${idx + 1}`;
+        const altitude = obj.altitude || obj.elevation || '';
+        const meals = Array.isArray(obj.meals) ? obj.meals.join(', ') : (obj.meals || '');
+        const lodging = obj.lodging || obj.hotel || obj.accommodation || '';
+
+        return `
+          <div class="day-card space-y-1.5">
+            <div class="flex flex-wrap items-center justify-between gap-2">
+              <span class="text-xs font-extrabold uppercase tracking-wider" style="color:#E05A47;">${esc(dayLabel)}</span>
+              <div class="flex flex-wrap gap-1.5">
+                ${altitude ? `<span class="badge badge-slate">${esc(altitude)}</span>` : ''}
+                ${meals ? `<span class="badge badge-green">${esc(meals)}</span>` : ''}
+                ${lodging ? `<span class="badge badge-coral">${esc(lodging)}</span>` : ''}
+              </div>
+            </div>
+            <div class="text-sm font-bold" style="color:#14231E;">${esc(obj.title || obj.route || 'Tour Activity')}</div>
+            ${obj.description ? `<p class="text-xs m-0" style="color:#334155; line-height:1.6;">${esc(obj.description)}</p>` : ''}
+          </div>
+        `;
+      }
+
+      function renderTripDetail() {
+        const t = state.trip;
+        const a = state.assignment || (t && t.assignment) || {};
+        if (!t) return;
+
+        headerTripRef.textContent = t.id || '';
+        const travelers = Array.isArray(t.travelers) ? t.travelers : [];
+        const itinerary = Array.isArray(t.itinerary) ? t.itinerary : [];
+        const checkins = Array.isArray(t.checkins) ? t.checkins : [];
+
+        const leadTel = buildSafeTelHref(t.lead_phone);
+        const leadWa = buildSafeWaHref(t.lead_phone, `Kuzuzangpo La ${t.lead_name}! This is your Bhutan Fast Rate Tours guide for ${t.id}.`);
+
+        container.innerHTML = `
+          <!-- Trip Overview -->
+          <section class="portal-card space-y-4">
+            <div class="flex flex-wrap items-start justify-between gap-4 pb-4 border-b" style="border-color:#e2e8f0;">
+              <div class="space-y-2">
+                <div class="flex flex-wrap items-center gap-2">
+                  <span class="badge badge-green">${esc(String(t.booking_status || 'confirmed').replace(/_/g, ' '))}</span>
+                  <span class="badge badge-coral">Visa: ${esc(String(t.visa_status || 'pending').replace(/_/g, ' '))}</span>
+                  <span class="badge badge-slate font-mono">${esc(t.id)}</span>
+                </div>
+                <h1 class="text-2xl sm:text-3xl font-bold m-0" style="color:#14231E;">${esc(t.tour_title)}</h1>
+                <p class="text-xs m-0" style="color:#475569;">
+                  Dates: <strong>${esc(t.travel_date_start)} to ${esc(t.travel_date_end)}</strong> (${esc(t.total_nights)} Nights) •
+                  Party: <strong>${esc(t.total_travelers)} Guest(s)</strong>
+                  (Adults: ${esc(t.adults_count || 0)}, 6-12y: ${esc(t.children_6_12 || 0)}, &lt;6y: ${esc(t.children_under_6 || 0)}) •
+                  Tier: <strong>${esc(t.hotel_tier || 'Standard')}</strong>
+                </p>
+              </div>
+              <div class="flex flex-wrap gap-2">
+                ${leadTel ? `<a href="${esc(leadTel)}" class="btn btn-outline btn-sm">Call Lead Guest</a>` : ''}
+                ${leadWa ? `<a href="${esc(leadWa)}" target="_blank" rel="noopener" class="btn btn-forest btn-sm">WhatsApp Lead Guest</a>` : ''}
+              </div>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
+              <div class="p-3.5 rounded-xl border" style="background-color:#F8FAF9; border-color:#e2e8f0;">
+                <div class="font-extrabold uppercase text-[10px]" style="color:#64748b;">Lead Traveler</div>
+                <div class="font-bold text-sm mt-1" style="color:#14231E;">${esc(t.lead_name)}</div>
+                <div style="color:#475569;">${esc(t.lead_country || 'International')} • ${esc(t.lead_phone || 'No phone')}</div>
+              </div>
+              <div class="p-3.5 rounded-xl border" style="background-color:#F8FAF9; border-color:#e2e8f0;">
+                <div class="font-extrabold uppercase text-[10px]" style="color:#64748b;">Vehicle &amp; Chauffeur</div>
+                <div class="font-bold text-sm mt-1" style="color:#14231E;">${esc(a.vehicle_plate || t.assigned_vehicle || 'To be assigned')}</div>
+                <div style="color:#475569;">Driver: ${esc(a.driver_name || 'Ops Dispatch')}</div>
+              </div>
+              <div class="p-3.5 rounded-xl border" style="background-color:#F8FAF9; border-color:#e2e8f0;">
+                <div class="font-extrabold uppercase text-[10px]" style="color:#64748b;">Valleys &amp; Route</div>
+                <div class="font-bold text-sm mt-1" style="color:#14231E;">${esc(t.valleys || 'Western & Central Valleys')}</div>
+                <div style="color:#475569;">Assignment Status: ${esc(String(a.status || 'scheduled').toUpperCase())}</div>
+              </div>
+            </div>
+
+            ${(a.guide_notes || t.special_requests) ? `
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+                ${a.guide_notes ? `
+                  <div class="p-3.5 rounded-xl border" style="background-color:#fffbeb; border-color:#fde68a; color:#92400e;">
+                    <strong>Ops Dispatch Notes:</strong> ${esc(a.guide_notes)}
+                  </div>
+                ` : ''}
+                ${t.special_requests ? `
+                  <div class="p-3.5 rounded-xl border" style="background-color:#fff1ef; border-color:#fbd3cc; color:#9a3412;">
+                    <strong>Guest Special Requests:</strong> ${esc(t.special_requests)}
+                  </div>
+                ` : ''}
+              </div>
+            ` : ''}
+          </section>
+
+          <!-- Live Traveler Roster -->
+          <section class="portal-card space-y-4">
+            <div class="flex items-center justify-between">
+              <h2 class="text-xl font-bold m-0" style="color:#14231E;">Live Traveler Roster &amp; Medical / Dietary Notes</h2>
+              <span class="badge badge-slate">${esc(travelers.length)} Traveler(s)</span>
+            </div>
+
+            ${travelers.length === 0 ? `
+              <div class="p-5 rounded-xl border text-center text-xs" style="background-color:#F8FAF9; border-color:#e2e8f0; color:#64748b;">
+                No individual traveler profiles recorded yet.
+              </div>
+            ` : `
+              <div class="portal-grid-2">
+                ${travelers.map((tr, idx) => {
+                  const emergTel = buildSafeTelHref(tr.emergency_contact_phone);
+                  const emergWa = buildSafeWaHref(tr.emergency_contact_phone, `Urgent field contact regarding ${tr.full_name} (${t.id}).`);
+                  const hasMedAlert = tr.medical_notes && !/^(none|n\/a|-)$/i.test(String(tr.medical_notes).trim());
+                  return `
+                    <article class="p-4 rounded-xl border space-y-2.5" style="background-color:#F8FAF9; border-color:${hasMedAlert ? '#fca5a5' : '#e2e8f0'};">
+                      <div class="flex flex-wrap items-center justify-between gap-2">
+                        <div>
+                          <span class="text-[11px] font-bold uppercase" style="color:#64748b;">Guest #${idx + 1} • ${esc(tr.age_category || 'adult')}</span>
+                          <h3 class="text-base font-bold m-0" style="color:#14231E;">${esc(tr.full_name)}</h3>
+                        </div>
+                        <span class="badge ${tr.visa_status === 'approved' || tr.visa_status === 'clearance_letter_issued' ? 'badge-green' : 'badge-amber'}">
+                          ${esc(String(tr.visa_status || 'pending').replace(/_/g, ' '))}
+                        </span>
+                      </div>
+
+                      <div class="text-xs space-y-1" style="color:#334155;">
+                        <div><strong>Nationality:</strong> ${esc(tr.nationality || 'N/A')}${tr.gender ? ` • <strong>Gender:</strong> ${esc(tr.gender)}` : ''}</div>
+                        <div><strong>Passport Ref:</strong> <span class="font-mono">${esc(tr.passport_masked || (tr.has_passport_on_file ? 'On File' : 'Pending'))}</span></div>
+                        <div><strong>Dietary / Allergies:</strong> <span style="color:${tr.dietary_needs ? '#92400e' : '#475569'}; font-weight:${tr.dietary_needs ? '700' : '400'};">${esc(tr.dietary_needs || 'Standard / No restrictions')}</span></div>
+                        <div><strong>Medical Notes:</strong> <span style="color:${hasMedAlert ? '#b91c1c' : '#475569'}; font-weight:${hasMedAlert ? '700' : '400'};">${esc(tr.medical_notes || 'None reported')}</span></div>
+                        ${tr.document_notes ? `<div><strong>Concierge Note:</strong> ${esc(tr.document_notes)}</div>` : ''}
+                      </div>
+
+                      <div class="pt-2 border-t flex flex-wrap items-center justify-between gap-2 text-xs" style="border-color:#e2e8f0;">
+                        <div>
+                          <strong>Emergency:</strong> ${esc(tr.emergency_contact_name || 'Not listed')}
+                          ${tr.emergency_contact_phone ? ` (${esc(tr.emergency_contact_phone)})` : ''}
+                        </div>
+                        <div class="flex gap-1.5">
+                          ${emergTel ? `<a href="${esc(emergTel)}" class="btn btn-outline btn-sm">Call</a>` : ''}
+                          ${emergWa ? `<a href="${esc(emergWa)}" target="_blank" rel="noopener" class="btn btn-outline btn-sm">WhatsApp</a>` : ''}
+                        </div>
+                      </div>
+                    </article>
+                  `;
+                }).join('')}
+              </div>
+            `}
+          </section>
+
+          <!-- Field Check-In Form & Live Timeline -->
+          <div class="portal-grid-2">
+            <section class="portal-card space-y-4">
+              <div>
+                <h2 class="text-xl font-bold m-0" style="color:#14231E;">Submit Field Check-In</h2>
+                <p class="text-xs m-0 mt-1" style="color:#64748b;">Log real-time pass crossing, hotel arrival, weather &amp; guest wellness for Thimphu Operations.</p>
+              </div>
+
+              <div id="tripCheckinAlert" class="${state.checkinSuccess ? 'alert-box alert-success' : 'hidden alert-box'}">
+                ${state.checkinSuccess ? esc(state.checkinSuccess) : ''}
+              </div>
+
+              <form id="tripCheckinForm" class="space-y-3">
+                <div>
+                  <label for="tdLocation" class="block text-xs font-bold mb-1" style="color:#334155;">Location / Checkpoint *</label>
+                  <input type="text" id="tdLocation" required class="portal-input" placeholder="e.g. Punakha Dzong Arrival">
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  <div>
+                    <label for="tdWeather" class="block text-xs font-bold mb-1" style="color:#334155;">Weather / Road Status</label>
+                    <input type="text" id="tdWeather" class="portal-input" placeholder="e.g. Clear & Sunny">
+                  </div>
+                  <div>
+                    <label for="tdGuestStatus" class="block text-xs font-bold mb-1" style="color:#334155;">Guest Wellness</label>
+                    <select id="tdGuestStatus" class="portal-input">
+                      <option value="All Well">All Well</option>
+                      <option value="Arrived Safely">Arrived Safely</option>
+                      <option value="Minor Altitude Fatigue">Minor Altitude Fatigue</option>
+                      <option value="Schedule Adjusted">Schedule Adjusted</option>
+                      <option value="Medical Attention Needed">Medical Attention Needed</option>
+                      <option value="Departed Safely">Departed Safely</option>
+                    </select>
+                  </div>
+                </div>
+                <div>
+                  <label for="tdNotes" class="block text-xs font-bold mb-1" style="color:#334155;">Field Notes</label>
+                  <textarea id="tdNotes" rows="3" class="portal-input" placeholder="Any itinerary updates, road blocks, or guest feedback..."></textarea>
+                </div>
+                <button type="submit" id="tdSubmitCheckinBtn" class="btn btn-coral btn-sm">Transmit Field Check-In</button>
+              </form>
+            </section>
+
+            <section class="portal-card space-y-4">
+              <div class="flex items-center justify-between">
+                <h2 class="text-xl font-bold m-0" style="color:#14231E;">Field Check-In Timeline</h2>
+                <span class="badge badge-slate">${esc(checkins.length)} Log(s)</span>
+              </div>
+              ${checkins.length === 0 ? `
+                <div class="p-5 rounded-xl border text-center text-xs" style="background-color:#F8FAF9; border-color:#e2e8f0; color:#64748b;">
+                  No field check-ins logged for this trip yet. Submit your first checkpoint on the left.
+                </div>
+              ` : `
+                <div class="space-y-3" style="max-height:360px; overflow-y:auto;">
+                  ${checkins.map((c) => `
+                    <div class="p-3.5 rounded-xl border space-y-1" style="background-color:#F8FAF9; border-color:#e2e8f0;">
+                      <div class="flex flex-wrap items-center justify-between gap-2">
+                        <strong class="text-xs" style="color:#14231E;">${esc(c.location)}</strong>
+                        <span class="badge ${c.guest_status === 'Medical Attention Needed' ? 'badge-red' : 'badge-green'}">${esc(c.guest_status || 'All Well')}</span>
+                      </div>
+                      <div class="text-[11px]" style="color:#64748b;">
+                        ${esc(fmtDate(c.created_at) || c.created_at || '')}${c.weather ? ` • Weather: ${esc(c.weather)}` : ''}
+                      </div>
+                      ${c.notes ? `<p class="text-xs m-0 pt-1" style="color:#334155;">${esc(c.notes)}</p>` : ''}
+                    </div>
+                  `).join('')}
+                </div>
+              `}
+            </section>
+          </div>
+
+          <!-- Full Daily Itinerary -->
+          <section class="portal-card space-y-4">
+            <div class="flex items-center justify-between">
+              <h2 class="text-xl font-bold m-0" style="color:#14231E;">Daily Expedition Itinerary</h2>
+              <span class="badge badge-slate">${esc(itinerary.length)} Day(s)</span>
+            </div>
+            ${itinerary.length === 0 ? `
+              <div class="p-5 rounded-xl border text-center text-xs" style="background-color:#F8FAF9; border-color:#e2e8f0; color:#64748b;">
+                No structured itinerary attached to this booking.
+              </div>
+            ` : `
+              <div class="space-y-3">
+                ${itinerary.map((item, idx) => renderDayCard(item, idx)).join('')}
+              </div>
+            `}
+          </section>
+        `;
+
+        const form = document.getElementById('tripCheckinForm');
+        if (form) {
+          form.addEventListener('submit', handleTripCheckinSubmit);
+        }
+      }
+
+      async function handleTripCheckinSubmit(e) {
+        e.preventDefault();
+        const alertBox = document.getElementById('tripCheckinAlert');
+        const btn = document.getElementById('tdSubmitCheckinBtn');
+        const location = document.getElementById('tdLocation').value.trim();
+        const weather = document.getElementById('tdWeather').value.trim();
+        const guestStatus = document.getElementById('tdGuestStatus').value;
+        const notes = document.getElementById('tdNotes').value.trim();
+
+        if (!location) {
+          alertBox.className = 'alert-box alert-danger';
+          alertBox.textContent = 'Check-in location is required.';
+          return;
+        }
+
+        const targetId = (state.assignment && state.assignment.id) || (state.trip && state.trip.id);
+        btn.disabled = true;
+        btn.textContent = 'Transmitting...';
+
+        try {
+          const res = await window.ApiClient.submitGuideCheckin(targetId, {
+            location,
+            weather,
+            guest_status: guestStatus,
+            notes
+          });
+          if (res && res.success) {
+            state.checkinSuccess = `Check-in at "${location}" (${guestStatus}) transmitted to Thimphu Operations Desk.`;
+            await loadTripDetail();
+            return;
+          }
+          alertBox.className = 'alert-box alert-danger';
+          alertBox.textContent = (res && res.error) || 'Failed to log check-in.';
+        } catch (err) {
+          alertBox.className = 'alert-box alert-danger';
+          alertBox.textContent = (err && err.message) || 'Error submitting check-in.';
+        } finally {
+          if (btn) {
+            btn.disabled = false;
+            btn.textContent = 'Transmit Field Check-In';
+          }
+        }
+      }
+
+      async function loadTripDetail() {
+        const token = window.ApiClient.getToken('guide');
+        if (!token) {
+          window.location.href = 'login.html';
+          return;
+        }
+
+        const guideUser = window.ApiClient.getGuideUser();
+        if (guideUser && headerGuideName) {
+          headerGuideName.textContent = guideUser.full_name || guideUser.name || '';
+        }
+
+        const sp = new URLSearchParams(window.location.search || '');
+        const tripId = (sp.get('id') || '').trim();
+        if (!tripId) {
+          container.innerHTML = `
+            <div class="portal-card text-center space-y-4">
+              <div class="alert-box alert-danger">
+                <strong>Missing Trip ID:</strong> Please select an assigned trip from your Field Dashboard.
+              </div>
+              <a href="dashboard.html" class="btn btn-coral btn-sm">Return to Field Dashboard</a>
+            </div>
+          `;
+          return;
+        }
+
+        try {
+          const res = await window.ApiClient.getGuideAssignment(tripId);
+          if (!res || !res.success || !res.trip) {
+            throw new Error((res && res.error) || 'Unable to load trip assignment.');
+          }
+          state.assignment = res.assignment || res.trip.assignment || null;
+          state.trip = res.trip;
+          renderTripDetail();
+        } catch (err) {
+          if (err && err.status === 401) {
+            window.ApiClient.clearPortalSession('guide');
+            window.location.href = 'login.html';
+            return;
+          }
+          container.innerHTML = `
+            <div class="portal-card text-center space-y-4">
+              <div class="alert-box alert-danger">
+                <strong>Unable to load trip details:</strong> ${esc((err && err.message) || 'Server unreachable.')}
+              </div>
+              <div class="flex justify-center gap-3">
+                <button type="button" data-action="retry-load" class="btn btn-coral btn-sm">Retry</button>
+                <a href="dashboard.html" class="btn btn-outline btn-sm">Back to Field Dashboard</a>
+              </div>
+            </div>
+          `;
+        }
+      }
+
+      container.addEventListener('click', (e) => {
+        const trigger = e.target && e.target.closest ? e.target.closest('[data-action]') : null;
+        if (!trigger) return;
+        if (trigger.getAttribute('data-action') === 'retry-load') {
+          loadTripDetail();
+        }
+      });
+
+      logoutBtn.addEventListener('click', () => {
+        window.ApiClient.clearPortalSession('guide');
+        window.location.href = 'login.html';
+      });
+
+      document.addEventListener('DOMContentLoaded', loadTripDetail);
+    })();
+  </script>
 </body>
 </html>

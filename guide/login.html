@@ -8,36 +8,241 @@
   <link rel="stylesheet" href="../css/tour-theme.css">
   <style>
     :root, html, body { color-scheme: light !important; }
-    input { color-scheme: light !important; background-color: #ffffff !important; color: #1f2923 !important; }
+    body {
+      margin: 0;
+      font-family: 'Manrope', ui-sans-serif, system-ui, -apple-system, sans-serif;
+      background-color: #14231E;
+      color: #1F2923;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    h1, h2, .font-display {
+      font-family: 'Fraunces', Georgia, serif;
+    }
+    input, textarea, select {
+      color-scheme: light !important;
+      background-color: #ffffff !important;
+      color: #1F2923 !important;
+      -webkit-text-fill-color: #1F2923 !important;
+      caret-color: #E05A47 !important;
+      opacity: 1 !important;
+    }
+    input::placeholder {
+      color: #6b7280 !important;
+      -webkit-text-fill-color: #6b7280 !important;
+      opacity: 1 !important;
+    }
+    .portal-shell {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px 16px;
+      background: radial-gradient(circle at top right, rgba(224, 90, 71, 0.16), transparent 45%),
+                  radial-gradient(circle at bottom left, rgba(16, 185, 129, 0.12), transparent 45%),
+                  #14231E;
+    }
+    .login-card {
+      width: 100%;
+      max-width: 440px;
+      background-color: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 18px;
+      padding: 32px;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.45);
+    }
+    .brand-mark {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      background-color: #E05A47;
+      color: #ffffff;
+      font-weight: 800;
+      font-size: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 14px;
+      box-shadow: 0 8px 18px rgba(224, 90, 71, 0.3);
+    }
+    .portal-input {
+      width: 100%;
+      padding: 12px 14px;
+      border-radius: 10px;
+      border: 1px solid #cbd5e1;
+      font-size: 14px;
+      font-weight: 600;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .portal-input:focus {
+      outline: none;
+      border-color: #E05A47;
+      box-shadow: 0 0 0 3px rgba(224, 90, 71, 0.16);
+    }
+    .btn-primary {
+      width: 100%;
+      padding: 13px 18px;
+      border-radius: 10px;
+      background-color: #E05A47;
+      color: #ffffff;
+      font-weight: 800;
+      font-size: 12px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      border: none;
+      cursor: pointer;
+      box-shadow: 0 8px 18px rgba(224, 90, 71, 0.25);
+      transition: background-color 0.2s;
+    }
+    .btn-primary:hover:not(:disabled) { background-color: #c94937; }
+    .btn-primary:disabled { opacity: 0.65; cursor: not-allowed; }
+    .alert-error {
+      background-color: #fef2f2;
+      border: 1px solid #fecaca;
+      color: #991b1b;
+      border-radius: 10px;
+      padding: 11px 14px;
+      font-size: 13px;
+      font-weight: 600;
+      line-height: 1.45;
+    }
+    .info-box {
+      background-color: #F8FAF9;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 14px;
+      font-size: 12px;
+      color: #475569;
+    }
   </style>
 </head>
-<body class="bg-[#14231E] min-h-screen flex items-center justify-center p-4">
-  <div class="w-full max-w-md bg-white p-8 rounded-2xl shadow-2xl space-y-6">
-    <div class="text-center space-y-2">
-      <div class="w-12 h-12 rounded-xl bg-[#E05A47] text-white font-black text-xl flex items-center justify-center mx-auto shadow">B</div>
-      <h1 class="text-xl font-black text-[#14231E]">Certified Guide Field Portal</h1>
-      <p class="text-xs text-zinc-500">Sign in with your guide email and password to view daily trip rosters and report check-ins.</p>
+<body>
+  <div class="portal-shell">
+    <div class="login-card space-y-6">
+      <div class="text-center">
+        <div class="brand-mark">B</div>
+        <div class="text-[11px] font-extrabold uppercase tracking-widest" style="color:#E05A47;">
+          <span data-bfr-company>Bhutan Fast Rate Tours</span>
+        </div>
+        <h1 class="text-2xl font-bold mt-1" style="color:#14231E;">Certified Guide Field Portal</h1>
+        <p class="text-xs mt-2" style="color:#64748b; line-height:1.5;">
+          Sign in with your Department of Tourism guide email and password to view trip rosters, guest dietary/medical notes, and submit live field check-ins.
+        </p>
+      </div>
+
+      <div id="guideLoginError" class="hidden alert-error" role="alert"></div>
+
+      <form id="guideLoginForm" class="space-y-4">
+        <div>
+          <label for="gEmail" class="block text-xs font-bold mb-1.5" style="color:#334155;">Guide Email</label>
+          <input
+            type="email"
+            id="gEmail"
+            name="email"
+            autocomplete="username"
+            placeholder="guide@bhutanfastratetours.bt"
+            required
+            class="portal-input"
+          >
+        </div>
+        <div>
+          <label for="gPass" class="block text-xs font-bold mb-1.5" style="color:#334155;">Password</label>
+          <input
+            type="password"
+            id="gPass"
+            name="password"
+            autocomplete="current-password"
+            placeholder="Enter your guide password"
+            required
+            class="portal-input"
+          >
+        </div>
+        <button type="submit" id="guideLoginBtn" class="btn-primary">
+          Access Field Dashboard
+        </button>
+      </form>
+
+      <div class="info-box space-y-2">
+        <div class="font-bold" style="color:#14231E;">Authorized Licensed Guides Only</div>
+        <p style="margin:0; line-height:1.5;">
+          Contact Thimphu Operations Desk (<span data-bfr-phone>+975 17 654 321</span>) if you need a password reset or assignment update.
+        </p>
+        <div class="flex items-center justify-between pt-1 text-[11px] font-bold">
+          <a href="../admin/login.html" style="color:#14231E; text-decoration:underline;">Operations Admin</a>
+          <a href="../index.html" style="color:#E05A47;">← Main Website</a>
+        </div>
+      </div>
     </div>
-    <form id="guideLoginForm" class="space-y-4">
-      <div>
-        <label class="block text-xs font-bold text-zinc-700 mb-1">Guide Email</label>
-        <input type="email" id="gEmail" value="kinley@bhutanfastratetours.bt" required class="w-full px-4 py-3 rounded-lg border border-zinc-300 text-sm">
-      </div>
-      <div>
-        <label class="block text-xs font-bold text-zinc-700 mb-1">Password</label>
-        <input type="password" id="gPass" value="guide123" required class="w-full px-4 py-3 rounded-lg border border-zinc-300 text-sm">
-      </div>
-      <button type="submit" class="w-full py-3.5 rounded-lg bg-[#E05A47] hover:bg-[#c94937] text-white font-black text-xs uppercase tracking-wider shadow">
-        Access Field Dashboard
-      </button>
-    </form>
   </div>
+
+  <script src="../js/api-client.js"></script>
+  <script src="../js/site-shell.js"></script>
   <script>
-    document.getElementById('guideLoginForm').addEventListener('submit', (e) => {
-      e.preventDefault();
-      localStorage.setItem('bfr_guide_auth', 'kinley');
-      window.location.href = 'dashboard.html';
-    });
+    (function () {
+      'use strict';
+
+      const form = document.getElementById('guideLoginForm');
+      const emailInput = document.getElementById('gEmail');
+      const passInput = document.getElementById('gPass');
+      const errorBox = document.getElementById('guideLoginError');
+      const submitBtn = document.getElementById('guideLoginBtn');
+
+      function showError(msg) {
+        errorBox.textContent = String(msg || 'Invalid guide credentials.');
+        errorBox.classList.remove('hidden');
+      }
+
+      function clearError() {
+        errorBox.textContent = '';
+        errorBox.classList.add('hidden');
+      }
+
+      async function checkExistingSession() {
+        const token = window.ApiClient && window.ApiClient.getToken('guide');
+        if (!token) return;
+        try {
+          const res = await window.ApiClient.getGuideAssignments();
+          if (res && res.success) {
+            window.location.href = 'dashboard.html';
+          }
+        } catch (_) {
+          window.ApiClient.clearPortalSession('guide');
+        }
+      }
+
+      document.addEventListener('DOMContentLoaded', checkExistingSession);
+
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        clearError();
+
+        const email = emailInput.value.trim();
+        const password = passInput.value;
+
+        if (!email || !password) {
+          showError('Please enter both your guide email and password.');
+          return;
+        }
+
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Signing In...';
+
+        try {
+          const res = await window.ApiClient.guideLogin(email, password);
+          if (res && res.success && res.token) {
+            window.location.href = 'dashboard.html';
+            return;
+          }
+          showError((res && res.error) || 'Invalid guide credentials.');
+        } catch (err) {
+          showError((err && err.message) || 'Unable to reach operations server.');
+        } finally {
+          submitBtn.disabled = false;
+          submitBtn.textContent = 'Access Field Dashboard';
+        }
+      });
+    })();
   </script>
 </body>
 </html>

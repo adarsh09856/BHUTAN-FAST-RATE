@@ -8,136 +8,971 @@
   <link rel="stylesheet" href="../css/tour-theme.css">
   <style>
     :root, html, body { color-scheme: light !important; }
+    body {
+      margin: 0;
+      font-family: 'Manrope', ui-sans-serif, system-ui, -apple-system, sans-serif;
+      background-color: #F8FAF9;
+      color: #1F2923;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    h1, h2, h3, .font-display {
+      font-family: 'Fraunces', Georgia, serif;
+    }
     input, textarea, select {
       color-scheme: light !important;
       background-color: #ffffff !important;
-      color: #1f2923 !important;
-      -webkit-text-fill-color: #1f2923 !important;
+      color: #1F2923 !important;
+      -webkit-text-fill-color: #1F2923 !important;
+      caret-color: #E05A47 !important;
+      opacity: 1 !important;
     }
+    input::placeholder, textarea::placeholder {
+      color: #6b7280 !important;
+      -webkit-text-fill-color: #6b7280 !important;
+      opacity: 1 !important;
+    }
+    .portal-header {
+      position: sticky;
+      top: 0;
+      z-index: 40;
+      background-color: #14231E;
+      color: #ffffff;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.14);
+    }
+    .portal-nav-link {
+      color: #cbd5e1;
+      text-decoration: none;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      padding: 6px 10px;
+      border-radius: 8px;
+      transition: color 0.15s, background-color 0.15s;
+    }
+    .portal-nav-link:hover { color: #ffffff; background-color: rgba(255,255,255,0.08); }
+    .portal-nav-link.active { color: #ffffff; background-color: rgba(224, 90, 71, 0.22); border: 1px solid rgba(224, 90, 71, 0.45); }
+    .portal-card {
+      background-color: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 16px;
+      padding: 24px;
+      box-shadow: 0 2px 10px rgba(20, 35, 30, 0.04);
+    }
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 4px 10px;
+      border-radius: 9999px;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+    .badge-green { background-color: #dcfce7; color: #166534; border: 1px solid #bbf7d0; }
+    .badge-amber { background-color: #fef3c7; color: #92400e; border: 1px solid #fde68a; }
+    .badge-red { background-color: #fee2e2; color: #991b1b; border: 1px solid #fecaca; }
+    .badge-slate { background-color: #f1f5f9; color: #334155; border: 1px solid #cbd5e1; }
+    .badge-coral { background-color: #fff1ef; color: #b93826; border: 1px solid #fbd3cc; }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      padding: 10px 16px;
+      border-radius: 10px;
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      cursor: pointer;
+      border: 1px solid transparent;
+      text-decoration: none;
+      transition: all 0.15s ease;
+    }
+    .btn:disabled { opacity: 0.55; cursor: not-allowed; }
+    .btn-coral { background-color: #E05A47; color: #ffffff; }
+    .btn-coral:hover:not(:disabled) { background-color: #c94937; }
+    .btn-forest { background-color: #14231E; color: #ffffff; }
+    .btn-forest:hover:not(:disabled) { background-color: #0E1915; }
+    .btn-outline { background-color: #ffffff; color: #14231E; border-color: #cbd5e1; }
+    .btn-outline:hover:not(:disabled) { background-color: #f8fafc; border-color: #94a3b8; }
+    .btn-emerald { background-color: #059669; color: #ffffff; }
+    .btn-emerald:hover:not(:disabled) { background-color: #047857; }
+    .btn-sm { padding: 7px 12px; font-size: 11px; border-radius: 8px; }
+    .portal-input {
+      width: 100%;
+      padding: 10px 12px;
+      border-radius: 8px;
+      border: 1px solid #cbd5e1;
+      font-size: 13px;
+      font-weight: 500;
+    }
+    .portal-input:focus {
+      outline: none;
+      border-color: #E05A47;
+      box-shadow: 0 0 0 3px rgba(224, 90, 71, 0.14);
+    }
+    .stepper-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+      gap: 10px;
+    }
+    .step-item {
+      border-radius: 12px;
+      padding: 12px;
+      border: 1px solid #e2e8f0;
+      background-color: #f8fafc;
+    }
+    .step-item.done { background-color: #ecfdf5; border-color: #a7f3d0; }
+    .step-item.active { background-color: #fff7ed; border-color: #fdba74; }
+    .step-item.rejected { background-color: #fef2f2; border-color: #fca5a5; }
+    .portal-grid-2 {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 20px;
+    }
+    @media (min-width: 900px) {
+      .portal-grid-2 { grid-template-columns: 1.25fr 1fr; }
+    }
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      z-index: 60;
+      background-color: rgba(14, 25, 21, 0.72);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      overflow-y: auto;
+    }
+    .modal-backdrop.hidden { display: none; }
+    .modal-panel {
+      width: 100%;
+      max-width: 540px;
+      background-color: #ffffff;
+      border-radius: 18px;
+      border: 1px solid #e2e8f0;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.4);
+      overflow: hidden;
+    }
+    .portal-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+    .portal-table th {
+      text-align: left;
+      padding: 10px 12px;
+      font-size: 11px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: #64748b;
+      border-bottom: 1px solid #e2e8f0;
+      background-color: #f8fafc;
+    }
+    .portal-table td {
+      padding: 11px 12px;
+      border-bottom: 1px solid #f1f5f9;
+      vertical-align: middle;
+    }
+    .alert-box {
+      border-radius: 12px;
+      padding: 14px 16px;
+      font-size: 13px;
+      line-height: 1.5;
+    }
+    .alert-danger { background-color: #fef2f2; border: 1px solid #fecaca; color: #991b1b; }
+    .alert-warn { background-color: #fffbeb; border: 1px solid #fde68a; color: #92400e; }
+    .alert-success { background-color: #ecfdf5; border: 1px solid #a7f3d0; color: #065f46; }
   </style>
 </head>
-<body class="bg-[#F8FAF9] text-[#1F2923] min-h-screen flex flex-col font-sans antialiased">
-  <header class="sticky top-0 z-50 bg-[#14231E] text-white border-b border-white/10 shadow-md">
-    <div class="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
-      <a href="dashboard.html" class="flex items-center gap-3">
-        <div class="w-8 h-8 rounded-lg bg-[#E05A47] text-white font-black flex items-center justify-center text-sm">B</div>
-        <div class="font-extrabold text-sm uppercase">Traveler Portal</div>
+<body>
+  <header class="portal-header">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-4">
+      <a href="dashboard.html" class="flex items-center gap-3" style="text-decoration:none; color:#fff;">
+        <div class="w-9 h-9 rounded-lg flex items-center justify-center font-black text-sm" style="background-color:#E05A47; color:#fff;">B</div>
+        <div>
+          <div class="font-extrabold text-sm uppercase tracking-wider leading-none">Traveler Portal</div>
+          <div class="text-[10px] tracking-wider uppercase" style="color:#cbd5e1;" data-bfr-license>#TR/2018/9882</div>
+        </div>
       </a>
-      <nav class="flex items-center gap-4 text-xs font-bold uppercase tracking-wider text-zinc-300">
-        <a href="dashboard.html" class="text-[#E05A47]">My Trip</a>
-        <a href="documents.html" class="hover:text-white">Documents</a>
-        <a href="itinerary.html" class="hover:text-white">Itinerary</a>
-        <a href="../track-visa.html" class="hover:text-white">Track Visa</a>
-        <a href="../index.html" class="hover:text-white text-zinc-400">Exit</a>
+      <nav class="flex flex-wrap items-center gap-2">
+        <a href="dashboard.html" class="portal-nav-link active">My Trip</a>
+        <a href="documents.html" class="portal-nav-link">Documents</a>
+        <a href="itinerary.html" class="portal-nav-link">Itinerary</a>
+        <a href="../track-visa.html" class="portal-nav-link">Track Visa</a>
+        <button type="button" id="clientLogoutBtn" class="portal-nav-link" style="background:rgba(255,255,255,0.08); border:none; cursor:pointer;">Sign Out</button>
       </nav>
     </div>
   </header>
 
-  <main class="py-10 max-w-6xl mx-auto px-4 sm:px-6 flex-1 space-y-6 w-full" id="clientDashboardContent">
-    <div class="py-16 text-center text-zinc-400">
-      <div class="inline-block w-8 h-8 border-4 border-[#E05A47] border-t-transparent rounded-full animate-spin mb-3"></div>
-      <div>Loading Your Bhutan Reservation &amp; Visa Status...</div>
+  <main class="py-8 max-w-6xl mx-auto px-4 sm:px-6 flex-1 space-y-6 w-full" id="clientDashboardContent">
+    <div class="portal-card py-16 text-center" style="color:#64748b;">
+      <div class="inline-block w-8 h-8 border-4 rounded-full mb-3" style="border-color:#E05A47; border-top-color:transparent; animation: spin 0.8s linear infinite;"></div>
+      <div class="text-sm font-semibold">Loading Your Bhutan Reservation &amp; Visa Status...</div>
     </div>
   </main>
 
-  <footer class="bg-[#0E1915] text-zinc-400 py-6 text-center text-xs border-t border-white/10">
-    &copy; 2026 Bhutan Fast Rate Tours • Client Self-Service Portal • Hotline: +975 17 654 321
+  <footer class="py-6 text-center text-xs border-t" style="background-color:#0E1915; color:#94a3b8; border-color:rgba(255,255,255,0.1);">
+    &copy; 2026 <span data-bfr-company>Bhutan Fast Rate Tours</span> (<span data-bfr-license>#TR/2018/9882</span>) • Client Self-Service Portal • Hotline: <span data-bfr-phone>+975 17 654 321</span>
   </footer>
 
+  <!-- Upload Payment Receipt Modal -->
+  <div id="receiptModal" class="modal-backdrop hidden" role="dialog" aria-modal="true" aria-labelledby="receiptModalTitle">
+    <div class="modal-panel">
+      <div class="px-6 py-4 flex items-center justify-between border-b" style="background-color:#14231E; color:#fff;">
+        <div>
+          <h2 id="receiptModalTitle" class="text-lg font-bold m-0">Upload Payment Receipt</h2>
+          <p class="text-[11px] m-0" style="color:#cbd5e1;">Submit bank wire, SWIFT, or UPI transfer proof for Finance verification</p>
+        </div>
+        <button type="button" id="closeReceiptModalBtn" aria-label="Close modal" style="background:transparent; border:none; color:#cbd5e1; font-size:18px; cursor:pointer;">✕</button>
+      </div>
+      <form id="receiptForm" class="p-6 space-y-4">
+        <div id="receiptFormAlert" class="hidden alert-box"></div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label for="receiptAmount" class="block text-xs font-bold mb-1" style="color:#334155;">Amount Paid *</label>
+            <input type="number" id="receiptAmount" name="amount" min="1" step="any" required class="portal-input" placeholder="e.g. 1500">
+          </div>
+          <div>
+            <label for="receiptCurrency" class="block text-xs font-bold mb-1" style="color:#334155;">Currency *</label>
+            <select id="receiptCurrency" name="currency" class="portal-input">
+              <option value="USD">USD ($)</option>
+              <option value="INR">INR (₹)</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label for="receiptType" class="block text-xs font-bold mb-1" style="color:#334155;">Payment Type</label>
+            <select id="receiptType" name="payment_type" class="portal-input">
+              <option value="deposit">Deposit Payment</option>
+              <option value="balance">Final Balance Payment</option>
+              <option value="full_payment">Full 100% Payment</option>
+              <option value="extras">Add-On / Upgrade</option>
+            </select>
+          </div>
+          <div>
+            <label for="receiptMethod" class="block text-xs font-bold mb-1" style="color:#334155;">Payment Method</label>
+            <select id="receiptMethod" name="payment_method" class="portal-input">
+              <option value="bank_transfer">International Bank Wire / SWIFT</option>
+              <option value="upi">UPI / NEFT / RTGS (India)</option>
+              <option value="card">Card / Online Gateway</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
+        </div>
+
+        <div>
+          <label for="receiptRef" class="block text-xs font-bold mb-1" style="color:#334155;">Bank / Transaction Reference</label>
+          <input type="text" id="receiptRef" name="transaction_ref" class="portal-input" placeholder="e.g. SWIFT-MT103 / UTR Reference">
+        </div>
+
+        <div>
+          <label for="receiptFile" class="block text-xs font-bold mb-1" style="color:#334155;">Transfer Receipt File (JPG, PNG, or PDF, max 5MB) *</label>
+          <input type="file" id="receiptFile" name="receipt_file" accept=".jpg,.jpeg,.png,.pdf" required class="portal-input" style="padding:8px;">
+        </div>
+
+        <div>
+          <label for="receiptNotes" class="block text-xs font-bold mb-1" style="color:#334155;">Notes for Finance Team</label>
+          <textarea id="receiptNotes" name="notes" rows="2" class="portal-input" placeholder="Sender account name or bank transfer date"></textarea>
+        </div>
+
+        <div class="flex items-center justify-end gap-3 pt-2 border-t" style="border-color:#e2e8f0;">
+          <button type="button" id="cancelReceiptBtn" class="btn btn-outline btn-sm">Cancel</button>
+          <button type="submit" id="submitReceiptBtn" class="btn btn-coral btn-sm">Submit Receipt for Verification</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <style>
+    @keyframes spin { to { transform: rotate(360deg); } }
+  </style>
+
   <script src="../js/api-client.js"></script>
+  <script src="../js/site-shell.js"></script>
   <script>
-    async function loadClientTrip() {
-      const urlParams = new URLSearchParams(window.location.search);
-      const ref = urlParams.get('ref') || localStorage.getItem('bfr_client_ref') || 'BFR-2026-8841';
+    (function () {
+      'use strict';
 
-      try {
-        const res = await ApiClient.trackBooking(ref);
-        const container = document.getElementById('clientDashboardContent');
+      const container = document.getElementById('clientDashboardContent');
+      const logoutBtn = document.getElementById('clientLogoutBtn');
+      const receiptModal = document.getElementById('receiptModal');
+      const receiptForm = document.getElementById('receiptForm');
+      const receiptFormAlert = document.getElementById('receiptFormAlert');
+      const submitReceiptBtn = document.getElementById('submitReceiptBtn');
 
-        if (!res.success || !res.booking) {
-          container.innerHTML = `
-            <div class="bg-white p-8 rounded-2xl border border-zinc-200 text-center space-y-4">
-              <h2 class="text-xl font-bold text-red-500">Trip Reference Not Found</h2>
-              <p class="text-xs text-zinc-500">Could not locate booking "${ref}".</p>
-              <form onsubmit="event.preventDefault(); window.location.href='dashboard.html?ref=' + document.getElementById('newRef').value;" class="max-w-xs mx-auto flex gap-2">
-                <input type="text" id="newRef" placeholder="BFR-2026-XXXX" class="px-3 py-2 border rounded text-xs font-mono font-bold flex-1">
-                <button type="submit" class="px-4 py-2 bg-[#E05A47] text-white font-bold text-xs rounded">Find</button>
-              </form>
-            </div>
-          `;
-          return;
+      const state = {
+        profile: null,
+        payments: [],
+        paymentSummary: null,
+        bankWire: null,
+        notifications: [],
+        unreadCount: 0,
+        reviewSubmitted: false
+      };
+
+      function esc(val) {
+        if (window.SiteShell && typeof window.SiteShell.escapeHtml === 'function') {
+          return window.SiteShell.escapeHtml(val);
         }
+        if (val === undefined || val === null) return '';
+        return String(val)
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/"/g, '&quot;')
+          .replace(/'/g, '&#39;');
+      }
 
-        const b = res.booking;
-        const isApproved = ['approved', 'clearance_letter_issued'].includes(b.visa_status);
-        const isPaid = (b.deposit_paid_usd >= b.total_price_usd) || b.payment_status === 'Paid in Full';
+      function fmtDate(val) {
+        if (window.SiteShell && typeof window.SiteShell.formatDate === 'function') {
+          return window.SiteShell.formatDate(val);
+        }
+        return val ? String(val) : '';
+      }
+
+      function fmtMoney(amountUsd, summary) {
+        const curr = String((summary && summary.currency) || 'USD').toUpperCase() === 'INR' ? 'INR' : 'USD';
+        const rate = curr === 'INR' ? (Number((summary && summary.exchange_rate) || 85) || 85) : 1;
+        const localVal = curr === 'INR' ? Math.round(Number(amountUsd || 0) * rate) : Math.round(Number(amountUsd || 0));
+        return window.ApiClient.formatCurrency(localVal, curr, { withCode: true });
+      }
+
+      function formatStageLabel(stage) {
+        return String(stage || 'pending')
+          .replace(/_/g, ' ')
+          .replace(/\b\w/g, (c) => c.toUpperCase());
+      }
+
+      function isSafeWhatsAppUrl(url) {
+        return /^https:\/\/wa\.me\//i.test(String(url || '').trim());
+      }
+
+      function getVisaBadgeClass(visaStatus) {
+        const v = String(visaStatus || '').toLowerCase();
+        if (v === 'approved' || v === 'clearance_letter_issued') return 'badge-green';
+        if (v === 'rejected') return 'badge-red';
+        if (v === 'submitted_to_doi' || v === 'under_review' || v === 'payment_verified' || v === 'documents_complete' || v === 'docs_received') return 'badge-amber';
+        return 'badge-slate';
+      }
+
+      function getBookingBadgeClass(status) {
+        const s = String(status || '').toLowerCase();
+        if (s === 'completed' || s === 'confirmed' || s === 'active_trip') return 'badge-green';
+        if (s === 'cancelled') return 'badge-red';
+        return 'badge-amber';
+      }
+
+      function getPaymentBadgeClass(status) {
+        const s = String(status || '').toLowerCase();
+        if (s === 'verified') return 'badge-green';
+        if (s === 'rejected' || s === 'failed') return 'badge-red';
+        return 'badge-amber';
+      }
+
+      function buildStepperHtml(booking, docReadiness, paymentSummary) {
+        const v = String(booking.visa_status || 'pending_docs').toLowerCase();
+        const isRejected = v === 'rejected';
+        const docsReady = Boolean(docReadiness && docReadiness.all_ready) ||
+          ['documents_complete', 'docs_received', 'payment_verified', 'submitted_to_doi', 'under_review', 'approved', 'clearance_letter_issued'].includes(v);
+        const fullPaid = Number((paymentSummary && paymentSummary.full_paid) || booking.full_paid) === 1 ||
+          ['payment_verified', 'submitted_to_doi', 'under_review', 'approved', 'clearance_letter_issued'].includes(v);
+        const submittedDoi = ['submitted_to_doi', 'under_review', 'approved', 'clearance_letter_issued'].includes(v);
+        const approved = ['approved', 'clearance_letter_issued'].includes(v);
+
+        const steps = [
+          {
+            label: '1. Reservation',
+            desc: formatStageLabel(booking.booking_status || 'confirmed'),
+            state: booking.booking_status === 'cancelled' ? 'rejected' : 'done'
+          },
+          {
+            label: '2. Passports & Docs',
+            desc: docReadiness ? `${docReadiness.ready_count}/${docReadiness.total} Ready` : 'Pending',
+            state: isRejected ? 'rejected' : (docsReady ? 'done' : 'active')
+          },
+          {
+            label: '3. Full Payment',
+            desc: fullPaid ? '100% Settled' : 'Balance Pending',
+            state: fullPaid ? 'done' : (docsReady ? 'active' : 'pending')
+          },
+          {
+            label: '4. DoI Visa Filing',
+            desc: isRejected ? 'Correction Required' : (submittedDoi ? 'Filed with DoI' : 'Queued'),
+            state: isRejected ? 'rejected' : (approved ? 'done' : (submittedDoi ? 'active' : 'pending'))
+          },
+          {
+            label: '5. Visa Clearance',
+            desc: approved ? (booking.visa_clearance_number || 'Approved') : 'Pending Approval',
+            state: approved ? 'done' : (isRejected ? 'rejected' : 'pending')
+          }
+        ];
+
+        return `
+          <div class="stepper-grid">
+            ${steps.map((st) => `
+              <div class="step-item ${esc(st.state)}">
+                <div class="text-[11px] font-extrabold uppercase tracking-wider" style="color:#475569;">${esc(st.label)}</div>
+                <div class="text-xs font-bold mt-1" style="color:#14231E;">${esc(st.desc)}</div>
+              </div>
+            `).join('')}
+          </div>
+        `;
+      }
+
+      function renderDashboard() {
+        const profile = state.profile;
+        if (!profile || !profile.booking) return;
+
+        const b = profile.booking;
+        const summary = state.paymentSummary || profile.payment_summary || {};
+        const bank = state.bankWire || profile.bank_wire || {};
+        const guide = profile.guide || b.guide || null;
+        const docReadiness = profile.doc_readiness || { total: 0, ready_count: 0, incomplete_count: 0, all_ready: false };
+        const isApproved = b.visa_status === 'approved' || b.visa_status === 'clearance_letter_issued';
+        const isRejected = b.visa_status === 'rejected';
+        const isPaid = Number(summary.full_paid) === 1 || Number(summary.balance_due_usd || 0) <= 0;
+        const isCompleted = String(b.booking_status || '').toLowerCase() === 'completed';
+
+        const invoiceUrl = window.ApiClient.getClientInvoiceUrl();
+        const clearanceUrl = window.ApiClient.getClientClearanceUrl();
+
+        const operatorWa = window.ApiClient.buildWhatsAppUrl(
+          '+97517654321',
+          `Kuzuzangpo La! Regarding my booking ${b.id} (${b.lead_name}).`
+        );
+        const guideWa = guide && guide.phone
+          ? window.ApiClient.buildWhatsAppUrl(guide.phone, `Kuzuzangpo La ${guide.full_name || guide.name}! This is ${b.lead_name} (${b.id}).`)
+          : '';
+
+        const totalLocalFormatted = fmtMoney(summary.total_price_usd ?? b.total_price_usd, summary);
+        const paidLocalFormatted = fmtMoney(summary.deposit_paid_usd ?? b.deposit_paid_usd, summary);
+        const balanceLocalFormatted = fmtMoney(summary.balance_due_usd ?? b.balance_due_usd, summary);
 
         container.innerHTML = `
-          <div class="bg-white p-6 sm:p-8 rounded-2xl border border-zinc-200 shadow-sm space-y-6">
-            <div class="flex flex-wrap items-start justify-between gap-4 pb-6 border-b border-zinc-200">
-              <div>
-                <span class="px-2.5 py-0.5 rounded ${isApproved ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-800'} font-bold text-xs uppercase">
-                  ${(b.visa_status || 'Under Review').replace(/_/g, ' ')}
-                </span>
-                <h1 class="text-2xl font-black text-[#14231E] mt-2">${b.tour_title}</h1>
-                <p class="text-xs text-zinc-500 mt-1">Booking Ref: <strong class="font-mono text-zinc-800">${b.id}</strong> • Traveler: <strong>${b.lead_name}</strong> • Dates: <strong>${b.travel_dates || (b.travel_date_start + ' to ' + b.travel_date_end)}</strong></p>
+          <!-- Hero Reservation Summary -->
+          <section class="portal-card space-y-5">
+            <div class="flex flex-wrap items-start justify-between gap-4 pb-5 border-b" style="border-color:#e2e8f0;">
+              <div class="space-y-2">
+                <div class="flex flex-wrap items-center gap-2">
+                  <span class="badge ${getBookingBadgeClass(b.booking_status)}">${esc(formatStageLabel(b.booking_status))}</span>
+                  <span class="badge ${getVisaBadgeClass(b.visa_status)}">Visa: ${esc(formatStageLabel(b.visa_status))}</span>
+                  <span class="badge badge-slate font-mono">${esc(b.id)}</span>
+                </div>
+                <h1 class="text-2xl sm:text-3xl font-bold m-0" style="color:#14231E;">${esc(b.tour_title)}</h1>
+                <p class="text-xs m-0" style="color:#475569;">
+                  Lead Traveler: <strong>${esc(b.lead_name)}</strong> (${esc(b.lead_country || 'International')}) •
+                  Dates: <strong>${esc(b.travel_dates || `${b.travel_date_start} to ${b.travel_date_end}`)}</strong> •
+                  Party: <strong>${esc(b.total_travelers)} Guest(s)</strong> •
+                  Tier: <strong>${esc(b.hotel_tier || 'Standard')}</strong>
+                </p>
               </div>
-              <div class="text-right">
-                <span class="text-xs text-zinc-400">Total Investment</span>
-                <div class="text-2xl font-black text-[#E05A47]">$${Number(b.total_price_usd).toLocaleString()}</div>
-                <span class="text-xs font-bold ${isPaid ? 'text-emerald-600' : 'text-amber-600'}">
-                  ${isPaid ? '✓ Fully Settled' : '⚠️ Deposit Paid · Balance Pending'}
-                </span>
+              <div class="text-left sm:text-right space-y-1">
+                <div class="text-[11px] font-bold uppercase tracking-wider" style="color:#64748b;">Total Trip Investment</div>
+                <div class="text-2xl font-black" style="color:#E05A47;">${esc(totalLocalFormatted)}</div>
+                <div class="text-xs font-bold" style="color:${isPaid ? '#059669' : '#b45309'};">
+                  ${isPaid ? '✓ Fully Settled' : `Balance Due: ${esc(balanceLocalFormatted)}`}
+                </div>
+                <div class="pt-2 flex flex-wrap sm:justify-end gap-2">
+                  <a href="${esc(invoiceUrl)}" target="_blank" rel="noopener" class="btn btn-outline btn-sm">Print Official Invoice</a>
+                  <a href="itinerary.html" class="btn btn-forest btn-sm">View Itinerary</a>
+                </div>
               </div>
             </div>
 
-            <!-- Official Visa Clearance Box -->
-            <div class="p-6 rounded-xl ${isApproved ? 'bg-emerald-50 border border-emerald-200' : 'bg-orange-50 border border-orange-200'} space-y-3">
-              <div class="flex items-center justify-between">
-                <span class="text-xs font-bold uppercase ${isApproved ? 'text-emerald-800' : 'text-[#E05A47]'}">ROYAL BHUTAN IMMIGRATION CLEARANCE</span>
-                <span class="badge ${isApproved ? 'badge-green' : 'badge-amber'}">${isApproved ? 'ACTIVE' : 'IN PROCESS'}</span>
+            ${isRejected ? `
+              <div class="alert-box alert-danger space-y-2">
+                <div class="font-extrabold uppercase text-xs tracking-wider">Action Required — Department of Immigration Visa Notice</div>
+                <p class="m-0"><strong>Reason:</strong> ${esc(b.visa_rejection_reason || 'Document correction or update requested by immigration desk.')}</p>
+                <div>
+                  <a href="documents.html" class="btn btn-coral btn-sm">Fix &amp; Re-Upload Traveler Documents →</a>
+                </div>
               </div>
-              <div class="text-sm font-bold text-[#14231E]">
-                Official Visa Clearance Number: <span class="font-mono ${isApproved ? 'text-emerald-700 font-black' : 'text-zinc-500'}">${b.visa_clearance_number || 'Pending Final Concierge Approval'}</span>
+            ` : ''}
+
+            ${!isRejected && docReadiness.incomplete_count > 0 ? `
+              <div class="alert-box alert-warn flex flex-wrap items-center justify-between gap-3">
+                <div>
+                  <strong>Traveler Documents Incomplete:</strong> ${esc(docReadiness.ready_count)} of ${esc(docReadiness.total)} guest(s) meet Bhutan DoI passport &amp; document readiness.
+                </div>
+                <a href="documents.html" class="btn btn-coral btn-sm">Complete Documents (${esc(docReadiness.incomplete_count)} Pending) →</a>
               </div>
-              <p class="text-xs text-zinc-600 leading-relaxed">
-                ${isApproved 
-                  ? 'Your official e-Visa clearance is registered with Bhutan Department of Immigration. Present this number at the Drukair/Bhutan Airlines check-in desk and Paro Airport border control.'
-                  : 'Your application is under active processing with the Royal Government. As soon as approved, your official clearance number will appear here.'}
+            ` : ''}
+
+            <!-- Progress Stepper -->
+            <div class="space-y-2">
+              <div class="text-xs font-extrabold uppercase tracking-wider" style="color:#475569;">Booking &amp; DoI Visa Progress</div>
+              ${buildStepperHtml(b, docReadiness, summary)}
+            </div>
+          </section>
+
+          <!-- Official Visa Clearance & Guide Grid -->
+          <div class="portal-grid-2">
+            <!-- Visa Clearance Card -->
+            <section class="portal-card space-y-4" style="${isApproved ? 'border-color:#86efac; background-color:#f0fdf4;' : ''}">
+              <div class="flex items-center justify-between gap-2">
+                <span class="text-xs font-extrabold uppercase tracking-wider" style="color:${isApproved ? '#166534' : '#E05A47'};">Royal Bhutan Immigration Clearance</span>
+                <span class="badge ${isApproved ? 'badge-green' : (isRejected ? 'badge-red' : 'badge-amber')}">
+                  ${isApproved ? 'Approved & Ready' : (isRejected ? 'Rejected' : 'Locked Until Approved')}
+                </span>
+              </div>
+              <div class="text-sm font-bold" style="color:#14231E;">
+                Clearance Reference:
+                <span class="font-mono" style="color:${isApproved ? '#15803d' : '#64748b'};">
+                  ${esc(b.visa_clearance_number || 'Pending DoI Clearance Issuance')}
+                </span>
+              </div>
+              <p class="text-xs m-0" style="color:#475569; line-height:1.6;">
+                ${isApproved
+                  ? 'Your official e-Visa clearance is active with the Department of Immigration. Download and present this letter at Drukair / Bhutan Airlines check-in and Paro International Airport arrival.'
+                  : 'Your official Visa Clearance Letter stays locked until 100% payment is verified, all traveler documents pass DoI readiness, and the Department of Immigration marks your visa Approved.'}
               </p>
-              ${isApproved ? `
-                <a href="../track-visa.html?ref=${b.id}" class="inline-block px-4 py-2 rounded-lg bg-emerald-600 text-white font-bold text-xs uppercase tracking-wider hover:bg-emerald-500">
-                  View Full Verification Letter
-                </a>
+              <div class="flex flex-wrap items-center gap-3 pt-1">
+                ${isApproved ? `
+                  <a href="${esc(clearanceUrl)}" target="_blank" rel="noopener" class="btn btn-emerald btn-sm">
+                    Download Visa Clearance Letter
+                  </a>
+                ` : `
+                  <button type="button" disabled class="btn btn-outline btn-sm" title="Available once DoI approves your visa">
+                    🔒 Visa Clearance Locked
+                  </button>
+                `}
+                <a href="documents.html" class="btn btn-outline btn-sm">Manage Guest Passports (${esc(docReadiness.ready_count)}/${esc(docReadiness.total)})</a>
+              </div>
+            </section>
+
+            <!-- Assigned Guide & Vehicle Card -->
+            <section class="portal-card space-y-4">
+              <div class="flex items-center justify-between gap-2">
+                <span class="text-xs font-extrabold uppercase tracking-wider" style="color:#14231E;">Assigned Guide &amp; Transport</span>
+                <span class="badge ${guide ? 'badge-green' : 'badge-amber'}">${guide ? 'Assigned' : 'In Progress'}</span>
+              </div>
+              ${guide ? `
+                <div class="space-y-2 text-xs" style="color:#334155;">
+                  <div class="text-base font-bold" style="color:#14231E;">${esc(guide.full_name || guide.name)}</div>
+                  <div><strong>DoT License:</strong> ${esc(guide.license_no || 'Certified Guide')} ${guide.specialty ? `• ${esc(guide.specialty)}` : ''}</div>
+                  ${guide.languages ? `<div><strong>Languages:</strong> ${esc(guide.languages)}</div>` : ''}
+                  <div><strong>Private Vehicle:</strong> ${esc(guide.vehicle || 'Private Tour Vehicle')}${guide.driver_name ? ` (Driver: ${esc(guide.driver_name)})` : ''}</div>
+                  <div><strong>Guide Contact:</strong> ${esc(guide.phone || 'Via Operations Desk')}</div>
+                  <div class="flex flex-wrap gap-2 pt-2">
+                    ${guide.phone ? `<a href="tel:${esc(String(guide.phone).replace(/[^\d+]/g, ''))}" class="btn btn-outline btn-sm">Call Guide</a>` : ''}
+                    ${isSafeWhatsAppUrl(guideWa) ? `<a href="${esc(guideWa)}" target="_blank" rel="noopener" class="btn btn-forest btn-sm">WhatsApp Guide</a>` : ''}
+                  </div>
+                </div>
+              ` : `
+                <div class="p-4 rounded-xl border space-y-2" style="background-color:#F8FAF9; border-color:#e2e8f0;">
+                  <div class="font-bold text-sm" style="color:#14231E;">Guide assignment in progress</div>
+                  <p class="text-xs m-0" style="color:#64748b; line-height:1.5;">
+                    Our Thimphu Operations Desk is matching a Department of Tourism certified guide and private vehicle to your itinerary dates and language preferences.
+                  </p>
+                </div>
+              `}
+            </section>
+          </div>
+
+          <!-- Payments Ledger & Bank Wire -->
+          <section class="portal-card space-y-5">
+            <div class="flex flex-wrap items-center justify-between gap-3">
+              <div>
+                <h2 class="text-xl font-bold m-0" style="color:#14231E;">Payment Ledger &amp; Bank Wire</h2>
+                <p class="text-xs m-0 mt-1" style="color:#64748b;">
+                  Plan: <strong>${esc(summary.payment_plan === 'full_100' ? '100% Full Advance' : '30% Deposit + Balance')}</strong>
+                  ${summary.balance_due_date ? ` • Balance Due Date: <strong>${esc(fmtDate(summary.balance_due_date))}</strong>` : ''}
+                </p>
+              </div>
+              <button type="button" data-action="open-receipt-modal" class="btn btn-coral btn-sm">
+                + Upload Payment Receipt
+              </button>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+              <div class="p-3.5 rounded-xl border" style="background-color:#F8FAF9; border-color:#e2e8f0;">
+                <div class="text-[11px] font-bold uppercase" style="color:#64748b;">Total Package</div>
+                <div class="text-lg font-black mt-0.5" style="color:#14231E;">${esc(totalLocalFormatted)}</div>
+              </div>
+              <div class="p-3.5 rounded-xl border" style="background-color:#ecfdf5; border-color:#bbf7d0;">
+                <div class="text-[11px] font-bold uppercase" style="color:#166534;">Verified Paid</div>
+                <div class="text-lg font-black mt-0.5" style="color:#166534;">${esc(paidLocalFormatted)}</div>
+              </div>
+              <div class="p-3.5 rounded-xl border" style="background-color:${isPaid ? '#ecfdf5' : '#fffbeb'}; border-color:${isPaid ? '#bbf7d0' : '#fde68a'};">
+                <div class="text-[11px] font-bold uppercase" style="color:${isPaid ? '#166534' : '#92400e'};">Remaining Balance</div>
+                <div class="text-lg font-black mt-0.5" style="color:${isPaid ? '#166534' : '#92400e'};">${esc(balanceLocalFormatted)}</div>
+              </div>
+            </div>
+
+            <div class="portal-grid-2">
+              <div class="overflow-x-auto border rounded-xl" style="border-color:#e2e8f0;">
+                <table class="portal-table">
+                  <thead>
+                    <tr>
+                      <th>Date</th>
+                      <th>Type &amp; Ref</th>
+                      <th>Amount</th>
+                      <th>Status</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    ${state.payments.length === 0 ? `
+                      <tr>
+                        <td colspan="4" class="text-center text-xs py-6" style="color:#64748b;">
+                          No payment transactions recorded yet. Upload your transfer receipt after wiring funds.
+                        </td>
+                      </tr>
+                    ` : state.payments.map((p) => {
+                      const pCurr = String(p.currency || summary.currency || 'USD').toUpperCase();
+                      const pAmt = p.amount_local !== null && p.amount_local !== undefined ? p.amount_local : p.amount_usd;
+                      return `
+                        <tr>
+                          <td class="text-xs" style="color:#475569;">${esc(fmtDate(p.created_at || p.verified_at || 'Pending'))}</td>
+                          <td>
+                            <div class="font-bold text-xs" style="color:#14231E;">${esc(formatStageLabel(p.payment_type || 'payment'))}</div>
+                            <div class="text-[11px] font-mono" style="color:#64748b;">${esc(p.transaction_ref || p.payment_method || 'Wire')}</div>
+                            ${p.notes ? `<div class="text-[11px] mt-0.5" style="color:#64748b;">${esc(p.notes)}</div>` : ''}
+                          </td>
+                          <td class="font-bold text-xs" style="color:#14231E;">${esc(window.ApiClient.formatCurrency(pAmt, pCurr, { withCode: true }))}</td>
+                          <td><span class="badge ${getPaymentBadgeClass(p.status)}">${esc(formatStageLabel(p.status || 'pending'))}</span></td>
+                        </tr>
+                      `;
+                    }).join('')}
+                  </tbody>
+                </table>
+              </div>
+
+              <div class="p-4 rounded-xl border space-y-2 text-xs" style="background-color:#F8FAF9; border-color:#e2e8f0; color:#334155;">
+                <div class="font-extrabold uppercase tracking-wider" style="color:#14231E;">Official Bank Wire Instructions</div>
+                <div><strong>Beneficiary:</strong> ${esc(bank.bank_beneficiary || 'Bhutan Fast Rate Tours Ltd.')}</div>
+                <div><strong>Bank:</strong> ${esc(bank.bank_name || 'Bank of Bhutan Ltd.')}</div>
+                <div><strong>SWIFT / BIC:</strong> <span class="font-mono font-bold">${esc(bank.bank_swift || 'BOBTBT22XXX')}</span></div>
+                <div><strong>Account Number:</strong> <span class="font-mono font-bold">${esc(bank.bank_account || '200884910023')}</span></div>
+                <div class="pt-1 text-[11px]" style="color:#64748b;">
+                  <strong>Wire Memo:</strong> ${esc(bank.bank_instructions || 'Include Booking Reference')} (<span class="font-mono font-bold">${esc(b.id)}</span>)
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- Live Client Notifications -->
+          <section class="portal-card space-y-4">
+            <div class="flex flex-wrap items-center justify-between gap-2">
+              <div class="flex items-center gap-2">
+                <h2 class="text-xl font-bold m-0" style="color:#14231E;">Trip Updates &amp; Notifications</h2>
+                <span class="badge ${state.unreadCount > 0 ? 'badge-coral' : 'badge-slate'}">${esc(state.unreadCount)} Unread</span>
+              </div>
+              ${isSafeWhatsAppUrl(operatorWa) ? `
+                <a href="${esc(operatorWa)}" target="_blank" rel="noopener" class="btn btn-outline btn-sm">WhatsApp Concierge Desk</a>
               ` : ''}
             </div>
 
-            <!-- Trip Guide Info -->
-            <div class="grid sm:grid-cols-2 gap-4 text-xs">
-              <div class="p-4 rounded-xl bg-zinc-50 border border-zinc-200 space-y-1">
-                <span class="text-zinc-400 uppercase font-bold">Your Assigned Senior Guide</span>
-                <div class="font-bold text-sm text-[#14231E]">${b.guide ? b.guide.name : 'Kinley Tshering'}</div>
-                <p class="text-zinc-600">Certified Cultural &amp; High Altitude Guide (${b.guide ? b.guide.phone : '+975 77 123 456'})</p>
+            ${state.notifications.length === 0 ? `
+              <div class="p-5 rounded-xl border text-center text-xs" style="background-color:#F8FAF9; border-color:#e2e8f0; color:#64748b;">
+                No notifications yet. Visa updates, payment confirmations, and guide assignments appear here automatically.
               </div>
-              <div class="p-4 rounded-xl bg-zinc-50 border border-zinc-200 space-y-1">
-                <span class="text-zinc-400 uppercase font-bold">Private Vehicle &amp; Chauffeur</span>
-                <div class="font-bold text-sm text-[#14231E]">${b.guide ? (b.guide.vehicle || 'Toyota Prado SUV') : 'Toyota Land Cruiser (BP-1-A8921)'}</div>
-                <p class="text-zinc-600">Dedicated chauffeur for all valley transfers &amp; luggage</p>
+            ` : `
+              <div class="space-y-3">
+                ${state.notifications.map((n) => {
+                  const isUnread = Number(n.is_read) === 0;
+                  const waHref = isSafeWhatsAppUrl(n.whatsapp_url) ? n.whatsapp_url : '';
+                  return `
+                    <div class="p-4 rounded-xl border flex flex-wrap items-start justify-between gap-3" style="background-color:${isUnread ? '#fffaf9' : '#ffffff'}; border-color:${isUnread ? '#fbd3cc' : '#e2e8f0'};">
+                      <div class="space-y-1 flex-1" style="min-width:220px;">
+                        <div class="flex flex-wrap items-center gap-2">
+                          <span class="badge ${isUnread ? 'badge-coral' : 'badge-slate'}">${isUnread ? 'New' : 'Read'}</span>
+                          <strong class="text-sm" style="color:#14231E;">${esc(n.title || n.category || 'Reservation Update')}</strong>
+                        </div>
+                        <p class="text-xs m-0" style="color:#475569; line-height:1.5;">${esc(n.message)}</p>
+                        <div class="text-[11px]" style="color:#64748b;">
+                          ${esc(fmtDate(n.created_at))}${n.channel ? ` • ${esc(String(n.channel).toUpperCase())}` : ''}
+                        </div>
+                      </div>
+                      <div class="flex items-center gap-2">
+                        ${waHref ? `<a href="${esc(waHref)}" target="_blank" rel="noopener" class="btn btn-outline btn-sm">Open WhatsApp</a>` : ''}
+                        ${isUnread ? `<button type="button" data-action="mark-notif-read" data-notif-id="${esc(n.id)}" class="btn btn-forest btn-sm">Mark Read</button>` : ''}
+                      </div>
+                    </div>
+                  `;
+                }).join('')}
               </div>
-            </div>
+            `}
+          </section>
 
-            <div class="flex items-center justify-between pt-4 border-t border-zinc-100 text-xs text-zinc-400">
-              <div>Need assistance? WhatsApp our 24/7 Operations Desk at <strong class="text-zinc-700">+975 17 654 321</strong></div>
-              <a href="documents.html" class="text-[#E05A47] font-bold hover:underline">Upload Additional Passports →</a>
-            </div>
-          </div>
+          <!-- Post-Trip Review Form (Only when booking_status === 'completed') -->
+          ${isCompleted ? `
+            <section class="portal-card space-y-4" style="border-color:#a7f3d0;">
+              <div>
+                <span class="badge badge-green">Trip Completed</span>
+                <h2 class="text-xl font-bold m-0 mt-2" style="color:#14231E;">Rate Your Bhutan Trip</h2>
+                <p class="text-xs m-0 mt-1" style="color:#64748b;">Share feedback on your guide, lodges, and itinerary with future travelers.</p>
+              </div>
+              <div id="reviewAlert" class="${state.reviewSubmitted ? 'alert-box alert-success' : 'hidden alert-box'}">
+                ${state.reviewSubmitted ? 'Thank you! Your verified traveler review has been submitted for moderation.' : ''}
+              </div>
+              ${state.reviewSubmitted ? '' : `
+                <form id="clientReviewForm" class="space-y-4">
+                  <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                    <div>
+                      <label for="revRating" class="block text-xs font-bold mb-1" style="color:#334155;">Overall Rating *</label>
+                      <select id="revRating" name="rating" class="portal-input">
+                        <option value="5">★★★★★ (5 / 5 — Exceptional)</option>
+                        <option value="4">★★★★☆ (4 / 5 — Very Good)</option>
+                        <option value="3">★★★☆☆ (3 / 5 — Good)</option>
+                        <option value="2">★★☆☆☆ (2 / 5 — Fair)</option>
+                        <option value="1">★☆☆☆☆ (1 / 5 — Needs Improvement)</option>
+                      </select>
+                    </div>
+                    <div>
+                      <label for="revAuthor" class="block text-xs font-bold mb-1" style="color:#334155;">Display Name</label>
+                      <input type="text" id="revAuthor" name="author_name" value="${esc(b.lead_name || '')}" class="portal-input">
+                    </div>
+                    <div>
+                      <label for="revCountry" class="block text-xs font-bold mb-1" style="color:#334155;">Country</label>
+                      <input type="text" id="revCountry" name="author_country" value="${esc(b.lead_country || '')}" class="portal-input">
+                    </div>
+                  </div>
+                  <div>
+                    <label for="revTitle" class="block text-xs font-bold mb-1" style="color:#334155;">Review Headline</label>
+                    <input type="text" id="revTitle" name="title" placeholder="e.g. Unforgettable week across Paro, Thimphu & Punakha" class="portal-input">
+                  </div>
+                  <div>
+                    <label for="revComment" class="block text-xs font-bold mb-1" style="color:#334155;">Your Experience *</label>
+                    <textarea id="revComment" name="comment" rows="3" required placeholder="Tell us about your guide, hotels, and highlights..." class="portal-input"></textarea>
+                  </div>
+                  <button type="submit" id="submitReviewBtn" class="btn btn-coral btn-sm">Submit Verified Review</button>
+                </form>
+              `}
+            </section>
+          ` : ''}
         `;
-      } catch (err) {
-        console.error('Error loading client dashboard:', err);
-      }
-    }
 
-    document.addEventListener('DOMContentLoaded', loadClientTrip);
+        const reviewForm = document.getElementById('clientReviewForm');
+        if (reviewForm) {
+          reviewForm.addEventListener('submit', handleReviewSubmit);
+        }
+      }
+
+      function openReceiptModal() {
+        receiptFormAlert.classList.add('hidden');
+        receiptFormAlert.textContent = '';
+
+        const summary = state.paymentSummary || (state.profile && state.profile.payment_summary) || {};
+        const curr = String(summary.currency || 'USD').toUpperCase() === 'INR' ? 'INR' : 'USD';
+        const rate = curr === 'INR' ? (Number(summary.exchange_rate || 85) || 85) : 1;
+        const balUsd = Number(summary.balance_due_usd || 0);
+        const suggestedLocal = balUsd > 0 ? Math.round(balUsd * rate) : '';
+
+        document.getElementById('receiptCurrency').value = curr;
+        document.getElementById('receiptAmount').value = suggestedLocal;
+        document.getElementById('receiptFile').value = '';
+        receiptModal.classList.remove('hidden');
+      }
+
+      function closeReceiptModal() {
+        receiptModal.classList.add('hidden');
+      }
+
+      async function handleReceiptSubmit(e) {
+        e.preventDefault();
+        receiptFormAlert.className = 'hidden alert-box';
+        receiptFormAlert.textContent = '';
+
+        const fileInput = document.getElementById('receiptFile');
+        const amountVal = Number(document.getElementById('receiptAmount').value);
+        if (!Number.isFinite(amountVal) || amountVal <= 0) {
+          receiptFormAlert.className = 'alert-box alert-danger';
+          receiptFormAlert.textContent = 'Please enter a positive payment amount.';
+          return;
+        }
+        if (!fileInput.files || !fileInput.files[0]) {
+          receiptFormAlert.className = 'alert-box alert-danger';
+          receiptFormAlert.textContent = 'Please attach a JPG, PNG, or PDF transfer receipt.';
+          return;
+        }
+
+        const fd = new FormData();
+        fd.append('amount', String(amountVal));
+        fd.append('currency', document.getElementById('receiptCurrency').value);
+        fd.append('payment_type', document.getElementById('receiptType').value);
+        fd.append('payment_method', document.getElementById('receiptMethod').value);
+        fd.append('transaction_ref', document.getElementById('receiptRef').value.trim());
+        fd.append('notes', document.getElementById('receiptNotes').value.trim());
+        fd.append('receipt_file', fileInput.files[0]);
+
+        submitReceiptBtn.disabled = true;
+        submitReceiptBtn.textContent = 'Uploading Receipt...';
+
+        try {
+          const res = await window.ApiClient.uploadPaymentReceipt(fd);
+          if (res && res.success) {
+            closeReceiptModal();
+            if (window.SiteShell && typeof window.SiteShell.toast === 'function') {
+              window.SiteShell.toast('Payment receipt submitted for Finance verification.', 'success');
+            }
+            await loadDashboardData();
+            return;
+          }
+          receiptFormAlert.className = 'alert-box alert-danger';
+          receiptFormAlert.textContent = (res && res.error) || 'Upload failed.';
+        } catch (err) {
+          receiptFormAlert.className = 'alert-box alert-danger';
+          receiptFormAlert.textContent = (err && err.message) || 'Failed to upload receipt.';
+        } finally {
+          submitReceiptBtn.disabled = false;
+          submitReceiptBtn.textContent = 'Submit Receipt for Verification';
+        }
+      }
+
+      async function handleReviewSubmit(e) {
+        e.preventDefault();
+        const alertBox = document.getElementById('reviewAlert');
+        const btn = document.getElementById('submitReviewBtn');
+        const comment = document.getElementById('revComment').value.trim();
+        if (!comment) {
+          alertBox.className = 'alert-box alert-danger';
+          alertBox.textContent = 'Please enter your review comment.';
+          return;
+        }
+
+        btn.disabled = true;
+        btn.textContent = 'Submitting Review...';
+
+        try {
+          const res = await window.ApiClient.submitClientReview({
+            rating: Number(document.getElementById('revRating').value || 5),
+            author_name: document.getElementById('revAuthor').value.trim(),
+            author_country: document.getElementById('revCountry').value.trim(),
+            title: document.getElementById('revTitle').value.trim(),
+            comment
+          });
+          if (res && res.success) {
+            state.reviewSubmitted = true;
+            renderDashboard();
+            return;
+          }
+          alertBox.className = 'alert-box alert-danger';
+          alertBox.textContent = (res && res.error) || 'Could not submit review.';
+        } catch (err) {
+          alertBox.className = 'alert-box alert-danger';
+          alertBox.textContent = (err && err.message) || 'Error submitting review.';
+        } finally {
+          if (btn) {
+            btn.disabled = false;
+            btn.textContent = 'Submit Verified Review';
+          }
+        }
+      }
+
+      async function markNotificationRead(notifId) {
+        try {
+          const res = await window.ApiClient.markClientNotificationRead(notifId);
+          if (res && res.success) {
+            state.notifications = state.notifications.map((n) =>
+              String(n.id) === String(notifId) ? { ...n, is_read: 1 } : n
+            );
+            state.unreadCount = state.notifications.filter((n) => Number(n.is_read) === 0).length;
+            renderDashboard();
+          }
+        } catch (err) {
+          if (window.SiteShell && typeof window.SiteShell.toast === 'function') {
+            window.SiteShell.toast((err && err.message) || 'Failed to update notification.', 'error');
+          }
+        }
+      }
+
+      async function loadDashboardData() {
+        const token = window.ApiClient.getToken('client');
+        if (!token) {
+          window.location.href = 'login.html';
+          return;
+        }
+
+        try {
+          const [profileRes, paymentsRes, notifRes] = await Promise.all([
+            window.ApiClient.getClientBookingProfile(),
+            window.ApiClient.getClientPayments().catch((err) => {
+              if (err && err.status === 401) throw err;
+              return null;
+            }),
+            window.ApiClient.getClientNotifications().catch((err) => {
+              if (err && err.status === 401) throw err;
+              return null;
+            })
+          ]);
+
+          if (!profileRes || !profileRes.success || !profileRes.booking) {
+            throw new Error('Unable to load your booking details.');
+          }
+
+          window.ApiClient.setClientSession(token, profileRes.booking);
+          state.profile = profileRes;
+          state.payments = (paymentsRes && Array.isArray(paymentsRes.data)) ? paymentsRes.data : [];
+          state.paymentSummary = (paymentsRes && paymentsRes.summary) || profileRes.payment_summary;
+          if (state.paymentSummary && profileRes.payment_summary && state.paymentSummary.exchange_rate === undefined) {
+            state.paymentSummary.exchange_rate = profileRes.payment_summary.exchange_rate;
+          }
+          state.bankWire = (paymentsRes && paymentsRes.bank_wire) || profileRes.bank_wire;
+          state.notifications = (notifRes && Array.isArray(notifRes.data)) ? notifRes.data : [];
+          state.unreadCount = notifRes && notifRes.unread_count !== undefined
+            ? Number(notifRes.unread_count)
+            : state.notifications.filter((n) => Number(n.is_read) === 0).length;
+
+          renderDashboard();
+        } catch (err) {
+          if (err && err.status === 401) {
+            window.ApiClient.clearPortalSession('client');
+            window.location.href = 'login.html';
+            return;
+          }
+          container.innerHTML = `
+            <div class="portal-card text-center space-y-4">
+              <div class="alert-box alert-danger">
+                <strong>Unable to load reservation dashboard:</strong> ${esc((err && err.message) || 'Server unreachable.')}
+              </div>
+              <div class="flex justify-center gap-3">
+                <button type="button" data-action="retry-load" class="btn btn-coral btn-sm">Retry</button>
+                <a href="login.html" class="btn btn-outline btn-sm">Back to Sign In</a>
+              </div>
+            </div>
+          `;
+        }
+      }
+
+      container.addEventListener('click', (e) => {
+        const trigger = e.target && e.target.closest ? e.target.closest('[data-action]') : null;
+        if (!trigger) return;
+        const action = trigger.getAttribute('data-action');
+        if (action === 'open-receipt-modal') {
+          openReceiptModal();
+        } else if (action === 'mark-notif-read') {
+          const id = trigger.getAttribute('data-notif-id');
+          if (id) markNotificationRead(id);
+        } else if (action === 'retry-load') {
+          loadDashboardData();
+        }
+      });
+
+      document.getElementById('closeReceiptModalBtn').addEventListener('click', closeReceiptModal);
+      document.getElementById('cancelReceiptBtn').addEventListener('click', closeReceiptModal);
+      receiptModal.addEventListener('click', (e) => {
+        if (e.target === receiptModal) closeReceiptModal();
+      });
+      receiptForm.addEventListener('submit', handleReceiptSubmit);
+
+      logoutBtn.addEventListener('click', () => {
+        window.ApiClient.clearPortalSession('client');
+        window.location.href = 'login.html';
+      });
+
+      document.addEventListener('DOMContentLoaded', loadDashboardData);
+    })();
   </script>
 </body>
 </html>

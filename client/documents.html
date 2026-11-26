@@ -8,59 +8,894 @@
   <link rel="stylesheet" href="../css/tour-theme.css">
   <style>
     :root, html, body { color-scheme: light !important; }
+    body {
+      margin: 0;
+      font-family: 'Manrope', ui-sans-serif, system-ui, -apple-system, sans-serif;
+      background-color: #F8FAF9;
+      color: #1F2923;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    h1, h2, h3, .font-display {
+      font-family: 'Fraunces', Georgia, serif;
+    }
     input, textarea, select {
       color-scheme: light !important;
       background-color: #ffffff !important;
-      color: #1f2923 !important;
-      -webkit-text-fill-color: #1f2923 !important;
+      color: #1F2923 !important;
+      -webkit-text-fill-color: #1F2923 !important;
+      caret-color: #E05A47 !important;
+      opacity: 1 !important;
     }
+    input::placeholder, textarea::placeholder {
+      color: #6b7280 !important;
+      -webkit-text-fill-color: #6b7280 !important;
+      opacity: 1 !important;
+    }
+    .portal-header {
+      position: sticky;
+      top: 0;
+      z-index: 40;
+      background-color: #14231E;
+      color: #ffffff;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.14);
+    }
+    .portal-nav-link {
+      color: #cbd5e1;
+      text-decoration: none;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      padding: 6px 10px;
+      border-radius: 8px;
+      transition: color 0.15s, background-color 0.15s;
+    }
+    .portal-nav-link:hover { color: #ffffff; background-color: rgba(255,255,255,0.08); }
+    .portal-nav-link.active { color: #ffffff; background-color: rgba(224, 90, 71, 0.22); border: 1px solid rgba(224, 90, 71, 0.45); }
+    .portal-card {
+      background-color: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 16px;
+      padding: 24px;
+      box-shadow: 0 2px 10px rgba(20, 35, 30, 0.04);
+    }
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 4px 10px;
+      border-radius: 9999px;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+    .badge-green { background-color: #dcfce7; color: #166534; border: 1px solid #bbf7d0; }
+    .badge-amber { background-color: #fef3c7; color: #92400e; border: 1px solid #fde68a; }
+    .badge-red { background-color: #fee2e2; color: #991b1b; border: 1px solid #fecaca; }
+    .badge-slate { background-color: #f1f5f9; color: #334155; border: 1px solid #cbd5e1; }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      padding: 10px 16px;
+      border-radius: 10px;
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      cursor: pointer;
+      border: 1px solid transparent;
+      text-decoration: none;
+      transition: all 0.15s ease;
+    }
+    .btn:disabled { opacity: 0.55; cursor: not-allowed; }
+    .btn-coral { background-color: #E05A47; color: #ffffff; }
+    .btn-coral:hover:not(:disabled) { background-color: #c94937; }
+    .btn-forest { background-color: #14231E; color: #ffffff; }
+    .btn-forest:hover:not(:disabled) { background-color: #0E1915; }
+    .btn-outline { background-color: #ffffff; color: #14231E; border-color: #cbd5e1; }
+    .btn-outline:hover:not(:disabled) { background-color: #f8fafc; border-color: #94a3b8; }
+    .btn-sm { padding: 7px 12px; font-size: 11px; border-radius: 8px; }
+    .portal-input {
+      width: 100%;
+      padding: 9px 11px;
+      border-radius: 8px;
+      border: 1px solid #cbd5e1;
+      font-size: 13px;
+      font-weight: 500;
+    }
+    .portal-input:focus {
+      outline: none;
+      border-color: #E05A47;
+      box-shadow: 0 0 0 3px rgba(224, 90, 71, 0.14);
+    }
+    .progress-track {
+      width: 100%;
+      height: 12px;
+      background-color: #e2e8f0;
+      border-radius: 9999px;
+      overflow: hidden;
+    }
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #14231E, #059669);
+      border-radius: 9999px;
+      transition: width 0.3s ease;
+    }
+    .alert-box {
+      border-radius: 12px;
+      padding: 12px 15px;
+      font-size: 13px;
+      line-height: 1.5;
+    }
+    .alert-danger { background-color: #fef2f2; border: 1px solid #fecaca; color: #991b1b; }
+    .alert-warn { background-color: #fffbeb; border: 1px solid #fde68a; color: #92400e; }
+    .alert-success { background-color: #ecfdf5; border: 1px solid #a7f3d0; color: #065f46; }
+    .doc-upload-box {
+      background-color: #F8FAF9;
+      border: 1px dashed #94a3b8;
+      border-radius: 12px;
+      padding: 12px;
+    }
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      z-index: 60;
+      background-color: rgba(14, 25, 21, 0.74);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      overflow-y: auto;
+    }
+    .modal-backdrop.hidden { display: none; }
+    .modal-panel {
+      width: 100%;
+      max-width: 720px;
+      background-color: #ffffff;
+      border-radius: 18px;
+      border: 1px solid #e2e8f0;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.4);
+      overflow: hidden;
+    }
+    .form-grid-3 {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+    }
+    @media (min-width: 680px) {
+      .form-grid-3 { grid-template-columns: repeat(3, 1fr); }
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
   </style>
 </head>
-<body class="bg-[#F8FAF9] text-[#1F2923] min-h-screen flex flex-col font-sans antialiased">
-  <header class="sticky top-0 z-50 bg-[#14231E] text-white border-b border-white/10 shadow-md">
-    <div class="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
-      <a href="dashboard.html" class="flex items-center gap-3">
-        <div class="w-8 h-8 rounded-lg bg-[#E05A47] text-white font-black flex items-center justify-center text-sm">B</div>
-        <div class="font-extrabold text-sm uppercase">Traveler Portal</div>
+<body>
+  <header class="portal-header">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-4">
+      <a href="dashboard.html" class="flex items-center gap-3" style="text-decoration:none; color:#fff;">
+        <div class="w-9 h-9 rounded-lg flex items-center justify-center font-black text-sm" style="background-color:#E05A47; color:#fff;">B</div>
+        <div>
+          <div class="font-extrabold text-sm uppercase tracking-wider leading-none">Traveler Portal</div>
+          <div class="text-[10px] tracking-wider uppercase" style="color:#cbd5e1;" data-bfr-license>#TR/2018/9882</div>
+        </div>
       </a>
-      <nav class="flex items-center gap-4 text-xs font-bold uppercase tracking-wider text-zinc-300">
-        <a href="dashboard.html" class="hover:text-white">My Trip</a>
-        <a href="documents.html" class="text-[#E05A47]">Documents</a>
-        <a href="itinerary.html" class="hover:text-white">Itinerary</a>
-        <a href="../index.html" class="hover:text-white text-zinc-400">Exit</a>
+      <nav class="flex flex-wrap items-center gap-2">
+        <a href="dashboard.html" class="portal-nav-link">My Trip</a>
+        <a href="documents.html" class="portal-nav-link active">Documents</a>
+        <a href="itinerary.html" class="portal-nav-link">Itinerary</a>
+        <a href="../track-visa.html" class="portal-nav-link">Track Visa</a>
+        <button type="button" id="clientLogoutBtn" class="portal-nav-link" style="background:rgba(255,255,255,0.08); border:none; cursor:pointer;">Sign Out</button>
       </nav>
     </div>
   </header>
-  <main class="py-10 max-w-6xl mx-auto px-4 sm:px-6 flex-1 space-y-6 w-full">
-    
-  <div class="bg-white p-8 rounded-2xl border border-zinc-200 shadow-sm space-y-6">
-    <div>
-      <h1 class="text-2xl font-black text-[#14231E]">Traveler Documents &amp; Passport Upload</h1>
-      <p class="text-xs text-zinc-500 mt-1">Royal Government of Bhutan requires valid passport scans and travel insurance for all guests.</p>
-    </div>
 
-    <div class="space-y-4">
-      <div class="p-4 rounded-xl border border-emerald-300 bg-emerald-50/50 flex items-center justify-between">
+  <main class="py-8 max-w-6xl mx-auto px-4 sm:px-6 flex-1 space-y-6 w-full" id="documentsContent">
+    <div class="portal-card py-16 text-center" style="color:#64748b;">
+      <div class="inline-block w-8 h-8 border-4 rounded-full mb-3" style="border-color:#E05A47; border-top-color:transparent; animation: spin 0.8s linear infinite;"></div>
+      <div class="text-sm font-semibold">Loading Traveler Roster &amp; Document Readiness...</div>
+    </div>
+  </main>
+
+  <footer class="py-6 text-center text-xs border-t" style="background-color:#0E1915; color:#94a3b8; border-color:rgba(255,255,255,0.1);">
+    &copy; 2026 <span data-bfr-company>Bhutan Fast Rate Tours</span> (<span data-bfr-license>#TR/2018/9882</span>) • Client Self-Service Portal • Hotline: <span data-bfr-phone>+975 17 654 321</span>
+  </footer>
+
+  <!-- Private Document Preview Modal -->
+  <div id="docPreviewModal" class="modal-backdrop hidden" role="dialog" aria-modal="true" aria-labelledby="docPreviewTitle">
+    <div class="modal-panel">
+      <div class="px-6 py-4 flex items-center justify-between border-b" style="background-color:#14231E; color:#fff;">
         <div>
-          <div class="font-bold text-sm text-[#14231E]">Dr. Evelyn Martinez (Lead Traveler)</div>
-          <div class="text-xs text-emerald-700">✓ Passport Scan Verified (Exp: 2031-04-12) • Travel Insurance Attached</div>
+          <h2 id="docPreviewTitle" class="text-base font-bold m-0">Document Preview</h2>
+          <p id="docPreviewSub" class="text-[11px] m-0" style="color:#cbd5e1;">Authenticated private upload</p>
         </div>
-        <span class="badge badge-green">VERIFIED</span>
+        <button type="button" id="closeDocPreviewBtn" aria-label="Close modal" style="background:transparent; border:none; color:#cbd5e1; font-size:18px; cursor:pointer;">✕</button>
       </div>
-      <div class="p-4 rounded-xl border border-zinc-200 bg-zinc-50 flex items-center justify-between">
-        <div>
-          <div class="font-bold text-sm text-[#14231E]">Guest 2: Robert Martinez</div>
-          <div class="text-xs text-zinc-500">Passport photo scan attached • Ready for DoI processing</div>
+      <div class="p-4" style="background-color:#f8fafc;">
+        <div id="docPreviewBody" class="flex items-center justify-center rounded-xl border p-2" style="min-height:360px; background-color:#ffffff; border-color:#e2e8f0;"></div>
+      </div>
+      <div class="px-6 py-3 flex items-center justify-between border-t" style="border-color:#e2e8f0;">
+        <span class="text-[11px]" style="color:#64748b;">Secured with your reservation token</span>
+        <div class="flex items-center gap-2">
+          <a id="docPreviewOpenTab" href="#" target="_blank" rel="noopener" class="btn btn-outline btn-sm">Open in New Tab ↗</a>
+          <button type="button" id="docPreviewCloseBtn" class="btn btn-forest btn-sm">Close</button>
         </div>
-        <span class="badge badge-green">COMPLETE</span>
       </div>
     </div>
   </div>
 
-  </main>
-  <footer class="bg-[#0E1915] text-zinc-400 py-6 text-center text-xs border-t border-white/10">
-    &copy; 2026 Bhutan Fast Rate Tours • Client Self-Service Portal • Hotline: +975 17 654 321
-  </footer>
+  <!-- Add Companion / Request Add-On Guest Modal -->
+  <div id="addGuestModal" class="modal-backdrop hidden" role="dialog" aria-modal="true" aria-labelledby="addGuestTitle">
+    <div class="modal-panel" style="max-width:580px;">
+      <div class="px-6 py-4 flex items-center justify-between border-b" style="background-color:#14231E; color:#fff;">
+        <div>
+          <h2 id="addGuestTitle" class="text-lg font-bold m-0">Add Companion / Request Add-On Guest</h2>
+          <p id="addGuestSubtitle" class="text-[11px] m-0" style="color:#cbd5e1;">Add traveler details to your reservation party</p>
+        </div>
+        <button type="button" id="closeAddGuestBtn" aria-label="Close modal" style="background:transparent; border:none; color:#cbd5e1; font-size:18px; cursor:pointer;">✕</button>
+      </div>
+      <form id="addGuestForm" class="p-6 space-y-4">
+        <div id="addGuestAlert" class="hidden alert-box"></div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div>
+            <label for="agFullName" class="block text-xs font-bold mb-1" style="color:#334155;">Full Name (As on Passport) *</label>
+            <input type="text" id="agFullName" required class="portal-input" placeholder="e.g. Jordan Taylor">
+          </div>
+          <div>
+            <label for="agNationality" class="block text-xs font-bold mb-1" style="color:#334155;">Nationality</label>
+            <input type="text" id="agNationality" class="portal-input" placeholder="e.g. United States">
+          </div>
+          <div>
+            <label for="agAgeCategory" class="block text-xs font-bold mb-1" style="color:#334155;">Age Category</label>
+            <select id="agAgeCategory" class="portal-input">
+              <option value="adult">Adult (13+ yrs)</option>
+              <option value="child_6_12">Child (6–12 yrs)</option>
+              <option value="child_under_6">Child (Under 6 yrs)</option>
+            </select>
+          </div>
+          <div>
+            <label for="agGender" class="block text-xs font-bold mb-1" style="color:#334155;">Gender</label>
+            <select id="agGender" class="portal-input">
+              <option value="">Select...</option>
+              <option value="Female">Female</option>
+              <option value="Male">Male</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+          <div>
+            <label for="agPassportNo" class="block text-xs font-bold mb-1" style="color:#334155;">Passport / ID Number</label>
+            <input type="text" id="agPassportNo" class="portal-input" placeholder="Optional now, can upload later">
+          </div>
+          <div>
+            <label for="agPassportExpiry" class="block text-xs font-bold mb-1" style="color:#334155;">Passport Expiry Date</label>
+            <input type="date" id="agPassportExpiry" class="portal-input">
+          </div>
+          <div>
+            <label for="agDob" class="block text-xs font-bold mb-1" style="color:#334155;">Date of Birth</label>
+            <input type="date" id="agDob" class="portal-input">
+          </div>
+          <div>
+            <label for="agDietary" class="block text-xs font-bold mb-1" style="color:#334155;">Dietary Needs</label>
+            <input type="text" id="agDietary" class="portal-input" placeholder="e.g. Vegetarian, Gluten-Free">
+          </div>
+          <div>
+            <label for="agEmergName" class="block text-xs font-bold mb-1" style="color:#334155;">Emergency Contact Name</label>
+            <input type="text" id="agEmergName" class="portal-input" placeholder="Full name">
+          </div>
+          <div>
+            <label for="agEmergPhone" class="block text-xs font-bold mb-1" style="color:#334155;">Emergency Contact Phone</label>
+            <input type="text" id="agEmergPhone" class="portal-input" placeholder="+1 555 010 2020">
+          </div>
+        </div>
+        <div>
+          <label for="agMedical" class="block text-xs font-bold mb-1" style="color:#334155;">Medical / Altitude Notes</label>
+          <input type="text" id="agMedical" class="portal-input" placeholder="Allergies, medication, or mobility needs">
+        </div>
+        <div class="flex items-center justify-end gap-3 pt-2 border-t" style="border-color:#e2e8f0;">
+          <button type="button" id="cancelAddGuestBtn" class="btn btn-outline btn-sm">Cancel</button>
+          <button type="submit" id="submitAddGuestBtn" class="btn btn-coral btn-sm">Save Companion / Send Request</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
   <script src="../js/api-client.js"></script>
+  <script src="../js/site-shell.js"></script>
+  <script>
+    (function () {
+      'use strict';
+
+      const container = document.getElementById('documentsContent');
+      const logoutBtn = document.getElementById('clientLogoutBtn');
+      const docPreviewModal = document.getElementById('docPreviewModal');
+      const docPreviewBody = document.getElementById('docPreviewBody');
+      const docPreviewTitle = document.getElementById('docPreviewTitle');
+      const docPreviewSub = document.getElementById('docPreviewSub');
+      const docPreviewOpenTab = document.getElementById('docPreviewOpenTab');
+      const addGuestModal = document.getElementById('addGuestModal');
+      const addGuestForm = document.getElementById('addGuestForm');
+      const addGuestAlert = document.getElementById('addGuestAlert');
+      const submitAddGuestBtn = document.getElementById('submitAddGuestBtn');
+
+      const state = {
+        profile: null,
+        addonBannerMessage: ''
+      };
+
+      const FIELD_LABELS = {
+        passport_number: 'Passport Number',
+        passport_number_or_national_id: 'Passport or Voter/National ID Number',
+        passport_expiry: 'Passport Expiry Date',
+        passport_scan: 'Passport / ID Scan',
+        photo_url: 'Passport-Size Photograph',
+        insurance_doc: 'Travel Insurance Certificate'
+      };
+
+      function esc(val) {
+        if (window.SiteShell && typeof window.SiteShell.escapeHtml === 'function') {
+          return window.SiteShell.escapeHtml(val);
+        }
+        if (val === undefined || val === null) return '';
+        return String(val)
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/"/g, '&quot;')
+          .replace(/'/g, '&#39;');
+      }
+
+      function isRegionalBooking(booking) {
+        const nat = String((booking && booking.nationality_type) || '').toLowerCase();
+        return nat === 'india' || nat === 'regional_india' || nat === 'regional';
+      }
+
+      function parseUtcYmd(ymd) {
+        const match = String(ymd || '').trim().match(/^(\d{4})-(\d{2})-(\d{2})/);
+        if (!match) return null;
+        const y = Number(match[1]);
+        const m = Number(match[2]) - 1;
+        const d = Number(match[3]);
+        const dt = new Date(Date.UTC(y, m, d));
+        if (dt.getUTCFullYear() !== y || dt.getUTCMonth() !== m || dt.getUTCDate() !== d) return null;
+        return dt;
+      }
+
+      function addSixMonthsUtc(date) {
+        const year = date.getUTCFullYear();
+        const month = date.getUTCMonth();
+        const day = date.getUTCDate();
+        const totalMonths = year * 12 + month + 6;
+        const targetYear = Math.floor(totalMonths / 12);
+        const targetMonth = ((totalMonths % 12) + 12) % 12;
+        const lastDay = new Date(Date.UTC(targetYear, targetMonth + 1, 0)).getUTCDate();
+        return new Date(Date.UTC(targetYear, targetMonth, Math.min(day, lastDay)));
+      }
+
+      function computeSixMonthWarning(expiryStr, travelEndStr, regional) {
+        if (regional || !expiryStr) return '';
+        const expDt = parseUtcYmd(expiryStr);
+        const endDt = parseUtcYmd(travelEndStr);
+        if (!expDt || !endDt) return '';
+        const minReq = addSixMonthsUtc(endDt);
+        if (expDt < minReq) {
+          const minStr = minReq.toISOString().split('T')[0];
+          return `Passport validity alert: Expires ${expiryStr}, which is under 6 months after your departure end date (${travelEndStr}). Bhutan DoI requires validity through at least ${minStr}.`;
+        }
+        return '';
+      }
+
+      function formatMissingList(missing) {
+        if (!Array.isArray(missing) || missing.length === 0) return [];
+        return missing.map((m) => FIELD_LABELS[m] || m.replace(/_/g, ' '));
+      }
+
+      function buildSecureDocLink(travelerId, field) {
+        return window.ApiClient.buildDocumentUrl(`/api/client/documents/${encodeURIComponent(travelerId)}/${encodeURIComponent(field)}`);
+      }
+
+      function renderDocStatusChip(tr, field, label) {
+        const hasDoc = Boolean(tr[field]);
+        if (!hasDoc) {
+          return `<span class="badge badge-amber">Not Uploaded</span>`;
+        }
+        const secureUrl = buildSecureDocLink(tr.id, field);
+        return `
+          <div class="flex flex-wrap items-center gap-2">
+            <span class="badge badge-green">Uploaded</span>
+            <button
+              type="button"
+              data-action="preview-doc"
+              data-doc-url="${esc(secureUrl)}"
+              data-doc-title="${esc(tr.full_name)} — ${esc(label)}"
+              data-doc-path="${esc(tr[field])}"
+              class="btn btn-outline btn-sm"
+            >Preview</button>
+            <a href="${esc(secureUrl)}" target="_blank" rel="noopener" class="text-xs font-bold" style="color:#E05A47; text-decoration:underline;">Open ↗</a>
+          </div>
+        `;
+      }
+
+      function renderTravelerCard(tr, index, booking) {
+        const regional = isRegionalBooking(booking);
+        const readiness = tr.doc_readiness || {
+          ready: Boolean(tr.doc_ready),
+          missing: tr.doc_missing || [],
+          errors: tr.doc_errors || []
+        };
+        const isPlaceholder = /^Guest\s+\d+/i.test(String(tr.full_name || '').trim());
+        const missingLabels = formatMissingList(readiness.missing);
+        const errors = Array.isArray(readiness.errors) ? readiness.errors : [];
+        const liveSixMonthWarning = computeSixMonthWarning(tr.passport_expiry, booking.travel_date_end, regional);
+
+        const cardBorder = errors.length > 0
+          ? 'border-color:#fca5a5;'
+          : (readiness.ready ? 'border-color:#86efac;' : 'border-color:#fde68a;');
+
+        return `
+          <section class="portal-card space-y-4" style="${cardBorder}" data-traveler-card="${esc(tr.id)}">
+            <div class="flex flex-wrap items-start justify-between gap-3 pb-3 border-b" style="border-color:#e2e8f0;">
+              <div>
+                <div class="flex flex-wrap items-center gap-2">
+                  <span class="badge badge-slate">Traveler #${index + 1}${index === 0 ? ' (Lead)' : ''}</span>
+                  ${isPlaceholder ? '<span class="badge badge-amber">Unfilled Guest Slot</span>' : ''}
+                  <span class="badge ${readiness.ready ? 'badge-green' : (errors.length ? 'badge-red' : 'badge-amber')}">
+                    ${readiness.ready ? '✓ DoI Ready' : (errors.length ? '⚠ Compliance Issue' : 'Pending Documents')}
+                  </span>
+                </div>
+                <h2 class="text-xl font-bold m-0 mt-2" style="color:#14231E;">${esc(tr.full_name || `Guest ${index + 1}`)}</h2>
+                <div class="text-xs mt-0.5" style="color:#64748b;">
+                  Nationality: <strong>${esc(tr.nationality || 'Not set')}</strong> •
+                  Visa Stage: <strong>${esc(String(tr.visa_status || 'pending').replace(/_/g, ' ').toUpperCase())}</strong>
+                </div>
+              </div>
+              <div class="text-xs font-bold" style="color:${readiness.ready ? '#166534' : '#92400e'};">
+                ${readiness.ready ? 'All required DoI files & fields verified' : `${missingLabels.length} missing item(s)`}
+              </div>
+            </div>
+
+            ${errors.length > 0 ? `
+              <div class="alert-box alert-danger">
+                <div class="font-extrabold text-xs uppercase tracking-wider mb-1">Passport / DoI Compliance Alert (&lt; 6 Month Validity or Invalid Date)</div>
+                <ul class="m-0 pl-4 space-y-1">
+                  ${errors.map((errMsg) => `<li>${esc(errMsg)}</li>`).join('')}
+                </ul>
+              </div>
+            ` : (liveSixMonthWarning ? `
+              <div class="alert-box alert-danger">${esc(liveSixMonthWarning)}</div>
+            ` : '')}
+
+            ${missingLabels.length > 0 ? `
+              <div class="alert-box alert-warn">
+                <strong>Missing for Bhutan DoI clearance:</strong> ${esc(missingLabels.join(', '))}
+              </div>
+            ` : ''}
+
+            <div id="travelerMsg_${esc(tr.id)}" class="hidden alert-box"></div>
+
+            <form class="traveler-doc-form space-y-4" data-traveler-id="${esc(tr.id)}">
+              <div class="form-grid-3">
+                <div>
+                  <label class="block text-xs font-bold mb-1" style="color:#334155;">Full Name (As on Passport) *</label>
+                  <input type="text" name="full_name" value="${esc(tr.full_name || '')}" required class="portal-input">
+                </div>
+                <div>
+                  <label class="block text-xs font-bold mb-1" style="color:#334155;">Nationality *</label>
+                  <input type="text" name="nationality" value="${esc(tr.nationality || '')}" required class="portal-input">
+                </div>
+                <div>
+                  <label class="block text-xs font-bold mb-1" style="color:#334155;">${regional ? 'Passport or National ID No. *' : 'Passport Number *'}</label>
+                  <input type="text" name="passport_number" value="${esc(tr.passport_number || '')}" placeholder="e.g. A12345678" class="portal-input">
+                </div>
+                <div>
+                  <label class="block text-xs font-bold mb-1" style="color:#334155;">Passport Expiry Date ${regional ? '(If Passport)' : '*'}</label>
+                  <input type="date" name="passport_expiry" value="${esc(tr.passport_expiry || '')}" data-expiry-check="${esc(tr.id)}" class="portal-input">
+                  <div id="expiryLiveWarn_${esc(tr.id)}" class="hidden text-[11px] font-bold mt-1" style="color:#b91c1c;"></div>
+                </div>
+                <div>
+                  <label class="block text-xs font-bold mb-1" style="color:#334155;">Date of Birth</label>
+                  <input type="date" name="date_of_birth" value="${esc(tr.date_of_birth || '')}" class="portal-input">
+                </div>
+                <div>
+                  <label class="block text-xs font-bold mb-1" style="color:#334155;">Gender</label>
+                  <select name="gender" class="portal-input">
+                    <option value="">Select...</option>
+                    <option value="Female" ${tr.gender === 'Female' ? 'selected' : ''}>Female</option>
+                    <option value="Male" ${tr.gender === 'Male' ? 'selected' : ''}>Male</option>
+                    <option value="Other" ${tr.gender === 'Other' ? 'selected' : ''}>Other</option>
+                    <option value="Prefer not to say" ${tr.gender === 'Prefer not to say' ? 'selected' : ''}>Prefer not to say</option>
+                  </select>
+                </div>
+                <div>
+                  <label class="block text-xs font-bold mb-1" style="color:#334155;">Dietary Needs</label>
+                  <input type="text" name="dietary_needs" value="${esc(tr.dietary_needs || '')}" placeholder="e.g. Vegetarian, Halal, None" class="portal-input">
+                </div>
+                <div>
+                  <label class="block text-xs font-bold mb-1" style="color:#334155;">Medical / Altitude Notes</label>
+                  <input type="text" name="medical_notes" value="${esc(tr.medical_notes || '')}" placeholder="Allergies or medications" class="portal-input">
+                </div>
+                <div>
+                  <label class="block text-xs font-bold mb-1" style="color:#334155;">Document Notes</label>
+                  <input type="text" name="document_notes" value="${esc(tr.document_notes || '')}" placeholder="Optional note for concierge" class="portal-input">
+                </div>
+                <div>
+                  <label class="block text-xs font-bold mb-1" style="color:#334155;">Emergency Contact Name</label>
+                  <input type="text" name="emergency_contact_name" value="${esc(tr.emergency_contact_name || '')}" class="portal-input">
+                </div>
+                <div>
+                  <label class="block text-xs font-bold mb-1" style="color:#334155;">Emergency Contact Phone</label>
+                  <input type="text" name="emergency_contact_phone" value="${esc(tr.emergency_contact_phone || '')}" class="portal-input">
+                </div>
+              </div>
+
+              <!-- Multipart File Uploads -->
+              <div class="form-grid-3">
+                <div class="doc-upload-box space-y-2">
+                  <div class="text-xs font-extrabold" style="color:#14231E;">Passport Bio-Page / ID Scan *</div>
+                  <div class="text-[11px]" style="color:#64748b;">Clear color JPG, PNG, or PDF (max 5MB)</div>
+                  ${renderDocStatusChip(tr, 'passport_scan', 'Passport Scan')}
+                  <input type="file" name="passport_scan" accept=".jpg,.jpeg,.png,.pdf" class="portal-input" style="padding:6px; font-size:12px;">
+                </div>
+
+                <div class="doc-upload-box space-y-2">
+                  <div class="text-xs font-extrabold" style="color:#14231E;">Passport-Size Photograph *</div>
+                  <div class="text-[11px]" style="color:#64748b;">Recent photo on plain light background</div>
+                  ${renderDocStatusChip(tr, 'photo_url', 'Passport Photo')}
+                  <input type="file" name="photo_url" accept=".jpg,.jpeg,.png,.pdf" class="portal-input" style="padding:6px; font-size:12px;">
+                </div>
+
+                <div class="doc-upload-box space-y-2">
+                  <div class="text-xs font-extrabold" style="color:#14231E;">Travel Insurance Policy</div>
+                  <div class="text-[11px]" style="color:#64748b;">Medical &amp; emergency evacuation coverage</div>
+                  ${renderDocStatusChip(tr, 'insurance_doc', 'Travel Insurance')}
+                  <input type="file" name="insurance_doc" accept=".jpg,.jpeg,.png,.pdf" class="portal-input" style="padding:6px; font-size:12px;">
+                </div>
+              </div>
+
+              <div class="flex flex-wrap items-center justify-between gap-3 pt-2 border-t" style="border-color:#e2e8f0;">
+                <span class="text-[11px]" style="color:#64748b;">
+                  Saving automatically checks Bhutan DoI readiness for ${esc(booking.tour_title)}.
+                </span>
+                <button type="submit" class="btn btn-coral btn-sm" data-save-btn="${esc(tr.id)}">
+                  Save Details &amp; Upload Documents
+                </button>
+              </div>
+            </form>
+          </section>
+        `;
+      }
+
+      function renderDocumentsPage() {
+        const profile = state.profile;
+        if (!profile || !profile.booking) return;
+
+        const b = profile.booking;
+        const travelers = Array.isArray(profile.travelers) ? profile.travelers : [];
+        const docReadiness = profile.doc_readiness || { total: travelers.length, ready_count: 0, incomplete_count: travelers.length, all_ready: false };
+        const pct = docReadiness.total > 0 ? Math.round((docReadiness.ready_count / docReadiness.total) * 100) : 0;
+        const regional = isRegionalBooking(b);
+
+        const hasOpenSlot = travelers.length < Number(b.total_travelers || 1) ||
+          travelers.some((t) => /^Guest\s+\d+/i.test(String(t.full_name || '').trim()));
+
+        container.innerHTML = `
+          <section class="portal-card space-y-4">
+            <div class="flex flex-wrap items-start justify-between gap-4">
+              <div>
+                <div class="flex flex-wrap items-center gap-2">
+                  <span class="badge badge-slate font-mono">${esc(b.id)}</span>
+                  <span class="badge ${docReadiness.all_ready ? 'badge-green' : 'badge-amber'}">
+                    ${docReadiness.all_ready ? 'All Travelers DoI Ready' : `${esc(docReadiness.ready_count)}/${esc(docReadiness.total)} Ready`}
+                  </span>
+                </div>
+                <h1 class="text-2xl sm:text-3xl font-bold m-0 mt-2" style="color:#14231E;">Traveler Passports &amp; Visa Documents</h1>
+                <p class="text-xs m-0 mt-1" style="color:#475569;">
+                  Trip: <strong>${esc(b.tour_title)}</strong> • Travel End Date: <strong>${esc(b.travel_date_end)}</strong> •
+                  Visa Status: <strong>${esc(String(b.visa_status || 'pending_docs').replace(/_/g, ' ').toUpperCase())}</strong>
+                </p>
+              </div>
+              <div class="flex flex-wrap gap-2">
+                <button type="button" data-action="open-add-guest" class="btn btn-coral btn-sm">
+                  ${hasOpenSlot ? '+ Fill Companion Slot' : '+ Request Add-On Guest'}
+                </button>
+                <a href="dashboard.html" class="btn btn-outline btn-sm">← Back to Trip</a>
+              </div>
+            </div>
+
+            <div class="space-y-2">
+              <div class="flex items-center justify-between text-xs font-bold">
+                <span style="color:#334155;">Document Readiness Progress</span>
+                <span style="color:#14231E;">${esc(docReadiness.ready_count)} of ${esc(docReadiness.total)} Traveler(s) Ready (${pct}%)</span>
+              </div>
+              <div class="progress-track">
+                <div class="progress-fill" style="width:${pct}%;"></div>
+              </div>
+            </div>
+
+            <div class="alert-box ${regional ? 'alert-success' : 'alert-warn'}" style="font-size:12px;">
+              ${regional
+                ? '<strong>Regional Permit Rules (India):</strong> Valid Passport or Voter ID / National ID scan and passport-size photograph are required for each traveler.'
+                : `<strong>Bhutan DoI Visa Rule:</strong> International passports MUST remain valid for at least <strong>6 calendar months</strong> beyond your trip end date (<strong>${esc(b.travel_date_end)}</strong>). Upload a color bio-page scan, passport photo, and travel insurance certificate for every guest.`}
+            </div>
+
+            ${b.visa_status === 'rejected' && b.visa_rejection_reason ? `
+              <div class="alert-box alert-danger">
+                <strong>Immigration Correction Notice:</strong> ${esc(b.visa_rejection_reason)}
+              </div>
+            ` : ''}
+
+            ${state.addonBannerMessage ? `
+              <div class="alert-box alert-success">${esc(state.addonBannerMessage)}</div>
+            ` : ''}
+          </section>
+
+          <div class="space-y-5">
+            ${travelers.length === 0 ? `
+              <div class="portal-card text-center space-y-3">
+                <div class="text-sm font-bold" style="color:#14231E;">No traveler profiles added yet.</div>
+                <button type="button" data-action="open-add-guest" class="btn btn-coral btn-sm">+ Add First Traveler</button>
+              </div>
+            ` : travelers.map((tr, idx) => renderTravelerCard(tr, idx, b)).join('')}
+          </div>
+        `;
+
+        // Bind live 6-month passport expiry check and per-traveler form submit
+        container.querySelectorAll('.traveler-doc-form').forEach((form) => {
+          form.addEventListener('submit', handleTravelerSubmit);
+        });
+        container.querySelectorAll('[data-expiry-check]').forEach((input) => {
+          input.addEventListener('change', (e) => {
+            const tid = e.target.getAttribute('data-expiry-check');
+            const warnEl = document.getElementById(`expiryLiveWarn_${tid}`);
+            if (!warnEl) return;
+            const msg = computeSixMonthWarning(e.target.value, b.travel_date_end, regional);
+            if (msg) {
+              warnEl.textContent = msg;
+              warnEl.classList.remove('hidden');
+            } else {
+              warnEl.textContent = '';
+              warnEl.classList.add('hidden');
+            }
+          });
+        });
+      }
+
+      async function handleTravelerSubmit(e) {
+        e.preventDefault();
+        const form = e.target;
+        const travelerId = form.getAttribute('data-traveler-id');
+        const msgBox = document.getElementById(`travelerMsg_${travelerId}`);
+        const saveBtn = form.querySelector(`[data-save-btn="${travelerId}"]`);
+
+        if (msgBox) {
+          msgBox.className = 'hidden alert-box';
+          msgBox.textContent = '';
+        }
+
+        const fd = new FormData();
+        const textFields = [
+          'full_name', 'nationality', 'passport_number', 'passport_expiry',
+          'date_of_birth', 'gender', 'dietary_needs', 'medical_notes',
+          'document_notes', 'emergency_contact_name', 'emergency_contact_phone'
+        ];
+        for (const name of textFields) {
+          const el = form.elements[name];
+          if (el) fd.append(name, el.value);
+        }
+
+        const fileFields = ['passport_scan', 'photo_url', 'insurance_doc'];
+        for (const fname of fileFields) {
+          const fEl = form.elements[fname];
+          if (fEl && fEl.files && fEl.files[0]) {
+            fd.append(fname, fEl.files[0]);
+          }
+        }
+
+        if (saveBtn) {
+          saveBtn.disabled = true;
+          saveBtn.textContent = 'Uploading & Verifying...';
+        }
+
+        try {
+          const res = await window.ApiClient.uploadTravelerDocuments(travelerId, fd);
+          if (res && res.success) {
+            if (window.SiteShell && typeof window.SiteShell.toast === 'function') {
+              window.SiteShell.toast('Traveler details and documents saved.', 'success');
+            }
+            await loadBookingDocuments();
+            const updatedMsgBox = document.getElementById(`travelerMsg_${travelerId}`);
+            if (updatedMsgBox) {
+              updatedMsgBox.className = 'alert-box alert-success';
+              updatedMsgBox.textContent = res.all_travelers_ready
+                ? 'Saved! All travelers are now DoI-ready and your reservation has advanced to Documents Complete.'
+                : 'Traveler details and documents updated successfully.';
+            }
+            return;
+          }
+          if (msgBox) {
+            msgBox.className = 'alert-box alert-danger';
+            msgBox.textContent = (res && res.error) || 'Failed to save traveler documents.';
+          }
+        } catch (err) {
+          if (msgBox) {
+            msgBox.className = 'alert-box alert-danger';
+            msgBox.textContent = (err && err.message) || 'Error uploading traveler documents.';
+          }
+        } finally {
+          if (saveBtn) {
+            saveBtn.disabled = false;
+            saveBtn.textContent = 'Save Details & Upload Documents';
+          }
+        }
+      }
+
+      function openDocPreview(url, title, rawPath) {
+        docPreviewTitle.textContent = title || 'Document Preview';
+        docPreviewSub.textContent = 'Authenticated private traveler document';
+        docPreviewOpenTab.href = url;
+        const isPdf = /\.pdf($|\?)/i.test(String(rawPath || url));
+        if (isPdf) {
+          docPreviewBody.innerHTML = `<iframe src="${esc(url)}" title="${esc(title)}" style="width:100%; height:440px; border:none; border-radius:8px;"></iframe>`;
+        } else {
+          docPreviewBody.innerHTML = `<img src="${esc(url)}" alt="${esc(title)}" style="max-width:100%; max-height:440px; object-fit:contain; border-radius:8px;">`;
+        }
+        docPreviewModal.classList.remove('hidden');
+      }
+
+      function closeDocPreview() {
+        docPreviewModal.classList.add('hidden');
+        docPreviewBody.innerHTML = '';
+      }
+
+      function openAddGuestModal() {
+        addGuestAlert.className = 'hidden alert-box';
+        addGuestAlert.textContent = '';
+        addGuestForm.reset();
+        const b = state.profile && state.profile.booking;
+        if (b && b.lead_country) {
+          document.getElementById('agNationality').value = b.lead_country;
+        }
+        const travelers = (state.profile && state.profile.travelers) || [];
+        const hasOpenSlot = b && (
+          travelers.length < Number(b.total_travelers || 1) ||
+          travelers.some((t) => /^Guest\s+\d+/i.test(String(t.full_name || '').trim()))
+        );
+        document.getElementById('addGuestTitle').textContent = hasOpenSlot
+          ? 'Fill Companion Traveler Slot'
+          : 'Request Add-On Guest';
+        document.getElementById('addGuestSubtitle').textContent = hasOpenSlot
+          ? 'Assign a companion to an open guest slot on your booking.'
+          : 'All booked slots are filled. Submitting sends a request to our concierge to expand your party.';
+        addGuestModal.classList.remove('hidden');
+      }
+
+      function closeAddGuestModal() {
+        addGuestModal.classList.add('hidden');
+      }
+
+      async function handleAddGuestSubmit(e) {
+        e.preventDefault();
+        addGuestAlert.className = 'hidden alert-box';
+        addGuestAlert.textContent = '';
+
+        const fullName = document.getElementById('agFullName').value.trim();
+        if (!fullName) {
+          addGuestAlert.className = 'alert-box alert-danger';
+          addGuestAlert.textContent = 'Full name is required.';
+          return;
+        }
+
+        submitAddGuestBtn.disabled = true;
+        submitAddGuestBtn.textContent = 'Submitting...';
+
+        try {
+          const res = await window.ApiClient.addClientTraveler({
+            full_name: fullName,
+            nationality: document.getElementById('agNationality').value.trim(),
+            age_category: document.getElementById('agAgeCategory').value,
+            gender: document.getElementById('agGender').value,
+            passport_number: document.getElementById('agPassportNo').value.trim(),
+            passport_expiry: document.getElementById('agPassportExpiry').value,
+            date_of_birth: document.getElementById('agDob').value,
+            dietary_needs: document.getElementById('agDietary').value.trim(),
+            medical_notes: document.getElementById('agMedical').value.trim(),
+            emergency_contact_name: document.getElementById('agEmergName').value.trim(),
+            emergency_contact_phone: document.getElementById('agEmergPhone').value.trim()
+          });
+
+          if (res && res.success) {
+            closeAddGuestModal();
+            state.addonBannerMessage = res.message || 'Companion request processed.';
+            if (res.mode === 'slot_filled') {
+              await loadBookingDocuments();
+            } else {
+              renderDocumentsPage();
+            }
+            return;
+          }
+          addGuestAlert.className = 'alert-box alert-danger';
+          addGuestAlert.textContent = (res && res.error) || 'Could not process traveler request.';
+        } catch (err) {
+          addGuestAlert.className = 'alert-box alert-danger';
+          addGuestAlert.textContent = (err && err.message) || 'Failed to add companion.';
+        } finally {
+          submitAddGuestBtn.disabled = false;
+          submitAddGuestBtn.textContent = 'Save Companion / Send Request';
+        }
+      }
+
+      async function loadBookingDocuments() {
+        const token = window.ApiClient.getToken('client');
+        if (!token) {
+          window.location.href = 'login.html';
+          return;
+        }
+
+        try {
+          const res = await window.ApiClient.getClientBookingProfile();
+          if (!res || !res.success || !res.booking) {
+            throw new Error('Unable to load booking documents.');
+          }
+          window.ApiClient.setClientSession(token, res.booking);
+          state.profile = res;
+          renderDocumentsPage();
+        } catch (err) {
+          if (err && err.status === 401) {
+            window.ApiClient.clearPortalSession('client');
+            window.location.href = 'login.html';
+            return;
+          }
+          container.innerHTML = `
+            <div class="portal-card text-center space-y-4">
+              <div class="alert-box alert-danger">
+                <strong>Unable to load traveler documents:</strong> ${esc((err && err.message) || 'Server unreachable.')}
+              </div>
+              <button type="button" data-action="retry-load" class="btn btn-coral btn-sm">Retry</button>
+            </div>
+          `;
+        }
+      }
+
+      container.addEventListener('click', (e) => {
+        const trigger = e.target && e.target.closest ? e.target.closest('[data-action]') : null;
+        if (!trigger) return;
+        const action = trigger.getAttribute('data-action');
+        if (action === 'preview-doc') {
+          openDocPreview(
+            trigger.getAttribute('data-doc-url'),
+            trigger.getAttribute('data-doc-title'),
+            trigger.getAttribute('data-doc-path')
+          );
+        } else if (action === 'open-add-guest') {
+          openAddGuestModal();
+        } else if (action === 'retry-load') {
+          loadBookingDocuments();
+        }
+      });
+
+      document.getElementById('closeDocPreviewBtn').addEventListener('click', closeDocPreview);
+      document.getElementById('docPreviewCloseBtn').addEventListener('click', closeDocPreview);
+      docPreviewModal.addEventListener('click', (e) => {
+        if (e.target === docPreviewModal) closeDocPreview();
+      });
+
+      document.getElementById('closeAddGuestBtn').addEventListener('click', closeAddGuestModal);
+      document.getElementById('cancelAddGuestBtn').addEventListener('click', closeAddGuestModal);
+      addGuestModal.addEventListener('click', (e) => {
+        if (e.target === addGuestModal) closeAddGuestModal();
+      });
+      addGuestForm.addEventListener('submit', handleAddGuestSubmit);
+
+      logoutBtn.addEventListener('click', () => {
+        window.ApiClient.clearPortalSession('client');
+        window.location.href = 'login.html';
+      });
+
+      document.addEventListener('DOMContentLoaded', loadBookingDocuments);
+    })();
+  </script>
 </body>
 </html>
