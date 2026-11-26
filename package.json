@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node server.js",
     "seed": "node database/seed.js",
-    "test": "node tests/test-db-parity.js",
+    "test": "node tests/test-db-parity.js && node tests/test-middleware.js && node tests/unit-services.js",
     "test:crud": "node test-crud.js"
   },
   "keywords": [
