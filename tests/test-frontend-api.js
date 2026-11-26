@@ -314,11 +314,61 @@ async function runTests() {
     const headerKeysLower = Object.keys(uploadCall.init.headers).map(k => k.toLowerCase());
     assert.strictEqual(headerKeysLower.includes('content-type'), false, 'FormData request must NOT manually set Content-Type');
 
-    // buildDocumentUrl
+    // buildDocumentUrl allowlist & query-token behavior
     const invUrl = window.ApiClient.buildDocumentUrl('/api/bookings/BFR-2026-8841/invoice-view');
     assert.strictEqual(invUrl, '/api/bookings/BFR-2026-8841/invoice-view?token=adm_jwt_111');
     const explicitClrUrl = window.ApiClient.buildDocumentUrl('/api/bookings/BFR-2026-8841/clearance-view', 'cli_jwt_222');
     assert.strictEqual(explicitClrUrl, '/api/bookings/BFR-2026-8841/clearance-view?token=cli_jwt_222');
+    const clientDocUrl = window.ApiClient.buildDocumentUrl('/api/client/documents/42/passport_scan');
+    assert.strictEqual(clientDocUrl, '/api/client/documents/42/passport_scan?token=cli_jwt_222');
+    const adminReceiptUrl = window.ApiClient.buildDocumentUrl('/api/admin/payments/9/receipt');
+    assert.strictEqual(adminReceiptUrl, '/api/admin/payments/9/receipt?token=adm_jwt_111');
+
+    // Non-document API routes and external URLs MUST NEVER receive ?token=
+    assert.strictEqual(
+      window.ApiClient.buildDocumentUrl('/api/admin/users'),
+      '/api/admin/users',
+      'Non-document API path must NOT append ?token='
+    );
+    assert.strictEqual(
+      window.ApiClient.buildDocumentUrl('https://evil.example/steal'),
+      'https://evil.example/steal',
+      'External URL must NOT append ?token='
+    );
+    assert.strictEqual(
+      window.ApiClient.buildDocumentUrl('https://evil.example/api/bookings/BFR-1/invoice-view'),
+      'https://evil.example/api/bookings/BFR-1/invoice-view',
+      'External URL with matching path suffix must NOT append ?token='
+    );
+  }
+
+  console.log('3b. Testing non-JSON 502 HTML response parsing without stream lock...');
+  {
+    let bodyRead = false;
+    const { window } = loadScriptsInSandbox(['js/api-client.js'], {
+      protocol: 'http:',
+      fetch: async () => ({
+        ok: false,
+        status: 502,
+        headers: { get: () => 'text/html; charset=utf-8' },
+        async text() {
+          if (bodyRead) throw new TypeError('Body has already been read');
+          bodyRead = true;
+          return '<html><body>502 Bad Gateway</body></html>';
+        },
+        async json() {
+          if (bodyRead) throw new TypeError('Body has already been read');
+          bodyRead = true;
+          throw new SyntaxError('Unexpected token < in JSON');
+        }
+      })
+    });
+
+    await assert.rejects(
+      () => window.ApiClient.getTours(),
+      (err) => err && err.status === 502 && !/Body has already been read/i.test(err.message),
+      'Non-JSON 502 HTML response must preserve status 502 without stream-lock TypeError'
+    );
   }
 
   console.log('4. Testing 401 unauthorized hook & portal login redirect (and no loop on login.html)...');
@@ -677,6 +727,180 @@ async function runTests() {
     assert.strictEqual(requests[10].url, '/api/admin/settings/test-notification');
     assert.strictEqual(requests[11].url, '/api/admin/users');
     assert.strictEqual(requests[12].url, '/api/admin/audit-log?entity_type=booking');
+  }
+
+  console.log('10. Testing synchronous __BFR_DEFER_WIDGET_MOUNT__, bfrMountSeq race guard & cover_image sanitization...');
+  {
+    // Load tour-detail.js with auto-init ENABLED (not disabled) on a tour detail page
+    const { window } = loadScriptsInSandbox(['js/api-client.js', 'js/site-shell.js', 'js/tour-detail.js'], {
+      protocol: 'http:',
+      pathname: '/tour-druk-path-trek.html',
+      search: ''
+    });
+    // Override __BFR_DISABLE_AUTO_INIT__ via fresh context where it's false
+    const storage = createStorage();
+    const doc = {
+      title: 'Tour',
+      body: createMockElement('body'),
+      readyState: 'loading',
+      createElement: (tag) => createMockElement(tag),
+      getElementById: () => null,
+      querySelector: () => null,
+      querySelectorAll: () => [],
+      addEventListener() {}
+    };
+    const winSync = {
+      __BFR_DISABLE_AUTO_INIT__: false,
+      location: { protocol: 'http:', pathname: '/tour-druk-path-trek.html', search: '' },
+      localStorage: storage,
+      document: doc,
+      URLSearchParams,
+      console
+    };
+    winSync.window = winSync;
+    const ctxSync = vm.createContext({
+      window: winSync,
+      document: doc,
+      location: winSync.location,
+      localStorage: storage,
+      URLSearchParams,
+      setTimeout,
+      clearTimeout,
+      console
+    });
+    const tdCode = fs.readFileSync(path.join(WORKTREE_ROOT, 'js/tour-detail.js'), 'utf8');
+    new vm.Script(tdCode, { filename: 'js/tour-detail.js' }).runInContext(ctxSync);
+    assert.strictEqual(
+      winSync.__BFR_DEFER_WIDGET_MOUNT__,
+      true,
+      'tour-detail.js must set __BFR_DEFER_WIDGET_MOUNT__ synchronously before DOMContentLoaded'
+    );
+    assert.ok(window.TourDetailHydrator);
+  }
+
+  {
+    // Superseded BookingWidget instance must NEVER overwrite a newer mount on same container
+    const container = createMockElement('div', { id: 'tourBookingWidget' });
+    let resolveSlowQuote;
+    let quoteCallCount = 0;
+
+    const { window } = loadScriptsInSandbox(
+      ['js/api-client.js', 'js/site-shell.js', 'js/booking-widget.js'],
+      {
+        elementsById: { tourBookingWidget: container },
+        fetch: async (url) => {
+          if (url === '/api/settings/public') {
+            return {
+              ok: true,
+              status: 200,
+              headers: { get: () => 'application/json' },
+              text: async () => JSON.stringify({ success: true, data: { company_whatsapp: '+97517654321' } })
+            };
+          }
+          if (url === '/api/calculate-sdf') {
+            quoteCallCount += 1;
+            const callIdx = quoteCallCount;
+            if (callIdx === 1) {
+              return new Promise((resolve) => {
+                resolveSlowQuote = () => resolve({
+                  ok: true,
+                  status: 200,
+                  headers: { get: () => 'application/json' },
+                  text: async () => JSON.stringify({
+                    success: true,
+                    data: {
+                      currency: 'USD',
+                      package_total_local: 1111,
+                      total_sdf_local: 111,
+                      visa_fee_local: 40,
+                      total_price_local: 1262,
+                      deposit_amount_local: 379,
+                      deposit_percent: 0.3
+                    }
+                  })
+                });
+              });
+            }
+            return {
+              ok: true,
+              status: 200,
+              headers: { get: () => 'application/json' },
+              text: async () => JSON.stringify({
+                success: true,
+                data: {
+                  currency: 'USD',
+                  package_total_local: 9999,
+                  total_sdf_local: 800,
+                  visa_fee_local: 80,
+                  total_price_local: 10879,
+                  deposit_amount_local: 3264,
+                  deposit_percent: 0.3
+                }
+              })
+            };
+          }
+          throw new Error(`Unexpected URL ${url}`);
+        }
+      }
+    );
+
+    const w1Promise = window.BookingWidget.mount({
+      container,
+      tour: { id: 'old-tour', title: 'Old Tour', duration_nights: 4, price_3star_usd: 1111 }
+    });
+    const w2 = await window.BookingWidget.mount({
+      container,
+      tour: { id: 'new-tour', title: 'New Tour', duration_nights: 8, price_3star_usd: 9999 }
+    });
+    assert.ok(container.dataset.bfrMountSeq, 'Container must record bfrMountSeq');
+    resolveSlowQuote();
+    const w1 = await w1Promise;
+    assert.strictEqual(w1.quote, null, 'Superseded BookingWidget instance must abort without storing stale quote');
+    assert.strictEqual(w2.quote.total_price_local, 10879, 'Newer BookingWidget mount must retain its quote');
+  }
+
+  {
+    // cover_image XSS validation in TourDetailHydrator.hydrate
+    const unsafeImgEl = createMockElement('img');
+    const safeImgEl = createMockElement('img');
+
+    const { window: wUnsafe } = loadScriptsInSandbox(
+      ['js/api-client.js', 'js/site-shell.js', 'js/tour-detail.js'],
+      { selectorOneMap: { '[data-tour-image]': unsafeImgEl } }
+    );
+    wUnsafe.TourDetailHydrator.hydrate({
+      id: 't1',
+      title: 'T1',
+      duration_days: 3,
+      duration_nights: 2,
+      price_usd: 500,
+      cover_image: 'javascript:alert(1)'
+    });
+    assert.strictEqual(unsafeImgEl.src, '', 'Unsafe javascript: cover_image must be rejected');
+
+    wUnsafe.TourDetailHydrator.hydrate({
+      id: 't2',
+      title: 'T2',
+      duration_days: 3,
+      duration_nights: 2,
+      price_usd: 500,
+      cover_image: 'data:text/html,<script>alert(1)</script>'
+    });
+    assert.strictEqual(unsafeImgEl.src, '', 'Unsafe data:text/html cover_image must be rejected');
+
+    const { window: wSafe } = loadScriptsInSandbox(
+      ['js/api-client.js', 'js/site-shell.js', 'js/tour-detail.js'],
+      { selectorOneMap: { '[data-tour-image]': safeImgEl } }
+    );
+    wSafe.TourDetailHydrator.hydrate({
+      id: 't3',
+      title: 'T3',
+      duration_days: 3,
+      duration_nights: 2,
+      price_usd: 500,
+      cover_image: 'assets/images/tigers-nest.webp'
+    });
+    assert.strictEqual(safeImgEl.src, 'assets/images/tigers-nest.webp');
   }
 
   console.log('\nALL FRONTEND SHARED MODULE TESTS PASSED!');

@@ -213,20 +213,27 @@
       ? String(res.headers.get('content-type') || '').toLowerCase()
       : '';
 
-    if (contentType.includes('application/json') || typeof res.json === 'function') {
+    if (typeof res.text === 'function') {
+      const raw = await res.text();
+      if (!raw || !raw.trim()) return null;
+      const trimmed = raw.trim();
+      const looksJson = contentType.includes('application/json') || trimmed.startsWith('{') || trimmed.startsWith('[');
+      if (looksJson) {
+        try {
+          return JSON.parse(raw);
+        } catch (_) {
+          return { raw };
+        }
+      }
+      return { raw };
+    }
+
+    if (typeof res.json === 'function') {
       try {
         return await res.json();
       } catch (_) {
-        if (typeof res.text === 'function') {
-          const raw = await res.text();
-          return safeJsonParse(raw) || { success: res.ok, message: raw };
-        }
+        return null;
       }
-    }
-
-    if (typeof res.text === 'function') {
-      const txt = await res.text();
-      return safeJsonParse(txt) || txt;
     }
     return null;
   }
@@ -353,16 +360,22 @@
     return qs ? `${basePath}?${qs}` : basePath;
   }
 
+  const SAFE_DOCUMENT_URL_RE = /^\/api\/(?:bookings\/[^/?#]+\/(?:invoice-view|clearance-view)|client\/(?:invoice-view|clearance-view|documents\/[^/?#]+\/[^/?#]+)|admin\/(?:documents\/[^/?#]+\/[^/?#]+|payments\/[^/?#]+\/receipt))(?:\?|$)/i;
+
   function buildDocumentUrl(docPath, explicitToken) {
     if (!docPath) return '';
+    const pathStr = String(docPath);
+    if (!SAFE_DOCUMENT_URL_RE.test(pathStr)) {
+      return pathStr;
+    }
     let token = explicitToken;
     if (!token) {
-      const portal = getPortalForApiPath(docPath);
+      const portal = getPortalForApiPath(pathStr);
       token = portal ? getToken(portal) : (getToken('admin') || getToken('client') || getToken('guide'));
     }
-    if (!token) return docPath;
-    const sep = docPath.includes('?') ? '&' : '?';
-    return `${docPath}${sep}token=${encodeURIComponent(token)}`;
+    if (!token) return pathStr;
+    const sep = pathStr.includes('?') ? '&' : '?';
+    return `${pathStr}${sep}token=${encodeURIComponent(token)}`;
   }
 
   function buildWhatsAppUrl(phone, text = '') {
@@ -379,13 +392,25 @@
     const headers = {};
     if (token) headers.Authorization = `Bearer ${token}`;
 
-    const res = await fetch(apiPath, { method: 'GET', headers });
+    let res;
+    try {
+      res = await fetch(apiPath, { method: 'GET', headers });
+    } catch (networkErr) {
+      const err = new Error(`Network error (${networkErr.message || 'fetch failed'}): unable to reach server.`);
+      err.isNetworkError = true;
+      err.cause = networkErr;
+      throw err;
+    }
+
     if (!res.ok) {
-      if (res.status === 401) handleUnauthorizedResponse(apiPath, 'Session expired');
       const errBody = await parseResponseBody(res);
-      const msg = (errBody && errBody.error) || `Failed to export CSV (${res.status})`;
+      const msg = (errBody && typeof errBody === 'object' && (errBody.error || errBody.message))
+        || `Failed to export CSV (${res.status})`;
+      if (res.status === 401) handleUnauthorizedResponse(apiPath, msg);
       const err = new Error(msg);
       err.status = res.status;
+      err.data = errBody;
+      err.payload = errBody;
       throw err;
     }
 

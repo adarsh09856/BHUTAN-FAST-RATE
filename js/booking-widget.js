@@ -6,6 +6,8 @@
 (function (global) {
   'use strict';
 
+  let nextMountSeq = 0;
+
   function esc(val) {
     if (global.SiteShell && typeof global.SiteShell.escapeHtml === 'function') {
       return global.SiteShell.escapeHtml(val);
@@ -79,10 +81,22 @@
       this.licenseText = '#TR/2018/9882';
       this._calcSeq = 0;
       this._debounceTimer = null;
+      this.mountSeq = ++nextMountSeq;
 
-      this.container.dataset.bfrWidgetMounted = '1';
+      if (this.container.dataset) {
+        this.container.dataset.bfrWidgetMounted = '1';
+        this.container.dataset.bfrMountSeq = String(this.mountSeq);
+      }
       this.render();
       this._readyPromise = this.initializeData();
+    }
+
+    isStaleMount() {
+      return Boolean(
+        this.container &&
+        this.container.dataset &&
+        this.container.dataset.bfrMountSeq !== String(this.mountSeq)
+      );
     }
 
     static async mount(containerOrOptions, maybeOptions = {}) {
@@ -113,6 +127,7 @@
         tasks.push(
           global.SiteShell.getPublicSettings()
             .then((settings) => {
+              if (this.isStaleMount()) return;
               if (settings) {
                 this.whatsappPhone = settings.company_whatsapp || this.whatsappPhone;
                 const lic = settings.company_license || 'TR/2018/9882';
@@ -128,23 +143,26 @@
         tasks.push(
           global.ApiClient.getTour(this.tourSlug)
             .then((res) => {
+              if (this.isStaleMount()) return;
               const tour = res && res.data ? res.data : res;
               if (tour && tour.title) {
                 this.setTour(tour, { skipQuote: true });
               }
             })
             .catch((err) => {
+              if (this.isStaleMount()) return;
               this.showError(err.message || 'Unable to load live tour pricing.');
             })
         );
       }
 
       await Promise.all(tasks);
+      if (this.isStaleMount()) return;
       await this.updateQuote();
     }
 
     setTour(tour, opts = {}) {
-      if (!tour) return;
+      if (!tour || this.isStaleMount()) return;
       this.tour = tour;
       this.tourId = tour.id || this.tourId;
       this.tourSlug = tour.id || tour.slug || this.tourSlug;
@@ -238,7 +256,7 @@
                 <label for="bwNights" class="block text-xs font-bold text-[#14231E] mb-1">Nights</label>
                 <input type="number" id="bwNights" value="${esc(this.state.nights)}" min="1" max="60"
                   ${this.allowNightsEdit ? '' : 'readonly'}
-                  class="bfr-bw-input w-full px-3 py-2 rounded-lg border border-zinc-300 text-xs font-semibold ${this.allowNightsEdit ? '' : 'bg-[#F8FAF9]'}">
+                  class="bfr-bw-input w-full px-3 py-2 rounded-lg border border-zinc-300 text-xs font-semibold">
               </div>
             </div>
 
@@ -402,6 +420,7 @@
     }
 
     showError(message) {
+      if (this.isStaleMount()) return;
       const errEl = this._el('bwError');
       if (!errEl) return;
       errEl.textContent = String(message || 'Unable to compute live quote.');
@@ -409,6 +428,7 @@
     }
 
     clearError() {
+      if (this.isStaleMount()) return;
       const errEl = this._el('bwError');
       if (!errEl) return;
       errEl.textContent = '';
@@ -416,15 +436,19 @@
     }
 
     scheduleQuoteUpdate() {
+      if (this.isStaleMount()) return;
       this.readInputsToState();
       this.syncCtaUrls();
       if (this._debounceTimer) clearTimeout(this._debounceTimer);
       this._debounceTimer = setTimeout(() => {
-        this.updateQuote();
+        if (!this.isStaleMount()) {
+          this.updateQuote();
+        }
       }, 150);
     }
 
     async updateQuote() {
+      if (this.isStaleMount()) return;
       if (!global.ApiClient || typeof global.ApiClient.calculateSDF !== 'function') return;
 
       const seq = ++this._calcSeq;
@@ -443,16 +467,17 @@
           children_under_6: this.state.children_under_6
         });
 
-        if (seq !== this._calcSeq || !quote) return;
+        if (this.isStaleMount() || seq !== this._calcSeq || !quote) return;
         this.quote = quote;
         this.renderQuoteSummary(quote);
       } catch (err) {
-        if (seq !== this._calcSeq) return;
+        if (this.isStaleMount() || seq !== this._calcSeq) return;
         this.showError(err.message || 'Unable to load live pricing quote from server.');
       }
     }
 
     renderQuoteSummary(quote) {
+      if (this.isStaleMount()) return;
       const curr = quote.currency || (this.state.nationality === 'india' ? 'INR' : 'USD');
       const currEl = this._el('bwCurrencyLabel');
       const pkgEl = this._el('bwPackageTotal');

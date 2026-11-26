@@ -26,6 +26,15 @@
     return `$${Math.round(Number(amount) || 0).toLocaleString('en-US')}`;
   }
 
+  function isSafeImageUrl(rawUrl) {
+    const url = String(rawUrl || '').trim();
+    if (!url) return false;
+    if (/^https?:\/\//i.test(url)) return true;
+    if (url.startsWith('//')) return false;
+    if (/^[a-z][a-z0-9+.-]*:/i.test(url)) return false;
+    return !/[\x00-\x1f<>"]/.test(url);
+  }
+
   function resolveTourSlug(locationLike) {
     const loc = locationLike || global.location || {};
     const search = String(loc.search || '');
@@ -216,8 +225,8 @@
     if (tiersEl) tiersEl.innerHTML = renderTierBreakdownHtml(tour);
 
     const imgEl = doc.querySelector('[data-tour-image]');
-    if (imgEl && tour.cover_image) {
-      imgEl.setAttribute('src', tour.cover_image);
+    if (imgEl && isSafeImageUrl(tour.cover_image)) {
+      imgEl.setAttribute('src', String(tour.cover_image).trim());
       imgEl.setAttribute('alt', tour.title || 'Bhutan Tour');
     }
 
@@ -294,12 +303,14 @@
 
   global.TourDetailHydrator = TourDetailHydrator;
 
-  if (!global.__BFR_DISABLE_AUTO_INIT__ && global.document && typeof global.document.addEventListener === 'function') {
+  const hasAutoInitSlug = !global.__BFR_DISABLE_AUTO_INIT__ && Boolean(resolveTourSlug(global.location));
+  if (hasAutoInitSlug) {
+    global.__BFR_DEFER_WIDGET_MOUNT__ = true;
+  }
+
+  if (hasAutoInitSlug && global.document && typeof global.document.addEventListener === 'function') {
     const runInit = () => {
-      if (resolveTourSlug(global.location)) {
-        global.__BFR_DEFER_WIDGET_MOUNT__ = true;
-        init();
-      }
+      init();
     };
     if (global.document.readyState === 'loading') {
       global.document.addEventListener('DOMContentLoaded', runInit);
