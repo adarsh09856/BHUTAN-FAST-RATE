@@ -238,12 +238,18 @@
             </div>
             <div>
               <label for="festSeason" class="block font-bold text-zinc-300 mb-1">Season</label>
-              <select id="festSeason" class="w-full px-3 py-2 rounded-lg border border-zinc-600 font-semibold">
-                <option value="Spring">Spring</option>
-                <option value="Summer">Summer</option>
-                <option value="Autumn">Autumn</option>
-                <option value="Winter">Winter</option>
-              </select>
+              <input type="text" id="festSeason" list="festSeasonPresets" placeholder="e.g., Autumn (September / October)" class="w-full px-3 py-2 rounded-lg border border-zinc-600 font-semibold">
+              <datalist id="festSeasonPresets">
+                <option value="Spring (March / April)">
+                <option value="Summer (June / August)">
+                <option value="Autumn (September / October)">
+                <option value="Late Autumn (November)">
+                <option value="Late Winter (February / March)">
+                <option value="Spring">
+                <option value="Summer">
+                <option value="Autumn">
+                <option value="Winter">
+              </datalist>
             </div>
             <div>
               <label for="festDatesLabel" class="block font-bold text-zinc-300 mb-1">Lunar Dates Label</label>
@@ -626,7 +632,7 @@
         document.getElementById('festName').value = f.name || '';
         slugInput.value = f.slug || f.id;
         slugInput.readOnly = true;
-        document.getElementById('festSeason').value = f.season || 'Autumn';
+        document.getElementById('festSeason').value = f.season || '';
         document.getElementById('festDatesLabel').value = f.dates_label || '';
         document.getElementById('festVenue').value = f.venue || '';
         document.getElementById('festValley').value = f.valley || '';
@@ -653,7 +659,7 @@
       const priceRaw = document.getElementById('festPriceUsd').value.trim();
       const payload = {
         name: document.getElementById('festName').value.trim(),
-        season: document.getElementById('festSeason').value,
+        season: document.getElementById('festSeason').value.trim(),
         dates_label: document.getElementById('festDatesLabel').value.trim(),
         venue: document.getElementById('festVenue').value.trim(),
         valley: document.getElementById('festValley').value.trim(),

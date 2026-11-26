@@ -237,8 +237,16 @@
     AdminApp.renderSidebar('inquiries');
 
     let allInquiries = [];
+    let visibleInquiries = [];
     let catalogTours = [];
     let activeInquiry = null;
+
+    function findInquiryById(inquiryId) {
+      const targetId = Number(inquiryId);
+      return visibleInquiries.find((i) => Number(i.id) === targetId)
+        || allInquiries.find((i) => Number(i.id) === targetId)
+        || null;
+    }
 
     function stageBadge(status) {
       const s = String(status || 'new').toLowerCase();
@@ -298,15 +306,21 @@
         const status = document.getElementById('inqStatusFilter').value;
         const res = await ApiClient.getAdminInquiries({ search, status });
         const rows = (res && res.data) || [];
+        visibleInquiries = rows;
         if (status === 'All' && !search) {
           allInquiries = rows;
-          updateSummaryKpis(allInquiries);
         } else if (!allInquiries.length) {
           const fullRes = await ApiClient.getAdminInquiries({});
           allInquiries = (fullRes && fullRes.data) || rows;
-          updateSummaryKpis(allInquiries);
+        } else {
+          const byId = new Map(allInquiries.map((item) => [Number(item.id), item]));
+          for (const row of rows) {
+            byId.set(Number(row.id), row);
+          }
+          allInquiries = Array.from(byId.values()).sort((a, b) => Number(b.id) - Number(a.id));
         }
-        renderInquiriesTable(rows);
+        updateSummaryKpis(allInquiries);
+        renderInquiriesTable(visibleInquiries);
       } catch (err) {
         errBox.textContent = `Unable to load inquiries: ${err.message || 'Server error'}`;
         errBox.classList.remove('hidden');
@@ -379,7 +393,7 @@
     }
 
     function openLeadModal(inquiryId) {
-      const inq = allInquiries.find((i) => Number(i.id) === Number(inquiryId));
+      const inq = findInquiryById(inquiryId);
       if (!inq) return;
       activeInquiry = inq;
 
@@ -543,7 +557,7 @@
       if (!btn) return;
       const action = btn.getAttribute('data-inq-action');
       const id = btn.getAttribute('data-inq-id');
-      const inq = allInquiries.find((i) => Number(i.id) === Number(id));
+      const inq = findInquiryById(id);
       if (!inq) return;
 
       if (action === 'inspect') {

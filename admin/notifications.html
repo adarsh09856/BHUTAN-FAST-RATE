@@ -377,7 +377,7 @@
       if (sendBtn) {
         const id = sendBtn.getAttribute('data-wa-send');
         const url = sendBtn.getAttribute('data-wa-url');
-        openSafeWhatsApp(url);
+        if (!openSafeWhatsApp(url)) return;
         sendBtn.disabled = true;
         try {
           await ApiClient.markNotificationSent(id);
@@ -385,6 +385,8 @@
           await loadNotifications();
         } catch (err) {
           AdminApp.showToast(err.message || 'Failed to mark sent', 'error');
+        } finally {
+          sendBtn.disabled = false;
         }
       } else if (sentOnlyBtn) {
         const id = sentOnlyBtn.getAttribute('data-mark-sent');
@@ -395,6 +397,8 @@
           await loadNotifications();
         } catch (err) {
           AdminApp.showToast(err.message || 'Failed to mark sent', 'error');
+        } finally {
+          sentOnlyBtn.disabled = false;
         }
       }
     });
@@ -413,6 +417,8 @@
           await loadNotifications();
         } catch (err) {
           AdminApp.showToast(err.message || 'Failed to mark read', 'error');
+        } finally {
+          readBtn.disabled = false;
         }
       }
     });

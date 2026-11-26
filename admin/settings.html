@@ -79,6 +79,10 @@
                 <option value="1">Active (Promo Waiver)</option>
               </select>
             </div>
+            <div>
+              <label for="sdf_waiver_percent" class="block font-bold text-zinc-300 mb-1">SDF Waiver Discount (%)</label>
+              <input type="number" id="sdf_waiver_percent" min="0" max="100" value="0" class="w-full px-3 py-2 rounded-lg border border-zinc-600 font-bold">
+            </div>
 
             <div>
               <label for="hotel_4star_surcharge_usd" class="block font-bold text-zinc-300 mb-1">4-Star Fallback Surcharge (USD)</label>
@@ -393,6 +397,7 @@
       'hotel_4star_surcharge_usd',
       'hotel_5star_surcharge_usd',
       'sdf_waiver_active',
+      'sdf_waiver_percent',
       'company_name',
       'company_license',
       'company_tagline',
