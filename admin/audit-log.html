@@ -9,72 +9,84 @@
   <link rel="stylesheet" href="css/admin-theme.css">
 </head>
 <body class="admin-layout">
-  <!-- Dynamic Sidebar -->
   <aside id="adminSidebar" class="admin-sidebar"></aside>
 
-  <!-- Main Workspace -->
   <div class="admin-main">
     <header class="admin-header">
       <div class="flex items-center gap-3">
-        <button id="sidebarToggle" class="lg:hidden p-2 text-zinc-400 hover:text-white rounded">
+        <button id="sidebarToggle" class="lg:hidden p-2 text-zinc-400 hover:text-white rounded" aria-label="Toggle navigation">
           <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
         </button>
-        <h1 class="text-base font-extrabold text-white">Audit Trail</h1>
+        <div>
+          <h1 class="text-base font-extrabold text-white">Immutable Operational Audit Trail</h1>
+          <p class="text-[11px] text-zinc-400">Tamper-proof ledger of booking, visa, payment, CMS, settings &amp; RBAC actions</p>
+        </div>
       </div>
-      <div class="flex items-center gap-4 text-xs">
-        <span class="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 font-bold">API Online</span>
-        <a href="notifications.html" class="p-2 rounded-lg bg-zinc-800 text-zinc-300 hover:text-white">🔔</a>
+      <div class="flex items-center gap-3 text-xs">
+        <span class="px-2.5 py-1 rounded bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 font-bold">API Live</span>
+        <a href="notifications.html" class="notif-bell-btn" title="Notifications">🔔</a>
       </div>
     </header>
 
     <main class="p-6 sm:p-8 space-y-6">
-      
-  <div class="stat-card space-y-4">
-    <div class="flex items-center justify-between">
-      <h2 class="text-base font-extrabold text-white">Immutable Operational Audit Log</h2>
-      <span class="text-xs text-zinc-400">Tamper-Proof Action History</span>
-    </div>
+      <div id="auditError" class="hidden admin-alert admin-alert-error"></div>
 
-    <table class="admin-table">
-      <thead>
-        <tr>
-          <th>Timestamp</th>
-          <th>Actor</th>
-          <th>Role</th>
-          <th>Action</th>
-          <th>Entity ID</th>
-          <th>Details</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td class="text-zinc-400 font-mono text-[11px]">2026-11-24 18:42:10</td>
-          <td class="font-bold text-white">Sonam Dorji</td>
-          <td><span class="text-emerald-400 font-bold">super_admin</span></td>
-          <td>visa.approved</td>
-          <td class="font-mono">BFR-2026-8841</td>
-          <td>Approved VCL-2026-8841-BFR for Dr. Evelyn Martinez</td>
-        </tr>
-        <tr>
-          <td class="text-zinc-400 font-mono text-[11px]">2026-11-24 16:15:33</td>
-          <td class="font-bold text-white">Dechen Wangmo</td>
-          <td><span class="text-blue-400 font-bold">concierge</span></td>
-          <td>guide.assigned</td>
-          <td class="font-mono">BFR-2026-8850</td>
-          <td>Assigned Kinley Tshering to Druk Path Trek</td>
-        </tr>
-        <tr>
-          <td class="text-zinc-400 font-mono text-[11px]">2026-11-24 14:02:19</td>
-          <td class="font-bold text-white">Finance Desk</td>
-          <td><span class="text-purple-400 font-bold">finance</span></td>
-          <td>payment.recorded</td>
-          <td class="font-mono">BFR-2026-8841</td>
-          <td>Recorded $5,180 RMA wire transfer</td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
+      <div class="stat-card space-y-4">
+        <div class="flex flex-wrap items-center justify-between gap-3 pb-3 border-b border-zinc-700">
+          <div class="flex flex-wrap items-center gap-2.5">
+            <input type="text" id="auditActorSearch" placeholder="Search actor, action, entity or details..." class="px-3.5 py-2 rounded-lg border border-zinc-600 text-xs w-64 focus:outline-none">
+            <select id="auditEntityFilter" class="px-3 py-2 rounded-lg border border-zinc-600 text-xs focus:outline-none">
+              <option value="">All Entity Types</option>
+              <option value="booking">Booking</option>
+              <option value="tour">Tour</option>
+              <option value="destination">Destination</option>
+              <option value="festival">Festival</option>
+              <option value="review">Review</option>
+              <option value="inquiry">Inquiry</option>
+              <option value="user">User / Guide</option>
+              <option value="settings">Settings</option>
+            </select>
+            <input type="text" id="auditActionFilter" placeholder="Exact action (e.g. visa.status_change)" class="px-3 py-2 rounded-lg border border-zinc-600 text-xs w-52 focus:outline-none">
+            <select id="auditLimitSelect" class="px-3 py-2 rounded-lg border border-zinc-600 text-xs focus:outline-none">
+              <option value="50">Latest 50</option>
+              <option value="100" selected>Latest 100</option>
+              <option value="250">Latest 250</option>
+            </select>
+          </div>
 
+          <div class="flex items-center gap-2">
+            <button type="button" id="refreshAuditBtn" class="admin-btn admin-btn-secondary">↻ Refresh</button>
+            <button type="button" id="exportAuditCsvBtn" class="admin-btn admin-btn-primary">⬇ Export CSV</button>
+          </div>
+        </div>
+
+        <div class="flex flex-wrap items-center justify-between gap-2 text-xs text-zinc-400">
+          <span id="auditCountLabel">Loading audit events...</span>
+          <div class="flex items-center gap-2">
+            <button type="button" id="auditPrevBtn" class="admin-btn admin-btn-secondary admin-btn-sm">← Prev</button>
+            <span id="auditPageLabel" class="font-mono text-zinc-300">Page 1 of 1</span>
+            <button type="button" id="auditNextBtn" class="admin-btn admin-btn-secondary admin-btn-sm">Next →</button>
+          </div>
+        </div>
+
+        <div class="overflow-x-auto">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>ID / Timestamp</th>
+                <th>Actor &amp; Role</th>
+                <th>Action</th>
+                <th>Entity</th>
+                <th>Change Details (Old → New)</th>
+                <th>IP Address</th>
+              </tr>
+            </thead>
+            <tbody id="auditTableBody">
+              <tr><td colspan="6" class="py-8 text-center text-zinc-400">Loading audit events from database...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
     </main>
   </div>
 
@@ -83,12 +95,185 @@
   <script>
     AdminApp.requireAuth();
     AdminApp.renderSidebar('audit');
-    const toggle = document.getElementById('sidebarToggle');
-    if (toggle) {
-      toggle.addEventListener('click', () => {
-        document.getElementById('adminSidebar').classList.toggle('open');
-      });
+
+    const PAGE_SIZE = 25;
+    let rawLogs = [];
+    let filteredLogs = [];
+    let currentPage = 1;
+
+    function roleBadgeClass(role) {
+      const r = String(role || '').toLowerCase();
+      if (r === 'super_admin') return 'badge-red';
+      if (r === 'admin') return 'badge-purple';
+      if (r === 'finance') return 'badge-green';
+      if (r === 'concierge') return 'badge-blue';
+      return 'badge-zinc';
     }
+
+    function csvEscapeCell(val) {
+      if (val === null || val === undefined) return '';
+      let str = String(val);
+      if (/^[=+\-@\t\r]/.test(str)) {
+        str = `'${str}`;
+      }
+      if (str.includes('"') || str.includes(',') || str.includes('\n') || str.includes('\r')) {
+        return `"${str.replace(/"/g, '""')}"`;
+      }
+      return str;
+    }
+
+    async function loadAuditLogs() {
+      const errBox = document.getElementById('auditError');
+      errBox.classList.add('hidden');
+      try {
+        const entity_type = document.getElementById('auditEntityFilter').value;
+        const action = document.getElementById('auditActionFilter').value.trim();
+        const limit = document.getElementById('auditLimitSelect').value;
+
+        const res = await ApiClient.getAuditLogs({ entity_type, action, limit });
+        rawLogs = (res && res.data) || [];
+        currentPage = 1;
+        applyLocalSearchAndRender();
+      } catch (err) {
+        errBox.textContent = `Unable to load audit trail: ${err.message || 'Server error'}`;
+        errBox.classList.remove('hidden');
+        document.getElementById('auditTableBody').innerHTML =
+          `<tr><td colspan="6" class="py-6 text-center text-red-400">${AdminApp.esc(err.message || 'Failed to load audit log')}</td></tr>`;
+      }
+    }
+
+    function applyLocalSearchAndRender() {
+      const term = document.getElementById('auditActorSearch').value.trim().toLowerCase();
+      filteredLogs = rawLogs.filter((row) => {
+        if (!term) return true;
+        const hay = [
+          row.user_name,
+          row.user_role,
+          row.action,
+          row.entity_type,
+          row.entity_id,
+          row.old_value,
+          row.new_value,
+          row.ip_address
+        ].filter(Boolean).join(' ').toLowerCase();
+        return hay.includes(term);
+      });
+
+      const totalPages = Math.max(1, Math.ceil(filteredLogs.length / PAGE_SIZE));
+      if (currentPage > totalPages) currentPage = totalPages;
+      if (currentPage < 1) currentPage = 1;
+
+      const startIdx = (currentPage - 1) * PAGE_SIZE;
+      const pageRows = filteredLogs.slice(startIdx, startIdx + PAGE_SIZE);
+
+      document.getElementById('auditCountLabel').textContent =
+        `Showing ${filteredLogs.length === 0 ? 0 : startIdx + 1}–${startIdx + pageRows.length} of ${filteredLogs.length} audit event(s)`;
+      document.getElementById('auditPageLabel').textContent = `Page ${currentPage} of ${totalPages}`;
+      document.getElementById('auditPrevBtn').disabled = currentPage <= 1;
+      document.getElementById('auditNextBtn').disabled = currentPage >= totalPages;
+
+      renderAuditTable(pageRows);
+    }
+
+    function renderAuditTable(rows) {
+      const tbody = document.getElementById('auditTableBody');
+      if (!rows.length) {
+        tbody.innerHTML = `<tr><td colspan="6" class="py-8 text-center text-zinc-400">No audit trail events match the current filters.</td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = rows.map((row) => {
+        const entityCell = row.entity_type === 'booking' && row.entity_id
+          ? `<a href="booking-detail.html?id=${encodeURIComponent(row.entity_id)}" class="font-mono font-bold text-[#E05A47] hover:underline">${AdminApp.esc(row.entity_id)}</a>`
+          : `<span class="font-mono text-zinc-200">${AdminApp.esc(row.entity_id || '—')}</span>`;
+
+        const changeHtml = row.old_value && row.new_value
+          ? `<span class="text-zinc-400">${AdminApp.esc(row.old_value)}</span> <span class="text-zinc-500">→</span> <span class="text-zinc-100">${AdminApp.esc(row.new_value)}</span>`
+          : `<span class="text-zinc-200">${AdminApp.esc(row.new_value || row.old_value || '—')}</span>`;
+
+        return `
+          <tr>
+            <td class="whitespace-nowrap">
+              <div class="font-mono text-[11px] text-white">#${Number(row.id)}</div>
+              <div class="font-mono text-[11px] text-zinc-400">${AdminApp.esc(AdminApp.formatDateTime(row.created_at))}</div>
+            </td>
+            <td>
+              <div class="font-bold text-white text-xs">${AdminApp.esc(row.user_name || 'System')}</div>
+              <span class="badge ${roleBadgeClass(row.user_role)} mt-0.5">${AdminApp.esc(row.user_role || 'system')}</span>
+            </td>
+            <td>
+              <span class="font-mono text-xs font-bold text-emerald-400">${AdminApp.esc(row.action)}</span>
+            </td>
+            <td>
+              <div class="text-[11px] text-zinc-400 uppercase font-bold">${AdminApp.esc(row.entity_type || 'system')}</div>
+              <div>${entityCell}</div>
+            </td>
+            <td class="max-w-[360px] break-words text-xs">${changeHtml}</td>
+            <td class="font-mono text-[11px] text-zinc-400">${AdminApp.esc(row.ip_address || '—')}</td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    function exportAuditCsv() {
+      if (!filteredLogs.length) {
+        AdminApp.showToast('No audit rows to export.', 'warn');
+        return;
+      }
+      const headers = ['ID', 'Timestamp', 'Actor', 'Role', 'Action', 'Entity Type', 'Entity ID', 'Old Value', 'New Value', 'IP Address'];
+      const lines = [headers.map(csvEscapeCell).join(',')];
+      for (const r of filteredLogs) {
+        lines.push([
+          r.id,
+          r.created_at || '',
+          r.user_name || '',
+          r.user_role || '',
+          r.action || '',
+          r.entity_type || '',
+          r.entity_id || '',
+          r.old_value || '',
+          r.new_value || '',
+          r.ip_address || ''
+        ].map(csvEscapeCell).join(','));
+      }
+      const csvText = lines.join('\r\n');
+      const blob = new Blob([csvText], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'bfr-audit-log.csv';
+      a.style.display = 'none';
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      setTimeout(() => URL.revokeObjectURL(url), 1000);
+      AdminApp.showToast(`Exported ${filteredLogs.length} audit row(s) to CSV.`);
+    }
+
+    document.getElementById('refreshAuditBtn').addEventListener('click', loadAuditLogs);
+    document.getElementById('auditEntityFilter').addEventListener('change', loadAuditLogs);
+    document.getElementById('auditLimitSelect').addEventListener('change', loadAuditLogs);
+    document.getElementById('auditActionFilter').addEventListener('change', loadAuditLogs);
+    document.getElementById('auditActorSearch').addEventListener('input', () => {
+      currentPage = 1;
+      applyLocalSearchAndRender();
+    });
+    document.getElementById('auditPrevBtn').addEventListener('click', () => {
+      if (currentPage > 1) {
+        currentPage -= 1;
+        applyLocalSearchAndRender();
+      }
+    });
+    document.getElementById('auditNextBtn').addEventListener('click', () => {
+      const totalPages = Math.max(1, Math.ceil(filteredLogs.length / PAGE_SIZE));
+      if (currentPage < totalPages) {
+        currentPage += 1;
+        applyLocalSearchAndRender();
+      }
+    });
+    document.getElementById('exportAuditCsvBtn').addEventListener('click', exportAuditCsv);
+
+    document.addEventListener('DOMContentLoaded', loadAuditLogs);
   </script>
 </body>
 </html>

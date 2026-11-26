@@ -7,65 +7,53 @@
   <title>Tour Packages Catalog — Bhutan Fast Rate Operations</title>
   <link rel="stylesheet" href="../css/tour-theme.css">
   <link rel="stylesheet" href="css/admin-theme.css">
-  <style>
-    /* Strict form input protection against dark mode inversion */
-    input, select, textarea {
-      color-scheme: light !important;
-      background-color: #ffffff !important;
-      color: #1f2923 !important;
-    }
-    .modal-backdrop {
-      background-color: rgba(0, 0, 0, 0.7);
-      backdrop-filter: blur(4px);
-    }
-  </style>
 </head>
 <body class="admin-layout">
-  <!-- Dynamic Sidebar -->
   <aside id="adminSidebar" class="admin-sidebar"></aside>
 
-  <!-- Main Workspace -->
   <div class="admin-main">
     <header class="admin-header">
       <div class="flex items-center gap-3">
-        <button id="sidebarToggle" class="lg:hidden p-2 text-zinc-400 hover:text-white rounded">
+        <button id="sidebarToggle" class="lg:hidden p-2 text-zinc-400 hover:text-white rounded" aria-label="Toggle navigation">
           <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
         </button>
         <div>
           <h1 class="text-base font-extrabold text-white">Tour Packages Catalog</h1>
-          <p class="text-[11px] text-zinc-400">Live Database Operations — Changes immediately sync with public website.</p>
+          <p class="text-[11px] text-zinc-400">Live Database Operations — Changes immediately sync with public catalog, pricing engine &amp; itineraries.</p>
         </div>
       </div>
-      <div class="flex items-center gap-4 text-xs">
-        <span class="px-2.5 py-1 rounded bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 font-bold">API Online</span>
-        <a href="../tours.html" target="_blank" class="px-3 py-1.5 rounded-lg bg-zinc-800 hover:bg-zinc-700 text-zinc-200 border border-zinc-700 font-bold flex items-center gap-1.5 transition">
-          <span>🌐 View Public Catalog</span> ↗
+      <div class="flex items-center gap-3 text-xs">
+        <span id="apiStatusPill" class="px-2.5 py-1 rounded bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 font-bold">API Live</span>
+        <a href="../tours.html" target="_blank" rel="noopener" class="admin-btn admin-btn-secondary admin-btn-sm">
+          🌐 View Public Catalog ↗
         </a>
+        <a href="notifications.html" class="notif-bell-btn" title="Notifications">🔔</a>
       </div>
     </header>
 
     <main class="p-6 sm:p-8 space-y-6">
-      
+      <div id="toursPageError" class="hidden admin-alert admin-alert-error"></div>
+
       <!-- Metrics Bar -->
-      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+      <div class="admin-grid-3">
         <div class="stat-card flex items-center justify-between p-4">
           <div>
             <div class="text-xs text-zinc-400 font-bold uppercase tracking-wider">Total Packages</div>
-            <div class="text-2xl font-black text-white mt-1" id="totalToursCount">-</div>
+            <div class="text-2xl font-black text-white mt-1" id="totalToursCount">—</div>
           </div>
           <div class="w-10 h-10 rounded-xl bg-blue-500/20 text-blue-400 flex items-center justify-center text-lg">🗺️</div>
         </div>
         <div class="stat-card flex items-center justify-between p-4">
           <div>
             <div class="text-xs text-zinc-400 font-bold uppercase tracking-wider">Active (Public)</div>
-            <div class="text-2xl font-black text-emerald-400 mt-1" id="activeToursCount">-</div>
+            <div class="text-2xl font-black text-emerald-400 mt-1" id="activeToursCount">—</div>
           </div>
           <div class="w-10 h-10 rounded-xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-lg">✓</div>
         </div>
         <div class="stat-card flex items-center justify-between p-4">
           <div>
             <div class="text-xs text-zinc-400 font-bold uppercase tracking-wider">Inactive (Hidden)</div>
-            <div class="text-2xl font-black text-amber-400 mt-1" id="inactiveToursCount">-</div>
+            <div class="text-2xl font-black text-amber-400 mt-1" id="inactiveToursCount">—</div>
           </div>
           <div class="w-10 h-10 rounded-xl bg-amber-500/20 text-amber-400 flex items-center justify-center text-lg">⏸</div>
         </div>
@@ -73,10 +61,10 @@
 
       <!-- Main Catalog Table Card -->
       <div class="stat-card space-y-4">
-        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-2 border-b border-zinc-800">
-          <div class="flex flex-wrap items-center gap-3">
-            <input type="text" id="tourSearchInput" placeholder="Search by title, valley, category..." class="px-3.5 py-2 rounded-lg border border-zinc-700 text-xs w-64 focus:outline-none focus:border-[#E05A47]">
-            <select id="tourCategoryFilter" class="px-3 py-2 rounded-lg border border-zinc-700 text-xs focus:outline-none">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-3 border-b border-zinc-700">
+          <div class="flex flex-wrap items-center gap-2.5">
+            <input type="text" id="tourSearchInput" placeholder="Search title, valley, category..." class="px-3.5 py-2 rounded-lg border border-zinc-600 text-xs w-64 focus:outline-none">
+            <select id="tourCategoryFilter" class="px-3 py-2 rounded-lg border border-zinc-600 text-xs focus:outline-none">
               <option value="All">All Categories</option>
               <option value="Cultural Heritage">Cultural Heritage</option>
               <option value="Alpine Trekking">Alpine Trekking</option>
@@ -85,215 +73,232 @@
               <option value="Expedition">Expedition</option>
               <option value="Short Break">Short Break</option>
             </select>
-            <select id="tourStatusFilter" class="px-3 py-2 rounded-lg border border-zinc-700 text-xs focus:outline-none">
+            <select id="tourStatusFilter" class="px-3 py-2 rounded-lg border border-zinc-600 text-xs focus:outline-none">
               <option value="all">All Statuses</option>
               <option value="active">Active Only</option>
               <option value="inactive">Inactive Only</option>
             </select>
           </div>
-          <button onclick="openCreateTourModal()" class="px-4 py-2.5 rounded-lg bg-[#E05A47] hover:bg-[#c94b39] text-white text-xs font-bold transition flex items-center gap-2 shadow-lg">
-            <span>+</span> Create New Tour Package
-          </button>
+          <div class="flex items-center gap-2">
+            <button type="button" id="refreshToursBtn" class="admin-btn admin-btn-secondary">↻ Refresh</button>
+            <button type="button" id="openCreateTourBtn" data-roles="super_admin,admin,concierge" class="admin-btn admin-btn-primary">
+              + Create New Tour Package
+            </button>
+          </div>
         </div>
 
-        <!-- Table -->
         <div class="overflow-x-auto">
           <table class="admin-table">
             <thead>
               <tr>
                 <th>Tour Package</th>
-                <th>Category</th>
+                <th>Category &amp; Difficulty</th>
                 <th>Duration</th>
-                <th>Base Price</th>
-                <th>Valleys</th>
+                <th>3★ / 4★ / 5★ Pricing (USD)</th>
+                <th>Itinerary &amp; Valleys</th>
                 <th>Status</th>
                 <th>Actions</th>
               </tr>
             </thead>
             <tbody id="toursTableBody">
               <tr>
-                <td colspan="7" class="py-8 text-center text-zinc-500">
-                  <div class="inline-block w-6 h-6 border-2 border-[#E05A47] border-t-transparent rounded-full animate-spin mb-2"></div>
-                  <div>Loading Tours from Database...</div>
-                </td>
+                <td colspan="7" class="py-8 text-center text-zinc-400">Loading tours from database...</td>
               </tr>
             </tbody>
           </table>
         </div>
       </div>
-
     </main>
   </div>
 
-  <!-- Create Tour Modal -->
-  <div id="createTourModal" class="fixed inset-0 z-50 modal-backdrop hidden flex items-center justify-center p-4">
-    <div class="bg-[#1e293b] border border-zinc-700 rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto shadow-2xl text-zinc-100 flex flex-col">
-      <div class="p-5 border-b border-zinc-700 flex items-center justify-between">
-        <h3 class="font-bold text-base text-white">Create New Bhutan Tour Package</h3>
-        <button onclick="closeCreateTourModal()" class="text-zinc-400 hover:text-white p-1">✕</button>
+  <!-- Unified Add / Edit Tour Modal with Day 1..N Itinerary Builder -->
+  <div id="tourEditorModal" class="admin-modal-backdrop hidden" role="dialog" aria-modal="true" aria-labelledby="tourModalTitle">
+    <div class="admin-modal admin-modal-xl">
+      <div class="admin-modal-header">
+        <div>
+          <h2 id="tourModalTitle" class="text-base font-extrabold text-white">Create New Tour Package</h2>
+          <p id="tourModalSubtitle" class="text-[11px] text-zinc-400">Configure multi-tier hotel pricing, highlights, inclusions &amp; Day 1..N itinerary</p>
+        </div>
+        <button type="button" id="closeTourModalBtn" class="p-1.5 rounded-lg text-zinc-400 hover:text-white hover:bg-zinc-800 text-lg leading-none" aria-label="Close modal">✕</button>
       </div>
-      <form id="createTourForm" class="p-6 space-y-4 text-xs">
-        <div>
-          <label class="block font-bold text-zinc-300 mb-1">Tour Title *</label>
-          <input type="text" id="createTitle" required placeholder="e.g. Jomolhari Mountain Glacier Trek" class="w-full px-3 py-2 rounded border border-zinc-600 font-medium">
-        </div>
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <div>
-            <label class="block font-bold text-zinc-300 mb-1">Category *</label>
-            <select id="createCategory" class="w-full px-3 py-2 rounded border border-zinc-600 font-medium">
-              <option value="Cultural Heritage">Cultural Heritage</option>
-              <option value="Alpine Trekking">Alpine Trekking</option>
-              <option value="Festival Special">Festival Special</option>
-              <option value="Luxury Escape">Luxury Escape</option>
-              <option value="Expedition">Expedition</option>
-              <option value="Short Break">Short Break</option>
-            </select>
+
+      <form id="tourEditorForm" class="flex flex-col flex-1 overflow-hidden">
+        <input type="hidden" id="tourEditId">
+        <div class="admin-modal-body space-y-5 text-xs">
+          <div id="tourFormError" class="hidden admin-alert admin-alert-error"></div>
+
+          <!-- Section 1: Core Identity -->
+          <div class="admin-panel-sub space-y-3">
+            <div class="text-xs font-extrabold uppercase tracking-wider text-[#E05A47]">1. Package Identity &amp; Classification</div>
+            <div class="admin-grid-3">
+              <div class="sm:col-span-2" style="grid-column: span 2 / span 2;">
+                <label for="tourTitleInput" class="block font-bold text-zinc-300 mb-1">Tour Title *</label>
+                <input type="text" id="tourTitleInput" required placeholder="e.g. Essential Bhutan Heritage &amp; Tiger's Nest" class="w-full px-3 py-2 rounded-lg border border-zinc-600 font-semibold">
+              </div>
+              <div>
+                <label for="tourSlugInput" class="block font-bold text-zinc-300 mb-1">URL Slug / ID</label>
+                <input type="text" id="tourSlugInput" placeholder="auto-generated-from-title" class="w-full px-3 py-2 rounded-lg border border-zinc-600 font-mono">
+              </div>
+              <div>
+                <label for="tourCategoryInput" class="block font-bold text-zinc-300 mb-1">Category *</label>
+                <select id="tourCategoryInput" class="w-full px-3 py-2 rounded-lg border border-zinc-600 font-semibold">
+                  <option value="Cultural Heritage">Cultural Heritage</option>
+                  <option value="Alpine Trekking">Alpine Trekking</option>
+                  <option value="Festival Special">Festival Special</option>
+                  <option value="Luxury Escape">Luxury Escape</option>
+                  <option value="Expedition">Expedition</option>
+                  <option value="Short Break">Short Break</option>
+                </select>
+              </div>
+              <div>
+                <label for="tourDifficultyInput" class="block font-bold text-zinc-300 mb-1">Difficulty</label>
+                <select id="tourDifficultyInput" class="w-full px-3 py-2 rounded-lg border border-zinc-600 font-semibold">
+                  <option value="Easy">Easy</option>
+                  <option value="Easy to Moderate">Easy to Moderate</option>
+                  <option value="Moderate">Moderate</option>
+                  <option value="Challenging">Challenging</option>
+                  <option value="Strenuous">Strenuous</option>
+                </select>
+              </div>
+              <div>
+                <label for="tourValleysInput" class="block font-bold text-zinc-300 mb-1">Valleys Covered *</label>
+                <input type="text" id="tourValleysInput" required placeholder="Paro, Thimphu, Punakha" class="w-full px-3 py-2 rounded-lg border border-zinc-600 font-semibold">
+              </div>
+              <div>
+                <label for="tourDaysInput" class="block font-bold text-zinc-300 mb-1">Duration Days *</label>
+                <input type="number" id="tourDaysInput" required min="1" max="60" value="7" class="w-full px-3 py-2 rounded-lg border border-zinc-600 font-bold">
+              </div>
+              <div>
+                <label for="tourNightsInput" class="block font-bold text-zinc-300 mb-1">Duration Nights *</label>
+                <input type="number" id="tourNightsInput" required min="0" max="60" value="6" class="w-full px-3 py-2 rounded-lg border border-zinc-600 font-bold">
+              </div>
+              <div>
+                <label for="tourSortOrderInput" class="block font-bold text-zinc-300 mb-1">Catalog Sort Order</label>
+                <input type="number" id="tourSortOrderInput" min="0" value="10" class="w-full px-3 py-2 rounded-lg border border-zinc-600 font-bold">
+              </div>
+            </div>
+
+            <div class="admin-grid-3">
+              <div>
+                <label for="tourGroupMinInput" class="block font-bold text-zinc-300 mb-1">Min Group Size</label>
+                <input type="number" id="tourGroupMinInput" min="1" value="1" class="w-full px-3 py-2 rounded-lg border border-zinc-600 font-semibold">
+              </div>
+              <div>
+                <label for="tourGroupMaxInput" class="block font-bold text-zinc-300 mb-1">Max Group Size</label>
+                <input type="number" id="tourGroupMaxInput" min="1" value="20" class="w-full px-3 py-2 rounded-lg border border-zinc-600 font-semibold">
+              </div>
+              <div>
+                <label for="tourCoverInput" class="block font-bold text-zinc-300 mb-1">Cover Image Path / URL</label>
+                <input type="text" id="tourCoverInput" value="assets/images/tigers-nest.webp" class="w-full px-3 py-2 rounded-lg border border-zinc-600 font-mono">
+              </div>
+            </div>
+
+            <div class="admin-grid-2">
+              <div>
+                <label for="tourSubtitleInput" class="block font-bold text-zinc-300 mb-1">Subtitle / Tagline</label>
+                <input type="text" id="tourSubtitleInput" placeholder="The Definitive First-Time Himalayan Experience" class="w-full px-3 py-2 rounded-lg border border-zinc-600 font-medium">
+              </div>
+              <div>
+                <label for="tourHighlightInput" class="block font-bold text-zinc-300 mb-1">Key Highlight Summary</label>
+                <input type="text" id="tourHighlightInput" placeholder="Includes Dochula pass, Punakha Dzong &amp; Tiger's Nest pilgrimage." class="w-full px-3 py-2 rounded-lg border border-zinc-600 font-medium">
+              </div>
+            </div>
           </div>
-          <div>
-            <label class="block font-bold text-zinc-300 mb-1">Difficulty</label>
-            <select id="createDifficulty" class="w-full px-3 py-2 rounded border border-zinc-600 font-medium">
-              <option value="Easy">Easy</option>
-              <option value="Easy to Moderate">Easy to Moderate</option>
-              <option value="Moderate">Moderate</option>
-              <option value="Strenuous">Strenuous</option>
-            </select>
+
+          <!-- Section 2: Tiered Pricing & Visibility -->
+          <div class="admin-panel-sub space-y-3">
+            <div class="flex flex-wrap items-center justify-between gap-2">
+              <div class="text-xs font-extrabold uppercase tracking-wider text-emerald-400">2. Tiered Hotel Pricing (USD Per Adult) &amp; Visibility</div>
+              <button type="button" id="autoCalcTiersBtn" class="admin-btn admin-btn-secondary admin-btn-sm">Auto-suggest 4★ / 5★ from 3★</button>
+            </div>
+            <div class="admin-grid-3">
+              <div>
+                <label for="tourPrice3StarInput" class="block font-bold text-zinc-300 mb-1">3-Star Standard / Base (price_3star_usd) *</label>
+                <input type="number" id="tourPrice3StarInput" required min="50" value="1950" class="w-full px-3 py-2 rounded-lg border border-zinc-600 font-bold">
+              </div>
+              <div>
+                <label for="tourPrice4StarInput" class="block font-bold text-zinc-300 mb-1">4-Star Premium (price_4star_usd) *</label>
+                <input type="number" id="tourPrice4StarInput" required min="50" value="2550" class="w-full px-3 py-2 rounded-lg border border-zinc-600 font-bold">
+              </div>
+              <div>
+                <label for="tourPrice5StarInput" class="block font-bold text-zinc-300 mb-1">5-Star Luxury (price_5star_usd) *</label>
+                <input type="number" id="tourPrice5StarInput" required min="50" value="3850" class="w-full px-3 py-2 rounded-lg border border-zinc-600 font-bold">
+              </div>
+            </div>
+            <div class="flex flex-wrap items-center gap-6 pt-1">
+              <label class="flex items-center gap-2 cursor-pointer">
+                <input type="checkbox" id="tourIsActiveInput" checked>
+                <span class="text-zinc-200 font-bold">Active (Published on Public Site)</span>
+              </label>
+              <label class="flex items-center gap-2 cursor-pointer">
+                <input type="checkbox" id="tourIsFeaturedInput">
+                <span class="text-zinc-200 font-bold">Featured on Homepage</span>
+              </label>
+            </div>
+          </div>
+
+          <!-- Section 3: Inclusions & Exclusions -->
+          <div class="admin-panel-sub space-y-3">
+            <div class="text-xs font-extrabold uppercase tracking-wider text-blue-400">3. Package Inclusions &amp; Exclusions (1 Item Per Line)</div>
+            <div class="admin-grid-2">
+              <div>
+                <label for="tourInclusionsInput" class="block font-bold text-zinc-300 mb-1">Inclusions</label>
+                <textarea id="tourInclusionsInput" rows="5" class="w-full px-3 py-2 rounded-lg border border-zinc-600 font-medium" placeholder="Royal Government Daily SDF ($100/night)&#10;Official Bhutan Tourist Visa Clearance Letter&#10;Certified English-Speaking Bhutanese Guide&#10;Private SUV/Coaster with Chauffeur"></textarea>
+              </div>
+              <div>
+                <label for="tourExclusionsInput" class="block font-bold text-zinc-300 mb-1">Exclusions</label>
+                <textarea id="tourExclusionsInput" rows="5" class="w-full px-3 py-2 rounded-lg border border-zinc-600 font-medium" placeholder="International flights to Paro (PBH)&#10;Travel &amp; medical evacuation insurance&#10;Personal beverages, laundry &amp; gratuities"></textarea>
+              </div>
+            </div>
+          </div>
+
+          <!-- Section 4: Dynamic Day 1..N Itinerary Builder -->
+          <div class="admin-panel-sub space-y-3">
+            <div class="flex flex-wrap items-center justify-between gap-2">
+              <div>
+                <div class="text-xs font-extrabold uppercase tracking-wider text-amber-400">4. Dynamic Day 1..N Itinerary Builder</div>
+                <p class="text-[11px] text-zinc-400">Add, remove, and reorder daily trail segments shown on public tour pages &amp; client portal.</p>
+              </div>
+              <div class="flex items-center gap-2">
+                <button type="button" id="syncDaysCountBtn" class="admin-btn admin-btn-secondary admin-btn-sm">Fill from Duration Days</button>
+                <button type="button" id="addItineraryDayBtn" class="admin-btn admin-btn-emerald admin-btn-sm">+ Add Day</button>
+              </div>
+            </div>
+
+            <div id="itineraryBuilderList" class="space-y-3">
+              <div class="text-zinc-400 text-center py-4">No itinerary days added yet. Click "+ Add Day" to begin.</div>
+            </div>
           </div>
         </div>
-        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+
+        <div class="admin-modal-footer justify-between">
           <div>
-            <label class="block font-bold text-zinc-300 mb-1">Duration Days *</label>
-            <input type="number" id="createDays" required min="1" value="7" class="w-full px-3 py-2 rounded border border-zinc-600 font-medium">
+            <button type="button" id="modalDeleteTourBtn" class="hidden admin-btn admin-btn-danger admin-btn-sm">Delete Tour</button>
           </div>
-          <div>
-            <label class="block font-bold text-zinc-300 mb-1">Duration Nights</label>
-            <input type="number" id="createNights" min="0" value="6" class="w-full px-3 py-2 rounded border border-zinc-600 font-medium">
+          <div class="flex items-center gap-2">
+            <button type="button" id="cancelTourModalBtn" class="admin-btn admin-btn-secondary">Cancel</button>
+            <button type="submit" id="saveTourBtn" class="admin-btn admin-btn-primary">Save Tour Package</button>
           </div>
-          <div>
-            <label class="block font-bold text-zinc-300 mb-1">Base Price (USD) *</label>
-            <input type="number" id="createPrice" required min="100" value="1950" class="w-full px-3 py-2 rounded border border-zinc-600 font-medium">
-          </div>
-        </div>
-        <div>
-          <label class="block font-bold text-zinc-300 mb-1">Valleys Covered</label>
-          <input type="text" id="createValleys" placeholder="e.g. Paro, Thimphu, Punakha, Haa" value="Paro, Thimphu, Punakha" class="w-full px-3 py-2 rounded border border-zinc-600 font-medium">
-        </div>
-        <div>
-          <label class="block font-bold text-zinc-300 mb-1">Highlight / Subtitle</label>
-          <input type="text" id="createSubtitle" placeholder="Short description shown on public cards" class="w-full px-3 py-2 rounded border border-zinc-600 font-medium">
-        </div>
-        <div>
-          <label class="block font-bold text-zinc-300 mb-1">Cover Image URL</label>
-          <input type="text" id="createCover" value="assets/images/tigers-nest.webp" class="w-full px-3 py-2 rounded border border-zinc-600 font-medium">
-        </div>
-        <div>
-          <label class="block font-bold text-zinc-300 mb-1">Package Inclusions (1 per line)</label>
-          <textarea id="createInclusions" rows="3" class="w-full px-3 py-2 rounded border border-zinc-600 font-medium" placeholder="Licensed English Speaking Guide&#10;Daily Royal Government SDF Included&#10;Private Transportation with Chauffeur&#10;All Heritage Sightseeing & Dzong Permits">Licensed English Speaking Guide
-Daily Royal Government SDF Included
-Private Transportation with Chauffeur
-All Heritage Sightseeing & Dzong Permits</textarea>
-        </div>
-        <div class="flex items-center gap-4 pt-2">
-          <label class="flex items-center gap-2 cursor-pointer">
-            <input type="checkbox" id="createIsActive" checked class="w-4 h-4 rounded text-[#E05A47]">
-            <span class="text-zinc-300 font-bold">Publish Immediately (Active)</span>
-          </label>
-          <label class="flex items-center gap-2 cursor-pointer">
-            <input type="checkbox" id="createIsFeatured" class="w-4 h-4 rounded text-[#E05A47]">
-            <span class="text-zinc-300 font-bold">Featured Package</span>
-          </label>
-        </div>
-        <div class="pt-4 border-t border-zinc-700 flex items-center justify-end gap-3">
-          <button type="button" onclick="closeCreateTourModal()" class="px-4 py-2 rounded bg-zinc-700 hover:bg-zinc-600 text-white font-bold">Cancel</button>
-          <button type="submit" class="px-5 py-2 rounded bg-[#E05A47] hover:bg-[#c94b39] text-white font-bold">Save &amp; Publish Tour</button>
         </div>
       </form>
     </div>
   </div>
 
-  <!-- Edit Tour Modal -->
-  <div id="editTourModal" class="fixed inset-0 z-50 modal-backdrop hidden flex items-center justify-center p-4">
-    <div class="bg-[#1e293b] border border-zinc-700 rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto shadow-2xl text-zinc-100 flex flex-col">
-      <div class="p-5 border-b border-zinc-700 flex items-center justify-between">
-        <div>
-          <h3 class="font-bold text-base text-white">Edit Tour Package</h3>
-          <p class="text-[11px] text-zinc-400" id="editTourIdLabel">ID: -</p>
-        </div>
-        <button onclick="closeEditTourModal()" class="text-zinc-400 hover:text-white p-1">✕</button>
+  <!-- Delete Confirmation Modal -->
+  <div id="deleteTourModal" class="admin-modal-backdrop hidden" role="dialog" aria-modal="true" aria-labelledby="deleteTourModalTitle">
+    <div class="admin-modal">
+      <div class="admin-modal-header">
+        <h2 id="deleteTourModalTitle" class="text-sm font-extrabold text-white">Delete Tour Package</h2>
+        <button type="button" id="closeDeleteTourBtn" class="p-1.5 rounded-lg text-zinc-400 hover:text-white hover:bg-zinc-800 text-lg leading-none" aria-label="Close modal">✕</button>
       </div>
-      <form id="editTourForm" class="p-6 space-y-4 text-xs">
-        <input type="hidden" id="editTourId">
-        <div>
-          <label class="block font-bold text-zinc-300 mb-1">Tour Title *</label>
-          <input type="text" id="editTitle" required class="w-full px-3 py-2 rounded border border-zinc-600 font-medium">
-        </div>
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <div>
-            <label class="block font-bold text-zinc-300 mb-1">Category *</label>
-            <select id="editCategory" class="w-full px-3 py-2 rounded border border-zinc-600 font-medium">
-              <option value="Cultural Heritage">Cultural Heritage</option>
-              <option value="Alpine Trekking">Alpine Trekking</option>
-              <option value="Festival Special">Festival Special</option>
-              <option value="Luxury Escape">Luxury Escape</option>
-              <option value="Expedition">Expedition</option>
-              <option value="Short Break">Short Break</option>
-            </select>
-          </div>
-          <div>
-            <label class="block font-bold text-zinc-300 mb-1">Difficulty</label>
-            <select id="editDifficulty" class="w-full px-3 py-2 rounded border border-zinc-600 font-medium">
-              <option value="Easy">Easy</option>
-              <option value="Easy to Moderate">Easy to Moderate</option>
-              <option value="Moderate">Moderate</option>
-              <option value="Strenuous">Strenuous</option>
-            </select>
-          </div>
-        </div>
-        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-          <div>
-            <label class="block font-bold text-zinc-300 mb-1">Duration Days *</label>
-            <input type="number" id="editDays" required min="1" class="w-full px-3 py-2 rounded border border-zinc-600 font-medium">
-          </div>
-          <div>
-            <label class="block font-bold text-zinc-300 mb-1">Duration Nights</label>
-            <input type="number" id="editNights" min="0" class="w-full px-3 py-2 rounded border border-zinc-600 font-medium">
-          </div>
-          <div>
-            <label class="block font-bold text-zinc-300 mb-1">Base Price (USD) *</label>
-            <input type="number" id="editPrice" required min="100" class="w-full px-3 py-2 rounded border border-zinc-600 font-medium">
-          </div>
-        </div>
-        <div>
-          <label class="block font-bold text-zinc-300 mb-1">Valleys Covered</label>
-          <input type="text" id="editValleys" class="w-full px-3 py-2 rounded border border-zinc-600 font-medium">
-        </div>
-        <div>
-          <label class="block font-bold text-zinc-300 mb-1">Highlight / Subtitle</label>
-          <input type="text" id="editSubtitle" class="w-full px-3 py-2 rounded border border-zinc-600 font-medium">
-        </div>
-        <div>
-          <label class="block font-bold text-zinc-300 mb-1">Cover Image URL</label>
-          <input type="text" id="editCover" class="w-full px-3 py-2 rounded border border-zinc-600 font-medium">
-        </div>
-        <div class="flex items-center gap-4 pt-2">
-          <label class="flex items-center gap-2 cursor-pointer">
-            <input type="checkbox" id="editIsActive" class="w-4 h-4 rounded text-[#E05A47]">
-            <span class="text-zinc-300 font-bold">Active (Visible on Website)</span>
-          </label>
-          <label class="flex items-center gap-2 cursor-pointer">
-            <input type="checkbox" id="editIsFeatured" class="w-4 h-4 rounded text-[#E05A47]">
-            <span class="text-zinc-300 font-bold">Featured Package</span>
-          </label>
-        </div>
-        <div class="pt-4 border-t border-zinc-700 flex items-center justify-between">
-          <button type="button" onclick="deleteCurrentTour()" class="px-4 py-2 rounded bg-red-600/30 hover:bg-red-600 text-red-200 hover:text-white font-bold border border-red-500/40">
-            Delete Tour
-          </button>
-          <div class="flex items-center gap-3">
-            <button type="button" onclick="closeEditTourModal()" class="px-4 py-2 rounded bg-zinc-700 hover:bg-zinc-600 text-white font-bold">Cancel</button>
-            <button type="submit" class="px-5 py-2 rounded bg-[#E05A47] hover:bg-[#c94b39] text-white font-bold">Save Changes</button>
-          </div>
-        </div>
-      </form>
+      <div class="admin-modal-body space-y-2 text-xs">
+        <p class="text-zinc-200">Permanently delete <strong id="deleteTourNameLabel" class="text-white">this tour</strong> from the catalog?</p>
+        <p class="text-zinc-400">Existing bookings preserve their booked tour snapshot, while any linked festivals will be unlinked automatically.</p>
+      </div>
+      <div class="admin-modal-footer">
+        <button type="button" id="cancelDeleteTourBtn" class="admin-btn admin-btn-secondary admin-btn-sm">Cancel</button>
+        <button type="button" id="confirmDeleteTourBtn" class="admin-btn admin-btn-danger admin-btn-sm">Confirm Delete</button>
+      </div>
     </div>
   </div>
 
@@ -302,17 +307,104 @@ All Heritage Sightseeing & Dzong Permits</textarea>
   <script>
     AdminApp.requireAuth();
     AdminApp.renderSidebar('tours');
-    const toggle = document.getElementById('sidebarToggle');
-    if (toggle) {
-      toggle.addEventListener('click', () => {
-        document.getElementById('adminSidebar').classList.toggle('open');
+
+    let loadedTours = [];
+    let modalItinerary = [];
+    let pendingDeleteTourId = null;
+
+    function buildPublicTourHref(tour) {
+      const rawSlug = String((tour && tour.slug) || '').trim();
+      const rawId = String((tour && tour.id) || '').trim();
+      if (rawSlug) {
+        if (rawSlug.startsWith('tour-')) {
+          return rawSlug.endsWith('.html') ? `../${rawSlug}` : `../${rawSlug}.html`;
+        }
+        return `../tour-${rawSlug}.html`;
+      }
+      return `../tour-${rawId || 'essential-bhutan-7d'}.html`;
+    }
+
+    function safeImageSrc(raw) {
+      const val = String(raw || '').trim();
+      if (!val) return '../assets/images/tigers-nest.webp';
+      if (/^https?:\/\//i.test(val)) return val;
+      if (val.startsWith('../')) return val;
+      return `../${val.replace(/^\/+/, '')}`;
+    }
+
+    function normalizeItineraryItems(items) {
+      if (!Array.isArray(items)) return [];
+      return items.map((item, idx) => {
+        const mealsParts = [];
+        if (item && item.meals_lodging) mealsParts.push(String(item.meals_lodging));
+        else {
+          if (item && item.meals) mealsParts.push(String(item.meals));
+          if (item && item.lodging) mealsParts.push(String(item.lodging));
+        }
+        return {
+          day: item && item.day !== undefined && item.day !== null && String(item.day).trim() !== '' ? item.day : (idx + 1),
+          title: String((item && item.title) || ''),
+          description: String((item && item.description) || ''),
+          altitude: String((item && item.altitude) || ''),
+          meals_lodging: mealsParts.join(' · ')
+        };
       });
     }
 
-    let loadedTours = [];
+    function renderItineraryBuilder() {
+      const container = document.getElementById('itineraryBuilderList');
+      if (!modalItinerary.length) {
+        container.innerHTML = `<div class="p-4 rounded-lg border border-dashed border-zinc-600 text-center text-zinc-400">No itinerary days added yet. Click "+ Add Day" or "Fill from Duration Days".</div>`;
+        return;
+      }
 
-    // Fetch and render tours
+      container.innerHTML = modalItinerary.map((item, idx) => `
+        <div class="p-3.5 rounded-xl bg-zinc-900/90 border border-zinc-700 space-y-2.5" data-day-index="${idx}">
+          <div class="flex flex-wrap items-center justify-between gap-2">
+            <div class="flex items-center gap-2">
+              <span class="badge badge-amber">Day ${idx + 1}</span>
+              <input type="text" data-day-field="day" data-index="${idx}" value="${AdminApp.esc(item.day)}" placeholder="Day ${idx + 1}" class="px-2.5 py-1 rounded border border-zinc-600 text-xs font-bold w-24">
+            </div>
+            <div class="flex items-center gap-1.5">
+              <button type="button" data-itin-action="up" data-index="${idx}" ${idx === 0 ? 'disabled' : ''} class="admin-btn admin-btn-secondary admin-btn-sm" title="Move Up">↑</button>
+              <button type="button" data-itin-action="down" data-index="${idx}" ${idx === modalItinerary.length - 1 ? 'disabled' : ''} class="admin-btn admin-btn-secondary admin-btn-sm" title="Move Down">↓</button>
+              <button type="button" data-itin-action="remove" data-index="${idx}" class="admin-btn admin-btn-danger admin-btn-sm" title="Remove Day">Remove</button>
+            </div>
+          </div>
+          <div class="admin-grid-3">
+            <div style="grid-column: span 2 / span 2;">
+              <label class="block text-[11px] font-bold text-zinc-400 mb-1">Day Title *</label>
+              <input type="text" data-day-field="title" data-index="${idx}" value="${AdminApp.esc(item.title)}" placeholder="e.g. Paro Arrival &amp; Drive to Thimphu" class="w-full px-2.5 py-1.5 rounded border border-zinc-600 text-xs font-semibold">
+            </div>
+            <div>
+              <label class="block text-[11px] font-bold text-zinc-400 mb-1">Altitude</label>
+              <input type="text" data-day-field="altitude" data-index="${idx}" value="${AdminApp.esc(item.altitude)}" placeholder="e.g. 2,334m" class="w-full px-2.5 py-1.5 rounded border border-zinc-600 text-xs">
+            </div>
+          </div>
+          <div class="admin-grid-3">
+            <div style="grid-column: span 2 / span 2;">
+              <label class="block text-[11px] font-bold text-zinc-400 mb-1">Day Description</label>
+              <textarea rows="2" data-day-field="description" data-index="${idx}" placeholder="Activities, monasteries, scenic passes..." class="w-full px-2.5 py-1.5 rounded border border-zinc-600 text-xs">${AdminApp.esc(item.description)}</textarea>
+            </div>
+            <div>
+              <label class="block text-[11px] font-bold text-zinc-400 mb-1">Meals / Lodging</label>
+              <input type="text" data-day-field="meals_lodging" data-index="${idx}" value="${AdminApp.esc(item.meals_lodging)}" placeholder="B/L/D · Boutique Hotel" class="w-full px-2.5 py-1.5 rounded border border-zinc-600 text-xs">
+            </div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function renumberNumericDays() {
+      modalItinerary = modalItinerary.map((item, idx) => {
+        const isSimpleNum = /^\d+$/.test(String(item.day || '').trim());
+        return isSimpleNum || !item.day ? { ...item, day: idx + 1 } : item;
+      });
+    }
+
     async function loadTours() {
+      const errorBox = document.getElementById('toursPageError');
+      errorBox.classList.add('hidden');
       try {
         const search = document.getElementById('tourSearchInput').value.trim();
         const category = document.getElementById('tourCategoryFilter').value;
@@ -321,16 +413,16 @@ All Heritage Sightseeing & Dzong Permits</textarea>
         const res = await ApiClient.getAdminTours({ search, category, status });
         loadedTours = res.data || [];
 
-        // Update counts
-        document.getElementById('totalToursCount').innerText = res.total_count || loadedTours.length;
-        document.getElementById('activeToursCount').innerText = res.active_count || loadedTours.filter(t => t.is_active !== 0).length;
-        document.getElementById('inactiveToursCount').innerText = res.inactive_count || loadedTours.filter(t => t.is_active === 0).length;
+        document.getElementById('totalToursCount').textContent = String(res.total_count ?? loadedTours.length);
+        document.getElementById('activeToursCount').textContent = String(res.active_count ?? loadedTours.filter((t) => Number(t.is_active) !== 0).length);
+        document.getElementById('inactiveToursCount').textContent = String(res.inactive_count ?? loadedTours.filter((t) => Number(t.is_active) === 0).length);
 
         renderTable(loadedTours);
       } catch (err) {
-        console.error('Failed to load tours:', err);
+        errorBox.textContent = `Unable to load tour catalog: ${err.message || 'Server error'}`;
+        errorBox.classList.remove('hidden');
         document.getElementById('toursTableBody').innerHTML = `
-          <tr><td colspan="7" class="py-6 text-center text-red-400">Error loading tours from API. Please verify server connection.</td></tr>
+          <tr><td colspan="7" class="py-6 text-center text-red-400">${AdminApp.esc(err.message || 'Failed to load tours')}</td></tr>
         `;
       }
     }
@@ -339,44 +431,70 @@ All Heritage Sightseeing & Dzong Permits</textarea>
       const tbody = document.getElementById('toursTableBody');
       if (!tours || tours.length === 0) {
         tbody.innerHTML = `
-          <tr><td colspan="7" class="py-8 text-center text-zinc-400">No tours matching current filter criteria.</td></tr>
+          <tr><td colspan="7" class="py-8 text-center text-zinc-400">No tour packages match the current filter criteria.</td></tr>
         `;
         return;
       }
 
-      tbody.innerHTML = tours.map(t => {
-        const isActive = t.is_active !== 0;
+      const canMutate = AdminApp.canOps();
+
+      tbody.innerHTML = tours.map((t) => {
+        const isActive = Number(t.is_active) !== 0;
+        const isFeatured = Number(t.is_featured) === 1;
+        const p3 = Number(t.price_3star_usd || t.price_usd || 0);
+        const p4 = Number(t.price_4star_usd || Math.round(p3 * 1.25));
+        const p5 = Number(t.price_5star_usd || Math.round(p3 * 1.6));
+        const itinCount = Array.isArray(t.itinerary) ? t.itinerary.length : 0;
+        const publicHref = buildPublicTourHref(t);
         const statusBadge = isActive
           ? '<span class="badge badge-green">Active</span>'
-          : '<span class="badge badge-amber">Hidden (Inactive)</span>';
+          : '<span class="badge badge-amber">Hidden</span>';
 
         return `
           <tr>
             <td>
               <div class="flex items-center gap-3">
-                <img src="../${t.cover_image || 'assets/images/tigers-nest.webp'}" class="w-10 h-10 rounded-lg object-cover border border-zinc-700 shrink-0" onerror="this.src='../assets/images/tigers-nest.webp'">
-                <div>
-                  <div class="font-bold text-white text-xs">${t.title}</div>
-                  <div class="text-[10px] text-zinc-400 font-mono">${t.id} · <a href="../${t.slug}" target="_blank" class="text-[#E05A47] hover:underline">View Page ↗</a></div>
+                <img src="${AdminApp.esc(safeImageSrc(t.cover_image))}" alt="${AdminApp.esc(t.title)}" class="w-11 h-11 rounded-lg object-cover border border-zinc-700 shrink-0">
+                <div class="min-w-0">
+                  <div class="font-bold text-white text-xs flex flex-wrap items-center gap-1.5">
+                    <span>${AdminApp.esc(t.title)}</span>
+                    ${isFeatured ? '<span class="badge badge-purple">Featured</span>' : ''}
+                  </div>
+                  <div class="text-[11px] text-zinc-400 font-mono mt-0.5">
+                    ${AdminApp.esc(t.id)} ·
+                    <a href="${AdminApp.esc(publicHref)}" target="_blank" rel="noopener" class="text-[#E05A47] hover:underline font-sans font-bold">Live Page ↗</a>
+                  </div>
                 </div>
               </div>
             </td>
-            <td><span class="text-xs text-zinc-300 font-medium">${t.category}</span></td>
-            <td><span class="text-xs text-zinc-300">${t.duration_days}D / ${t.duration_nights}N</span></td>
-            <td class="font-bold text-white text-xs">$${Number(t.price_usd).toLocaleString()}</td>
-            <td><span class="text-[11px] text-zinc-400 max-w-[150px] truncate block">${t.valleys || '-'}</span></td>
+            <td>
+              <div class="text-xs text-zinc-200 font-semibold">${AdminApp.esc(t.category)}</div>
+              <div class="text-[11px] text-zinc-400">${AdminApp.esc(t.difficulty || 'Easy')}</div>
+            </td>
+            <td class="whitespace-nowrap">
+              <div class="text-xs font-bold text-white">${Number(t.duration_days || 0)}D / ${Number(t.duration_nights || 0)}N</div>
+              <div class="text-[10px] text-zinc-400">Sort #${Number(t.sort_order ?? 0)}</div>
+            </td>
+            <td class="whitespace-nowrap">
+              <div class="text-xs font-bold text-white">3★ ${AdminApp.formatMoney(p3, 'USD')}</div>
+              <div class="text-[11px] text-zinc-400">4★ ${AdminApp.formatMoney(p4, 'USD')} · 5★ ${AdminApp.formatMoney(p5, 'USD')}</div>
+            </td>
+            <td>
+              <div class="text-xs text-zinc-200 font-semibold">${itinCount} Itinerary Day${itinCount === 1 ? '' : 's'}</div>
+              <div class="text-[11px] text-zinc-400 max-w-[180px] truncate">${AdminApp.esc(t.valleys || '—')}</div>
+            </td>
             <td>${statusBadge}</td>
             <td>
-              <div class="flex items-center gap-2">
-                <button onclick="openEditTourModal('${t.id}')" class="px-2.5 py-1 rounded bg-zinc-800 hover:bg-zinc-700 text-xs font-bold text-zinc-200 border border-zinc-700">
-                  Edit
-                </button>
-                <button onclick="toggleTourStatus('${t.id}')" class="px-2.5 py-1 rounded ${isActive ? 'bg-amber-600/20 text-amber-300 hover:bg-amber-600/30 border border-amber-500/30' : 'bg-emerald-600/20 text-emerald-300 hover:bg-emerald-600/30 border border-emerald-500/30'} text-xs font-bold">
-                  ${isActive ? 'Pause' : 'Activate'}
-                </button>
-                <button onclick="confirmDeleteTour('${t.id}', '${t.title.replace(/'/g, "\\'")}')" class="p-1 rounded text-zinc-500 hover:text-red-400" title="Delete">
-                  🗑️
-                </button>
+              <div class="flex flex-wrap items-center gap-1.5">
+                ${canMutate ? `
+                  <button type="button" data-tour-action="edit" data-tour-id="${AdminApp.esc(t.id)}" class="admin-btn admin-btn-secondary admin-btn-sm">Edit</button>
+                  <button type="button" data-tour-action="toggle" data-tour-id="${AdminApp.esc(t.id)}" class="admin-btn admin-btn-sm ${isActive ? 'admin-btn-amber' : 'admin-btn-emerald'}">
+                    ${isActive ? 'Pause' : 'Activate'}
+                  </button>
+                  <button type="button" data-tour-action="delete" data-tour-id="${AdminApp.esc(t.id)}" class="admin-btn admin-btn-danger admin-btn-sm" title="Delete Tour">Delete</button>
+                ` : `
+                  <a href="${AdminApp.esc(publicHref)}" target="_blank" rel="noopener" class="admin-btn admin-btn-secondary admin-btn-sm">View ↗</a>
+                `}
               </div>
             </td>
           </tr>
@@ -384,156 +502,330 @@ All Heritage Sightseeing & Dzong Permits</textarea>
       }).join('');
     }
 
-    // Modal Operations
     function openCreateTourModal() {
-      document.getElementById('createTourForm').reset();
-      document.getElementById('createTourModal').classList.remove('hidden');
+      document.getElementById('tourFormError').classList.add('hidden');
+      document.getElementById('tourEditId').value = '';
+      document.getElementById('tourModalTitle').textContent = 'Create New Bhutan Tour Package';
+      document.getElementById('tourModalSubtitle').textContent = 'Publish immediately to public catalog with tiered pricing and Day 1..N itinerary';
+      document.getElementById('tourEditorForm').reset();
+
+      const slugInput = document.getElementById('tourSlugInput');
+      slugInput.readOnly = false;
+      slugInput.value = '';
+      document.getElementById('tourDaysInput').value = '7';
+      document.getElementById('tourNightsInput').value = '6';
+      document.getElementById('tourGroupMinInput').value = '1';
+      document.getElementById('tourGroupMaxInput').value = '20';
+      document.getElementById('tourSortOrderInput').value = '10';
+      document.getElementById('tourValleysInput').value = 'Paro, Thimphu, Punakha';
+      document.getElementById('tourCoverInput').value = 'assets/images/tigers-nest.webp';
+      document.getElementById('tourPrice3StarInput').value = '1950';
+      document.getElementById('tourPrice4StarInput').value = '2550';
+      document.getElementById('tourPrice5StarInput').value = '3850';
+      document.getElementById('tourIsActiveInput').checked = true;
+      document.getElementById('tourIsFeaturedInput').checked = false;
+      document.getElementById('tourInclusionsInput').value = [
+        'Royal Government Daily SDF ($100/night)',
+        'Official Bhutan Tourist Visa Clearance Letter',
+        'Certified English-Speaking Bhutanese Guide',
+        'Private SUV or Coaster with Professional Driver',
+        'All Boutique Hotel Accommodations & Three Daily Meals'
+      ].join('\n');
+      document.getElementById('tourExclusionsInput').value = [
+        'International flights to/from Paro (PBH)',
+        'Travel & medical evacuation insurance',
+        'Personal expenses, alcoholic beverages & gratuities'
+      ].join('\n');
+
+      modalItinerary = [
+        { day: 1, title: 'Arrival in Paro & Transfer to Thimphu', description: 'Scenic Himalayan descent into Paro Airport, welcome by licensed guide, and drive to Thimphu.', altitude: '2,334m', meals_lodging: 'L/D · Boutique Hotel' }
+      ];
+      renderItineraryBuilder();
+      document.getElementById('modalDeleteTourBtn').classList.add('hidden');
+      document.getElementById('saveTourBtn').textContent = 'Save & Publish Tour';
+      document.getElementById('tourEditorModal').classList.remove('hidden');
     }
 
-    function closeCreateTourModal() {
-      document.getElementById('createTourModal').classList.add('hidden');
-    }
-
-    function openEditTourModal(id) {
-      const tour = loadedTours.find(t => t.id === id);
+    function openEditTourModal(tourId) {
+      const tour = loadedTours.find((t) => String(t.id) === String(tourId));
       if (!tour) return;
 
-      document.getElementById('editTourId').value = tour.id;
-      document.getElementById('editTourIdLabel').innerText = 'ID: ' + tour.id + ' (' + tour.slug + ')';
-      document.getElementById('editTitle').value = tour.title;
-      document.getElementById('editCategory').value = tour.category || 'Cultural Heritage';
-      document.getElementById('editDifficulty').value = tour.difficulty || 'Easy';
-      document.getElementById('editDays').value = tour.duration_days;
-      document.getElementById('editNights').value = tour.duration_nights;
-      document.getElementById('editPrice').value = tour.price_usd;
-      document.getElementById('editValleys').value = tour.valleys || '';
-      document.getElementById('editSubtitle').value = tour.highlight_text || tour.subtitle || '';
-      document.getElementById('editCover').value = tour.cover_image || 'assets/images/tigers-nest.webp';
-      document.getElementById('editIsActive').checked = tour.is_active !== 0;
-      document.getElementById('editIsFeatured').checked = tour.is_featured === 1;
+      document.getElementById('tourFormError').classList.add('hidden');
+      document.getElementById('tourEditId').value = tour.id;
+      document.getElementById('tourModalTitle').textContent = `Edit Tour — ${tour.title}`;
+      document.getElementById('tourModalSubtitle').textContent = `ID: ${tour.id} · Slug: ${tour.slug}`;
 
-      document.getElementById('editTourModal').classList.remove('hidden');
+      document.getElementById('tourTitleInput').value = tour.title || '';
+      const slugInput = document.getElementById('tourSlugInput');
+      slugInput.value = tour.slug || tour.id || '';
+      slugInput.readOnly = true;
+
+      document.getElementById('tourCategoryInput').value = tour.category || 'Cultural Heritage';
+      document.getElementById('tourDifficultyInput').value = tour.difficulty || 'Easy to Moderate';
+      document.getElementById('tourDaysInput').value = String(tour.duration_days ?? 7);
+      document.getElementById('tourNightsInput').value = String(tour.duration_nights ?? 6);
+      document.getElementById('tourGroupMinInput').value = String(tour.group_size_min ?? 1);
+      document.getElementById('tourGroupMaxInput').value = String(tour.group_size_max ?? 20);
+      document.getElementById('tourSortOrderInput').value = String(tour.sort_order ?? 10);
+      document.getElementById('tourValleysInput').value = tour.valleys || '';
+      document.getElementById('tourSubtitleInput').value = tour.subtitle || '';
+      document.getElementById('tourHighlightInput').value = tour.highlight_text || '';
+      document.getElementById('tourCoverInput').value = tour.cover_image || 'assets/images/tigers-nest.webp';
+
+      const p3 = Number(tour.price_3star_usd || tour.price_usd || 1950);
+      const p4 = Number(tour.price_4star_usd || Math.round(p3 * 1.25));
+      const p5 = Number(tour.price_5star_usd || Math.round(p3 * 1.6));
+      document.getElementById('tourPrice3StarInput').value = String(p3);
+      document.getElementById('tourPrice4StarInput').value = String(p4);
+      document.getElementById('tourPrice5StarInput').value = String(p5);
+
+      document.getElementById('tourIsActiveInput').checked = Number(tour.is_active) !== 0;
+      document.getElementById('tourIsFeaturedInput').checked = Number(tour.is_featured) === 1;
+
+      const inclusions = Array.isArray(tour.inclusions) ? tour.inclusions : [];
+      const exclusions = Array.isArray(tour.exclusions) ? tour.exclusions : [];
+      document.getElementById('tourInclusionsInput').value = inclusions.join('\n');
+      document.getElementById('tourExclusionsInput').value = exclusions.join('\n');
+
+      modalItinerary = normalizeItineraryItems(tour.itinerary || []);
+      renderItineraryBuilder();
+
+      document.getElementById('modalDeleteTourBtn').classList.remove('hidden');
+      document.getElementById('saveTourBtn').textContent = 'Save Tour Changes';
+      document.getElementById('tourEditorModal').classList.remove('hidden');
     }
 
-    function closeEditTourModal() {
-      document.getElementById('editTourModal').classList.add('hidden');
+    function closeTourModal() {
+      document.getElementById('tourEditorModal').classList.add('hidden');
     }
 
-    // Create form submission
-    document.getElementById('createTourForm').addEventListener('submit', async (e) => {
-      e.preventDefault();
-      try {
-        const staff = AdminApp.getStaffUser();
-        const data = {
-          title: document.getElementById('createTitle').value.trim(),
-          category: document.getElementById('createCategory').value,
-          difficulty: document.getElementById('createDifficulty').value,
-          duration_days: parseInt(document.getElementById('createDays').value, 10),
-          duration_nights: parseInt(document.getElementById('createNights').value, 10),
-          price_usd: parseInt(document.getElementById('createPrice').value, 10),
-          valleys: document.getElementById('createValleys').value.trim(),
-          subtitle: document.getElementById('createSubtitle').value.trim(),
-          cover_image: document.getElementById('createCover').value.trim(),
-          inclusions: document.getElementById('createInclusions').value.split('\n').filter(Boolean),
-          is_active: document.getElementById('createIsActive').checked ? 1 : 0,
-          is_featured: document.getElementById('createIsFeatured').checked ? 1 : 0,
-          user_name: staff ? staff.name : 'Admin'
-        };
+    function openDeleteModal(tourId) {
+      const tour = loadedTours.find((t) => String(t.id) === String(tourId));
+      if (!tour) return;
+      pendingDeleteTourId = tour.id;
+      document.getElementById('deleteTourNameLabel').textContent = `${tour.title} (${tour.id})`;
+      document.getElementById('deleteTourModal').classList.remove('hidden');
+    }
 
-        const res = await ApiClient.createAdminTour(data);
-        if (res.success) {
-          AdminApp.showToast(`Tour "${data.title}" successfully created in database!`);
-          closeCreateTourModal();
-          loadTours();
-        } else {
-          AdminApp.showToast(res.error || 'Failed to create tour', 'error');
-        }
-      } catch (err) {
-        AdminApp.showToast(err.message, 'error');
+    function closeDeleteModal() {
+      pendingDeleteTourId = null;
+      document.getElementById('deleteTourModal').classList.add('hidden');
+    }
+
+    // Itinerary Builder Event Listeners
+    document.getElementById('addItineraryDayBtn').addEventListener('click', () => {
+      modalItinerary.push({
+        day: modalItinerary.length + 1,
+        title: '',
+        description: '',
+        altitude: '',
+        meals_lodging: ''
+      });
+      renderItineraryBuilder();
+    });
+
+    document.getElementById('syncDaysCountBtn').addEventListener('click', () => {
+      const targetDays = Math.max(1, Math.min(30, parseInt(document.getElementById('tourDaysInput').value, 10) || 1));
+      while (modalItinerary.length < targetDays) {
+        modalItinerary.push({
+          day: modalItinerary.length + 1,
+          title: `Day ${modalItinerary.length + 1} Trail & Cultural Exploration`,
+          description: '',
+          altitude: '',
+          meals_lodging: 'B/L/D'
+        });
+      }
+      renderItineraryBuilder();
+    });
+
+    document.getElementById('itineraryBuilderList').addEventListener('input', (e) => {
+      const el = e.target;
+      const idx = parseInt(el.getAttribute('data-index'), 10);
+      const field = el.getAttribute('data-day-field');
+      if (Number.isNaN(idx) || !field || !modalItinerary[idx]) return;
+      modalItinerary[idx][field] = el.value;
+    });
+
+    document.getElementById('itineraryBuilderList').addEventListener('click', (e) => {
+      const btn = e.target.closest('[data-itin-action]');
+      if (!btn) return;
+      const action = btn.getAttribute('data-itin-action');
+      const idx = parseInt(btn.getAttribute('data-index'), 10);
+      if (Number.isNaN(idx) || !modalItinerary[idx]) return;
+
+      if (action === 'up' && idx > 0) {
+        [modalItinerary[idx - 1], modalItinerary[idx]] = [modalItinerary[idx], modalItinerary[idx - 1]];
+        renumberNumericDays();
+        renderItineraryBuilder();
+      } else if (action === 'down' && idx < modalItinerary.length - 1) {
+        [modalItinerary[idx], modalItinerary[idx + 1]] = [modalItinerary[idx + 1], modalItinerary[idx]];
+        renumberNumericDays();
+        renderItineraryBuilder();
+      } else if (action === 'remove') {
+        modalItinerary.splice(idx, 1);
+        renumberNumericDays();
+        renderItineraryBuilder();
       }
     });
 
-    // Edit form submission
-    document.getElementById('editTourForm').addEventListener('submit', async (e) => {
-      e.preventDefault();
-      try {
-        const id = document.getElementById('editTourId').value;
-        const staff = AdminApp.getStaffUser();
-        const data = {
-          title: document.getElementById('editTitle').value.trim(),
-          category: document.getElementById('editCategory').value,
-          difficulty: document.getElementById('editDifficulty').value,
-          duration_days: parseInt(document.getElementById('editDays').value, 10),
-          duration_nights: parseInt(document.getElementById('editNights').value, 10),
-          price_usd: parseInt(document.getElementById('editPrice').value, 10),
-          valleys: document.getElementById('editValleys').value.trim(),
-          subtitle: document.getElementById('editSubtitle').value.trim(),
-          highlight_text: document.getElementById('editSubtitle').value.trim(),
-          cover_image: document.getElementById('editCover').value.trim(),
-          is_active: document.getElementById('editIsActive').checked ? 1 : 0,
-          is_featured: document.getElementById('editIsFeatured').checked ? 1 : 0,
-          user_name: staff ? staff.name : 'Admin'
-        };
+    // Auto-calculate 4-star and 5-star tier rates from 3-star base
+    document.getElementById('autoCalcTiersBtn').addEventListener('click', () => {
+      const p3 = parseInt(document.getElementById('tourPrice3StarInput').value, 10) || 0;
+      if (p3 < 50) return;
+      document.getElementById('tourPrice4StarInput').value = String(Math.round(p3 * 1.28));
+      document.getElementById('tourPrice5StarInput').value = String(Math.round(p3 * 1.85));
+    });
 
-        const res = await ApiClient.updateAdminTour(id, data);
-        if (res.success) {
-          AdminApp.showToast(`Tour "${data.title}" updated successfully!`);
-          closeEditTourModal();
-          loadTours();
-        } else {
-          AdminApp.showToast(res.error || 'Failed to update tour', 'error');
-        }
+    // Save Tour (Create or Update)
+    document.getElementById('tourEditorForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const errBox = document.getElementById('tourFormError');
+      errBox.classList.add('hidden');
+
+      const editId = document.getElementById('tourEditId').value.trim();
+      const title = document.getElementById('tourTitleInput').value.trim();
+      const p3 = parseInt(document.getElementById('tourPrice3StarInput').value, 10);
+      const p4 = parseInt(document.getElementById('tourPrice4StarInput').value, 10);
+      const p5 = parseInt(document.getElementById('tourPrice5StarInput').value, 10);
+      const days = parseInt(document.getElementById('tourDaysInput').value, 10);
+      const nights = parseInt(document.getElementById('tourNightsInput').value, 10);
+
+      if (!title || !Number.isFinite(p3) || p3 < 1) {
+        errBox.textContent = 'Tour title and a valid 3-Star Base Price (USD) are required.';
+        errBox.classList.remove('hidden');
+        return;
+      }
+
+      const cleanedItinerary = modalItinerary
+        .filter((d) => d.title.trim() || d.description.trim())
+        .map((d, idx) => {
+          const entry = {
+            day: String(d.day || '').trim() || (idx + 1),
+            title: d.title.trim() || `Day ${idx + 1}`,
+            description: d.description.trim()
+          };
+          if (/^\d+$/.test(String(entry.day))) entry.day = Number(entry.day);
+          if (d.altitude && d.altitude.trim()) entry.altitude = d.altitude.trim();
+          if (d.meals_lodging && d.meals_lodging.trim()) entry.meals_lodging = d.meals_lodging.trim();
+          return entry;
+        });
+
+      const inclusions = document.getElementById('tourInclusionsInput').value
+        .split('\n').map((s) => s.trim()).filter(Boolean);
+      const exclusions = document.getElementById('tourExclusionsInput').value
+        .split('\n').map((s) => s.trim()).filter(Boolean);
+
+      const payload = {
+        title,
+        subtitle: document.getElementById('tourSubtitleInput').value.trim(),
+        highlight_text: document.getElementById('tourHighlightInput').value.trim() || document.getElementById('tourSubtitleInput').value.trim(),
+        category: document.getElementById('tourCategoryInput').value,
+        difficulty: document.getElementById('tourDifficultyInput').value,
+        duration_days: Number.isFinite(days) && days >= 1 ? days : 1,
+        duration_nights: Number.isFinite(nights) && nights >= 0 ? nights : Math.max(0, (days || 1) - 1),
+        group_size_min: parseInt(document.getElementById('tourGroupMinInput').value, 10) || 1,
+        group_size_max: parseInt(document.getElementById('tourGroupMaxInput').value, 10) || 20,
+        sort_order: parseInt(document.getElementById('tourSortOrderInput').value, 10) || 0,
+        price_usd: p3,
+        price_3star_usd: p3,
+        price_4star_usd: Number.isFinite(p4) && p4 > 0 ? p4 : Math.round(p3 * 1.25),
+        price_5star_usd: Number.isFinite(p5) && p5 > 0 ? p5 : Math.round(p3 * 1.6),
+        valleys: document.getElementById('tourValleysInput').value.trim(),
+        cover_image: document.getElementById('tourCoverInput').value.trim() || 'assets/images/tigers-nest.webp',
+        inclusions,
+        exclusions,
+        itinerary: cleanedItinerary,
+        is_active: document.getElementById('tourIsActiveInput').checked ? 1 : 0,
+        is_featured: document.getElementById('tourIsFeaturedInput').checked ? 1 : 0
+      };
+
+      if (!editId) {
+        const customSlug = document.getElementById('tourSlugInput').value.trim();
+        if (customSlug) payload.slug = customSlug;
+      }
+
+      const saveBtn = document.getElementById('saveTourBtn');
+      saveBtn.disabled = true;
+      try {
+        const res = editId
+          ? await ApiClient.updateAdminTour(editId, payload)
+          : await ApiClient.createAdminTour(payload);
+        if (!res || !res.success) throw new Error((res && res.error) || 'Failed to save tour');
+
+        AdminApp.showToast(res.message || `Tour "${title}" saved successfully!`);
+        closeTourModal();
+        await loadTours();
       } catch (err) {
-        AdminApp.showToast(err.message, 'error');
+        errBox.textContent = err.message || 'Failed to save tour';
+        errBox.classList.remove('hidden');
+      } finally {
+        saveBtn.disabled = false;
       }
     });
 
-    // Toggle status
-    async function toggleTourStatus(id) {
-      try {
-        const staff = AdminApp.getStaffUser();
-        const res = await ApiClient.toggleAdminTour(id, staff ? staff.name : 'Admin');
-        if (res.success) {
-          AdminApp.showToast(res.message);
-          loadTours();
-        } else {
-          AdminApp.showToast(res.error || 'Failed to toggle status', 'error');
+    // Table Action Delegation
+    document.getElementById('toursTableBody').addEventListener('click', async (e) => {
+      const btn = e.target.closest('[data-tour-action]');
+      if (!btn) return;
+      const action = btn.getAttribute('data-tour-action');
+      const id = btn.getAttribute('data-tour-id');
+      if (!id) return;
+
+      if (action === 'edit') {
+        openEditTourModal(id);
+      } else if (action === 'toggle') {
+        btn.disabled = true;
+        try {
+          const res = await ApiClient.toggleAdminTour(id);
+          if (res && res.success) {
+            AdminApp.showToast(res.message || 'Tour visibility updated');
+            await loadTours();
+          } else {
+            throw new Error((res && res.error) || 'Failed to toggle tour status');
+          }
+        } catch (err) {
+          AdminApp.showToast(err.message || 'Failed to toggle status', 'error');
+        } finally {
+          btn.disabled = false;
         }
-      } catch (err) {
-        AdminApp.showToast(err.message, 'error');
+      } else if (action === 'delete') {
+        openDeleteModal(id);
       }
-    }
+    });
 
-    // Delete tour
-    async function confirmDeleteTour(id, title) {
-      if (!confirm(`Are you sure you want to permanently delete "${title}" from the catalog?`)) return;
+    document.getElementById('confirmDeleteTourBtn').addEventListener('click', async () => {
+      if (!pendingDeleteTourId) return;
+      const btn = document.getElementById('confirmDeleteTourBtn');
+      btn.disabled = true;
       try {
-        const staff = AdminApp.getStaffUser();
-        const res = await ApiClient.deleteAdminTour(id, staff ? staff.name : 'Admin');
-        if (res.success) {
-          AdminApp.showToast(res.message);
-          loadTours();
-        } else {
-          AdminApp.showToast(res.error || 'Failed to delete tour', 'error');
-        }
+        const res = await ApiClient.deleteAdminTour(pendingDeleteTourId);
+        if (!res || !res.success) throw new Error((res && res.error) || 'Delete failed');
+        AdminApp.showToast(res.message || 'Tour deleted');
+        closeDeleteModal();
+        closeTourModal();
+        await loadTours();
       } catch (err) {
-        AdminApp.showToast(err.message, 'error');
+        AdminApp.showToast(err.message || 'Failed to delete tour', 'error');
+      } finally {
+        btn.disabled = false;
       }
-    }
+    });
 
-    function deleteCurrentTour() {
-      const id = document.getElementById('editTourId').value;
-      const title = document.getElementById('editTitle').value;
-      closeEditTourModal();
-      confirmDeleteTour(id, title);
-    }
+    document.getElementById('openCreateTourBtn').addEventListener('click', openCreateTourModal);
+    document.getElementById('closeTourModalBtn').addEventListener('click', closeTourModal);
+    document.getElementById('cancelTourModalBtn').addEventListener('click', closeTourModal);
+    document.getElementById('modalDeleteTourBtn').addEventListener('click', () => {
+      const id = document.getElementById('tourEditId').value.trim();
+      if (id) openDeleteModal(id);
+    });
+    document.getElementById('closeDeleteTourBtn').addEventListener('click', closeDeleteModal);
+    document.getElementById('cancelDeleteTourBtn').addEventListener('click', closeDeleteModal);
 
-    // Filter listeners
-    document.getElementById('tourSearchInput').addEventListener('input', () => loadTours());
-    document.getElementById('tourCategoryFilter').addEventListener('change', () => loadTours());
-    document.getElementById('tourStatusFilter').addEventListener('change', () => loadTours());
+    document.getElementById('refreshToursBtn').addEventListener('click', loadTours);
+    document.getElementById('tourSearchInput').addEventListener('input', loadTours);
+    document.getElementById('tourCategoryFilter').addEventListener('change', loadTours);
+    document.getElementById('tourStatusFilter').addEventListener('change', loadTours);
 
-    // Init
     document.addEventListener('DOMContentLoaded', loadTours);
   </script>
 </body>

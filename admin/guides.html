@@ -9,67 +9,154 @@
   <link rel="stylesheet" href="css/admin-theme.css">
 </head>
 <body class="admin-layout">
-  <!-- Dynamic Sidebar -->
   <aside id="adminSidebar" class="admin-sidebar"></aside>
 
-  <!-- Main Workspace -->
   <div class="admin-main">
     <header class="admin-header">
       <div class="flex items-center gap-3">
-        <button id="sidebarToggle" class="lg:hidden p-2 text-zinc-400 hover:text-white rounded">
+        <button id="sidebarToggle" class="lg:hidden p-2 text-zinc-400 hover:text-white rounded" aria-label="Toggle navigation">
           <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
         </button>
-        <h1 class="text-base font-extrabold text-white">Guide Roster</h1>
+        <div>
+          <h1 class="text-base font-extrabold text-white">Certified Guide Roster &amp; Dispatch Schedule</h1>
+          <p class="text-[11px] text-zinc-400">Manage DoT-licensed field guides, credentials, portal access &amp; live trail assignments</p>
+        </div>
       </div>
-      <div class="flex items-center gap-4 text-xs">
-        <span class="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 font-bold">API Online</span>
-        <a href="notifications.html" class="p-2 rounded-lg bg-zinc-800 text-zinc-300 hover:text-white">🔔</a>
+      <div class="flex items-center gap-3 text-xs">
+        <span class="px-2.5 py-1 rounded bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 font-bold">API Live</span>
+        <a href="notifications.html" class="notif-bell-btn" title="Notifications">🔔</a>
       </div>
     </header>
 
     <main class="p-6 sm:p-8 space-y-6">
-      
-  <div class="stat-card space-y-4">
-    <div class="flex items-center justify-between">
-      <h2 class="text-base font-extrabold text-white">Licensed Guides &amp; Field Staff Roster</h2>
-      <button onclick="AdminApp.showToast('Guide registration form opened.')" class="px-4 py-2 rounded-lg bg-[#E05A47] text-white text-xs font-bold">
-        + Register Certified Guide
-      </button>
-    </div>
+      <div id="guidesError" class="hidden admin-alert admin-alert-error"></div>
 
-    <div class="grid md:grid-cols-2 gap-4">
-      <div class="p-5 bg-zinc-800 rounded-xl border border-zinc-700 space-y-3">
-        <div class="flex items-center justify-between">
-          <div>
-            <h3 class="font-bold text-white text-base">Kinley Tshering</h3>
-            <p class="text-xs text-[#E05A47] font-bold">Senior Cultural &amp; Trekking Guide (License #GD/2012/441)</p>
-          </div>
-          <span class="badge badge-green">Available</span>
+      <!-- KPI Summary -->
+      <div class="admin-grid-4">
+        <div class="stat-card p-4">
+          <div class="text-[10px] font-bold uppercase tracking-wider text-zinc-400">Total Roster</div>
+          <div id="statGuidesTotal" class="text-2xl font-black text-white mt-1">—</div>
         </div>
-        <div class="text-xs text-zinc-300 space-y-1">
-          <p><strong>Languages:</strong> English (Fluent), Japanese (Conversational), Dzongkha</p>
-          <p><strong>Hotline:</strong> +975 77 123 456 • kinley@bhutanfastratetours.bt</p>
-          <p><strong>Assigned Trips:</strong> 42 Completed • Rating: 5.0 ★★★★★</p>
+        <div class="stat-card p-4">
+          <div class="text-[10px] font-bold uppercase tracking-wider text-zinc-400">Active Guides</div>
+          <div id="statGuidesActive" class="text-2xl font-black text-emerald-400 mt-1">—</div>
         </div>
-      </div>
-      <div class="p-5 bg-zinc-800 rounded-xl border border-zinc-700 space-y-3">
-        <div class="flex items-center justify-between">
-          <div>
-            <h3 class="font-bold text-white text-base">Tashi Namgyal</h3>
-            <p class="text-xs text-[#E05A47] font-bold">High-Altitude Snowman Specialist (License #GD/2015/892)</p>
-          </div>
-          <span class="badge badge-blue">On Trail (Lunana)</span>
+        <div class="stat-card p-4">
+          <div class="text-[10px] font-bold uppercase tracking-wider text-zinc-400">Currently On Trail</div>
+          <div id="statGuidesOnTrail" class="text-2xl font-black text-purple-400 mt-1">—</div>
         </div>
-        <div class="text-xs text-zinc-300 space-y-1">
-          <p><strong>Languages:</strong> English, French (Basic), Dzongkha</p>
-          <p><strong>Hotline:</strong> +975 17 999 111</p>
-          <p><strong>Assigned Trips:</strong> 28 Completed • Wilderness First Responder Certified</p>
+        <div class="stat-card p-4">
+          <div class="text-[10px] font-bold uppercase tracking-wider text-zinc-400">Scheduled Assignments</div>
+          <div id="statGuidesAssigned" class="text-2xl font-black text-blue-400 mt-1">—</div>
         </div>
       </div>
+
+      <!-- Roster Panel -->
+      <div class="stat-card space-y-4">
+        <div class="flex flex-wrap items-center justify-between gap-3 pb-3 border-b border-zinc-700">
+          <div class="flex flex-wrap items-center gap-2.5">
+            <input type="text" id="guideSearchInput" placeholder="Search name, license, language, specialty..." class="px-3.5 py-2 rounded-lg border border-zinc-600 text-xs w-72 focus:outline-none">
+            <select id="guideStatusFilter" class="px-3 py-2 rounded-lg border border-zinc-600 text-xs focus:outline-none">
+              <option value="all">All Guides</option>
+              <option value="active">Active Only</option>
+              <option value="inactive">Inactive Only</option>
+            </select>
+          </div>
+          <div class="flex items-center gap-2">
+            <button type="button" id="refreshGuidesBtn" class="admin-btn admin-btn-secondary">↻ Refresh</button>
+            <button type="button" id="openAddGuideBtn" data-roles="super_admin,admin,concierge" class="admin-btn admin-btn-primary">
+              + Register Certified Guide
+            </button>
+          </div>
+        </div>
+
+        <div id="guidesRosterGrid" class="admin-grid-2">
+          <div class="admin-panel-sub text-xs text-zinc-400">Loading certified guides from database...</div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Add / Edit Certified Guide Modal -->
+  <div id="guideEditorModal" class="admin-modal-backdrop hidden" role="dialog" aria-modal="true" aria-labelledby="guideModalTitle">
+    <div class="admin-modal admin-modal-lg">
+      <div class="admin-modal-header">
+        <div>
+          <h2 id="guideModalTitle" class="text-base font-extrabold text-white">Register Certified Guide</h2>
+          <p id="guideModalSubtitle" class="text-[11px] text-zinc-400">Creates a Guide Field Portal account with DoT license credentials</p>
+        </div>
+        <button type="button" id="closeGuideModalBtn" class="p-1.5 rounded-lg text-zinc-400 hover:text-white hover:bg-zinc-800 text-lg leading-none" aria-label="Close modal">✕</button>
+      </div>
+
+      <form id="guideEditorForm" class="flex flex-col flex-1 overflow-hidden">
+        <input type="hidden" id="guideEditId">
+        <div class="admin-modal-body space-y-4 text-xs">
+          <div id="guideFormError" class="hidden admin-alert admin-alert-error"></div>
+
+          <div class="admin-grid-2">
+            <div>
+              <label for="guideFullName" class="block font-bold text-zinc-300 mb-1">Full Name *</label>
+              <input type="text" id="guideFullName" required placeholder="e.g. Kinley Tshering" class="w-full px-3 py-2 rounded-lg border border-zinc-600 font-semibold">
+            </div>
+            <div>
+              <label for="guideLicenseNo" class="block font-bold text-zinc-300 mb-1">DoT Guide License No. *</label>
+              <input type="text" id="guideLicenseNo" required placeholder="e.g. GD/2018/512" class="w-full px-3 py-2 rounded-lg border border-zinc-600 font-mono font-bold">
+            </div>
+            <div>
+              <label for="guideEmail" class="block font-bold text-zinc-300 mb-1">Portal Login Email *</label>
+              <input type="email" id="guideEmail" required placeholder="guide@bhutanfastratetours.bt" class="w-full px-3 py-2 rounded-lg border border-zinc-600 font-semibold">
+            </div>
+            <div>
+              <label for="guidePhone" class="block font-bold text-zinc-300 mb-1">Phone / WhatsApp</label>
+              <input type="tel" id="guidePhone" placeholder="+975 17 000 000" class="w-full px-3 py-2 rounded-lg border border-zinc-600 font-semibold">
+            </div>
+            <div>
+              <label for="guideLanguages" class="block font-bold text-zinc-300 mb-1">Languages Spoken</label>
+              <input type="text" id="guideLanguages" placeholder="English, Dzongkha, Japanese" class="w-full px-3 py-2 rounded-lg border border-zinc-600 font-medium">
+            </div>
+            <div>
+              <label for="guideSpecialty" class="block font-bold text-zinc-300 mb-1">Specialty</label>
+              <input type="text" id="guideSpecialty" placeholder="Cultural Heritage &amp; Alpine Trekking" class="w-full px-3 py-2 rounded-lg border border-zinc-600 font-medium">
+            </div>
+          </div>
+
+          <div>
+            <label for="guidePassword" id="guidePasswordLabel" class="block font-bold text-zinc-300 mb-1">Field Portal Password *</label>
+            <input type="password" id="guidePassword" placeholder="Minimum 6 characters" class="w-full px-3 py-2 rounded-lg border border-zinc-600 font-semibold">
+            <p id="guidePasswordHint" class="text-[11px] text-zinc-400 mt-1">Required when registering a new guide. Leave blank while editing to keep the current password.</p>
+          </div>
+
+          <label class="flex items-center gap-2 cursor-pointer">
+            <input type="checkbox" id="guideIsActive" checked>
+            <span class="text-zinc-200 font-bold">Active on Dispatch Roster (Eligible for New Assignments)</span>
+          </label>
+        </div>
+
+        <div class="admin-modal-footer">
+          <button type="button" id="cancelGuideModalBtn" class="admin-btn admin-btn-secondary">Cancel</button>
+          <button type="submit" id="saveGuideBtn" class="admin-btn admin-btn-primary">Save Guide</button>
+        </div>
+      </form>
     </div>
   </div>
 
-    </main>
+  <!-- Live Guide Schedule Inspection Modal -->
+  <div id="guideScheduleModal" class="admin-modal-backdrop hidden" role="dialog" aria-modal="true" aria-labelledby="scheduleModalTitle">
+    <div class="admin-modal admin-modal-lg">
+      <div class="admin-modal-header">
+        <div>
+          <h2 id="scheduleModalTitle" class="text-base font-extrabold text-white">Assigned Trip Schedule</h2>
+          <p id="scheduleModalSubtitle" class="text-[11px] text-zinc-400">Live guide dispatch timeline</p>
+        </div>
+        <button type="button" id="closeScheduleModalBtn" class="p-1.5 rounded-lg text-zinc-400 hover:text-white hover:bg-zinc-800 text-lg leading-none" aria-label="Close modal">✕</button>
+      </div>
+      <div id="scheduleModalBody" class="admin-modal-body space-y-3 text-xs">
+        <div class="text-zinc-400">Loading assigned trips...</div>
+      </div>
+      <div class="admin-modal-footer">
+        <button type="button" id="closeScheduleFooterBtn" class="admin-btn admin-btn-secondary">Close</button>
+      </div>
+    </div>
   </div>
 
   <script src="../js/api-client.js"></script>
@@ -77,12 +164,325 @@
   <script>
     AdminApp.requireAuth();
     AdminApp.renderSidebar('guides');
-    const toggle = document.getElementById('sidebarToggle');
-    if (toggle) {
-      toggle.addEventListener('click', () => {
-        document.getElementById('adminSidebar').classList.toggle('open');
-      });
+
+    let loadedGuides = [];
+    let loadedBookings = [];
+
+    function getGuideTrips(guideId) {
+      return loadedBookings
+        .filter((b) => Number(b.assigned_guide_id) === Number(guideId) && String(b.booking_status || '').toLowerCase() !== 'cancelled')
+        .sort((a, b) => String(a.travel_date_start || '').localeCompare(String(b.travel_date_start || '')));
     }
+
+    function computeAvailability(guide, trips) {
+      if (Number(guide.is_active) !== 1) {
+        return { label: 'Inactive', badgeClass: 'badge-zinc', onTrail: false };
+      }
+      const today = new Date().toISOString().slice(0, 10);
+      const activeTrip = trips.find((t) =>
+        t.booking_status === 'active_trip' ||
+        (t.travel_date_start && t.travel_date_end && t.travel_date_start <= today && t.travel_date_end >= today)
+      );
+      if (activeTrip) {
+        return { label: `On Trail (${activeTrip.id})`, badgeClass: 'badge-purple', onTrail: true };
+      }
+      const upcoming = trips.find((t) => t.travel_date_start && t.travel_date_start > today);
+      if (upcoming) {
+        return { label: `Next: ${upcoming.travel_date_start}`, badgeClass: 'badge-blue', onTrail: false };
+      }
+      return { label: 'Available', badgeClass: 'badge-green', onTrail: false };
+    }
+
+    async function loadGuidesData() {
+      const errBox = document.getElementById('guidesError');
+      errBox.classList.add('hidden');
+      try {
+        const [guidesRes, bookingsRes] = await Promise.all([
+          ApiClient.getAdminGuides(),
+          ApiClient.getAdminBookings()
+        ]);
+        loadedGuides = (guidesRes && guidesRes.data) || [];
+        loadedBookings = (bookingsRes && bookingsRes.data) || [];
+
+        updateKpis();
+        renderGuidesGrid();
+      } catch (err) {
+        errBox.textContent = `Unable to load guide roster: ${err.message || 'Server error'}`;
+        errBox.classList.remove('hidden');
+        document.getElementById('guidesRosterGrid').innerHTML = `
+          <div class="admin-panel-sub text-red-400 text-xs">${AdminApp.esc(err.message || 'Failed to load guides')}</div>
+        `;
+      }
+    }
+
+    function updateKpis() {
+      const activeCount = loadedGuides.filter((g) => Number(g.is_active) === 1).length;
+      let onTrailCount = 0;
+      let totalAssigned = 0;
+      for (const g of loadedGuides) {
+        const trips = getGuideTrips(g.id);
+        totalAssigned += Math.max(Number(g.active_trips_count || 0), trips.length);
+        if (computeAvailability(g, trips).onTrail) onTrailCount += 1;
+      }
+      document.getElementById('statGuidesTotal').textContent = String(loadedGuides.length);
+      document.getElementById('statGuidesActive').textContent = String(activeCount);
+      document.getElementById('statGuidesOnTrail').textContent = String(onTrailCount);
+      document.getElementById('statGuidesAssigned').textContent = String(totalAssigned);
+    }
+
+    function renderGuidesGrid() {
+      const search = document.getElementById('guideSearchInput').value.trim().toLowerCase();
+      const statusFilter = document.getElementById('guideStatusFilter').value;
+
+      const filtered = loadedGuides.filter((g) => {
+        const isActive = Number(g.is_active) === 1;
+        if (statusFilter === 'active' && !isActive) return false;
+        if (statusFilter === 'inactive' && isActive) return false;
+        if (search) {
+          const hay = [g.full_name, g.license_no, g.languages, g.specialty, g.email, g.phone]
+            .filter(Boolean).join(' ').toLowerCase();
+          if (!hay.includes(search)) return false;
+        }
+        return true;
+      });
+
+      const grid = document.getElementById('guidesRosterGrid');
+      if (!filtered.length) {
+        grid.innerHTML = `<div class="admin-panel-sub text-xs text-zinc-400">No guides match the current filter criteria.</div>`;
+        return;
+      }
+
+      const canMutate = AdminApp.canOps();
+
+      grid.innerHTML = filtered.map((g) => {
+        const isActive = Number(g.is_active) === 1;
+        const trips = getGuideTrips(g.id);
+        const avail = computeAvailability(g, trips);
+        const nextTripsPreview = trips.slice(0, 2);
+
+        return `
+          <div class="admin-panel-sub space-y-3 flex flex-col justify-between">
+            <div class="space-y-3">
+              <div class="flex items-start justify-between gap-2">
+                <div class="min-w-0">
+                  <div class="flex flex-wrap items-center gap-2">
+                    <h3 class="font-extrabold text-white text-sm">${AdminApp.esc(g.full_name)}</h3>
+                    <span class="badge ${avail.badgeClass}">${AdminApp.esc(avail.label)}</span>
+                  </div>
+                  <div class="text-xs text-[#E05A47] font-bold mt-0.5">
+                    ${AdminApp.esc(g.specialty || 'Certified Cultural &amp; Trekking Guide')}
+                    ${g.license_no ? ` · <span class="font-mono text-zinc-300">${AdminApp.esc(g.license_no)}</span>` : ''}
+                  </div>
+                </div>
+                <span class="badge ${isActive ? 'badge-green' : 'badge-red'}">${isActive ? 'Active' : 'Inactive'}</span>
+              </div>
+
+              <div class="text-xs text-zinc-300 space-y-1">
+                <div><span class="text-zinc-400">Languages:</span> ${AdminApp.esc(g.languages || 'English, Dzongkha')}</div>
+                <div><span class="text-zinc-400">Contact:</span> ${AdminApp.esc(g.phone || '—')} · ${AdminApp.esc(g.email)}</div>
+                <div>
+                  <span class="text-zinc-400">Assigned Trips:</span>
+                  <strong class="text-white">${Math.max(Number(g.active_trips_count || 0), trips.length)}</strong> active / scheduled
+                </div>
+              </div>
+
+              ${nextTripsPreview.length ? `
+                <div class="p-2.5 rounded-lg bg-zinc-900/80 border border-zinc-700/80 space-y-1 text-[11px]">
+                  <div class="text-[10px] font-bold uppercase tracking-wider text-zinc-400">Upcoming / Active Schedule</div>
+                  ${nextTripsPreview.map((t) => `
+                    <div class="flex items-center justify-between gap-2">
+                      <a href="booking-detail.html?id=${encodeURIComponent(t.id)}" class="font-mono font-bold text-[#E05A47] hover:underline">${AdminApp.esc(t.id)}</a>
+                      <span class="text-zinc-300 truncate">${AdminApp.esc(t.tour_title)}</span>
+                      <span class="text-zinc-400 shrink-0">${AdminApp.esc(t.travel_date_start)}</span>
+                    </div>
+                  `).join('')}
+                </div>
+              ` : `
+                <div class="p-2.5 rounded-lg bg-zinc-900/50 border border-zinc-800 text-[11px] text-zinc-400">
+                  No upcoming bookings assigned — open for dispatch.
+                </div>
+              `}
+            </div>
+
+            <div class="pt-2 border-t border-zinc-700/70 flex flex-wrap items-center justify-between gap-2">
+              <button type="button" data-guide-action="schedule" data-guide-id="${Number(g.id)}" class="admin-btn admin-btn-secondary admin-btn-sm">
+                📅 View Schedule (${trips.length})
+              </button>
+              ${canMutate ? `
+                <div class="flex items-center gap-1.5">
+                  <button type="button" data-guide-action="edit" data-guide-id="${Number(g.id)}" class="admin-btn admin-btn-secondary admin-btn-sm">Edit</button>
+                  <button type="button" data-guide-action="toggle" data-guide-id="${Number(g.id)}" class="admin-btn admin-btn-sm ${isActive ? 'admin-btn-amber' : 'admin-btn-emerald'}">
+                    ${isActive ? 'Deactivate' : 'Activate'}
+                  </button>
+                </div>
+              ` : ''}
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function openAddGuideModal() {
+      document.getElementById('guideFormError').classList.add('hidden');
+      document.getElementById('guideEditId').value = '';
+      document.getElementById('guideEditorForm').reset();
+      document.getElementById('guideIsActive').checked = true;
+      document.getElementById('guidePassword').required = true;
+      document.getElementById('guidePasswordLabel').textContent = 'Field Portal Password *';
+      document.getElementById('guideModalTitle').textContent = 'Register Certified Guide';
+      document.getElementById('guideModalSubtitle').textContent = 'Creates a Guide Field Portal account with DoT license credentials';
+      document.getElementById('saveGuideBtn').textContent = 'Register Guide';
+      document.getElementById('guideEditorModal').classList.remove('hidden');
+    }
+
+    function openEditGuideModal(guideId) {
+      const guide = loadedGuides.find((g) => Number(g.id) === Number(guideId));
+      if (!guide) return;
+
+      document.getElementById('guideFormError').classList.add('hidden');
+      document.getElementById('guideEditId').value = String(guide.id);
+      document.getElementById('guideFullName').value = guide.full_name || '';
+      document.getElementById('guideLicenseNo').value = guide.license_no || '';
+      document.getElementById('guideEmail').value = guide.email || '';
+      document.getElementById('guidePhone').value = guide.phone || '';
+      document.getElementById('guideLanguages').value = guide.languages || '';
+      document.getElementById('guideSpecialty').value = guide.specialty || '';
+      document.getElementById('guidePassword').value = '';
+      document.getElementById('guidePassword').required = false;
+      document.getElementById('guidePasswordLabel').textContent = 'Reset Field Portal Password (Optional)';
+      document.getElementById('guideIsActive').checked = Number(guide.is_active) === 1;
+      document.getElementById('guideModalTitle').textContent = `Edit Guide — ${guide.full_name}`;
+      document.getElementById('guideModalSubtitle').textContent = `Guide ID #${guide.id} · ${guide.license_no || 'No license set'}`;
+      document.getElementById('saveGuideBtn').textContent = 'Save Guide Changes';
+      document.getElementById('guideEditorModal').classList.remove('hidden');
+    }
+
+    function closeGuideModal() {
+      document.getElementById('guideEditorModal').classList.add('hidden');
+    }
+
+    function openScheduleModal(guideId) {
+      const guide = loadedGuides.find((g) => Number(g.id) === Number(guideId));
+      if (!guide) return;
+      const trips = getGuideTrips(guide.id);
+
+      document.getElementById('scheduleModalTitle').textContent = `Dispatch Schedule — ${guide.full_name}`;
+      document.getElementById('scheduleModalSubtitle').textContent = `${guide.license_no || 'Licensed Guide'} · ${trips.length} active/scheduled booking(s)`;
+
+      const body = document.getElementById('scheduleModalBody');
+      if (!trips.length) {
+        body.innerHTML = `<div class="admin-panel-sub text-center py-6 text-zinc-400">No bookings currently assigned to ${AdminApp.esc(guide.full_name)}.</div>`;
+      } else {
+        body.innerHTML = trips.map((t) => `
+          <div class="admin-panel-sub flex flex-wrap items-center justify-between gap-3">
+            <div class="space-y-1">
+              <div class="flex items-center gap-2">
+                <a href="booking-detail.html?id=${encodeURIComponent(t.id)}" class="font-mono font-bold text-[#E05A47] hover:underline">${AdminApp.esc(t.id)}</a>
+                ${AdminApp.bookingStatusBadge(t.booking_status)}
+              </div>
+              <div class="font-bold text-white">${AdminApp.esc(t.tour_title)}</div>
+              <div class="text-zinc-400">
+                Lead: ${AdminApp.esc(t.lead_name)} (${Number(t.total_travelers || 1)} guests) ·
+                Vehicle: ${AdminApp.esc(t.assigned_vehicle || 'TBD')}
+              </div>
+            </div>
+            <div class="text-right space-y-1">
+              <div class="font-mono font-bold text-emerald-400">${AdminApp.esc(t.travel_date_start)} → ${AdminApp.esc(t.travel_date_end)}</div>
+              <a href="booking-detail.html?id=${encodeURIComponent(t.id)}" class="admin-btn admin-btn-secondary admin-btn-sm">Inspect File →</a>
+            </div>
+          </div>
+        `).join('');
+      }
+
+      document.getElementById('guideScheduleModal').classList.remove('hidden');
+    }
+
+    function closeScheduleModal() {
+      document.getElementById('guideScheduleModal').classList.add('hidden');
+    }
+
+    document.getElementById('guideEditorForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const errBox = document.getElementById('guideFormError');
+      errBox.classList.add('hidden');
+
+      const editId = document.getElementById('guideEditId').value.trim();
+      const password = document.getElementById('guidePassword').value;
+      const payload = {
+        full_name: document.getElementById('guideFullName').value.trim(),
+        license_no: document.getElementById('guideLicenseNo').value.trim(),
+        email: document.getElementById('guideEmail').value.trim(),
+        phone: document.getElementById('guidePhone').value.trim(),
+        languages: document.getElementById('guideLanguages').value.trim(),
+        specialty: document.getElementById('guideSpecialty').value.trim(),
+        is_active: document.getElementById('guideIsActive').checked ? 1 : 0
+      };
+      if (!editId) {
+        if (!password || password.length < 4) {
+          errBox.textContent = 'A password is required for new guide portal accounts.';
+          errBox.classList.remove('hidden');
+          return;
+        }
+        payload.password = password;
+      } else if (password && password.trim()) {
+        payload.password = password;
+      }
+
+      const btn = document.getElementById('saveGuideBtn');
+      btn.disabled = true;
+      try {
+        const res = editId
+          ? await ApiClient.updateAdminGuide(editId, payload)
+          : await ApiClient.createAdminGuide(payload);
+        if (!res || !res.success) throw new Error((res && res.error) || 'Failed to save guide');
+
+        AdminApp.showToast(`Guide "${payload.full_name}" saved successfully!`);
+        closeGuideModal();
+        await loadGuidesData();
+      } catch (err) {
+        errBox.textContent = err.message || 'Failed to save guide';
+        errBox.classList.remove('hidden');
+      } finally {
+        btn.disabled = false;
+      }
+    });
+
+    document.getElementById('guidesRosterGrid').addEventListener('click', async (e) => {
+      const btn = e.target.closest('[data-guide-action]');
+      if (!btn) return;
+      const action = btn.getAttribute('data-guide-action');
+      const id = btn.getAttribute('data-guide-id');
+      if (!id) return;
+
+      if (action === 'edit') {
+        openEditGuideModal(id);
+      } else if (action === 'schedule') {
+        openScheduleModal(id);
+      } else if (action === 'toggle') {
+        btn.disabled = true;
+        try {
+          const res = await ApiClient.toggleAdminGuide(id);
+          if (!res || !res.success) throw new Error((res && res.error) || 'Toggle failed');
+          AdminApp.showToast(res.message || 'Guide status updated');
+          await loadGuidesData();
+        } catch (err) {
+          AdminApp.showToast(err.message || 'Failed to update guide status', 'error');
+        } finally {
+          btn.disabled = false;
+        }
+      }
+    });
+
+    document.getElementById('openAddGuideBtn').addEventListener('click', openAddGuideModal);
+    document.getElementById('closeGuideModalBtn').addEventListener('click', closeGuideModal);
+    document.getElementById('cancelGuideModalBtn').addEventListener('click', closeGuideModal);
+    document.getElementById('closeScheduleModalBtn').addEventListener('click', closeScheduleModal);
+    document.getElementById('closeScheduleFooterBtn').addEventListener('click', closeScheduleModal);
+    document.getElementById('refreshGuidesBtn').addEventListener('click', loadGuidesData);
+    document.getElementById('guideSearchInput').addEventListener('input', renderGuidesGrid);
+    document.getElementById('guideStatusFilter').addEventListener('change', renderGuidesGrid);
+
+    document.addEventListener('DOMContentLoaded', loadGuidesData);
   </script>
 </body>
 </html>

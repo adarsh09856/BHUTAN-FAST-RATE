@@ -4,58 +4,300 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="color-scheme" content="light only">
-  <title>Finance & SDF Ledger — Bhutan Fast Rate Operations</title>
+  <title>Finance &amp; SDF Ledger — Bhutan Fast Rate Operations</title>
   <link rel="stylesheet" href="../css/tour-theme.css">
   <link rel="stylesheet" href="css/admin-theme.css">
 </head>
 <body class="admin-layout">
-  <!-- Dynamic Sidebar -->
   <aside id="adminSidebar" class="admin-sidebar"></aside>
 
-  <!-- Main Workspace -->
   <div class="admin-main">
     <header class="admin-header">
       <div class="flex items-center gap-3">
-        <button id="sidebarToggle" class="lg:hidden p-2 text-zinc-400 hover:text-white rounded">
+        <button id="sidebarToggle" class="lg:hidden p-2 text-zinc-400 hover:text-white rounded" aria-label="Toggle navigation">
           <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
         </button>
-        <h1 class="text-base font-extrabold text-white">Finance & SDF Ledger</h1>
+        <div>
+          <h1 class="text-base font-extrabold text-white">Finance, Wire Verification &amp; RMA SDF Ledger</h1>
+          <p class="text-[11px] text-zinc-400">USD-normalized revenue KPIs, client wire slip verification, RMA SDF remittance &amp; overdue collections</p>
+        </div>
       </div>
-      <div class="flex items-center gap-4 text-xs">
-        <span class="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 font-bold">API Online</span>
-        <a href="notifications.html" class="p-2 rounded-lg bg-zinc-800 text-zinc-300 hover:text-white">🔔</a>
+      <div class="flex items-center gap-3 text-xs">
+        <span class="px-2.5 py-1 rounded bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 font-bold">API Live</span>
+        <a href="notifications.html" class="notif-bell-btn" title="Notifications">🔔</a>
       </div>
     </header>
 
     <main class="p-6 sm:p-8 space-y-6">
-      
-  <div class="space-y-6">
-    <div class="stat-card space-y-4">
-      <div class="flex items-center justify-between">
-        <h2 class="text-base font-extrabold text-white">Royal Government SDF Remittance Ledger</h2>
-        <button onclick="AdminApp.showToast('Financial ledger exported to CSV.')" class="px-4 py-2 rounded-lg bg-zinc-800 hover:bg-zinc-700 text-white text-xs font-bold border border-zinc-600">
-          Export Ledger
-        </button>
+      <div id="financeError" class="hidden admin-alert admin-alert-error"></div>
+      <div id="financeNoticeBanner" class="hidden admin-alert admin-alert-success flex flex-wrap items-center justify-between gap-2"></div>
+
+      <!-- Command Bar -->
+      <div class="stat-card flex flex-wrap items-center justify-between gap-3">
+        <div>
+          <div class="text-xs font-extrabold uppercase tracking-wider text-zinc-400">Treasury &amp; Reconciliation Controls</div>
+          <div class="text-xs text-zinc-300 mt-0.5">All figures below are USD-normalized equivalents across USD International &amp; INR Regional bookings.</div>
+        </div>
+        <div class="flex flex-wrap items-center gap-2">
+          <button type="button" id="openRecordPayBtn" data-roles="super_admin,admin,finance" class="admin-btn admin-btn-primary">
+            + Record Payment / Refund
+          </button>
+          <button type="button" id="exportFinanceCsvBtn" data-roles="super_admin,admin,finance" class="admin-btn admin-btn-secondary">
+            ⬇ Export Finance CSV
+          </button>
+          <button type="button" id="refreshFinanceBtn" class="admin-btn admin-btn-secondary">↻ Refresh</button>
+        </div>
       </div>
 
-      <div class="grid sm:grid-cols-3 gap-4 text-xs">
-        <div class="p-4 bg-zinc-800 rounded-xl border border-zinc-700">
-          <span class="text-zinc-400">Total SDF Collected</span>
-          <div class="text-2xl font-black text-white mt-1">$22,400</div>
+      <!-- USD-Normalized Revenue & SDF KPIs -->
+      <div class="admin-grid-4">
+        <div class="stat-card p-4 space-y-1">
+          <span class="text-[10px] font-bold uppercase tracking-wider text-zinc-400">Revenue MTD / YTD (USD)</span>
+          <div id="finMtdYtd" class="text-xl font-black text-white">—</div>
+          <div id="finCashMtd" class="text-[11px] text-emerald-400 font-semibold">Cash MTD: —</div>
         </div>
-        <div class="p-4 bg-zinc-800 rounded-xl border border-zinc-700">
-          <span class="text-zinc-400">Remitted to RMA / Dept of Tourism</span>
-          <div class="text-2xl font-black text-emerald-400 mt-1">$19,600</div>
+        <div class="stat-card p-4 space-y-1">
+          <span class="text-[10px] font-bold uppercase tracking-wider text-zinc-400">Collected vs Receivable</span>
+          <div id="finCollectedTotal" class="text-xl font-black text-emerald-400">—</div>
+          <div id="finOutstandingTotal" class="text-[11px] text-amber-400 font-semibold">Outstanding: —</div>
         </div>
-        <div class="p-4 bg-zinc-800 rounded-xl border border-zinc-700">
-          <span class="text-zinc-400">Pending Government Remittance</span>
-          <div class="text-2xl font-black text-amber-400 mt-1">$2,800</div>
+        <div class="stat-card p-4 space-y-1">
+          <span class="text-[10px] font-bold uppercase tracking-wider text-zinc-400">Pending Wire Receipts</span>
+          <div id="finPendingCount" class="text-2xl font-black text-amber-400">—</div>
+          <div class="text-[11px] text-zinc-400">Awaiting verification</div>
         </div>
+        <div class="stat-card p-4 space-y-1">
+          <span class="text-[10px] font-bold uppercase tracking-wider text-zinc-400">SDF Collected vs Remitted</span>
+          <div id="finSdfCollected" class="text-xl font-black text-white">—</div>
+          <div id="finSdfSub" class="text-[11px] text-amber-300 font-semibold">Pending RMA: —</div>
+        </div>
+      </div>
+
+      <!-- 1. Pending Client Wire Receipts Verify / Reject Queue -->
+      <div class="stat-card space-y-4">
+        <div class="flex flex-wrap items-center justify-between gap-2 pb-3 border-b border-zinc-700">
+          <div>
+            <h2 class="text-base font-extrabold text-white">Pending Client Wire Receipts Queue</h2>
+            <p class="text-[11px] text-zinc-400">Inspect client-uploaded bank transfer slips and verify or reject credits to recalculate booking balances</p>
+          </div>
+          <span id="pendingQueueBadge" class="badge badge-amber">0 Pending</span>
+        </div>
+
+        <div class="overflow-x-auto">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>Payment #</th>
+                <th>Booking &amp; Lead Guest</th>
+                <th>Amount (USD / Local)</th>
+                <th>Method &amp; Reference</th>
+                <th>Receipt File</th>
+                <th>Submitted</th>
+                <th>Verification Actions</th>
+              </tr>
+            </thead>
+            <tbody id="pendingReceiptsBody">
+              <tr><td colspan="7" class="py-6 text-center text-zinc-400">Loading pending wire receipts...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- 2. SDF Collected vs Remitted Tracker + Overdue Balances -->
+      <div class="admin-grid-12">
+        <div class="stat-card admin-col-6 space-y-4">
+          <div class="flex flex-wrap items-center justify-between gap-2 pb-3 border-b border-zinc-700">
+            <div>
+              <h2 class="text-base font-extrabold text-white">RMA SDF Remittance Tracker</h2>
+              <p class="text-[11px] text-zinc-400">Track government Sustainable Development Fee remittance per booking</p>
+            </div>
+            <select id="sdfFilterSelect" class="px-2.5 py-1.5 rounded-lg border border-zinc-600 text-xs">
+              <option value="pending">Pending Remittance</option>
+              <option value="remitted">Remitted to RMA</option>
+              <option value="all">All SDF Bookings</option>
+            </select>
+          </div>
+
+          <div class="overflow-x-auto">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th>Booking</th>
+                  <th>SDF (USD)</th>
+                  <th>Paid Status</th>
+                  <th>RMA Ref / Action</th>
+                </tr>
+              </thead>
+              <tbody id="sdfTrackerBody">
+                <tr><td colspan="4" class="py-6 text-center text-zinc-400">Loading SDF tracker...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="stat-card admin-col-6 space-y-4">
+          <div class="flex flex-wrap items-center justify-between gap-2 pb-3 border-b border-zinc-700">
+            <div>
+              <h2 class="text-base font-extrabold text-white">Outstanding &amp; Overdue Balances</h2>
+              <p class="text-[11px] text-zinc-400">Bookings with unpaid balance due — send 1-click WhatsApp payment reminders</p>
+            </div>
+            <span id="overdueCountBadge" class="badge badge-red">0 Due</span>
+          </div>
+
+          <div class="overflow-x-auto">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th>Booking &amp; Guest</th>
+                  <th>Balance Due</th>
+                  <th>Due Date</th>
+                  <th>Reminder</th>
+                </tr>
+              </thead>
+              <tbody id="overdueBalancesBody">
+                <tr><td colspan="4" class="py-6 text-center text-zinc-400">Loading outstanding balances...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3. Refunds & Complete Payment Ledger -->
+      <div class="stat-card space-y-4">
+        <div class="flex flex-wrap items-center justify-between gap-3 pb-3 border-b border-zinc-700">
+          <div>
+            <h2 class="text-base font-extrabold text-white">Payments &amp; Refunds Ledger</h2>
+            <p class="text-[11px] text-zinc-400">Immutable ledger across deposits, final balances, client wire uploads, and refunds</p>
+          </div>
+          <div class="flex flex-wrap items-center gap-2">
+            <input type="text" id="ledgerSearchInput" placeholder="Search ref, guest, tx..." class="px-3 py-1.5 rounded-lg border border-zinc-600 text-xs w-52">
+            <select id="ledgerFilterSelect" class="px-3 py-1.5 rounded-lg border border-zinc-600 text-xs">
+              <option value="all">All Ledger Entries</option>
+              <option value="verified">Verified Payments</option>
+              <option value="pending">Pending</option>
+              <option value="rejected">Rejected</option>
+              <option value="refunds">Refunds Only</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="overflow-x-auto">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Booking &amp; Guest</th>
+                <th>Type &amp; Method</th>
+                <th>Amount (USD)</th>
+                <th>Local Amount</th>
+                <th>Transaction Ref</th>
+                <th>Status</th>
+                <th>Date / Notes</th>
+              </tr>
+            </thead>
+            <tbody id="paymentLedgerBody">
+              <tr><td colspan="8" class="py-6 text-center text-zinc-400">Loading payment ledger...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Receipt Preview Modal -->
+  <div id="receiptPreviewModal" class="admin-modal-backdrop hidden" role="dialog" aria-modal="true" aria-labelledby="receiptPreviewTitle">
+    <div class="admin-modal admin-modal-lg">
+      <div class="admin-modal-header">
+        <div>
+          <h2 id="receiptPreviewTitle" class="text-sm font-extrabold text-white">Wire Receipt Preview</h2>
+          <p id="receiptPreviewSubtitle" class="text-[11px] text-zinc-400">Authenticated Staff Receipt Stream</p>
+        </div>
+        <button type="button" id="closeReceiptModalBtn" class="p-1.5 rounded-lg text-zinc-400 hover:text-white hover:bg-zinc-800 text-lg leading-none" aria-label="Close modal">✕</button>
+      </div>
+      <div class="admin-modal-body">
+        <div id="receiptPreviewContainer" class="bg-zinc-900 border border-zinc-700 rounded-xl p-3 flex items-center justify-center min-h-[360px]"></div>
+      </div>
+      <div class="admin-modal-footer justify-between">
+        <a id="receiptOpenTabLink" href="#" target="_blank" rel="noopener" class="admin-btn admin-btn-secondary admin-btn-sm">Open in New Tab ↗</a>
+        <button type="button" id="closeReceiptFooterBtn" class="admin-btn admin-btn-primary admin-btn-sm">Close</button>
       </div>
     </div>
   </div>
 
-    </main>
+  <!-- Reject Receipt Modal -->
+  <div id="rejectPaymentModal" class="admin-modal-backdrop hidden" role="dialog" aria-modal="true" aria-labelledby="rejectPayTitle">
+    <div class="admin-modal">
+      <div class="admin-modal-header">
+        <h2 id="rejectPayTitle" class="text-sm font-extrabold text-white">Reject Wire Receipt</h2>
+        <button type="button" id="closeRejectPayBtn" class="p-1.5 rounded-lg text-zinc-400 hover:text-white hover:bg-zinc-800 text-lg leading-none" aria-label="Close modal">✕</button>
+      </div>
+      <form id="rejectPaymentForm">
+        <input type="hidden" id="rejectPaymentId">
+        <div class="admin-modal-body space-y-3 text-xs">
+          <p class="text-zinc-300">Provide a clear reason why this receipt cannot be verified (sent to the client):</p>
+          <textarea id="rejectPaymentNotes" rows="3" required placeholder="e.g. Wire slip is illegible or SWIFT reference does not match Bank of Bhutan statement." class="w-full px-3 py-2 rounded-lg border border-zinc-600"></textarea>
+        </div>
+        <div class="admin-modal-footer">
+          <button type="button" id="cancelRejectPayBtn" class="admin-btn admin-btn-secondary admin-btn-sm">Cancel</button>
+          <button type="submit" id="confirmRejectPayBtn" class="admin-btn admin-btn-danger admin-btn-sm">Confirm Reject</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Record Payment / Issue Refund Modal -->
+  <div id="recordPaymentModal" class="admin-modal-backdrop hidden" role="dialog" aria-modal="true" aria-labelledby="recordPayTitle">
+    <div class="admin-modal">
+      <div class="admin-modal-header">
+        <h2 id="recordPayTitle" class="text-sm font-extrabold text-white">Record Verified Payment or Refund</h2>
+        <button type="button" id="closeRecordPayBtn" class="p-1.5 rounded-lg text-zinc-400 hover:text-white hover:bg-zinc-800 text-lg leading-none" aria-label="Close modal">✕</button>
+      </div>
+      <form id="recordPaymentForm">
+        <div class="admin-modal-body space-y-3 text-xs">
+          <div id="recordPayError" class="hidden admin-alert admin-alert-error"></div>
+          <div>
+            <label for="recBookingSelect" class="block font-bold text-zinc-300 mb-1">Booking Reference *</label>
+            <select id="recBookingSelect" required class="w-full px-3 py-2 rounded-lg border border-zinc-600 font-semibold"></select>
+          </div>
+          <div class="admin-grid-2">
+            <div>
+              <label for="recPayType" class="block font-bold text-zinc-300 mb-1">Entry Type *</label>
+              <select id="recPayType" class="w-full px-3 py-2 rounded-lg border border-zinc-600 font-semibold">
+                <option value="deposit">Deposit</option>
+                <option value="balance">Final Balance</option>
+                <option value="full_payment">Full Payment</option>
+                <option value="refund">Refund (Negative Credit)</option>
+              </select>
+            </div>
+            <div>
+              <label for="recPayMethod" class="block font-bold text-zinc-300 mb-1">Payment Method</label>
+              <select id="recPayMethod" class="w-full px-3 py-2 rounded-lg border border-zinc-600 font-semibold">
+                <option value="bank_transfer">Bank Wire Transfer</option>
+                <option value="card_link">Card / Payment Link</option>
+                <option value="upi_neft">UPI / NEFT (INR)</option>
+                <option value="cash">Cash Desk</option>
+              </select>
+            </div>
+            <div>
+              <label for="recPayAmount" class="block font-bold text-zinc-300 mb-1">Amount (USD Equiv.) *</label>
+              <input type="number" id="recPayAmount" required min="1" placeholder="500" class="w-full px-3 py-2 rounded-lg border border-zinc-600 font-bold">
+            </div>
+            <div>
+              <label for="recPayRef" class="block font-bold text-zinc-300 mb-1">Transaction / Wire Ref</label>
+              <input type="text" id="recPayRef" placeholder="BOB-WIRE-8841" class="w-full px-3 py-2 rounded-lg border border-zinc-600 font-mono">
+            </div>
+          </div>
+          <div>
+            <label for="recPayNotes" class="block font-bold text-zinc-300 mb-1">Notes</label>
+            <input type="text" id="recPayNotes" placeholder="Reconciled against Bank of Bhutan USD Escrow" class="w-full px-3 py-2 rounded-lg border border-zinc-600">
+          </div>
+        </div>
+        <div class="admin-modal-footer">
+          <button type="button" id="cancelRecordPayBtn" class="admin-btn admin-btn-secondary admin-btn-sm">Cancel</button>
+          <button type="submit" id="submitRecordPayBtn" class="admin-btn admin-btn-primary admin-btn-sm">Save Entry</button>
+        </div>
+      </form>
+    </div>
   </div>
 
   <script src="../js/api-client.js"></script>
@@ -63,12 +305,466 @@
   <script>
     AdminApp.requireAuth();
     AdminApp.renderSidebar('finance');
-    const toggle = document.getElementById('sidebarToggle');
-    if (toggle) {
-      toggle.addEventListener('click', () => {
-        document.getElementById('adminSidebar').classList.toggle('open');
-      });
+
+    let financeStats = null;
+    let allPayments = [];
+    let allBookings = [];
+
+    function openSafeWhatsApp(urlOrPhone, text) {
+      let targetUrl = String(urlOrPhone || '');
+      if (!/^https:\/\/wa\.me\//i.test(targetUrl)) {
+        const digits = targetUrl.replace(/\D+/g, '');
+        if (!digits) {
+          AdminApp.showToast('No phone/WhatsApp number available for this guest.', 'warn');
+          return;
+        }
+        targetUrl = ApiClient.buildWhatsAppUrl(digits, text || '');
+      }
+      if (!/^https:\/\/wa\.me\//i.test(targetUrl)) {
+        AdminApp.showToast('Invalid WhatsApp destination URL.', 'error');
+        return;
+      }
+      window.open(targetUrl, '_blank', 'noopener');
     }
+
+    function showActionBanner(message, whatsappUrl) {
+      const banner = document.getElementById('financeNoticeBanner');
+      const hasWa = /^https:\/\/wa\.me\//i.test(String(whatsappUrl || ''));
+      banner.innerHTML = `
+        <span>${AdminApp.esc(message)}</span>
+        ${hasWa ? `<button type="button" id="bannerWaBtn" class="admin-btn admin-btn-emerald admin-btn-sm">Send WhatsApp Notice ↗</button>` : ''}
+      `;
+      banner.classList.remove('hidden');
+      if (hasWa) {
+        document.getElementById('bannerWaBtn').addEventListener('click', () => openSafeWhatsApp(whatsappUrl));
+      }
+    }
+
+    async function loadFinanceWorkspace() {
+      const errBox = document.getElementById('financeError');
+      errBox.classList.add('hidden');
+
+      if (!AdminApp.canFinance()) {
+        errBox.textContent = 'Access Restricted: Finance & SDF Ledger requires Finance, Admin, or Super Admin role.';
+        errBox.classList.remove('hidden');
+        return;
+      }
+
+      try {
+        const [statsRes, payRes, bookRes] = await Promise.all([
+          ApiClient.getAdminStats(),
+          ApiClient.getAdminPayments(),
+          ApiClient.getAdminBookings()
+        ]);
+
+        financeStats = (statsRes && statsRes.stats) || {};
+        allPayments = (payRes && payRes.data) || [];
+        allBookings = (bookRes && bookRes.data) || [];
+
+        renderKpis();
+        renderPendingReceipts();
+        renderSdfTracker();
+        renderOverdueBalances();
+        renderPaymentLedger();
+        populateBookingSelect();
+      } catch (err) {
+        errBox.textContent = `Unable to load finance ledger: ${err.message || 'Server error'}`;
+        errBox.classList.remove('hidden');
+      }
+    }
+
+    function renderKpis() {
+      const s = financeStats || {};
+      document.getElementById('finMtdYtd').textContent =
+        `${AdminApp.formatMoney(s.mtd_revenue_usd, 'USD')} / ${AdminApp.formatMoney(s.ytd_revenue_usd, 'USD')}`;
+      document.getElementById('finCashMtd').textContent =
+        `Cash Collected MTD: ${AdminApp.formatMoney(s.mtd_collected_usd, 'USD')} · YTD: ${AdminApp.formatMoney(s.ytd_collected_usd, 'USD')}`;
+
+      document.getElementById('finCollectedTotal').textContent = AdminApp.formatMoney(s.collected_revenue_usd, 'USD');
+      document.getElementById('finOutstandingTotal').textContent =
+        `Outstanding Receivable: ${AdminApp.formatMoney(s.outstanding_balance_usd, 'USD')}`;
+
+      const pendingCount = allPayments.filter((p) => p.status === 'pending').length;
+      document.getElementById('finPendingCount').textContent = String(pendingCount);
+      const pendingBadge = document.getElementById('pendingQueueBadge');
+      pendingBadge.textContent = `${pendingCount} Pending`;
+      pendingBadge.className = `badge ${pendingCount > 0 ? 'badge-amber' : 'badge-green'}`;
+
+      document.getElementById('finSdfCollected').textContent =
+        `${AdminApp.formatMoney(s.sdf_collected_usd, 'USD')} / ${AdminApp.formatMoney(s.sdf_remitted_usd, 'USD')}`;
+      document.getElementById('finSdfSub').textContent =
+        `Pending RMA Remittance: ${AdminApp.formatMoney(s.sdf_pending_remittance_usd, 'USD')}`;
+    }
+
+    function renderPendingReceipts() {
+      const pending = allPayments.filter((p) => p.status === 'pending');
+      const tbody = document.getElementById('pendingReceiptsBody');
+      if (!pending.length) {
+        tbody.innerHTML = `<tr><td colspan="7" class="py-6 text-center text-emerald-400 font-semibold">All client wire transfer receipts have been verified!</td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = pending.map((p) => {
+        const localCurr = String(p.currency || p.booking_currency || 'USD').toUpperCase();
+        const localDisp = localCurr === 'INR' && p.amount_local
+          ? `<div class="text-[11px] text-zinc-400">${AdminApp.formatMoney(p.amount_local, 'INR', { withCode: true })}</div>`
+          : '';
+        return `
+          <tr>
+            <td class="font-mono font-bold text-white">#${Number(p.id)}</td>
+            <td>
+              <a href="booking-detail.html?id=${encodeURIComponent(p.booking_id)}" class="font-mono font-bold text-[#E05A47] hover:underline">${AdminApp.esc(p.booking_id)}</a>
+              <div class="text-xs font-semibold text-white">${AdminApp.esc(p.lead_name)}</div>
+              <div class="text-[11px] text-zinc-400 max-w-[200px] truncate">${AdminApp.esc(p.tour_title)}</div>
+            </td>
+            <td>
+              <div class="font-bold text-white">${AdminApp.formatMoney(p.amount_usd, 'USD')}</div>
+              ${localDisp}
+            </td>
+            <td>
+              <div class="text-xs text-zinc-200">${AdminApp.esc(AdminApp.humanize(p.payment_method || 'bank_transfer'))}</div>
+              <div class="text-[11px] font-mono text-zinc-400">${AdminApp.esc(p.transaction_ref || '—')}</div>
+            </td>
+            <td>
+              ${p.receipt_file ? `
+                <button type="button" data-pay-action="preview" data-pay-id="${Number(p.id)}" class="admin-btn admin-btn-secondary admin-btn-sm">
+                  📎 View Slip
+                </button>
+              ` : '<span class="text-zinc-500 text-xs">No file</span>'}
+            </td>
+            <td class="text-[11px] text-zinc-400 font-mono">${AdminApp.esc(AdminApp.formatDateTime(p.created_at))}</td>
+            <td>
+              <div class="flex flex-wrap items-center gap-1.5">
+                <button type="button" data-pay-action="verify" data-pay-id="${Number(p.id)}" class="admin-btn admin-btn-emerald admin-btn-sm">✓ Verify</button>
+                <button type="button" data-pay-action="reject" data-pay-id="${Number(p.id)}" class="admin-btn admin-btn-danger admin-btn-sm">✕ Reject</button>
+              </div>
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    function renderSdfTracker() {
+      const filter = document.getElementById('sdfFilterSelect').value;
+      const rows = allBookings.filter((b) => {
+        if (b.booking_status === 'cancelled') return false;
+        if (Number(b.sdf_total_usd || 0) <= 0) return false;
+        const isRemitted = Boolean(b.sdf_remitted_at);
+        if (filter === 'pending') return !isRemitted;
+        if (filter === 'remitted') return isRemitted;
+        return true;
+      });
+
+      const tbody = document.getElementById('sdfTrackerBody');
+      if (!rows.length) {
+        tbody.innerHTML = `<tr><td colspan="4" class="py-6 text-center text-zinc-400">No bookings in this SDF remittance view.</td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = rows.map((b) => {
+        const isRemitted = Boolean(b.sdf_remitted_at);
+        const isFullPaid = Number(b.full_paid) === 1 || Number(b.deposit_paid_usd || 0) >= Number(b.total_price_usd || 0);
+        return `
+          <tr>
+            <td>
+              <a href="booking-detail.html?id=${encodeURIComponent(b.id)}" class="font-mono font-bold text-[#E05A47] hover:underline">${AdminApp.esc(b.id)}</a>
+              <div class="text-[11px] text-zinc-300">${AdminApp.esc(b.lead_name)}</div>
+            </td>
+            <td class="font-bold text-white">${AdminApp.formatMoney(b.sdf_total_usd, 'USD')}</td>
+            <td>
+              <span class="badge ${isFullPaid ? 'badge-green' : 'badge-amber'}">${isFullPaid ? 'Collected' : 'Partial Paid'}</span>
+            </td>
+            <td>
+              ${isRemitted ? `
+                <div class="text-xs font-mono text-emerald-400 font-bold">${AdminApp.esc(b.sdf_remittance_ref || 'Remitted')}</div>
+                <div class="text-[10px] text-zinc-400">${AdminApp.esc(AdminApp.formatDateTime(b.sdf_remitted_at))}</div>
+              ` : `
+                <button type="button" data-sdf-remit="${AdminApp.esc(b.id)}" class="admin-btn admin-btn-emerald admin-btn-sm">
+                  Mark SDF Remitted
+                </button>
+              `}
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    function renderOverdueBalances() {
+      const today = new Date().toISOString().slice(0, 10);
+      const dueBookings = allBookings
+        .filter((b) => {
+          if (b.booking_status === 'cancelled') return false;
+          const total = Math.round(Number(b.total_price_usd || 0));
+          const paid = Math.round(Number(b.deposit_paid_usd || 0));
+          return total - paid > 0;
+        })
+        .map((b) => {
+          const outstandingUsd = Math.max(0, Math.round(Number(b.total_price_usd || 0)) - Math.round(Number(b.deposit_paid_usd || 0)));
+          const isOverdue = Boolean(b.balance_due_date && b.balance_due_date < today);
+          return { ...b, outstandingUsd, isOverdue };
+        })
+        .sort((a, b) => Number(b.isOverdue) - Number(a.isOverdue) || String(a.balance_due_date || '9999').localeCompare(String(b.balance_due_date || '9999')));
+
+      const overdueCount = dueBookings.filter((b) => b.isOverdue).length;
+      const badge = document.getElementById('overdueCountBadge');
+      badge.textContent = overdueCount > 0 ? `${overdueCount} Overdue` : `${dueBookings.length} Balance Due`;
+      badge.className = `badge ${overdueCount > 0 ? 'badge-red' : 'badge-amber'}`;
+
+      const tbody = document.getElementById('overdueBalancesBody');
+      if (!dueBookings.length) {
+        tbody.innerHTML = `<tr><td colspan="4" class="py-6 text-center text-emerald-400 font-semibold">All active bookings are paid in full!</td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = dueBookings.map((b) => `
+        <tr>
+          <td>
+            <a href="booking-detail.html?id=${encodeURIComponent(b.id)}" class="font-mono font-bold text-[#E05A47] hover:underline">${AdminApp.esc(b.id)}</a>
+            <div class="text-[11px] text-zinc-300">${AdminApp.esc(b.lead_name)}</div>
+          </td>
+          <td>
+            <div class="font-bold text-amber-300">${AdminApp.formatMoney(b.outstandingUsd, 'USD')}</div>
+            <div class="text-[10px] text-zinc-400">of ${AdminApp.formatMoney(b.total_price_usd, 'USD')}</div>
+          </td>
+          <td>
+            <span class="badge ${b.isOverdue ? 'badge-red' : 'badge-amber'}">${b.isOverdue ? 'Overdue' : 'Due'}</span>
+            <div class="text-[10px] text-zinc-400 font-mono mt-0.5">${AdminApp.esc(b.balance_due_date || 'Before Travel')}</div>
+          </td>
+          <td>
+            <button type="button" data-wa-remind="${AdminApp.esc(b.id)}" class="admin-btn admin-btn-emerald admin-btn-sm">
+              💬 WhatsApp Remind
+            </button>
+          </td>
+        </tr>
+      `).join('');
+    }
+
+    function renderPaymentLedger() {
+      const search = document.getElementById('ledgerSearchInput').value.trim().toLowerCase();
+      const filter = document.getElementById('ledgerFilterSelect').value;
+
+      const filtered = allPayments.filter((p) => {
+        const isRefund = String(p.payment_type || '').toLowerCase() === 'refund' || Number(p.amount_usd) < 0;
+        if (filter === 'verified' && p.status !== 'verified') return false;
+        if (filter === 'pending' && p.status !== 'pending') return false;
+        if (filter === 'rejected' && p.status !== 'rejected') return false;
+        if (filter === 'refunds' && !isRefund) return false;
+        if (search) {
+          const hay = [p.booking_id, p.lead_name, p.transaction_ref, p.payment_method, p.notes]
+            .filter(Boolean).join(' ').toLowerCase();
+          if (!hay.includes(search)) return false;
+        }
+        return true;
+      });
+
+      const tbody = document.getElementById('paymentLedgerBody');
+      if (!filtered.length) {
+        tbody.innerHTML = `<tr><td colspan="8" class="py-6 text-center text-zinc-400">No ledger entries match the selected filter.</td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = filtered.map((p) => {
+        const isRefund = String(p.payment_type || '').toLowerCase() === 'refund' || Number(p.amount_usd) < 0;
+        const statusBadge = p.status === 'verified'
+          ? '<span class="badge badge-green">Verified</span>'
+          : (p.status === 'rejected' ? '<span class="badge badge-red">Rejected</span>' : '<span class="badge badge-amber">Pending</span>');
+        const curr = String(p.currency || 'USD').toUpperCase();
+        const localAmt = p.amount_local !== undefined && p.amount_local !== null ? p.amount_local : p.amount_usd;
+
+        return `
+          <tr>
+            <td class="font-mono text-zinc-400">#${Number(p.id)}</td>
+            <td>
+              <a href="booking-detail.html?id=${encodeURIComponent(p.booking_id)}" class="font-mono font-bold text-[#E05A47] hover:underline">${AdminApp.esc(p.booking_id)}</a>
+              <div class="text-[11px] text-zinc-300">${AdminApp.esc(p.lead_name)}</div>
+            </td>
+            <td>
+              <span class="badge ${isRefund ? 'badge-red' : 'badge-blue'}">${AdminApp.esc(AdminApp.humanize(p.payment_type || 'payment'))}</span>
+              <div class="text-[11px] text-zinc-400 mt-0.5">${AdminApp.esc(AdminApp.humanize(p.payment_method || 'bank_transfer'))}</div>
+            </td>
+            <td class="font-bold ${isRefund ? 'text-red-400' : 'text-white'}">${AdminApp.formatMoney(p.amount_usd, 'USD')}</td>
+            <td class="text-xs text-zinc-300">${AdminApp.formatMoney(localAmt, curr, { withCode: true })}</td>
+            <td class="font-mono text-xs text-zinc-300">${AdminApp.esc(p.transaction_ref || '—')}</td>
+            <td>${statusBadge}</td>
+            <td>
+              <div class="text-[11px] text-zinc-400 font-mono">${AdminApp.esc(AdminApp.formatDateTime(p.verified_at || p.created_at))}</div>
+              ${p.notes ? `<div class="text-[11px] text-zinc-300 max-w-[200px] truncate">${AdminApp.esc(p.notes)}</div>` : ''}
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    function populateBookingSelect() {
+      const sel = document.getElementById('recBookingSelect');
+      const active = allBookings.filter((b) => b.booking_status !== 'cancelled');
+      sel.innerHTML = active.map((b) =>
+        `<option value="${AdminApp.esc(b.id)}">${AdminApp.esc(b.id)} — ${AdminApp.esc(b.lead_name)} (Paid ${AdminApp.formatMoney(b.deposit_paid_usd, 'USD')} / ${AdminApp.formatMoney(b.total_price_usd, 'USD')})</option>`
+      ).join('');
+    }
+
+    function openReceiptPreview(paymentId) {
+      const payment = allPayments.find((p) => Number(p.id) === Number(paymentId));
+      if (!payment) return;
+      const url = ApiClient.getAdminPaymentReceiptUrl(payment.id);
+      document.getElementById('receiptPreviewTitle').textContent = `Wire Receipt — Payment #${payment.id} (${payment.booking_id})`;
+      document.getElementById('receiptPreviewSubtitle').textContent = `${payment.lead_name} · ${AdminApp.formatMoney(payment.amount_usd, 'USD')}`;
+      document.getElementById('receiptOpenTabLink').href = url;
+
+      const container = document.getElementById('receiptPreviewContainer');
+      const isPdf = /\.pdf(\?|$)/i.test(String(payment.receipt_file || ''));
+      if (isPdf) {
+        container.innerHTML = `<iframe src="${AdminApp.esc(url)}" class="w-full h-[460px] rounded border-0 bg-white" title="Wire Receipt PDF"></iframe>`;
+      } else {
+        container.innerHTML = `<img src="${AdminApp.esc(url)}" alt="Client Wire Receipt" class="max-h-[460px] max-w-full rounded object-contain">`;
+      }
+      document.getElementById('receiptPreviewModal').classList.remove('hidden');
+    }
+
+    // Pending Receipts Actions
+    document.getElementById('pendingReceiptsBody').addEventListener('click', async (e) => {
+      const btn = e.target.closest('[data-pay-action]');
+      if (!btn) return;
+      const action = btn.getAttribute('data-pay-action');
+      const id = btn.getAttribute('data-pay-id');
+      if (!id) return;
+
+      if (action === 'preview') {
+        openReceiptPreview(id);
+      } else if (action === 'verify') {
+        btn.disabled = true;
+        try {
+          const res = await ApiClient.verifyPayment(id, 'verified', 'Verified by Finance Operations');
+          if (!res || !res.success) throw new Error((res && res.error) || 'Verification failed');
+          showActionBanner(res.message || `Payment #${id} verified`, res.whatsapp_share_url);
+          AdminApp.showToast(`Payment #${id} verified!`);
+          await loadFinanceWorkspace();
+        } catch (err) {
+          AdminApp.showToast(err.message || 'Verification failed', 'error');
+        } finally {
+          btn.disabled = false;
+        }
+      } else if (action === 'reject') {
+        document.getElementById('rejectPaymentId').value = String(id);
+        document.getElementById('rejectPaymentNotes').value = '';
+        document.getElementById('rejectPaymentModal').classList.remove('hidden');
+      }
+    });
+
+    document.getElementById('rejectPaymentForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const id = document.getElementById('rejectPaymentId').value;
+      const notes = document.getElementById('rejectPaymentNotes').value.trim();
+      const btn = document.getElementById('confirmRejectPayBtn');
+      btn.disabled = true;
+      try {
+        const res = await ApiClient.verifyPayment(id, 'rejected', notes);
+        if (!res || !res.success) throw new Error((res && res.error) || 'Rejection failed');
+        document.getElementById('rejectPaymentModal').classList.add('hidden');
+        showActionBanner(res.message || `Payment #${id} rejected`, res.whatsapp_share_url);
+        AdminApp.showToast(`Payment #${id} rejected`, 'warn');
+        await loadFinanceWorkspace();
+      } catch (err) {
+        AdminApp.showToast(err.message || 'Rejection failed', 'error');
+      } finally {
+        btn.disabled = false;
+      }
+    });
+
+    // SDF 1-click Remittance
+    document.getElementById('sdfTrackerBody').addEventListener('click', async (e) => {
+      const btn = e.target.closest('[data-sdf-remit]');
+      if (!btn) return;
+      const bookingId = btn.getAttribute('data-sdf-remit');
+      btn.disabled = true;
+      try {
+        const res = await ApiClient.remitBookingSdf(bookingId, {});
+        if (!res || !res.success) throw new Error((res && res.error) || 'SDF remittance failed');
+        AdminApp.showToast(res.message || `SDF remitted for ${bookingId}`);
+        await loadFinanceWorkspace();
+      } catch (err) {
+        AdminApp.showToast(err.message || 'SDF remittance failed', 'error');
+      } finally {
+        btn.disabled = false;
+      }
+    });
+
+    // WhatsApp Overdue Balance Reminder
+    document.getElementById('overdueBalancesBody').addEventListener('click', (e) => {
+      const btn = e.target.closest('[data-wa-remind]');
+      if (!btn) return;
+      const bookingId = btn.getAttribute('data-wa-remind');
+      const b = allBookings.find((row) => String(row.id) === String(bookingId));
+      if (!b) return;
+      const outstanding = Math.max(0, Math.round(Number(b.total_price_usd || 0)) - Math.round(Number(b.deposit_paid_usd || 0)));
+      const msg = `Kuzuzangpo La ${b.lead_name}! Friendly payment reminder for your Bhutan tour booking ${b.id} (${b.tour_title}). Remaining balance: $${outstanding.toLocaleString('en-US')} USD${b.balance_due_date ? ` (Due: ${b.balance_due_date})` : ''}. Please upload your wire transfer slip in your Client Portal so we can finalize your DoI visa clearance.`;
+      openSafeWhatsApp(b.lead_phone, msg);
+    });
+
+    // Record Payment / Refund
+    document.getElementById('recordPaymentForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const errBox = document.getElementById('recordPayError');
+      errBox.classList.add('hidden');
+      const bookingId = document.getElementById('recBookingSelect').value;
+      const payType = document.getElementById('recPayType').value;
+      const amountUsd = Number(document.getElementById('recPayAmount').value);
+      if (!bookingId || !Number.isFinite(amountUsd) || amountUsd <= 0) {
+        errBox.textContent = 'Valid booking and positive USD amount are required.';
+        errBox.classList.remove('hidden');
+        return;
+      }
+
+      const btn = document.getElementById('submitRecordPayBtn');
+      btn.disabled = true;
+      try {
+        const res = await ApiClient.recordPayment(bookingId, {
+          payment_type: payType,
+          payment_method: document.getElementById('recPayMethod').value,
+          amount_usd: payType === 'refund' ? -Math.abs(amountUsd) : Math.abs(amountUsd),
+          transaction_ref: document.getElementById('recPayRef').value.trim(),
+          notes: document.getElementById('recPayNotes').value.trim()
+        });
+        if (!res || !res.success) throw new Error((res && res.error) || 'Failed to record payment');
+        document.getElementById('recordPaymentModal').classList.add('hidden');
+        document.getElementById('recordPaymentForm').reset();
+        showActionBanner(res.message || 'Ledger entry recorded', res.whatsapp_share_url);
+        AdminApp.showToast(res.message || 'Payment ledger updated');
+        await loadFinanceWorkspace();
+      } catch (err) {
+        errBox.textContent = err.message || 'Failed to record ledger entry';
+        errBox.classList.remove('hidden');
+      } finally {
+        btn.disabled = false;
+      }
+    });
+
+    document.getElementById('exportFinanceCsvBtn').addEventListener('click', async () => {
+      try {
+        await ApiClient.downloadFinanceCsv();
+        AdminApp.showToast('Finance ledger CSV downloaded.');
+      } catch (err) {
+        AdminApp.showToast(err.message || 'CSV export failed', 'error');
+      }
+    });
+
+    document.getElementById('closeReceiptModalBtn').addEventListener('click', () => document.getElementById('receiptPreviewModal').classList.add('hidden'));
+    document.getElementById('closeReceiptFooterBtn').addEventListener('click', () => document.getElementById('receiptPreviewModal').classList.add('hidden'));
+    document.getElementById('closeRejectPayBtn').addEventListener('click', () => document.getElementById('rejectPaymentModal').classList.add('hidden'));
+    document.getElementById('cancelRejectPayBtn').addEventListener('click', () => document.getElementById('rejectPaymentModal').classList.add('hidden'));
+    document.getElementById('openRecordPayBtn').addEventListener('click', () => {
+      document.getElementById('recordPayError').classList.add('hidden');
+      document.getElementById('recordPaymentModal').classList.remove('hidden');
+    });
+    document.getElementById('closeRecordPayBtn').addEventListener('click', () => document.getElementById('recordPaymentModal').classList.add('hidden'));
+    document.getElementById('cancelRecordPayBtn').addEventListener('click', () => document.getElementById('recordPaymentModal').classList.add('hidden'));
+
+    document.getElementById('refreshFinanceBtn').addEventListener('click', loadFinanceWorkspace);
+    document.getElementById('sdfFilterSelect').addEventListener('change', renderSdfTracker);
+    document.getElementById('ledgerFilterSelect').addEventListener('change', renderPaymentLedger);
+    document.getElementById('ledgerSearchInput').addEventListener('input', renderPaymentLedger);
+
+    document.addEventListener('DOMContentLoaded', loadFinanceWorkspace);
   </script>
 </body>
 </html>

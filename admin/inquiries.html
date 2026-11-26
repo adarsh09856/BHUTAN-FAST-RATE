@@ -9,79 +9,225 @@
   <link rel="stylesheet" href="css/admin-theme.css">
 </head>
 <body class="admin-layout">
-  <!-- Dynamic Sidebar -->
   <aside id="adminSidebar" class="admin-sidebar"></aside>
 
-  <!-- Main Workspace -->
   <div class="admin-main">
     <header class="admin-header">
       <div class="flex items-center gap-3">
-        <button id="sidebarToggle" class="lg:hidden p-2 text-zinc-400 hover:text-white rounded">
+        <button id="sidebarToggle" class="lg:hidden p-2 text-zinc-400 hover:text-white rounded" aria-label="Toggle navigation">
           <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
         </button>
-        <h1 class="text-base font-extrabold text-white">Inquiries CRM</h1>
+        <div>
+          <h1 class="text-base font-extrabold text-white">Inquiries &amp; Custom Route Leads CRM</h1>
+          <p class="text-[11px] text-zinc-400">Live website inquiries, concierge follow-up pipeline &amp; 1-click booking conversion</p>
+        </div>
       </div>
-      <div class="flex items-center gap-4 text-xs">
-        <span class="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 font-bold">API Online</span>
-        <a href="notifications.html" class="p-2 rounded-lg bg-zinc-800 text-zinc-300 hover:text-white">🔔</a>
+      <div class="flex items-center gap-3 text-xs">
+        <span class="px-2.5 py-1 rounded bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 font-bold">API Live</span>
+        <a href="notifications.html" class="notif-bell-btn" title="Notifications">🔔</a>
       </div>
     </header>
 
     <main class="p-6 sm:p-8 space-y-6">
-      
-  <div class="stat-card space-y-4">
-    <div class="flex items-center justify-between">
-      <h2 class="text-base font-extrabold text-white">Client Inquiry Leads CRM</h2>
-      <span class="text-xs text-zinc-400">7 Active Inquiries</span>
-    </div>
+      <div id="inquiriesError" class="hidden admin-alert admin-alert-error"></div>
 
-    <table class="admin-table">
-      <thead>
-        <tr>
-          <th>Ref Code</th>
-          <th>Client Name</th>
-          <th>Country</th>
-          <th>Requested Dates</th>
-          <th>Travelers</th>
-          <th>Interests</th>
-          <th>Status</th>
-          <th>Quick Connect</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td class="font-mono font-bold text-white">INQ-2026-101</td>
-          <td>Claire Dupont</td>
-          <td>France</td>
-          <td>April 2027</td>
-          <td>2</td>
-          <td>Culture, Birdwatching</td>
-          <td><span class="badge badge-blue">Proposal Sent</span></td>
-          <td>
-            <a href="https://wa.me/33612345678" target="_blank" class="px-2.5 py-1 rounded bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-[11px]">
-              WhatsApp
-            </a>
-          </td>
-        </tr>
-        <tr>
-          <td class="font-mono font-bold text-white">INQ-2026-102</td>
-          <td>David &amp; Rachel Miller</td>
-          <td>United Kingdom</td>
-          <td>October 2026</td>
-          <td>4</td>
-          <td>Festivals, Photography</td>
-          <td><span class="badge badge-amber">New</span></td>
-          <td>
-            <a href="mailto:david.miller@example.co.uk" class="px-2.5 py-1 rounded bg-zinc-700 hover:bg-zinc-600 text-white font-bold text-[11px]">
-              Email
-            </a>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+      <!-- KPI Summary -->
+      <div class="admin-grid-4">
+        <div class="stat-card p-4">
+          <div class="text-[10px] font-bold uppercase tracking-wider text-zinc-400">Total Leads</div>
+          <div id="statInqTotal" class="text-2xl font-black text-white mt-1">—</div>
+        </div>
+        <div class="stat-card p-4">
+          <div class="text-[10px] font-bold uppercase tracking-wider text-zinc-400">New Uncontacted</div>
+          <div id="statInqNew" class="text-2xl font-black text-amber-400 mt-1">—</div>
+        </div>
+        <div class="stat-card p-4">
+          <div class="text-[10px] font-bold uppercase tracking-wider text-zinc-400">Proposal Sent</div>
+          <div id="statInqProposal" class="text-2xl font-black text-blue-400 mt-1">—</div>
+        </div>
+        <div class="stat-card p-4">
+          <div class="text-[10px] font-bold uppercase tracking-wider text-zinc-400">Converted to Bookings</div>
+          <div id="statInqConverted" class="text-2xl font-black text-emerald-400 mt-1">—</div>
+        </div>
+      </div>
+
+      <!-- Inquiries Table Card -->
+      <div class="stat-card space-y-4">
+        <div class="flex flex-wrap items-center justify-between gap-3 pb-3 border-b border-zinc-700">
+          <div class="flex flex-wrap items-center gap-2.5">
+            <input type="text" id="inqSearchInput" placeholder="Search ref, client name, email..." class="px-3.5 py-2 rounded-lg border border-zinc-600 text-xs w-64 focus:outline-none">
+            <select id="inqStatusFilter" class="px-3 py-2 rounded-lg border border-zinc-600 text-xs focus:outline-none">
+              <option value="All">All Pipeline Stages</option>
+              <option value="new">New</option>
+              <option value="contacted">Contacted</option>
+              <option value="proposal_sent">Proposal Sent</option>
+              <option value="converted">Converted</option>
+              <option value="closed">Closed</option>
+            </select>
+          </div>
+          <div class="flex items-center gap-2">
+            <span id="inqCountLabel" class="text-xs text-zinc-400">Loading leads...</span>
+            <button type="button" id="refreshInqBtn" class="admin-btn admin-btn-secondary admin-btn-sm">↻ Refresh</button>
+          </div>
+        </div>
+
+        <div class="overflow-x-auto">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>Ref Code</th>
+                <th>Client &amp; Contact</th>
+                <th>Trip Preferences</th>
+                <th>Interests &amp; Budget</th>
+                <th>Stage</th>
+                <th>Converted Booking</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="inquiriesTableBody">
+              <tr>
+                <td colspan="7" class="py-8 text-center text-zinc-400">Loading client inquiries from database...</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </main>
   </div>
 
-    </main>
+  <!-- Lead Detail & Conversion Modal -->
+  <div id="leadDrawerModal" class="admin-modal-backdrop hidden" role="dialog" aria-modal="true" aria-labelledby="leadModalTitle">
+    <div class="admin-modal admin-modal-xl">
+      <div class="admin-modal-header">
+        <div>
+          <h2 id="leadModalTitle" class="text-base font-extrabold text-white">Lead Inspection &amp; Pipeline Control</h2>
+          <p id="leadModalSubtitle" class="text-[11px] text-zinc-400">Inquiry Ref</p>
+        </div>
+        <button type="button" id="closeLeadModalBtn" class="p-1.5 rounded-lg text-zinc-400 hover:text-white hover:bg-zinc-800 text-lg leading-none" aria-label="Close modal">✕</button>
+      </div>
+
+      <div class="admin-modal-body space-y-5 text-xs">
+        <div id="leadModalError" class="hidden admin-alert admin-alert-error"></div>
+        <div id="leadConvertedBanner" class="hidden admin-alert admin-alert-success flex items-center justify-between gap-3"></div>
+
+        <div class="admin-grid-12">
+          <!-- Left: Guest Request & Stage Update -->
+          <div class="admin-col-7 space-y-4">
+            <div class="admin-panel-sub space-y-2.5">
+              <div class="flex flex-wrap items-center justify-between gap-2">
+                <div class="text-xs font-extrabold uppercase tracking-wider text-[#E05A47]">Client Request Snapshot</div>
+                <div class="flex items-center gap-2">
+                  <button type="button" id="leadWhatsAppReplyBtn" class="admin-btn admin-btn-emerald admin-btn-sm">💬 1-Click WhatsApp Reply</button>
+                  <a id="leadMailtoBtn" href="#" class="admin-btn admin-btn-secondary admin-btn-sm">✉️ Email</a>
+                </div>
+              </div>
+              <div class="admin-grid-2 text-xs">
+                <div><span class="text-zinc-400">Client:</span> <strong id="detailClientName" class="text-white">—</strong></div>
+                <div><span class="text-zinc-400">Country:</span> <strong id="detailClientCountry" class="text-white">—</strong></div>
+                <div><span class="text-zinc-400">Email:</span> <strong id="detailClientEmail" class="text-zinc-200">—</strong></div>
+                <div><span class="text-zinc-400">Phone / WhatsApp:</span> <strong id="detailClientPhone" class="text-zinc-200">—</strong></div>
+                <div><span class="text-zinc-400">Preferred Dates:</span> <strong id="detailPrefDates" class="text-zinc-200">—</strong></div>
+                <div><span class="text-zinc-400">Party &amp; Duration:</span> <strong id="detailPartyDuration" class="text-zinc-200">—</strong></div>
+                <div><span class="text-zinc-400">Budget Range:</span> <strong id="detailBudget" class="text-zinc-200">—</strong></div>
+                <div><span class="text-zinc-400">Interests:</span> <strong id="detailInterests" class="text-zinc-200">—</strong></div>
+              </div>
+              <div class="pt-2 border-t border-zinc-700">
+                <div class="text-[11px] font-bold text-zinc-400 mb-1">Client Message</div>
+                <div id="detailMessage" class="p-3 rounded-lg bg-zinc-900 border border-zinc-700 text-zinc-200 whitespace-pre-wrap leading-relaxed">—</div>
+              </div>
+            </div>
+
+            <form id="leadStageForm" class="admin-panel-sub space-y-3">
+              <div class="text-xs font-extrabold uppercase tracking-wider text-blue-400">Update CRM Pipeline Stage &amp; Follow-Up</div>
+              <div class="admin-grid-2">
+                <div>
+                  <label for="leadStageSelect" class="block font-bold text-zinc-300 mb-1">Pipeline Stage</label>
+                  <select id="leadStageSelect" class="w-full px-3 py-2 rounded-lg border border-zinc-600 font-bold">
+                    <option value="new">New</option>
+                    <option value="contacted">Contacted</option>
+                    <option value="proposal_sent">Proposal Sent</option>
+                    <option value="converted">Converted</option>
+                    <option value="closed">Closed</option>
+                  </select>
+                </div>
+                <div>
+                  <label for="leadFollowUpDate" class="block font-bold text-zinc-300 mb-1">Next Follow-Up Date</label>
+                  <input type="date" id="leadFollowUpDate" class="w-full px-3 py-2 rounded-lg border border-zinc-600 font-semibold">
+                </div>
+              </div>
+              <div>
+                <label for="leadInternalNotes" class="block font-bold text-zinc-300 mb-1">Concierge Internal Notes &amp; Proposal Details</label>
+                <textarea id="leadInternalNotes" rows="4" placeholder="Record call notes, quoted hotels, flight availability, or follow-up actions..." class="w-full px-3 py-2 rounded-lg border border-zinc-600 font-medium"></textarea>
+              </div>
+              <div class="flex justify-end">
+                <button type="submit" id="saveLeadStageBtn" data-roles="super_admin,admin,concierge" class="admin-btn admin-btn-primary">
+                  Save Stage &amp; Notes
+                </button>
+              </div>
+            </form>
+          </div>
+
+          <!-- Right: Convert to Booking Form -->
+          <div class="admin-col-5">
+            <form id="convertBookingForm" class="admin-panel-sub space-y-3 border border-emerald-500/30">
+              <div>
+                <div class="text-xs font-extrabold uppercase tracking-wider text-emerald-400">Convert Lead to Authoritative Booking</div>
+                <p class="text-[11px] text-zinc-400 mt-0.5">Generates live BFR reservation with SDF calculation, traveler slots &amp; client portal link.</p>
+              </div>
+
+              <div>
+                <label for="convTourSelect" class="block font-bold text-zinc-300 mb-1">Select Tour Package or Custom Route</label>
+                <select id="convTourSelect" class="w-full px-3 py-2 rounded-lg border border-zinc-600 font-semibold">
+                  <option value="">Custom Bespoke Bhutan Expedition</option>
+                </select>
+              </div>
+
+              <div class="admin-grid-2">
+                <div>
+                  <label for="convStartDate" class="block font-bold text-zinc-300 mb-1">Travel Start Date *</label>
+                  <input type="date" id="convStartDate" required class="w-full px-3 py-2 rounded-lg border border-zinc-600 font-semibold">
+                </div>
+                <div>
+                  <label for="convNights" class="block font-bold text-zinc-300 mb-1">Nights *</label>
+                  <input type="number" id="convNights" required min="1" max="60" value="6" class="w-full px-3 py-2 rounded-lg border border-zinc-600 font-bold">
+                </div>
+                <div>
+                  <label for="convAdults" class="block font-bold text-zinc-300 mb-1">Adults *</label>
+                  <input type="number" id="convAdults" required min="1" max="50" value="2" class="w-full px-3 py-2 rounded-lg border border-zinc-600 font-bold">
+                </div>
+                <div>
+                  <label for="convHotelTier" class="block font-bold text-zinc-300 mb-1">Hotel Tier</label>
+                  <select id="convHotelTier" class="w-full px-3 py-2 rounded-lg border border-zinc-600 font-semibold">
+                    <option value="3-Star Standard">3-Star Standard</option>
+                    <option value="4-Star Premium" selected>4-Star Premium</option>
+                    <option value="5-Star Luxury">5-Star Luxury</option>
+                  </select>
+                </div>
+                <div>
+                  <label for="convNationality" class="block font-bold text-zinc-300 mb-1">Passport Track</label>
+                  <select id="convNationality" class="w-full px-3 py-2 rounded-lg border border-zinc-600 font-semibold">
+                    <option value="international">International ($100 SDF / USD)</option>
+                    <option value="india">Indian National (₹1,200 SDF / INR)</option>
+                  </select>
+                </div>
+                <div>
+                  <label for="convLeadPhone" class="block font-bold text-zinc-300 mb-1">Lead WhatsApp / Phone *</label>
+                  <input type="tel" id="convLeadPhone" required placeholder="+1 555 0100" class="w-full px-3 py-2 rounded-lg border border-zinc-600 font-semibold">
+                </div>
+              </div>
+
+              <button type="submit" id="convertBookingBtn" data-roles="super_admin,admin,concierge" class="w-full admin-btn admin-btn-emerald py-2.5">
+                🚀 Convert to Booking &amp; Open File →
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <div class="admin-modal-footer">
+        <button type="button" id="closeLeadFooterBtn" class="admin-btn admin-btn-secondary">Close</button>
+      </div>
+    </div>
   </div>
 
   <script src="../js/api-client.js"></script>
@@ -89,12 +235,338 @@
   <script>
     AdminApp.requireAuth();
     AdminApp.renderSidebar('inquiries');
-    const toggle = document.getElementById('sidebarToggle');
-    if (toggle) {
-      toggle.addEventListener('click', () => {
-        document.getElementById('adminSidebar').classList.toggle('open');
-      });
+
+    let allInquiries = [];
+    let catalogTours = [];
+    let activeInquiry = null;
+
+    function stageBadge(status) {
+      const s = String(status || 'new').toLowerCase();
+      if (s === 'converted') return '<span class="badge badge-green">Converted</span>';
+      if (s === 'proposal_sent') return '<span class="badge badge-blue">Proposal Sent</span>';
+      if (s === 'contacted') return '<span class="badge badge-purple">Contacted</span>';
+      if (s === 'closed') return '<span class="badge badge-zinc">Closed</span>';
+      return '<span class="badge badge-amber">New</span>';
     }
+
+    function extractFollowUpFromNotes(notes) {
+      const text = String(notes || '');
+      const m = text.match(/\[Follow-up:\s*(\d{4}-\d{2}-\d{2})\]/i);
+      return {
+        followUpDate: m ? m[1] : '',
+        cleanNotes: text.replace(/\n?\[Follow-up:\s*\d{4}-\d{2}-\d{2}\]/gi, '').trim()
+      };
+    }
+
+    function mergeFollowUpIntoNotes(cleanNotes, followUpDate) {
+      const base = String(cleanNotes || '').replace(/\n?\[Follow-up:\s*\d{4}-\d{2}-\d{2}\]/gi, '').trim();
+      if (!followUpDate) return base;
+      return base ? `${base}\n[Follow-up: ${followUpDate}]` : `[Follow-up: ${followUpDate}]`;
+    }
+
+    function openSafeWhatsApp(phone, message) {
+      const rawPhone = String(phone || '').replace(/\D+/g, '');
+      if (!rawPhone) {
+        AdminApp.showToast('No phone/WhatsApp number on this inquiry record.', 'warn');
+        return;
+      }
+      const url = ApiClient.buildWhatsAppUrl(phone, message);
+      if (!/^https:\/\/wa\.me\//i.test(url)) {
+        AdminApp.showToast('Invalid WhatsApp destination URL.', 'error');
+        return;
+      }
+      window.open(url, '_blank', 'noopener');
+    }
+
+    async function loadToursDropdown() {
+      try {
+        const res = await ApiClient.getAdminTours({ status: 'active' });
+        catalogTours = (res && res.data) || [];
+        const select = document.getElementById('convTourSelect');
+        select.innerHTML = '<option value="">Custom Bespoke Bhutan Expedition</option>' +
+          catalogTours.map((t) => `<option value="${AdminApp.esc(t.id)}">${AdminApp.esc(t.title)} (${Number(t.duration_nights || 6)}N · $${Number(t.price_3star_usd || t.price_usd || 0)})</option>`).join('');
+      } catch (_) {
+        // Non-blocking fallback to custom route
+      }
+    }
+
+    async function loadInquiries() {
+      const errBox = document.getElementById('inquiriesError');
+      errBox.classList.add('hidden');
+      try {
+        const search = document.getElementById('inqSearchInput').value.trim();
+        const status = document.getElementById('inqStatusFilter').value;
+        const res = await ApiClient.getAdminInquiries({ search, status });
+        const rows = (res && res.data) || [];
+        if (status === 'All' && !search) {
+          allInquiries = rows;
+          updateSummaryKpis(allInquiries);
+        } else if (!allInquiries.length) {
+          const fullRes = await ApiClient.getAdminInquiries({});
+          allInquiries = (fullRes && fullRes.data) || rows;
+          updateSummaryKpis(allInquiries);
+        }
+        renderInquiriesTable(rows);
+      } catch (err) {
+        errBox.textContent = `Unable to load inquiries: ${err.message || 'Server error'}`;
+        errBox.classList.remove('hidden');
+        document.getElementById('inquiriesTableBody').innerHTML = `
+          <tr><td colspan="7" class="py-6 text-center text-red-400">${AdminApp.esc(err.message || 'Failed to load inquiries')}</td></tr>
+        `;
+      }
+    }
+
+    function updateSummaryKpis(rows) {
+      document.getElementById('statInqTotal').textContent = String(rows.length);
+      document.getElementById('statInqNew').textContent = String(rows.filter((r) => (r.status || 'new') === 'new').length);
+      document.getElementById('statInqProposal').textContent = String(rows.filter((r) => r.status === 'proposal_sent').length);
+      document.getElementById('statInqConverted').textContent = String(rows.filter((r) => r.status === 'converted').length);
+    }
+
+    function renderInquiriesTable(rows) {
+      document.getElementById('inqCountLabel').textContent = `${rows.length} lead${rows.length === 1 ? '' : 's'} shown`;
+      const tbody = document.getElementById('inquiriesTableBody');
+      if (!rows.length) {
+        tbody.innerHTML = `<tr><td colspan="7" class="py-8 text-center text-zinc-400">No inquiry leads match the current filters.</td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = rows.map((inq) => {
+        const parsedNotes = extractFollowUpFromNotes(inq.internal_notes);
+        const refLabel = inq.ref_code || `INQ-${inq.id}`;
+        const hasPhone = Boolean(String(inq.phone || '').replace(/\D+/g, ''));
+
+        return `
+          <tr>
+            <td>
+              <div class="font-mono font-bold text-white text-xs">${AdminApp.esc(refLabel)}</div>
+              <div class="text-[10px] text-zinc-400">${AdminApp.esc(AdminApp.formatDateTime(inq.created_at))}</div>
+            </td>
+            <td>
+              <div class="font-bold text-white text-xs">${AdminApp.esc(inq.name)}</div>
+              <div class="text-[11px] text-zinc-300">${AdminApp.esc(inq.email)}</div>
+              <div class="text-[11px] text-zinc-400">${AdminApp.esc(inq.country || '—')} ${inq.phone ? `· ${AdminApp.esc(inq.phone)}` : ''}</div>
+            </td>
+            <td>
+              <div class="text-xs text-zinc-200">${AdminApp.esc(inq.preferred_dates || 'Flexible')}</div>
+              <div class="text-[11px] text-zinc-400">${inq.travelers_count ? `${Number(inq.travelers_count)} guests` : 'TBD'} · ${inq.duration_days ? `${Number(inq.duration_days)} days` : 'Flexible days'}</div>
+            </td>
+            <td>
+              <div class="text-xs text-zinc-200 max-w-[200px] truncate">${AdminApp.esc(inq.interests || 'General Inquiry')}</div>
+              <div class="text-[11px] text-zinc-400">${AdminApp.esc(inq.budget_range || 'Standard')} ${parsedNotes.followUpDate ? `· <span class="text-amber-300">Follow-up: ${AdminApp.esc(parsedNotes.followUpDate)}</span>` : ''}</div>
+            </td>
+            <td>${stageBadge(inq.status)}</td>
+            <td>
+              ${inq.converted_booking_id
+                ? `<a href="booking-detail.html?id=${encodeURIComponent(inq.converted_booking_id)}" class="font-mono font-bold text-emerald-400 hover:underline">${AdminApp.esc(inq.converted_booking_id)} ↗</a>`
+                : '<span class="text-zinc-500">—</span>'}
+            </td>
+            <td>
+              <div class="flex flex-wrap items-center gap-1.5">
+                <button type="button" data-inq-action="inspect" data-inq-id="${Number(inq.id)}" class="admin-btn admin-btn-primary admin-btn-sm">
+                  Open Lead
+                </button>
+                ${hasPhone ? `
+                  <button type="button" data-inq-action="whatsapp" data-inq-id="${Number(inq.id)}" class="admin-btn admin-btn-emerald admin-btn-sm" title="Reply on WhatsApp">
+                    WhatsApp
+                  </button>
+                ` : ''}
+              </div>
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    function openLeadModal(inquiryId) {
+      const inq = allInquiries.find((i) => Number(i.id) === Number(inquiryId));
+      if (!inq) return;
+      activeInquiry = inq;
+
+      document.getElementById('leadModalError').classList.add('hidden');
+      const convBanner = document.getElementById('leadConvertedBanner');
+      convBanner.classList.add('hidden');
+
+      const refLabel = inq.ref_code || `INQ-${inq.id}`;
+      document.getElementById('leadModalTitle').textContent = `Lead: ${inq.name}`;
+      document.getElementById('leadModalSubtitle').textContent = `${refLabel} · Source: ${AdminApp.humanize(inq.source || 'website')} · Submitted ${AdminApp.formatDateTime(inq.created_at)}`;
+
+      document.getElementById('detailClientName').textContent = inq.name || '—';
+      document.getElementById('detailClientCountry').textContent = inq.country || '—';
+      document.getElementById('detailClientEmail').textContent = inq.email || '—';
+      document.getElementById('detailClientPhone').textContent = inq.phone || 'Not provided';
+      document.getElementById('detailPrefDates').textContent = inq.preferred_dates || 'Flexible';
+      document.getElementById('detailPartyDuration').textContent = `${inq.travelers_count || 2} traveler(s) · ${inq.duration_days || 7} day(s)`;
+      document.getElementById('detailBudget').textContent = inq.budget_range || 'Standard';
+      document.getElementById('detailInterests').textContent = inq.interests || 'Cultural & Scenic';
+      document.getElementById('detailMessage').textContent = inq.message || '—';
+
+      const mailto = document.getElementById('leadMailtoBtn');
+      mailto.href = `mailto:${encodeURIComponent(inq.email || '')}?subject=${encodeURIComponent(`Your Bhutan Journey Inquiry (${refLabel})`)}`;
+
+      document.getElementById('leadStageSelect').value = inq.status || 'new';
+      const parsedNotes = extractFollowUpFromNotes(inq.internal_notes);
+      document.getElementById('leadFollowUpDate').value = parsedNotes.followUpDate;
+      document.getElementById('leadInternalNotes').value = parsedNotes.cleanNotes;
+
+      // Conversion defaults
+      const future = new Date();
+      future.setUTCDate(future.getUTCDate() + 30);
+      document.getElementById('convStartDate').value = future.toISOString().split('T')[0];
+      document.getElementById('convNights').value = String(Math.max(1, (Number(inq.duration_days) || 7) - 1));
+      document.getElementById('convAdults').value = String(Math.max(1, Number(inq.travelers_count) || 2));
+      document.getElementById('convLeadPhone').value = inq.phone || '';
+      document.getElementById('convNationality').value = String(inq.country || '').toLowerCase() === 'india' ? 'india' : 'international';
+      document.getElementById('convTourSelect').value = '';
+
+      const convertBtn = document.getElementById('convertBookingBtn');
+      if (inq.status === 'converted' && inq.converted_booking_id) {
+        convBanner.innerHTML = `
+          <span>This inquiry has already been converted to booking <strong class="font-mono">${AdminApp.esc(inq.converted_booking_id)}</strong>.</span>
+          <a href="booking-detail.html?id=${encodeURIComponent(inq.converted_booking_id)}" class="admin-btn admin-btn-emerald admin-btn-sm">Open Booking File →</a>
+        `;
+        convBanner.classList.remove('hidden');
+        convertBtn.disabled = true;
+        convertBtn.textContent = 'Already Converted';
+      } else {
+        convertBtn.disabled = false;
+        convertBtn.textContent = '🚀 Convert to Booking & Open File →';
+      }
+
+      AdminApp.applyRoleVisibility();
+      document.getElementById('leadDrawerModal').classList.remove('hidden');
+    }
+
+    function closeLeadModal() {
+      activeInquiry = null;
+      document.getElementById('leadDrawerModal').classList.add('hidden');
+    }
+
+    document.getElementById('convTourSelect').addEventListener('change', (e) => {
+      const tId = e.target.value;
+      const tour = catalogTours.find((t) => String(t.id) === String(tId));
+      if (tour && tour.duration_nights) {
+        document.getElementById('convNights').value = String(tour.duration_nights);
+      }
+    });
+
+    document.getElementById('leadWhatsAppReplyBtn').addEventListener('click', () => {
+      if (!activeInquiry) return;
+      const refLabel = activeInquiry.ref_code || `INQ-${activeInquiry.id}`;
+      const msg = `Kuzuzangpo La ${activeInquiry.name}! Thank you for your Bhutan inquiry (${refLabel}) with Bhutan Fast Rate Tours. Would you like us to prepare a bespoke itinerary & SDF quote for your preferred dates (${activeInquiry.preferred_dates || 'upcoming season'})?`;
+      openSafeWhatsApp(activeInquiry.phone, msg);
+    });
+
+    document.getElementById('leadStageForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      if (!activeInquiry) return;
+      const errBox = document.getElementById('leadModalError');
+      errBox.classList.add('hidden');
+
+      const btn = document.getElementById('saveLeadStageBtn');
+      btn.disabled = true;
+      try {
+        const status = document.getElementById('leadStageSelect').value;
+        const followUpDate = document.getElementById('leadFollowUpDate').value;
+        const notes = mergeFollowUpIntoNotes(document.getElementById('leadInternalNotes').value, followUpDate);
+        const res = await ApiClient.updateInquiry(activeInquiry.id, { status, internal_notes: notes });
+        if (!res || !res.success) throw new Error((res && res.error) || 'Failed to update inquiry');
+
+        activeInquiry = res.inquiry || { ...activeInquiry, status, internal_notes: notes };
+        const idx = allInquiries.findIndex((i) => Number(i.id) === Number(activeInquiry.id));
+        if (idx >= 0) allInquiries[idx] = activeInquiry;
+        updateSummaryKpis(allInquiries);
+        AdminApp.showToast('Inquiry stage & follow-up notes saved');
+        await loadInquiries();
+      } catch (err) {
+        errBox.textContent = err.message || 'Failed to update inquiry';
+        errBox.classList.remove('hidden');
+      } finally {
+        btn.disabled = false;
+      }
+    });
+
+    document.getElementById('convertBookingForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      if (!activeInquiry) return;
+      const errBox = document.getElementById('leadModalError');
+      errBox.classList.add('hidden');
+
+      const leadPhone = document.getElementById('convLeadPhone').value.trim();
+      const travelStart = document.getElementById('convStartDate').value;
+      const nights = parseInt(document.getElementById('convNights').value, 10);
+      const adults = parseInt(document.getElementById('convAdults').value, 10);
+
+      if (!leadPhone || !travelStart || !Number.isFinite(nights) || nights < 1 || !Number.isFinite(adults) || adults < 1) {
+        errBox.textContent = 'Phone number, valid travel start date, nights, and adult count are required to convert.';
+        errBox.classList.remove('hidden');
+        return;
+      }
+
+      const btn = document.getElementById('convertBookingBtn');
+      btn.disabled = true;
+      btn.textContent = 'Converting to Booking...';
+      try {
+        const selectedTourId = document.getElementById('convTourSelect').value;
+        const payload = {
+          lead_phone: leadPhone,
+          travel_date_start: travelStart,
+          nights,
+          adults_count: adults,
+          hotel_tier: document.getElementById('convHotelTier').value,
+          nationality_type: document.getElementById('convNationality').value,
+          internal_notes: document.getElementById('leadInternalNotes').value.trim() || undefined
+        };
+        if (selectedTourId) {
+          payload.tour_id = selectedTourId;
+        } else {
+          payload.is_custom_trip = 1;
+        }
+
+        const res = await ApiClient.convertInquiry(activeInquiry.id, payload);
+        if (!res || !res.success || !res.booking || !res.booking.id) {
+          throw new Error((res && res.error) || 'Failed to convert inquiry');
+        }
+
+        AdminApp.showToast(`Inquiry converted to booking ${res.booking.id}! Opening booking file...`);
+        window.location.href = `booking-detail.html?id=${encodeURIComponent(res.booking.id)}`;
+      } catch (err) {
+        errBox.textContent = err.message || 'Conversion failed';
+        errBox.classList.remove('hidden');
+        btn.disabled = false;
+        btn.textContent = '🚀 Convert to Booking & Open File →';
+      }
+    });
+
+    document.getElementById('inquiriesTableBody').addEventListener('click', (e) => {
+      const btn = e.target.closest('[data-inq-action]');
+      if (!btn) return;
+      const action = btn.getAttribute('data-inq-action');
+      const id = btn.getAttribute('data-inq-id');
+      const inq = allInquiries.find((i) => Number(i.id) === Number(id));
+      if (!inq) return;
+
+      if (action === 'inspect') {
+        openLeadModal(id);
+      } else if (action === 'whatsapp') {
+        const refLabel = inq.ref_code || `INQ-${inq.id}`;
+        openSafeWhatsApp(
+          inq.phone,
+          `Kuzuzangpo La ${inq.name}! Following up on your Bhutan travel inquiry (${refLabel}) with Bhutan Fast Rate Tours.`
+        );
+      }
+    });
+
+    document.getElementById('closeLeadModalBtn').addEventListener('click', closeLeadModal);
+    document.getElementById('closeLeadFooterBtn').addEventListener('click', closeLeadModal);
+    document.getElementById('refreshInqBtn').addEventListener('click', loadInquiries);
+    document.getElementById('inqSearchInput').addEventListener('input', loadInquiries);
+    document.getElementById('inqStatusFilter').addEventListener('change', loadInquiries);
+
+    document.addEventListener('DOMContentLoaded', () => {
+      loadToursDropdown();
+      loadInquiries();
+    });
   </script>
 </body>
 </html>

@@ -4,112 +4,371 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="color-scheme" content="light only">
-  <title>Platform Settings — Bhutan Fast Rate Operations</title>
+  <title>Platform Settings &amp; RBAC — Bhutan Fast Rate Operations</title>
   <link rel="stylesheet" href="../css/tour-theme.css">
   <link rel="stylesheet" href="css/admin-theme.css">
-  <style>
-    input, select, textarea {
-      color-scheme: light !important;
-      background-color: #ffffff !important;
-      color: #1f2923 !important;
-    }
-  </style>
 </head>
 <body class="admin-layout">
-  <!-- Dynamic Sidebar -->
   <aside id="adminSidebar" class="admin-sidebar"></aside>
 
-  <!-- Main Workspace -->
   <div class="admin-main">
     <header class="admin-header">
       <div class="flex items-center gap-3">
-        <button id="sidebarToggle" class="lg:hidden p-2 text-zinc-400 hover:text-white rounded">
+        <button id="sidebarToggle" class="lg:hidden p-2 text-zinc-400 hover:text-white rounded" aria-label="Toggle navigation">
           <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
         </button>
         <div>
-          <h1 class="text-base font-extrabold text-white">System &amp; Government Rate Settings</h1>
-          <p class="text-[11px] text-zinc-400">Configure live SDF rates, visa processing fees, contact channels, and banking parameters</p>
+          <h1 class="text-base font-extrabold text-white">Platform Settings, Integrations &amp; Staff RBAC</h1>
+          <p class="text-[11px] text-zinc-400">Authoritative SDF engine rates, company branding, bank wire instructions, WhatsApp/SMTP &amp; staff roles</p>
         </div>
       </div>
-      <div class="flex items-center gap-4 text-xs">
-        <span class="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 font-bold">API Online</span>
-        <a href="notifications.html" class="p-2 rounded-lg bg-zinc-800 text-zinc-300 hover:text-white">🔔</a>
+      <div class="flex items-center gap-3 text-xs">
+        <span class="px-2.5 py-1 rounded bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 font-bold">API Live</span>
+        <a href="notifications.html" class="notif-bell-btn" title="Notifications">🔔</a>
       </div>
     </header>
 
     <main class="p-6 sm:p-8 space-y-6">
-      
-      <div class="stat-card space-y-6">
-        <div>
-          <h2 class="text-base font-extrabold text-white">Royal Government of Bhutan Tourism Rates</h2>
-          <p class="text-xs text-zinc-400">These rates immediately power the public SDF Fee Calculator and online booking calculations.</p>
-        </div>
-
-        <form id="settingsForm" class="space-y-6">
-          <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            <div>
-              <label class="block text-xs font-bold text-zinc-300 mb-1">International SDF (USD/Night) *</label>
-              <input type="number" id="sdf_usd_adult" required class="w-full px-3 py-2 rounded-lg border border-zinc-600 text-xs font-bold">
-            </div>
-            <div>
-              <label class="block text-xs font-bold text-zinc-300 mb-1">India National SDF (INR/Night) *</label>
-              <input type="number" id="sdf_inr_adult" required class="w-full px-3 py-2 rounded-lg border border-zinc-600 text-xs font-bold">
-            </div>
-            <div>
-              <label class="block text-xs font-bold text-zinc-300 mb-1">Visa Processing Fee (USD) *</label>
-              <input type="number" id="visa_fee_usd" required class="w-full px-3 py-2 rounded-lg border border-zinc-600 text-xs font-bold">
-            </div>
-            <div>
-              <label class="block text-xs font-bold text-zinc-300 mb-1">Child 6–12 SDF Discount (%) *</label>
-              <input type="number" id="sdf_child_discount_pct" required class="w-full px-3 py-2 rounded-lg border border-zinc-600 text-xs font-bold">
-            </div>
-          </div>
-
-          <div class="border-t border-zinc-800 pt-6">
-            <h3 class="text-sm font-bold text-white mb-3">Company &amp; Operational Contact Channels</h3>
-            <div class="grid sm:grid-cols-3 gap-4">
-              <div>
-                <label class="block text-xs font-bold text-zinc-300 mb-1">Company Name</label>
-                <input type="text" id="company_name" class="w-full px-3 py-2 rounded-lg border border-zinc-600 text-xs font-bold">
-              </div>
-              <div>
-                <label class="block text-xs font-bold text-zinc-300 mb-1">Official Inquiry Email</label>
-                <input type="email" id="contact_email" class="w-full px-3 py-2 rounded-lg border border-zinc-600 text-xs font-bold">
-              </div>
-              <div>
-                <label class="block text-xs font-bold text-zinc-300 mb-1">Concierge WhatsApp Hotline</label>
-                <input type="text" id="contact_whatsapp" class="w-full px-3 py-2 rounded-lg border border-zinc-600 text-xs font-bold">
-              </div>
-            </div>
-          </div>
-
-          <div class="border-t border-zinc-800 pt-6">
-            <h3 class="text-sm font-bold text-white mb-3">Bank Wire Transfer &amp; Payment Details (Client Invoices)</h3>
-            <div class="grid sm:grid-cols-3 gap-4">
-              <div>
-                <label class="block text-xs font-bold text-zinc-300 mb-1">Beneficiary Name</label>
-                <input type="text" id="bank_beneficiary" class="w-full px-3 py-2 rounded-lg border border-zinc-600 text-xs font-bold" value="Bhutan Fast Rate Tours Ltd.">
-              </div>
-              <div>
-                <label class="block text-xs font-bold text-zinc-300 mb-1">Bank of Bhutan SWIFT Code</label>
-                <input type="text" id="bank_swift" class="w-full px-3 py-2 rounded-lg border border-zinc-600 text-xs font-bold font-mono" value="BOBTBT22XXX">
-              </div>
-              <div>
-                <label class="block text-xs font-bold text-zinc-300 mb-1">USD Escrow Account No.</label>
-                <input type="text" id="bank_account" class="w-full px-3 py-2 rounded-lg border border-zinc-600 text-xs font-bold font-mono" value="200884910023">
-              </div>
-            </div>
-          </div>
-
-          <div class="pt-4 flex items-center justify-end gap-3">
-            <button type="submit" class="px-6 py-2.5 rounded-lg bg-[#E05A47] hover:bg-[#C94937] text-white font-bold text-xs uppercase tracking-wider transition shadow-lg">
-              Save All Settings to Database
-            </button>
-          </div>
-        </form>
+      <div id="settingsError" class="hidden admin-alert admin-alert-error"></div>
+      <div id="settingsReadOnlyNotice" class="hidden admin-alert admin-alert-warn">
+        Read-Only View: Updating platform settings requires <strong>Admin</strong> or <strong>Super Admin</strong> permissions.
       </div>
 
+      <form id="settingsForm" class="space-y-6">
+        <!-- 1. SDF & Pricing Engine -->
+        <section class="stat-card space-y-4">
+          <div class="border-b border-zinc-700 pb-3">
+            <h2 class="text-base font-extrabold text-white">1. Royal Government SDF &amp; Pricing Engine</h2>
+            <p class="text-[11px] text-zinc-400">Directly powers the live SDF Calculator, public checkout, and concierge booking quotes.</p>
+          </div>
+
+          <div class="admin-grid-4 text-xs">
+            <div>
+              <label for="sdf_rate_international" class="block font-bold text-zinc-300 mb-1">International SDF (USD/Night) *</label>
+              <input type="number" id="sdf_rate_international" required min="0" class="w-full px-3 py-2 rounded-lg border border-zinc-600 font-bold">
+            </div>
+            <div>
+              <label for="sdf_rate_india" class="block font-bold text-zinc-300 mb-1">India National SDF (INR/Night) *</label>
+              <input type="number" id="sdf_rate_india" required min="0" class="w-full px-3 py-2 rounded-lg border border-zinc-600 font-bold">
+            </div>
+            <div>
+              <label for="sdf_child_6_12_discount" class="block font-bold text-zinc-300 mb-1">Child 6–12 SDF Discount (%) *</label>
+              <input type="number" id="sdf_child_6_12_discount" required min="0" max="100" class="w-full px-3 py-2 rounded-lg border border-zinc-600 font-bold">
+            </div>
+            <div>
+              <label for="usd_to_inr_rate" class="block font-bold text-zinc-300 mb-1">USD → INR FX Rate *</label>
+              <input type="number" step="0.01" id="usd_to_inr_rate" required min="1" class="w-full px-3 py-2 rounded-lg border border-zinc-600 font-bold">
+            </div>
+
+            <div>
+              <label for="visa_fee_usd" class="block font-bold text-zinc-300 mb-1">DoI Visa Fee (USD) *</label>
+              <input type="number" id="visa_fee_usd" required min="0" class="w-full px-3 py-2 rounded-lg border border-zinc-600 font-bold">
+            </div>
+            <div>
+              <label for="child_6_12_package_discount_pct" class="block font-bold text-zinc-300 mb-1">Child 6–12 Package Discount (%)</label>
+              <input type="number" id="child_6_12_package_discount_pct" min="0" max="100" class="w-full px-3 py-2 rounded-lg border border-zinc-600 font-bold">
+            </div>
+            <div>
+              <label for="booking_deposit_percent" class="block font-bold text-zinc-300 mb-1">Default Booking Deposit (%)</label>
+              <input type="number" id="booking_deposit_percent" min="1" max="100" class="w-full px-3 py-2 rounded-lg border border-zinc-600 font-bold">
+            </div>
+            <div>
+              <label for="sdf_waiver_active" class="block font-bold text-zinc-300 mb-1">Govt SDF Waiver Promo</label>
+              <select id="sdf_waiver_active" class="w-full px-3 py-2 rounded-lg border border-zinc-600 font-semibold">
+                <option value="0">Inactive (Standard SDF)</option>
+                <option value="1">Active (Promo Waiver)</option>
+              </select>
+            </div>
+
+            <div>
+              <label for="hotel_4star_surcharge_usd" class="block font-bold text-zinc-300 mb-1">4-Star Fallback Surcharge (USD)</label>
+              <input type="number" id="hotel_4star_surcharge_usd" min="0" class="w-full px-3 py-2 rounded-lg border border-zinc-600 font-bold">
+            </div>
+            <div>
+              <label for="hotel_5star_surcharge_usd" class="block font-bold text-zinc-300 mb-1">5-Star Fallback Surcharge (USD)</label>
+              <input type="number" id="hotel_5star_surcharge_usd" min="0" class="w-full px-3 py-2 rounded-lg border border-zinc-600 font-bold">
+            </div>
+            <div>
+              <label for="custom_daily_rate_3star" class="block font-bold text-zinc-300 mb-1">Custom Trip 3★ Daily Rate (USD)</label>
+              <input type="number" id="custom_daily_rate_3star" min="0" class="w-full px-3 py-2 rounded-lg border border-zinc-600 font-bold">
+            </div>
+            <div>
+              <label for="custom_daily_rate_4star" class="block font-bold text-zinc-300 mb-1">Custom Trip 4★ Daily Rate (USD)</label>
+              <input type="number" id="custom_daily_rate_4star" min="0" class="w-full px-3 py-2 rounded-lg border border-zinc-600 font-bold">
+            </div>
+            <div>
+              <label for="custom_daily_rate_5star" class="block font-bold text-zinc-300 mb-1">Custom Trip 5★ Daily Rate (USD)</label>
+              <input type="number" id="custom_daily_rate_5star" min="0" class="w-full px-3 py-2 rounded-lg border border-zinc-600 font-bold">
+            </div>
+          </div>
+        </section>
+
+        <!-- 2. Company Profile & Contact Channels -->
+        <section class="stat-card space-y-4">
+          <div class="border-b border-zinc-700 pb-3">
+            <h2 class="text-base font-extrabold text-white">2. Company Branding &amp; Operational Channels</h2>
+            <p class="text-[11px] text-zinc-400">Displayed on invoices, DoI clearance letters, public headers, and client portal links.</p>
+          </div>
+          <div class="admin-grid-4 text-xs">
+            <div>
+              <label for="company_name" class="block font-bold text-zinc-300 mb-1">Company Name</label>
+              <input type="text" id="company_name" class="w-full px-3 py-2 rounded-lg border border-zinc-600 font-semibold">
+            </div>
+            <div>
+              <label for="company_license" class="block font-bold text-zinc-300 mb-1">DoT License Number</label>
+              <input type="text" id="company_license" class="w-full px-3 py-2 rounded-lg border border-zinc-600 font-mono font-bold">
+            </div>
+            <div>
+              <label for="company_tagline" class="block font-bold text-zinc-300 mb-1">Company Tagline</label>
+              <input type="text" id="company_tagline" class="w-full px-3 py-2 rounded-lg border border-zinc-600">
+            </div>
+            <div>
+              <label for="app_url" class="block font-bold text-zinc-300 mb-1">Public App URL (Client Portal Links)</label>
+              <input type="text" id="app_url" placeholder="http://localhost:3000" class="w-full px-3 py-2 rounded-lg border border-zinc-600 font-mono">
+            </div>
+            <div>
+              <label for="company_phone" class="block font-bold text-zinc-300 mb-1">Official Phone Hotline</label>
+              <input type="text" id="company_phone" class="w-full px-3 py-2 rounded-lg border border-zinc-600 font-semibold">
+            </div>
+            <div>
+              <label for="company_whatsapp" class="block font-bold text-zinc-300 mb-1">Concierge WhatsApp Number</label>
+              <input type="text" id="company_whatsapp" class="w-full px-3 py-2 rounded-lg border border-zinc-600 font-semibold">
+            </div>
+            <div>
+              <label for="company_email" class="block font-bold text-zinc-300 mb-1">Central Reservations Email</label>
+              <input type="email" id="company_email" class="w-full px-3 py-2 rounded-lg border border-zinc-600 font-semibold">
+            </div>
+            <div>
+              <label for="company_address" class="block font-bold text-zinc-300 mb-1">Registered Bhutan Address</label>
+              <input type="text" id="company_address" class="w-full px-3 py-2 rounded-lg border border-zinc-600">
+            </div>
+          </div>
+        </section>
+
+        <!-- 3. Bank Wire & Payment Instructions -->
+        <section class="stat-card space-y-4">
+          <div class="border-b border-zinc-700 pb-3">
+            <h2 class="text-base font-extrabold text-white">3. Bank Wire Transfer &amp; Invoice Instructions</h2>
+            <p class="text-[11px] text-zinc-400">Rendered on printable client invoices and Client Portal payment screens.</p>
+          </div>
+          <div class="admin-grid-3 text-xs">
+            <div>
+              <label for="bank_name" class="block font-bold text-zinc-300 mb-1">Receiving Bank Name</label>
+              <input type="text" id="bank_name" class="w-full px-3 py-2 rounded-lg border border-zinc-600 font-semibold">
+            </div>
+            <div>
+              <label for="bank_account_name" class="block font-bold text-zinc-300 mb-1">Beneficiary / Account Name</label>
+              <input type="text" id="bank_account_name" class="w-full px-3 py-2 rounded-lg border border-zinc-600 font-semibold">
+            </div>
+            <div>
+              <label for="bank_account" class="block font-bold text-zinc-300 mb-1">Escrow Account Number</label>
+              <input type="text" id="bank_account" class="w-full px-3 py-2 rounded-lg border border-zinc-600 font-mono font-bold">
+            </div>
+            <div>
+              <label for="bank_swift" class="block font-bold text-zinc-300 mb-1">SWIFT / BIC Code</label>
+              <input type="text" id="bank_swift" class="w-full px-3 py-2 rounded-lg border border-zinc-600 font-mono font-bold">
+            </div>
+            <div style="grid-column: span 2 / span 2;">
+              <label for="bank_routing_info" class="block font-bold text-zinc-300 mb-1">Routing / Wire Memo Instructions</label>
+              <input type="text" id="bank_routing_info" class="w-full px-3 py-2 rounded-lg border border-zinc-600">
+            </div>
+          </div>
+        </section>
+
+        <!-- 4. Cancellation Policies & DoI Visa Compliance -->
+        <section class="stat-card space-y-4">
+          <div class="border-b border-zinc-700 pb-3">
+            <h2 class="text-base font-extrabold text-white">4. Cancellation Terms &amp; Visa Compliance Rules</h2>
+            <p class="text-[11px] text-zinc-400">Configure balance due lead time, travel insurance gating, and cancellation schedules.</p>
+          </div>
+          <div class="admin-grid-3 text-xs">
+            <div>
+              <label for="cancellation_policy_30plus" class="block font-bold text-zinc-300 mb-1">Cancellation (30+ Days Before)</label>
+              <input type="text" id="cancellation_policy_30plus" placeholder="Full refund minus $100 wire admin fee" class="w-full px-3 py-2 rounded-lg border border-zinc-600">
+            </div>
+            <div>
+              <label for="cancellation_policy_15_29" class="block font-bold text-zinc-300 mb-1">Cancellation (15–29 Days Before)</label>
+              <input type="text" id="cancellation_policy_15_29" placeholder="50% package refund; 100% SDF refunded" class="w-full px-3 py-2 rounded-lg border border-zinc-600">
+            </div>
+            <div>
+              <label for="cancellation_policy_under15" class="block font-bold text-zinc-300 mb-1">Cancellation (&lt;15 Days Before)</label>
+              <input type="text" id="cancellation_policy_under15" placeholder="Non-refundable land package; unused SDF refunded" class="w-full px-3 py-2 rounded-lg border border-zinc-600">
+            </div>
+            <div>
+              <label for="final_payment_due_days" class="block font-bold text-zinc-300 mb-1">Final Balance Due (Days Before Departure)</label>
+              <input type="number" id="final_payment_due_days" min="0" class="w-full px-3 py-2 rounded-lg border border-zinc-600 font-bold">
+            </div>
+            <div>
+              <label for="require_insurance_for_visa" class="block font-bold text-zinc-300 mb-1">Require Travel Insurance for DoI Submission</label>
+              <select id="require_insurance_for_visa" class="w-full px-3 py-2 rounded-lg border border-zinc-600 font-semibold">
+                <option value="1">Required (Strict DoI Gate)</option>
+                <option value="0">Optional</option>
+              </select>
+            </div>
+          </div>
+        </section>
+
+        <!-- 5. WhatsApp & SMTP Integrations + Test Notification -->
+        <section class="stat-card space-y-4">
+          <div class="flex flex-wrap items-center justify-between gap-2 border-b border-zinc-700 pb-3">
+            <div>
+              <h2 class="text-base font-extrabold text-white">5. WhatsApp Cloud / Webhook &amp; SMTP Email Gateway</h2>
+              <p class="text-[11px] text-zinc-400">Masked secret fields (<code>********</code>) preserve existing credentials unless explicitly edited.</p>
+            </div>
+            <button type="button" id="sendTestNotifBtn" data-roles="super_admin,admin" class="admin-btn admin-btn-emerald admin-btn-sm">
+              🔔 Send Test Notification
+            </button>
+          </div>
+          <div class="admin-grid-4 text-xs">
+            <div>
+              <label for="whatsapp_provider" class="block font-bold text-zinc-300 mb-1">WhatsApp Provider</label>
+              <select id="whatsapp_provider" class="w-full px-3 py-2 rounded-lg border border-zinc-600 font-semibold">
+                <option value="webhook">Custom Webhook</option>
+                <option value="meta_cloud">Meta Cloud API</option>
+                <option value="twilio">Twilio WhatsApp</option>
+              </select>
+            </div>
+            <div>
+              <label for="whatsapp_webhook_url" class="block font-bold text-zinc-300 mb-1">WhatsApp API / Webhook URL</label>
+              <input type="text" id="whatsapp_webhook_url" placeholder="https://..." class="w-full px-3 py-2 rounded-lg border border-zinc-600 font-mono">
+            </div>
+            <div>
+              <label for="whatsapp_from" class="block font-bold text-zinc-300 mb-1">WhatsApp Sender ID / Number</label>
+              <input type="text" id="whatsapp_from" placeholder="+97517654321" class="w-full px-3 py-2 rounded-lg border border-zinc-600 font-mono">
+            </div>
+            <div>
+              <label for="whatsapp_api_token" class="block font-bold text-zinc-300 mb-1">WhatsApp API Token (Secret)</label>
+              <input type="password" id="whatsapp_api_token" autocomplete="new-password" placeholder="Leave unchanged to keep existing secret" class="w-full px-3 py-2 rounded-lg border border-zinc-600 font-mono">
+            </div>
+
+            <div>
+              <label for="smtp_host" class="block font-bold text-zinc-300 mb-1">SMTP Hostname</label>
+              <input type="text" id="smtp_host" placeholder="smtp.example.com" class="w-full px-3 py-2 rounded-lg border border-zinc-600 font-mono">
+            </div>
+            <div>
+              <label for="smtp_port" class="block font-bold text-zinc-300 mb-1">SMTP Port</label>
+              <input type="number" id="smtp_port" placeholder="587" class="w-full px-3 py-2 rounded-lg border border-zinc-600 font-mono">
+            </div>
+            <div>
+              <label for="smtp_user" class="block font-bold text-zinc-300 mb-1">SMTP Username</label>
+              <input type="text" id="smtp_user" class="w-full px-3 py-2 rounded-lg border border-zinc-600 font-mono">
+            </div>
+            <div>
+              <label for="smtp_pass" class="block font-bold text-zinc-300 mb-1">SMTP Password (Secret)</label>
+              <input type="password" id="smtp_pass" autocomplete="new-password" placeholder="Leave unchanged to keep existing secret" class="w-full px-3 py-2 rounded-lg border border-zinc-600 font-mono">
+            </div>
+            <div>
+              <label for="smtp_from" class="block font-bold text-zinc-300 mb-1">SMTP From Email</label>
+              <input type="email" id="smtp_from" class="w-full px-3 py-2 rounded-lg border border-zinc-600">
+            </div>
+          </div>
+        </section>
+
+        <div class="flex justify-end">
+          <button type="submit" id="saveSettingsBtn" data-roles="super_admin,admin" class="admin-btn admin-btn-primary px-6 py-3">
+            Save All Platform Settings
+          </button>
+        </div>
+      </form>
+
+      <!-- 6. Super Admin Staff Users & RBAC Manager -->
+      <section id="staff-users" data-roles="super_admin" class="stat-card space-y-4">
+        <div class="flex flex-wrap items-center justify-between gap-3 pb-3 border-b border-zinc-700">
+          <div>
+            <h2 class="text-base font-extrabold text-white">Staff Users &amp; RBAC Access Control (Super Admin Only)</h2>
+            <p class="text-[11px] text-zinc-400">Create, edit, assign roles (<code>super_admin</code>, <code>admin</code>, <code>concierge</code>, <code>finance</code>, <code>guide</code>), and toggle portal access.</p>
+          </div>
+          <button type="button" id="openAddStaffBtn" class="admin-btn admin-btn-primary">+ Add Staff / User</button>
+        </div>
+
+        <div class="overflow-x-auto">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>Staff Name</th>
+                <th>Email &amp; Phone</th>
+                <th>Role</th>
+                <th>Credentials / Specialty</th>
+                <th>Status</th>
+                <th>Last Login</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="staffUsersBody">
+              <tr><td colspan="7" class="py-6 text-center text-zinc-400">Loading staff accounts...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
     </main>
+  </div>
+
+  <!-- Add / Edit Staff User Modal -->
+  <div id="staffUserModal" class="admin-modal-backdrop hidden" role="dialog" aria-modal="true" aria-labelledby="staffModalTitle">
+    <div class="admin-modal admin-modal-lg">
+      <div class="admin-modal-header">
+        <div>
+          <h2 id="staffModalTitle" class="text-base font-extrabold text-white">Add Staff User</h2>
+          <p class="text-[11px] text-zinc-400">Configure role-based permissions &amp; portal login credentials</p>
+        </div>
+        <button type="button" id="closeStaffModalBtn" class="p-1.5 rounded-lg text-zinc-400 hover:text-white hover:bg-zinc-800 text-lg leading-none" aria-label="Close modal">✕</button>
+      </div>
+      <form id="staffUserForm" class="flex flex-col flex-1 overflow-hidden">
+        <input type="hidden" id="staffEditId">
+        <div class="admin-modal-body space-y-4 text-xs">
+          <div id="staffFormError" class="hidden admin-alert admin-alert-error"></div>
+          <div class="admin-grid-2">
+            <div>
+              <label for="staffFullName" class="block font-bold text-zinc-300 mb-1">Full Name *</label>
+              <input type="text" id="staffFullName" required class="w-full px-3 py-2 rounded-lg border border-zinc-600 font-semibold">
+            </div>
+            <div>
+              <label for="staffRole" class="block font-bold text-zinc-300 mb-1">RBAC Role *</label>
+              <select id="staffRole" required class="w-full px-3 py-2 rounded-lg border border-zinc-600 font-bold">
+                <option value="concierge">concierge (Bookings, Visas, Tours, Guides)</option>
+                <option value="finance">finance (Ledger, Receipts, SDF Remittance)</option>
+                <option value="admin">admin (Operations + Platform Settings)</option>
+                <option value="super_admin">super_admin (Full Control + RBAC Users)</option>
+                <option value="guide">guide (Field Portal Access)</option>
+              </select>
+            </div>
+            <div>
+              <label for="staffEmail" class="block font-bold text-zinc-300 mb-1">Login Email *</label>
+              <input type="email" id="staffEmail" required class="w-full px-3 py-2 rounded-lg border border-zinc-600 font-semibold">
+            </div>
+            <div>
+              <label for="staffPhone" class="block font-bold text-zinc-300 mb-1">Phone</label>
+              <input type="tel" id="staffPhone" class="w-full px-3 py-2 rounded-lg border border-zinc-600">
+            </div>
+            <div>
+              <label for="staffLanguages" class="block font-bold text-zinc-300 mb-1">Languages</label>
+              <input type="text" id="staffLanguages" placeholder="English, Dzongkha" class="w-full px-3 py-2 rounded-lg border border-zinc-600">
+            </div>
+            <div>
+              <label for="staffLicenseNo" class="block font-bold text-zinc-300 mb-1">Guide License No. (If Guide)</label>
+              <input type="text" id="staffLicenseNo" class="w-full px-3 py-2 rounded-lg border border-zinc-600 font-mono">
+            </div>
+          </div>
+          <div>
+            <label for="staffSpecialty" class="block font-bold text-zinc-300 mb-1">Department / Specialty</label>
+            <input type="text" id="staffSpecialty" class="w-full px-3 py-2 rounded-lg border border-zinc-600">
+          </div>
+          <div>
+            <label for="staffPassword" id="staffPasswordLabel" class="block font-bold text-zinc-300 mb-1">Password *</label>
+            <input type="password" id="staffPassword" class="w-full px-3 py-2 rounded-lg border border-zinc-600">
+            <p class="text-[11px] text-zinc-400 mt-1">Required when creating a user. Leave blank while editing to keep the current password.</p>
+          </div>
+          <label class="flex items-center gap-2 cursor-pointer">
+            <input type="checkbox" id="staffIsActive" checked>
+            <span class="text-zinc-200 font-bold">Account Active</span>
+          </label>
+        </div>
+        <div class="admin-modal-footer">
+          <button type="button" id="cancelStaffModalBtn" class="admin-btn admin-btn-secondary">Cancel</button>
+          <button type="submit" id="saveStaffBtn" class="admin-btn admin-btn-primary">Save Staff User</button>
+        </div>
+      </form>
+    </div>
   </div>
 
   <script src="../js/api-client.js"></script>
@@ -117,58 +376,352 @@
   <script>
     AdminApp.requireAuth();
     AdminApp.renderSidebar('settings');
-    const toggle = document.getElementById('sidebarToggle');
-    if (toggle) {
-      toggle.addEventListener('click', () => {
-        document.getElementById('adminSidebar').classList.toggle('open');
-      });
+
+    const secretEdited = {
+      whatsapp_api_token: false,
+      smtp_pass: false
+    };
+    let staffUsers = [];
+
+    const DIRECT_SETTING_IDS = [
+      'sdf_rate_international',
+      'sdf_rate_india',
+      'sdf_child_6_12_discount',
+      'usd_to_inr_rate',
+      'visa_fee_usd',
+      'child_6_12_package_discount_pct',
+      'hotel_4star_surcharge_usd',
+      'hotel_5star_surcharge_usd',
+      'sdf_waiver_active',
+      'company_name',
+      'company_license',
+      'company_tagline',
+      'company_phone',
+      'company_whatsapp',
+      'company_email',
+      'company_address',
+      'app_url',
+      'bank_name',
+      'bank_account',
+      'bank_swift',
+      'cancellation_policy_30plus',
+      'cancellation_policy_15_29',
+      'cancellation_policy_under15',
+      'final_payment_due_days',
+      'require_insurance_for_visa',
+      'whatsapp_provider',
+      'whatsapp_from',
+      'smtp_host',
+      'smtp_port',
+      'smtp_user',
+      'smtp_from'
+    ];
+
+    function setInputValue(id, val) {
+      const el = document.getElementById(id);
+      if (el && val !== undefined && val !== null) {
+        el.value = String(val);
+      }
     }
 
     async function loadSettings() {
+      const errBox = document.getElementById('settingsError');
+      errBox.classList.add('hidden');
       try {
         const res = await ApiClient.getSettings();
-        if (res.success && res.data) {
-          const dict = {};
-          res.data.forEach(r => dict[r.key] = r.value);
-
-          if (dict.sdf_usd_adult) document.getElementById('sdf_usd_adult').value = dict.sdf_usd_adult;
-          if (dict.sdf_inr_adult) document.getElementById('sdf_inr_adult').value = dict.sdf_inr_adult;
-          if (dict.visa_fee_usd) document.getElementById('visa_fee_usd').value = dict.visa_fee_usd;
-          if (dict.sdf_child_discount_pct) document.getElementById('sdf_child_discount_pct').value = dict.sdf_child_discount_pct;
-          if (dict.company_name) document.getElementById('company_name').value = dict.company_name;
-          if (dict.contact_email) document.getElementById('contact_email').value = dict.contact_email;
-          if (dict.contact_whatsapp) document.getElementById('contact_whatsapp').value = dict.contact_whatsapp;
+        const dict = (res && res.settings) || {};
+        if (res && Array.isArray(res.data)) {
+          res.data.forEach((row) => {
+            if (row && row.key && dict[row.key] === undefined) dict[row.key] = row.value;
+          });
         }
+
+        DIRECT_SETTING_IDS.forEach((key) => {
+          if (dict[key] !== undefined) setInputValue(key, dict[key]);
+        });
+
+        // Aliased canonical keys
+        setInputValue('booking_deposit_percent', dict.booking_deposit_percent ?? dict.deposit_percent ?? '30');
+        setInputValue('custom_daily_rate_3star', dict.custom_daily_rate_3star ?? dict.custom_daily_rate_3star_usd ?? '220');
+        setInputValue('custom_daily_rate_4star', dict.custom_daily_rate_4star ?? dict.custom_daily_rate_4star_usd ?? '295');
+        setInputValue('custom_daily_rate_5star', dict.custom_daily_rate_5star ?? dict.custom_daily_rate_5star_usd ?? '490');
+        setInputValue('bank_account_name', dict.bank_account_name ?? dict.bank_beneficiary ?? '');
+        setInputValue('bank_routing_info', dict.bank_routing_info ?? dict.bank_instructions ?? '');
+        setInputValue('whatsapp_webhook_url', dict.whatsapp_webhook_url ?? dict.whatsapp_api_url ?? '');
+
+        // Secrets: preserve masked placeholders without overwriting on save
+        secretEdited.whatsapp_api_token = false;
+        secretEdited.smtp_pass = false;
+        const waTokEl = document.getElementById('whatsapp_api_token');
+        const smtpPassEl = document.getElementById('smtp_pass');
+        waTokEl.value = dict.whatsapp_api_token ? '********' : '';
+        smtpPassEl.value = dict.smtp_pass ? '********' : '';
       } catch (err) {
-        console.error('Error loading settings:', err);
+        errBox.textContent = `Unable to load settings: ${err.message || 'Server error'}`;
+        errBox.classList.remove('hidden');
       }
     }
 
+    document.getElementById('whatsapp_api_token').addEventListener('input', () => {
+      secretEdited.whatsapp_api_token = true;
+    });
+    document.getElementById('smtp_pass').addEventListener('input', () => {
+      secretEdited.smtp_pass = true;
+    });
+
     document.getElementById('settingsForm').addEventListener('submit', async (e) => {
       e.preventDefault();
+      const errBox = document.getElementById('settingsError');
+      errBox.classList.add('hidden');
+      const btn = document.getElementById('saveSettingsBtn');
+      btn.disabled = true;
+
       try {
-        const payload = {
-          sdf_usd_adult: document.getElementById('sdf_usd_adult').value,
-          sdf_inr_adult: document.getElementById('sdf_inr_adult').value,
-          visa_fee_usd: document.getElementById('visa_fee_usd').value,
-          sdf_child_discount_pct: document.getElementById('sdf_child_discount_pct').value,
-          company_name: document.getElementById('company_name').value,
-          contact_email: document.getElementById('contact_email').value,
-          contact_whatsapp: document.getElementById('contact_whatsapp').value
-        };
+        const payload = {};
+        DIRECT_SETTING_IDS.forEach((key) => {
+          const el = document.getElementById(key);
+          if (el) payload[key] = el.value.trim();
+        });
+
+        const depositPct = document.getElementById('booking_deposit_percent').value.trim();
+        payload.booking_deposit_percent = depositPct;
+        payload.deposit_percent = depositPct;
+
+        const r3 = document.getElementById('custom_daily_rate_3star').value.trim();
+        const r4 = document.getElementById('custom_daily_rate_4star').value.trim();
+        const r5 = document.getElementById('custom_daily_rate_5star').value.trim();
+        payload.custom_daily_rate_3star = r3;
+        payload.custom_daily_rate_3star_usd = r3;
+        payload.custom_daily_rate_4star = r4;
+        payload.custom_daily_rate_4star_usd = r4;
+        payload.custom_daily_rate_5star = r5;
+        payload.custom_daily_rate_5star_usd = r5;
+
+        const bankAccName = document.getElementById('bank_account_name').value.trim();
+        payload.bank_account_name = bankAccName;
+        payload.bank_beneficiary = bankAccName;
+
+        const bankRouting = document.getElementById('bank_routing_info').value.trim();
+        payload.bank_routing_info = bankRouting;
+        payload.bank_instructions = bankRouting;
+
+        const waUrl = document.getElementById('whatsapp_webhook_url').value.trim();
+        payload.whatsapp_webhook_url = waUrl;
+        payload.whatsapp_api_url = waUrl;
+
+        const waToken = document.getElementById('whatsapp_api_token').value;
+        if (secretEdited.whatsapp_api_token && waToken !== '********') {
+          payload.whatsapp_api_token = waToken;
+        }
+        const smtpPass = document.getElementById('smtp_pass').value;
+        if (secretEdited.smtp_pass && smtpPass !== '********') {
+          payload.smtp_pass = smtpPass;
+        }
 
         const res = await ApiClient.updateSettings(payload);
-        if (res.success) {
-          AdminApp.showToast('Government rates & operational settings saved to database successfully!');
-        } else {
-          AdminApp.showToast(res.error || 'Failed to save settings', 'error');
-        }
+        if (!res || !res.success) throw new Error((res && res.error) || 'Failed to save settings');
+
+        AdminApp.showToast(`Saved ${res.updated_count || ''} platform settings to database!`);
+        await loadSettings();
       } catch (err) {
-        AdminApp.showToast(err.message, 'error');
+        errBox.textContent = err.message || 'Failed to save settings';
+        errBox.classList.remove('hidden');
+      } finally {
+        btn.disabled = false;
       }
     });
 
-    document.addEventListener('DOMContentLoaded', loadSettings);
+    document.getElementById('sendTestNotifBtn').addEventListener('click', async () => {
+      const btn = document.getElementById('sendTestNotifBtn');
+      btn.disabled = true;
+      try {
+        const staff = AdminApp.getStaffUser();
+        const res = await ApiClient.sendTestNotification({
+          channel: 'in_app',
+          email: document.getElementById('company_email').value.trim() || (staff && staff.email) || undefined,
+          phone: document.getElementById('company_whatsapp').value.trim() || undefined
+        });
+        if (!res || !res.success) throw new Error((res && res.error) || 'Test notification failed');
+        AdminApp.showToast('Test notification dispatched! Check the Notifications Hub.');
+        AdminApp.refreshUnreadCount();
+      } catch (err) {
+        AdminApp.showToast(err.message || 'Test notification failed', 'error');
+      } finally {
+        btn.disabled = false;
+      }
+    });
+
+    // --- Super Admin Staff Users & RBAC Manager ---
+    async function loadStaffUsers() {
+      if (!AdminApp.isSuperAdmin()) return;
+      try {
+        const res = await ApiClient.getAdminUsers();
+        staffUsers = (res && res.data) || [];
+        renderStaffUsersTable();
+      } catch (err) {
+        document.getElementById('staffUsersBody').innerHTML =
+          `<tr><td colspan="7" class="py-6 text-center text-red-400">${AdminApp.esc(err.message || 'Failed to load staff users')}</td></tr>`;
+      }
+    }
+
+    function roleBadge(role) {
+      const r = String(role || '').toLowerCase();
+      if (r === 'super_admin') return '<span class="badge badge-red">super_admin</span>';
+      if (r === 'admin') return '<span class="badge badge-purple">admin</span>';
+      if (r === 'finance') return '<span class="badge badge-emerald badge-green">finance</span>';
+      if (r === 'concierge') return '<span class="badge badge-blue">concierge</span>';
+      return '<span class="badge badge-amber">guide</span>';
+    }
+
+    function renderStaffUsersTable() {
+      const tbody = document.getElementById('staffUsersBody');
+      if (!staffUsers.length) {
+        tbody.innerHTML = `<tr><td colspan="7" class="py-6 text-center text-zinc-400">No staff users found.</td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = staffUsers.map((u) => {
+        const isActive = Number(u.is_active) === 1;
+        return `
+          <tr>
+            <td>
+              <div class="font-bold text-white text-xs">${AdminApp.esc(u.full_name || u.name)}</div>
+              <div class="text-[10px] font-mono text-zinc-500">${AdminApp.esc(u.uuid || `ID #${u.id}`)}</div>
+            </td>
+            <td>
+              <div class="text-xs text-zinc-200">${AdminApp.esc(u.email)}</div>
+              <div class="text-[11px] text-zinc-400">${AdminApp.esc(u.phone || '—')}</div>
+            </td>
+            <td>${roleBadge(u.role)}</td>
+            <td>
+              <div class="text-xs text-zinc-300">${AdminApp.esc(u.specialty || '—')}</div>
+              <div class="text-[11px] text-zinc-400">${u.license_no ? `License: ${AdminApp.esc(u.license_no)}` : AdminApp.esc(u.languages || '')}</div>
+            </td>
+            <td><span class="badge ${isActive ? 'badge-green' : 'badge-red'}">${isActive ? 'Active' : 'Disabled'}</span></td>
+            <td class="text-[11px] font-mono text-zinc-400">${AdminApp.esc(AdminApp.formatDateTime(u.last_login))}</td>
+            <td>
+              <div class="flex flex-wrap items-center gap-1.5">
+                <button type="button" data-staff-action="edit" data-staff-id="${Number(u.id)}" class="admin-btn admin-btn-secondary admin-btn-sm">Edit</button>
+                <button type="button" data-staff-action="toggle" data-staff-id="${Number(u.id)}" class="admin-btn admin-btn-sm ${isActive ? 'admin-btn-amber' : 'admin-btn-emerald'}">
+                  ${isActive ? 'Disable' : 'Enable'}
+                </button>
+              </div>
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    function openStaffModal(userId = '') {
+      document.getElementById('staffFormError').classList.add('hidden');
+      document.getElementById('staffUserForm').reset();
+
+      if (!userId) {
+        document.getElementById('staffEditId').value = '';
+        document.getElementById('staffModalTitle').textContent = 'Add Staff / Portal User';
+        document.getElementById('staffPassword').required = true;
+        document.getElementById('staffPasswordLabel').textContent = 'Password *';
+        document.getElementById('staffIsActive').checked = true;
+      } else {
+        const u = staffUsers.find((x) => Number(x.id) === Number(userId));
+        if (!u) return;
+        document.getElementById('staffEditId').value = String(u.id);
+        document.getElementById('staffModalTitle').textContent = `Edit Staff — ${u.full_name || u.name}`;
+        document.getElementById('staffFullName').value = u.full_name || u.name || '';
+        document.getElementById('staffRole').value = u.role || 'concierge';
+        document.getElementById('staffEmail').value = u.email || '';
+        document.getElementById('staffPhone').value = u.phone || '';
+        document.getElementById('staffLanguages').value = u.languages || '';
+        document.getElementById('staffLicenseNo').value = u.license_no || '';
+        document.getElementById('staffSpecialty').value = u.specialty || '';
+        document.getElementById('staffPassword').value = '';
+        document.getElementById('staffPassword').required = false;
+        document.getElementById('staffPasswordLabel').textContent = 'Reset Password (Optional)';
+        document.getElementById('staffIsActive').checked = Number(u.is_active) === 1;
+      }
+      document.getElementById('staffUserModal').classList.remove('hidden');
+    }
+
+    document.getElementById('staffUserForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const errBox = document.getElementById('staffFormError');
+      errBox.classList.add('hidden');
+      const editId = document.getElementById('staffEditId').value.trim();
+      const password = document.getElementById('staffPassword').value;
+
+      const payload = {
+        full_name: document.getElementById('staffFullName').value.trim(),
+        role: document.getElementById('staffRole').value,
+        email: document.getElementById('staffEmail').value.trim(),
+        phone: document.getElementById('staffPhone').value.trim(),
+        languages: document.getElementById('staffLanguages').value.trim(),
+        license_no: document.getElementById('staffLicenseNo').value.trim(),
+        specialty: document.getElementById('staffSpecialty').value.trim(),
+        is_active: document.getElementById('staffIsActive').checked ? 1 : 0
+      };
+      if (!editId) {
+        if (!password) {
+          errBox.textContent = 'Password is required for new users.';
+          errBox.classList.remove('hidden');
+          return;
+        }
+        payload.password = password;
+      } else if (password && password.trim()) {
+        payload.password = password;
+      }
+
+      const btn = document.getElementById('saveStaffBtn');
+      btn.disabled = true;
+      try {
+        const res = editId
+          ? await ApiClient.updateAdminUser(editId, payload)
+          : await ApiClient.createAdminUser(payload);
+        if (!res || !res.success) throw new Error((res && res.error) || 'Failed to save staff user');
+        document.getElementById('staffUserModal').classList.add('hidden');
+        AdminApp.showToast(`User "${payload.full_name}" saved!`);
+        await loadStaffUsers();
+      } catch (err) {
+        errBox.textContent = err.message || 'Failed to save user';
+        errBox.classList.remove('hidden');
+      } finally {
+        btn.disabled = false;
+      }
+    });
+
+    document.getElementById('staffUsersBody').addEventListener('click', async (e) => {
+      const btn = e.target.closest('[data-staff-action]');
+      if (!btn) return;
+      const action = btn.getAttribute('data-staff-action');
+      const id = btn.getAttribute('data-staff-id');
+      if (action === 'edit') {
+        openStaffModal(id);
+      } else if (action === 'toggle') {
+        btn.disabled = true;
+        try {
+          const res = await ApiClient.toggleAdminUser(id);
+          if (!res || !res.success) throw new Error((res && res.error) || 'Toggle failed');
+          AdminApp.showToast(res.message || 'Account status toggled');
+          await loadStaffUsers();
+        } catch (err) {
+          AdminApp.showToast(err.message || 'Failed to toggle user', 'error');
+        } finally {
+          btn.disabled = false;
+        }
+      }
+    });
+
+    document.getElementById('openAddStaffBtn').addEventListener('click', () => openStaffModal(''));
+    document.getElementById('closeStaffModalBtn').addEventListener('click', () => document.getElementById('staffUserModal').classList.add('hidden'));
+    document.getElementById('cancelStaffModalBtn').addEventListener('click', () => document.getElementById('staffUserModal').classList.add('hidden'));
+
+    document.addEventListener('DOMContentLoaded', async () => {
+      await AdminApp.verifySession();
+      if (!AdminApp.hasRole('super_admin', 'admin')) {
+        document.getElementById('settingsReadOnlyNotice').classList.remove('hidden');
+      }
+      await loadSettings();
+      await loadStaffUsers();
+    });
   </script>
 </body>
 </html>

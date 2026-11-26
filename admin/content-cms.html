@@ -1,0 +1,889 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light only">
+  <title>Content CMS — Bhutan Fast Rate Operations</title>
+  <link rel="stylesheet" href="../css/tour-theme.css">
+  <link rel="stylesheet" href="css/admin-theme.css">
+</head>
+<body class="admin-layout">
+  <aside id="adminSidebar" class="admin-sidebar"></aside>
+
+  <div class="admin-main">
+    <header class="admin-header">
+      <div class="flex items-center gap-3">
+        <button id="sidebarToggle" class="lg:hidden p-2 text-zinc-400 hover:text-white rounded" aria-label="Toggle navigation">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+        </button>
+        <div>
+          <h1 class="text-base font-extrabold text-white">Content CMS — Destinations, Festivals &amp; Reviews</h1>
+          <p class="text-[11px] text-zinc-400">Live editorial control syncing directly with destinations.html, festivals.html, reviews.html &amp; index.html</p>
+        </div>
+      </div>
+      <div class="flex items-center gap-3 text-xs">
+        <span class="px-2.5 py-1 rounded bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 font-bold">API Live</span>
+        <a href="notifications.html" class="notif-bell-btn" title="Notifications">🔔</a>
+      </div>
+    </header>
+
+    <main class="p-6 sm:p-8 space-y-6">
+      <div id="cmsError" class="hidden admin-alert admin-alert-error"></div>
+
+      <!-- Tab Switcher & Summary -->
+      <div class="stat-card flex flex-wrap items-center justify-between gap-4">
+        <div class="flex flex-wrap items-center gap-2" role="tablist">
+          <button type="button" data-cms-tab="destinations" class="admin-btn admin-btn-primary">
+            🏔️ Valley Destinations (<span id="countDestinations">0</span>)
+          </button>
+          <button type="button" data-cms-tab="festivals" class="admin-btn admin-btn-secondary">
+            🎭 Festivals 2027 (<span id="countFestivals">0</span>)
+          </button>
+          <button type="button" data-cms-tab="reviews" class="admin-btn admin-btn-secondary">
+            ⭐ Guest Reviews (<span id="countReviews">0</span>)
+          </button>
+        </div>
+        <div class="flex items-center gap-2">
+          <button type="button" id="refreshCmsBtn" class="admin-btn admin-btn-secondary admin-btn-sm">↻ Refresh All</button>
+        </div>
+      </div>
+
+      <!-- TAB 1: DESTINATIONS CRUD -->
+      <section id="tabPanelDestinations" class="stat-card space-y-4">
+        <div class="flex flex-wrap items-center justify-between gap-3 pb-3 border-b border-zinc-700">
+          <div>
+            <h2 class="text-base font-extrabold text-white">Bhutan Valley Destinations</h2>
+            <p class="text-[11px] text-zinc-400">Manage valley taglines, elevations, best travel months, highlights &amp; public visibility</p>
+          </div>
+          <div class="flex items-center gap-2">
+            <a href="../destinations.html" target="_blank" rel="noopener" class="admin-btn admin-btn-secondary admin-btn-sm">Public Destinations ↗</a>
+            <button type="button" id="openNewDestBtn" data-roles="super_admin,admin,concierge" class="admin-btn admin-btn-primary">+ Add Destination</button>
+          </div>
+        </div>
+
+        <div class="overflow-x-auto">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>Destination</th>
+                <th>Altitude &amp; Region</th>
+                <th>Best Months</th>
+                <th>Highlights</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="destinationsTableBody">
+              <tr><td colspan="6" class="py-6 text-center text-zinc-400">Loading destinations...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- TAB 2: FESTIVALS CRUD -->
+      <section id="tabPanelFestivals" class="hidden stat-card space-y-4">
+        <div class="flex flex-wrap items-center justify-between gap-3 pb-3 border-b border-zinc-700">
+          <div>
+            <h2 class="text-base font-extrabold text-white">Sacred Tshechu &amp; Cultural Festivals (2027)</h2>
+            <p class="text-[11px] text-zinc-400">Manage lunar festival dates, monastery venues, linked tour packages &amp; homepage spotlight</p>
+          </div>
+          <div class="flex items-center gap-2">
+            <a href="../festivals.html" target="_blank" rel="noopener" class="admin-btn admin-btn-secondary admin-btn-sm">Public Festivals ↗</a>
+            <button type="button" id="openNewFestBtn" data-roles="super_admin,admin,concierge" class="admin-btn admin-btn-primary">+ Add Festival</button>
+          </div>
+        </div>
+
+        <div class="overflow-x-auto">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>Festival Title</th>
+                <th>Season &amp; Dates</th>
+                <th>Venue &amp; Valley</th>
+                <th>Linked Tour Package</th>
+                <th>Flags</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="festivalsTableBody">
+              <tr><td colspan="6" class="py-6 text-center text-zinc-400">Loading festivals...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- TAB 3: REVIEWS MODERATION -->
+      <section id="tabPanelReviews" class="hidden stat-card space-y-4">
+        <div class="flex flex-wrap items-center justify-between gap-3 pb-3 border-b border-zinc-700">
+          <div>
+            <h2 class="text-base font-extrabold text-white">Guest Testimonials &amp; Reviews Moderation</h2>
+            <p class="text-[11px] text-zinc-400">Approve client portal reviews, feature stories on homepage, post operator replies, or remove spam</p>
+          </div>
+          <div class="flex flex-wrap items-center gap-2">
+            <input type="text" id="reviewSearchInput" placeholder="Search author, tour, comment..." class="px-3 py-1.5 rounded-lg border border-zinc-600 text-xs w-56">
+            <select id="reviewFilterSelect" class="px-3 py-1.5 rounded-lg border border-zinc-600 text-xs">
+              <option value="all">All Reviews</option>
+              <option value="pending">Pending Approval</option>
+              <option value="published">Published Only</option>
+              <option value="featured">Featured on Homepage</option>
+            </select>
+            <a href="../reviews.html" target="_blank" rel="noopener" class="admin-btn admin-btn-secondary admin-btn-sm">Public Reviews ↗</a>
+          </div>
+        </div>
+
+        <div id="reviewsModerationList" class="space-y-3">
+          <div class="admin-panel-sub text-xs text-zinc-400">Loading reviews...</div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- Destination Add / Edit Modal -->
+  <div id="destModal" class="admin-modal-backdrop hidden" role="dialog" aria-modal="true" aria-labelledby="destModalTitle">
+    <div class="admin-modal admin-modal-lg">
+      <div class="admin-modal-header">
+        <div>
+          <h2 id="destModalTitle" class="text-base font-extrabold text-white">Add Valley Destination</h2>
+          <p id="destModalSub" class="text-[11px] text-zinc-400">Syncs directly with public destinations catalog</p>
+        </div>
+        <button type="button" id="closeDestModalBtn" class="p-1.5 rounded-lg text-zinc-400 hover:text-white hover:bg-zinc-800 text-lg leading-none" aria-label="Close modal">✕</button>
+      </div>
+      <form id="destForm" class="flex flex-col flex-1 overflow-hidden">
+        <input type="hidden" id="destEditId">
+        <div class="admin-modal-body space-y-4 text-xs">
+          <div id="destFormError" class="hidden admin-alert admin-alert-error"></div>
+          <div class="admin-grid-3">
+            <div>
+              <label for="destName" class="block font-bold text-zinc-300 mb-1">Destination Name *</label>
+              <input type="text" id="destName" required placeholder="e.g. Paro Valley" class="w-full px-3 py-2 rounded-lg border border-zinc-600 font-semibold">
+            </div>
+            <div>
+              <label for="destSlug" class="block font-bold text-zinc-300 mb-1">Slug / ID</label>
+              <input type="text" id="destSlug" placeholder="auto-from-name" class="w-full px-3 py-2 rounded-lg border border-zinc-600 font-mono">
+            </div>
+            <div>
+              <label for="destRegion" class="block font-bold text-zinc-300 mb-1">Region</label>
+              <select id="destRegion" class="w-full px-3 py-2 rounded-lg border border-zinc-600 font-semibold">
+                <option value="Western">Western</option>
+                <option value="Western/Central">Western/Central</option>
+                <option value="Central">Central</option>
+                <option value="Eastern">Eastern</option>
+              </select>
+            </div>
+            <div style="grid-column: span 2 / span 2;">
+              <label for="destTagline" class="block font-bold text-zinc-300 mb-1">Tagline</label>
+              <input type="text" id="destTagline" placeholder="Gateway to the Kingdom &amp; Sacred Tiger's Nest" class="w-full px-3 py-2 rounded-lg border border-zinc-600">
+            </div>
+            <div>
+              <label for="destAltitude" class="block font-bold text-zinc-300 mb-1">Altitude (Meters)</label>
+              <input type="number" id="destAltitude" placeholder="2280" class="w-full px-3 py-2 rounded-lg border border-zinc-600 font-bold">
+            </div>
+            <div>
+              <label for="destBestMonths" class="block font-bold text-zinc-300 mb-1">Best Months</label>
+              <input type="text" id="destBestMonths" placeholder="Mar - May, Sep - Nov" class="w-full px-3 py-2 rounded-lg border border-zinc-600">
+            </div>
+            <div>
+              <label for="destCoverImage" class="block font-bold text-zinc-300 mb-1">Cover Image Path</label>
+              <input type="text" id="destCoverImage" value="assets/images/dochula-pass.webp" class="w-full px-3 py-2 rounded-lg border border-zinc-600 font-mono">
+            </div>
+            <div>
+              <label for="destSortOrder" class="block font-bold text-zinc-300 mb-1">Sort Order</label>
+              <input type="number" id="destSortOrder" min="0" value="10" class="w-full px-3 py-2 rounded-lg border border-zinc-600 font-bold">
+            </div>
+          </div>
+          <div>
+            <label for="destDescription" class="block font-bold text-zinc-300 mb-1">Description *</label>
+            <textarea id="destDescription" rows="3" required placeholder="Detailed valley overview..." class="w-full px-3 py-2 rounded-lg border border-zinc-600"></textarea>
+          </div>
+          <div>
+            <label for="destHighlights" class="block font-bold text-zinc-300 mb-1">Key Highlights (1 per line)</label>
+            <textarea id="destHighlights" rows="4" placeholder="Paro Taktsang (Tiger's Nest)&#10;Rinpung Dzong Fortress&#10;Kyichu Lhakhang" class="w-full px-3 py-2 rounded-lg border border-zinc-600"></textarea>
+          </div>
+          <label class="flex items-center gap-2 cursor-pointer">
+            <input type="checkbox" id="destIsActive" checked>
+            <span class="text-zinc-200 font-bold">Active (Visible on Destinations Page)</span>
+          </label>
+        </div>
+        <div class="admin-modal-footer">
+          <button type="button" id="cancelDestModalBtn" class="admin-btn admin-btn-secondary">Cancel</button>
+          <button type="submit" id="saveDestBtn" class="admin-btn admin-btn-primary">Save Destination</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Festival Add / Edit Modal -->
+  <div id="festModal" class="admin-modal-backdrop hidden" role="dialog" aria-modal="true" aria-labelledby="festModalTitle">
+    <div class="admin-modal admin-modal-lg">
+      <div class="admin-modal-header">
+        <div>
+          <h2 id="festModalTitle" class="text-base font-extrabold text-white">Add Sacred Festival</h2>
+          <p id="festModalSub" class="text-[11px] text-zinc-400">Syncs directly with 2027 Festivals Calendar &amp; Homepage</p>
+        </div>
+        <button type="button" id="closeFestModalBtn" class="p-1.5 rounded-lg text-zinc-400 hover:text-white hover:bg-zinc-800 text-lg leading-none" aria-label="Close modal">✕</button>
+      </div>
+      <form id="festForm" class="flex flex-col flex-1 overflow-hidden">
+        <input type="hidden" id="festEditId">
+        <div class="admin-modal-body space-y-4 text-xs">
+          <div id="festFormError" class="hidden admin-alert admin-alert-error"></div>
+          <div class="admin-grid-3">
+            <div>
+              <label for="festName" class="block font-bold text-zinc-300 mb-1">Festival Title *</label>
+              <input type="text" id="festName" required placeholder="e.g. Paro Tshechu Festival 2027" class="w-full px-3 py-2 rounded-lg border border-zinc-600 font-semibold">
+            </div>
+            <div>
+              <label for="festSlug" class="block font-bold text-zinc-300 mb-1">Slug / ID</label>
+              <input type="text" id="festSlug" placeholder="auto-from-title" class="w-full px-3 py-2 rounded-lg border border-zinc-600 font-mono">
+            </div>
+            <div>
+              <label for="festSeason" class="block font-bold text-zinc-300 mb-1">Season</label>
+              <select id="festSeason" class="w-full px-3 py-2 rounded-lg border border-zinc-600 font-semibold">
+                <option value="Spring">Spring</option>
+                <option value="Summer">Summer</option>
+                <option value="Autumn">Autumn</option>
+                <option value="Winter">Winter</option>
+              </select>
+            </div>
+            <div>
+              <label for="festDatesLabel" class="block font-bold text-zinc-300 mb-1">Lunar Dates Label</label>
+              <input type="text" id="festDatesLabel" placeholder="e.g. Mar 20 - Mar 24, 2027" class="w-full px-3 py-2 rounded-lg border border-zinc-600 font-semibold">
+            </div>
+            <div>
+              <label for="festVenue" class="block font-bold text-zinc-300 mb-1">Monastery / Dzong Venue</label>
+              <input type="text" id="festVenue" placeholder="Rinpung Dzong Courtyard" class="w-full px-3 py-2 rounded-lg border border-zinc-600">
+            </div>
+            <div>
+              <label for="festValley" class="block font-bold text-zinc-300 mb-1">Valley</label>
+              <input type="text" id="festValley" placeholder="Paro" class="w-full px-3 py-2 rounded-lg border border-zinc-600">
+            </div>
+            <div style="grid-column: span 2 / span 2;">
+              <label for="festRelatedTourId" class="block font-bold text-zinc-300 mb-1">Linked Tour Package</label>
+              <select id="festRelatedTourId" class="w-full px-3 py-2 rounded-lg border border-zinc-600 font-semibold">
+                <option value="">None (Standalone Festival Listing)</option>
+              </select>
+            </div>
+            <div>
+              <label for="festCoverImage" class="block font-bold text-zinc-300 mb-1">Cover Image Path</label>
+              <input type="text" id="festCoverImage" value="assets/images/thimphu-festival.webp" class="w-full px-3 py-2 rounded-lg border border-zinc-600 font-mono">
+            </div>
+            <div>
+              <label for="festDurationDays" class="block font-bold text-zinc-300 mb-1">Duration Days</label>
+              <input type="number" id="festDurationDays" min="1" value="3" class="w-full px-3 py-2 rounded-lg border border-zinc-600 font-bold">
+            </div>
+            <div>
+              <label for="festPriceUsd" class="block font-bold text-zinc-300 mb-1">Starting Price (USD)</label>
+              <input type="number" id="festPriceUsd" min="0" placeholder="Optional" class="w-full px-3 py-2 rounded-lg border border-zinc-600 font-bold">
+            </div>
+            <div>
+              <label for="festSortOrder" class="block font-bold text-zinc-300 mb-1">Sort Order</label>
+              <input type="number" id="festSortOrder" min="0" value="10" class="w-full px-3 py-2 rounded-lg border border-zinc-600 font-bold">
+            </div>
+          </div>
+          <div>
+            <label for="festSummary" class="block font-bold text-zinc-300 mb-1">Festival Summary *</label>
+            <textarea id="festSummary" rows="3" required placeholder="Sacred mask dances, Thongdrel unfolding..." class="w-full px-3 py-2 rounded-lg border border-zinc-600"></textarea>
+          </div>
+          <div class="admin-grid-2">
+            <div>
+              <label for="festHighlights" class="block font-bold text-zinc-300 mb-1">Highlights (1 per line)</label>
+              <textarea id="festHighlights" rows="3" placeholder="Sacred Cham Dances&#10;Dawn Thongdrel Tapestry Blessing" class="w-full px-3 py-2 rounded-lg border border-zinc-600"></textarea>
+            </div>
+            <div>
+              <label for="festEtiquette" class="block font-bold text-zinc-300 mb-1">Visitor Etiquette</label>
+              <textarea id="festEtiquette" rows="3" placeholder="Modest attire covering shoulders and knees..." class="w-full px-3 py-2 rounded-lg border border-zinc-600"></textarea>
+            </div>
+          </div>
+          <div class="flex flex-wrap items-center gap-6">
+            <label class="flex items-center gap-2 cursor-pointer">
+              <input type="checkbox" id="festIsActive" checked>
+              <span class="text-zinc-200 font-bold">Active (Visible on Festivals Page)</span>
+            </label>
+            <label class="flex items-center gap-2 cursor-pointer">
+              <input type="checkbox" id="festIsFeatured">
+              <span class="text-zinc-200 font-bold">Featured on Homepage</span>
+            </label>
+          </div>
+        </div>
+        <div class="admin-modal-footer">
+          <button type="button" id="cancelFestModalBtn" class="admin-btn admin-btn-secondary">Cancel</button>
+          <button type="submit" id="saveFestBtn" class="admin-btn admin-btn-primary">Save Festival</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Generic Delete Confirmation Modal -->
+  <div id="cmsDeleteModal" class="admin-modal-backdrop hidden" role="dialog" aria-modal="true" aria-labelledby="cmsDeleteTitle">
+    <div class="admin-modal">
+      <div class="admin-modal-header">
+        <h2 id="cmsDeleteTitle" class="text-sm font-extrabold text-white">Confirm Deletion</h2>
+        <button type="button" id="closeCmsDeleteBtn" class="p-1.5 rounded-lg text-zinc-400 hover:text-white hover:bg-zinc-800 text-lg leading-none" aria-label="Close modal">✕</button>
+      </div>
+      <div class="admin-modal-body text-xs text-zinc-200">
+        Permanently delete <strong id="cmsDeleteLabel" class="text-white">this item</strong>? This action is recorded in the audit trail.
+      </div>
+      <div class="admin-modal-footer">
+        <button type="button" id="cancelCmsDeleteBtn" class="admin-btn admin-btn-secondary admin-btn-sm">Cancel</button>
+        <button type="button" id="confirmCmsDeleteBtn" class="admin-btn admin-btn-danger admin-btn-sm">Delete Permanently</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="../js/api-client.js"></script>
+  <script src="js/admin-app.js"></script>
+  <script>
+    AdminApp.requireAuth();
+    AdminApp.renderSidebar('cms');
+
+    let activeTab = 'destinations';
+    let loadedDestinations = [];
+    let loadedFestivals = [];
+    let loadedReviews = [];
+    let loadedTours = [];
+    let pendingCmsDelete = null;
+
+    function buildPublicLink(slug, prefix) {
+      const s = String(slug || '').trim();
+      if (!s) return `../${prefix}s.html`;
+      if (s.startsWith(`${prefix}-`)) {
+        return s.endsWith('.html') ? `../${s}` : `../${s}.html`;
+      }
+      return `../${prefix}-${s}.html`;
+    }
+
+    function switchTab(tab) {
+      activeTab = tab;
+      document.querySelectorAll('[data-cms-tab]').forEach((btn) => {
+        const isCurrent = btn.getAttribute('data-cms-tab') === tab;
+        btn.className = `admin-btn ${isCurrent ? 'admin-btn-primary' : 'admin-btn-secondary'}`;
+      });
+      document.getElementById('tabPanelDestinations').classList.toggle('hidden', tab !== 'destinations');
+      document.getElementById('tabPanelFestivals').classList.toggle('hidden', tab !== 'festivals');
+      document.getElementById('tabPanelReviews').classList.toggle('hidden', tab !== 'reviews');
+    }
+
+    async function loadAllCmsData() {
+      const errBox = document.getElementById('cmsError');
+      errBox.classList.add('hidden');
+      try {
+        const [destRes, festRes, revRes, tourRes] = await Promise.all([
+          ApiClient.getAdminDestinations(),
+          ApiClient.getAdminFestivals(),
+          ApiClient.getAdminReviews(),
+          ApiClient.getAdminTours()
+        ]);
+
+        loadedDestinations = (destRes && destRes.data) || [];
+        loadedFestivals = (festRes && festRes.data) || [];
+        loadedReviews = (revRes && revRes.data) || [];
+        loadedTours = (tourRes && tourRes.data) || [];
+
+        document.getElementById('countDestinations').textContent = String(loadedDestinations.length);
+        document.getElementById('countFestivals').textContent = String(loadedFestivals.length);
+        document.getElementById('countReviews').textContent = String(loadedReviews.length);
+
+        populateToursSelect();
+        renderDestinationsTable();
+        renderFestivalsTable();
+        renderReviewsList();
+      } catch (err) {
+        errBox.textContent = `Unable to load Content CMS data: ${err.message || 'Server error'}`;
+        errBox.classList.remove('hidden');
+      }
+    }
+
+    function populateToursSelect() {
+      const sel = document.getElementById('festRelatedTourId');
+      sel.innerHTML = '<option value="">None (Standalone Festival Listing)</option>' +
+        loadedTours.map((t) => `<option value="${AdminApp.esc(t.id)}">${AdminApp.esc(t.title)} (${AdminApp.esc(t.id)})</option>`).join('');
+    }
+
+    // --- TAB 1: DESTINATIONS ---
+    function renderDestinationsTable() {
+      const tbody = document.getElementById('destinationsTableBody');
+      if (!loadedDestinations.length) {
+        tbody.innerHTML = `<tr><td colspan="6" class="py-6 text-center text-zinc-400">No destinations found.</td></tr>`;
+        return;
+      }
+      const canMutate = AdminApp.canOps();
+
+      tbody.innerHTML = loadedDestinations.map((d) => {
+        const isActive = Number(d.is_active) !== 0;
+        const highlights = Array.isArray(d.highlights) ? d.highlights : [];
+        const pubHref = buildPublicLink(d.slug || d.id, 'destination');
+        return `
+          <tr>
+            <td>
+              <div class="font-bold text-white text-xs">${AdminApp.esc(d.name)}</div>
+              <div class="text-[11px] text-zinc-400 max-w-[260px] truncate">${AdminApp.esc(d.tagline || '')}</div>
+              <div class="text-[10px] font-mono text-zinc-500">${AdminApp.esc(d.id)} · <a href="${AdminApp.esc(pubHref)}" target="_blank" rel="noopener" class="text-[#E05A47] hover:underline font-sans font-bold">View Page ↗</a></div>
+            </td>
+            <td>
+              <div class="text-xs font-bold text-white">${d.altitude_meters ? `${Number(d.altitude_meters).toLocaleString()}m` : '—'}</div>
+              <div class="text-[11px] text-zinc-400">${AdminApp.esc(d.region || 'Bhutan')}</div>
+            </td>
+            <td class="text-xs text-zinc-300">${AdminApp.esc(d.best_months || 'Year-round')}</td>
+            <td>
+              <span class="badge badge-zinc">${highlights.length} Highlights</span>
+            </td>
+            <td>
+              <span class="badge ${isActive ? 'badge-green' : 'badge-amber'}">${isActive ? 'Active' : 'Hidden'}</span>
+            </td>
+            <td>
+              ${canMutate ? `
+                <div class="flex flex-wrap items-center gap-1.5">
+                  <button type="button" data-dest-action="edit" data-dest-id="${AdminApp.esc(d.id)}" class="admin-btn admin-btn-secondary admin-btn-sm">Edit</button>
+                  <button type="button" data-dest-action="toggle" data-dest-id="${AdminApp.esc(d.id)}" class="admin-btn admin-btn-sm ${isActive ? 'admin-btn-amber' : 'admin-btn-emerald'}">
+                    ${isActive ? 'Hide' : 'Publish'}
+                  </button>
+                </div>
+              ` : '<span class="text-zinc-500 text-xs">Read-only</span>'}
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    function openDestModal(destId = '') {
+      document.getElementById('destFormError').classList.add('hidden');
+      document.getElementById('destForm').reset();
+      const slugInput = document.getElementById('destSlug');
+
+      if (!destId) {
+        document.getElementById('destEditId').value = '';
+        document.getElementById('destModalTitle').textContent = 'Add Valley Destination';
+        slugInput.readOnly = false;
+        document.getElementById('destCoverImage').value = 'assets/images/dochula-pass.webp';
+        document.getElementById('destSortOrder').value = '10';
+        document.getElementById('destIsActive').checked = true;
+      } else {
+        const d = loadedDestinations.find((x) => String(x.id) === String(destId));
+        if (!d) return;
+        document.getElementById('destEditId').value = d.id;
+        document.getElementById('destModalTitle').textContent = `Edit Destination — ${d.name}`;
+        document.getElementById('destName').value = d.name || '';
+        slugInput.value = d.slug || d.id;
+        slugInput.readOnly = true;
+        document.getElementById('destRegion').value = d.region || 'Western';
+        document.getElementById('destTagline').value = d.tagline || '';
+        document.getElementById('destAltitude').value = d.altitude_meters ?? '';
+        document.getElementById('destBestMonths').value = d.best_months || '';
+        document.getElementById('destCoverImage').value = d.cover_image || '';
+        document.getElementById('destSortOrder').value = String(d.sort_order ?? 10);
+        document.getElementById('destDescription').value = d.description || '';
+        document.getElementById('destHighlights').value = Array.isArray(d.highlights) ? d.highlights.join('\n') : '';
+        document.getElementById('destIsActive').checked = Number(d.is_active) !== 0;
+      }
+      document.getElementById('destModal').classList.remove('hidden');
+    }
+
+    document.getElementById('destForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const errBox = document.getElementById('destFormError');
+      errBox.classList.add('hidden');
+      const editId = document.getElementById('destEditId').value.trim();
+
+      const altRaw = document.getElementById('destAltitude').value.trim();
+      const payload = {
+        name: document.getElementById('destName').value.trim(),
+        region: document.getElementById('destRegion').value,
+        tagline: document.getElementById('destTagline').value.trim(),
+        altitude_meters: altRaw ? Number(altRaw) : '',
+        best_months: document.getElementById('destBestMonths').value.trim(),
+        cover_image: document.getElementById('destCoverImage').value.trim(),
+        sort_order: parseInt(document.getElementById('destSortOrder').value, 10) || 0,
+        description: document.getElementById('destDescription').value.trim(),
+        highlights: document.getElementById('destHighlights').value.split('\n').map((s) => s.trim()).filter(Boolean),
+        is_active: document.getElementById('destIsActive').checked ? 1 : 0
+      };
+      if (!editId) {
+        const customSlug = document.getElementById('destSlug').value.trim();
+        if (customSlug) payload.slug = customSlug;
+      }
+
+      const btn = document.getElementById('saveDestBtn');
+      btn.disabled = true;
+      try {
+        const res = editId
+          ? await ApiClient.updateAdminDestination(editId, payload)
+          : await ApiClient.createAdminDestination(payload);
+        if (!res || !res.success) throw new Error((res && res.error) || 'Failed to save destination');
+        document.getElementById('destModal').classList.add('hidden');
+        AdminApp.showToast(`Destination "${payload.name}" saved!`);
+        await loadAllCmsData();
+      } catch (err) {
+        errBox.textContent = err.message || 'Failed to save destination';
+        errBox.classList.remove('hidden');
+      } finally {
+        btn.disabled = false;
+      }
+    });
+
+    document.getElementById('destinationsTableBody').addEventListener('click', async (e) => {
+      const btn = e.target.closest('[data-dest-action]');
+      if (!btn) return;
+      const action = btn.getAttribute('data-dest-action');
+      const id = btn.getAttribute('data-dest-id');
+      const dest = loadedDestinations.find((d) => String(d.id) === String(id));
+      if (!dest) return;
+
+      if (action === 'edit') {
+        openDestModal(id);
+      } else if (action === 'toggle') {
+        btn.disabled = true;
+        try {
+          const nextActive = Number(dest.is_active) !== 0 ? 0 : 1;
+          const res = await ApiClient.updateAdminDestination(id, { is_active: nextActive });
+          if (!res || !res.success) throw new Error((res && res.error) || 'Toggle failed');
+          AdminApp.showToast(`Destination "${dest.name}" is now ${nextActive ? 'Active' : 'Hidden'}`);
+          await loadAllCmsData();
+        } catch (err) {
+          AdminApp.showToast(err.message || 'Failed to update destination', 'error');
+        } finally {
+          btn.disabled = false;
+        }
+      }
+    });
+
+    // --- TAB 2: FESTIVALS ---
+    function renderFestivalsTable() {
+      const tbody = document.getElementById('festivalsTableBody');
+      if (!loadedFestivals.length) {
+        tbody.innerHTML = `<tr><td colspan="6" class="py-6 text-center text-zinc-400">No festivals configured yet.</td></tr>`;
+        return;
+      }
+      const canMutate = AdminApp.canOps();
+
+      tbody.innerHTML = loadedFestivals.map((f) => {
+        const isActive = Number(f.is_active) !== 0;
+        const isFeatured = Number(f.is_featured) === 1;
+        const linkedTour = loadedTours.find((t) => String(t.id) === String(f.related_tour_id));
+        const pubHref = buildPublicLink(f.slug || f.id, 'festival');
+
+        return `
+          <tr>
+            <td>
+              <div class="font-bold text-white text-xs">${AdminApp.esc(f.name)}</div>
+              <div class="text-[10px] font-mono text-zinc-400">
+                ${AdminApp.esc(f.id)} · <a href="${AdminApp.esc(pubHref)}" target="_blank" rel="noopener" class="text-[#E05A47] hover:underline font-sans font-bold">Live Page ↗</a>
+              </div>
+            </td>
+            <td>
+              <div class="text-xs font-semibold text-white">${AdminApp.esc(f.dates_label || 'Lunar Calendar TBD')}</div>
+              <div class="text-[11px] text-zinc-400">${AdminApp.esc(f.season || 'Annual')} · ${Number(f.duration_days || 3)} days</div>
+            </td>
+            <td>
+              <div class="text-xs text-zinc-200">${AdminApp.esc(f.venue || '—')}</div>
+              <div class="text-[11px] text-zinc-400">${AdminApp.esc(f.valley || 'Bhutan')}</div>
+            </td>
+            <td>
+              ${linkedTour
+                ? `<span class="badge badge-blue">${AdminApp.esc(linkedTour.title)}</span>`
+                : (f.related_tour_id ? `<span class="font-mono text-xs text-zinc-300">${AdminApp.esc(f.related_tour_id)}</span>` : '<span class="text-zinc-500">None</span>')}
+            </td>
+            <td>
+              <div class="flex flex-wrap gap-1">
+                <span class="badge ${isActive ? 'badge-green' : 'badge-amber'}">${isActive ? 'Active' : 'Hidden'}</span>
+                ${isFeatured ? '<span class="badge badge-purple">Featured</span>' : ''}
+              </div>
+            </td>
+            <td>
+              ${canMutate ? `
+                <div class="flex flex-wrap items-center gap-1.5">
+                  <button type="button" data-fest-action="edit" data-fest-id="${AdminApp.esc(f.id)}" class="admin-btn admin-btn-secondary admin-btn-sm">Edit</button>
+                  <button type="button" data-fest-action="toggle" data-fest-id="${AdminApp.esc(f.id)}" class="admin-btn admin-btn-sm ${isActive ? 'admin-btn-amber' : 'admin-btn-emerald'}">
+                    ${isActive ? 'Hide' : 'Publish'}
+                  </button>
+                  <button type="button" data-fest-action="delete" data-fest-id="${AdminApp.esc(f.id)}" class="admin-btn admin-btn-danger admin-btn-sm">Delete</button>
+                </div>
+              ` : '<span class="text-zinc-500 text-xs">Read-only</span>'}
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    function openFestModal(festId = '') {
+      document.getElementById('festFormError').classList.add('hidden');
+      document.getElementById('festForm').reset();
+      const slugInput = document.getElementById('festSlug');
+
+      if (!festId) {
+        document.getElementById('festEditId').value = '';
+        document.getElementById('festModalTitle').textContent = 'Add Sacred Festival (2027)';
+        slugInput.readOnly = false;
+        document.getElementById('festCoverImage').value = 'assets/images/thimphu-festival.webp';
+        document.getElementById('festDurationDays').value = '3';
+        document.getElementById('festSortOrder').value = '10';
+        document.getElementById('festIsActive').checked = true;
+        document.getElementById('festIsFeatured').checked = false;
+      } else {
+        const f = loadedFestivals.find((x) => String(x.id) === String(festId));
+        if (!f) return;
+        document.getElementById('festEditId').value = f.id;
+        document.getElementById('festModalTitle').textContent = `Edit Festival — ${f.name}`;
+        document.getElementById('festName').value = f.name || '';
+        slugInput.value = f.slug || f.id;
+        slugInput.readOnly = true;
+        document.getElementById('festSeason').value = f.season || 'Autumn';
+        document.getElementById('festDatesLabel').value = f.dates_label || '';
+        document.getElementById('festVenue').value = f.venue || '';
+        document.getElementById('festValley').value = f.valley || '';
+        document.getElementById('festRelatedTourId').value = f.related_tour_id || '';
+        document.getElementById('festCoverImage').value = f.cover_image || '';
+        document.getElementById('festDurationDays').value = String(f.duration_days || 3);
+        document.getElementById('festPriceUsd').value = f.price_usd ?? '';
+        document.getElementById('festSortOrder').value = String(f.sort_order ?? 10);
+        document.getElementById('festSummary').value = f.summary || '';
+        document.getElementById('festHighlights').value = Array.isArray(f.highlights) ? f.highlights.join('\n') : '';
+        document.getElementById('festEtiquette').value = f.etiquette || '';
+        document.getElementById('festIsActive').checked = Number(f.is_active) !== 0;
+        document.getElementById('festIsFeatured').checked = Number(f.is_featured) === 1;
+      }
+      document.getElementById('festModal').classList.remove('hidden');
+    }
+
+    document.getElementById('festForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const errBox = document.getElementById('festFormError');
+      errBox.classList.add('hidden');
+      const editId = document.getElementById('festEditId').value.trim();
+
+      const priceRaw = document.getElementById('festPriceUsd').value.trim();
+      const payload = {
+        name: document.getElementById('festName').value.trim(),
+        season: document.getElementById('festSeason').value,
+        dates_label: document.getElementById('festDatesLabel').value.trim(),
+        venue: document.getElementById('festVenue').value.trim(),
+        valley: document.getElementById('festValley').value.trim(),
+        related_tour_id: document.getElementById('festRelatedTourId').value || null,
+        cover_image: document.getElementById('festCoverImage').value.trim(),
+        duration_days: parseInt(document.getElementById('festDurationDays').value, 10) || 3,
+        price_usd: priceRaw ? Number(priceRaw) : null,
+        sort_order: parseInt(document.getElementById('festSortOrder').value, 10) || 0,
+        summary: document.getElementById('festSummary').value.trim(),
+        highlights: document.getElementById('festHighlights').value.split('\n').map((s) => s.trim()).filter(Boolean),
+        etiquette: document.getElementById('festEtiquette').value.trim(),
+        is_active: document.getElementById('festIsActive').checked ? 1 : 0,
+        is_featured: document.getElementById('festIsFeatured').checked ? 1 : 0
+      };
+      if (!editId) {
+        const customSlug = document.getElementById('festSlug').value.trim();
+        if (customSlug) payload.slug = customSlug;
+      }
+
+      const btn = document.getElementById('saveFestBtn');
+      btn.disabled = true;
+      try {
+        const res = editId
+          ? await ApiClient.updateAdminFestival(editId, payload)
+          : await ApiClient.createAdminFestival(payload);
+        if (!res || !res.success) throw new Error((res && res.error) || 'Failed to save festival');
+        document.getElementById('festModal').classList.add('hidden');
+        AdminApp.showToast(`Festival "${payload.name}" saved!`);
+        await loadAllCmsData();
+      } catch (err) {
+        errBox.textContent = err.message || 'Failed to save festival';
+        errBox.classList.remove('hidden');
+      } finally {
+        btn.disabled = false;
+      }
+    });
+
+    document.getElementById('festivalsTableBody').addEventListener('click', async (e) => {
+      const btn = e.target.closest('[data-fest-action]');
+      if (!btn) return;
+      const action = btn.getAttribute('data-fest-action');
+      const id = btn.getAttribute('data-fest-id');
+      const fest = loadedFestivals.find((f) => String(f.id) === String(id));
+      if (!fest) return;
+
+      if (action === 'edit') {
+        openFestModal(id);
+      } else if (action === 'toggle') {
+        btn.disabled = true;
+        try {
+          const res = await ApiClient.toggleAdminFestival(id);
+          if (!res || !res.success) throw new Error((res && res.error) || 'Toggle failed');
+          AdminApp.showToast(`Festival "${fest.name}" visibility updated`);
+          await loadAllCmsData();
+        } catch (err) {
+          AdminApp.showToast(err.message || 'Toggle failed', 'error');
+        } finally {
+          btn.disabled = false;
+        }
+      } else if (action === 'delete') {
+        pendingCmsDelete = { type: 'festival', id, label: fest.name };
+        document.getElementById('cmsDeleteLabel').textContent = fest.name;
+        document.getElementById('cmsDeleteModal').classList.remove('hidden');
+      }
+    });
+
+    // --- TAB 3: REVIEWS MODERATION ---
+    function renderReviewsList() {
+      const search = document.getElementById('reviewSearchInput').value.trim().toLowerCase();
+      const filter = document.getElementById('reviewFilterSelect').value;
+
+      const filtered = loadedReviews.filter((r) => {
+        const pub = Number(r.is_published) === 1;
+        const feat = Number(r.is_featured) === 1;
+        if (filter === 'pending' && pub) return false;
+        if (filter === 'published' && !pub) return false;
+        if (filter === 'featured' && !feat) return false;
+        if (search) {
+          const hay = [r.author_name, r.author_country, r.tour_taken, r.title, r.comment, r.booking_id]
+            .filter(Boolean).join(' ').toLowerCase();
+          if (!hay.includes(search)) return false;
+        }
+        return true;
+      });
+
+      const container = document.getElementById('reviewsModerationList');
+      if (!filtered.length) {
+        container.innerHTML = `<div class="admin-panel-sub text-xs text-zinc-400 text-center py-6">No reviews match the selected filter.</div>`;
+        return;
+      }
+
+      const canMutate = AdminApp.canOps();
+
+      container.innerHTML = filtered.map((r) => {
+        const pub = Number(r.is_published) === 1;
+        const feat = Number(r.is_featured) === 1;
+        const ver = Number(r.is_verified) === 1;
+        const stars = '★'.repeat(Math.max(1, Math.min(5, Number(r.rating) || 5)));
+
+        return `
+          <div class="admin-panel-sub space-y-3" data-review-card="${Number(r.id)}">
+            <div class="flex flex-wrap items-start justify-between gap-3">
+              <div class="space-y-1">
+                <div class="flex flex-wrap items-center gap-2">
+                  <span class="text-amber-400 font-bold text-xs">${stars}</span>
+                  <strong class="text-white text-sm">${AdminApp.esc(r.author_name)}</strong>
+                  <span class="text-xs text-zinc-400">(${AdminApp.esc(r.author_country)})</span>
+                  ${ver ? '<span class="badge badge-blue">Verified Traveler</span>' : ''}
+                  <span class="badge ${pub ? 'badge-green' : 'badge-amber'}">${pub ? 'Published' : 'Pending Approval'}</span>
+                  ${feat ? '<span class="badge badge-purple">Homepage Featured</span>' : ''}
+                </div>
+                <div class="text-[11px] text-zinc-400">
+                  Tour: <span class="text-zinc-200 font-semibold">${AdminApp.esc(r.tour_taken || 'Bhutan Expedition')}</span>
+                  ${r.booking_id ? ` · Ref: <a href="booking-detail.html?id=${encodeURIComponent(r.booking_id)}" class="font-mono text-[#E05A47] hover:underline">${AdminApp.esc(r.booking_id)}</a>` : ''}
+                  ${r.travel_date ? ` · ${AdminApp.esc(r.travel_date)}` : ''}
+                </div>
+              </div>
+              ${canMutate ? `
+                <div class="flex flex-wrap items-center gap-1.5">
+                  <button type="button" data-rev-action="toggle-pub" data-rev-id="${Number(r.id)}" class="admin-btn admin-btn-sm ${pub ? 'admin-btn-amber' : 'admin-btn-emerald'}">
+                    ${pub ? 'Unpublish' : '✓ Approve & Publish'}
+                  </button>
+                  <button type="button" data-rev-action="toggle-feat" data-rev-id="${Number(r.id)}" class="admin-btn admin-btn-secondary admin-btn-sm">
+                    ${feat ? 'Unfeature' : '★ Feature on Home'}
+                  </button>
+                  <button type="button" data-rev-action="delete" data-rev-id="${Number(r.id)}" class="admin-btn admin-btn-danger admin-btn-sm">
+                    Delete
+                  </button>
+                </div>
+              ` : ''}
+            </div>
+
+            ${r.title ? `<div class="font-bold text-white text-xs">${AdminApp.esc(r.title)}</div>` : ''}
+            <p class="text-xs text-zinc-200 leading-relaxed">${AdminApp.esc(r.comment)}</p>
+
+            ${canMutate ? `
+              <div class="pt-2 border-t border-zinc-700/70 flex flex-col sm:flex-row gap-2">
+                <input type="text" data-rev-reply-input="${Number(r.id)}" value="${AdminApp.esc(r.admin_response || '')}" placeholder="Write official operator response (displayed publicly under this review)..." class="flex-1 px-3 py-1.5 rounded-lg border border-zinc-600 text-xs">
+                <button type="button" data-rev-action="save-reply" data-rev-id="${Number(r.id)}" class="admin-btn admin-btn-primary admin-btn-sm shrink-0">
+                  Save Operator Reply
+                </button>
+              </div>
+            ` : (r.admin_response ? `<div class="text-xs text-emerald-300">Operator Reply: ${AdminApp.esc(r.admin_response)}</div>` : '')}
+          </div>
+        `;
+      }).join('');
+    }
+
+    document.getElementById('reviewsModerationList').addEventListener('click', async (e) => {
+      const btn = e.target.closest('[data-rev-action]');
+      if (!btn) return;
+      const action = btn.getAttribute('data-rev-action');
+      const id = btn.getAttribute('data-rev-id');
+      const rev = loadedReviews.find((r) => Number(r.id) === Number(id));
+      if (!rev) return;
+
+      if (action === 'delete') {
+        pendingCmsDelete = { type: 'review', id, label: `review by ${rev.author_name}` };
+        document.getElementById('cmsDeleteLabel').textContent = `review by ${rev.author_name}`;
+        document.getElementById('cmsDeleteModal').classList.remove('hidden');
+        return;
+      }
+
+      btn.disabled = true;
+      try {
+        let payload = {};
+        if (action === 'toggle-pub') {
+          payload = { is_published: Number(rev.is_published) === 1 ? 0 : 1 };
+        } else if (action === 'toggle-feat') {
+          payload = { is_featured: Number(rev.is_featured) === 1 ? 0 : 1 };
+        } else if (action === 'save-reply') {
+          const input = document.querySelector(`[data-rev-reply-input="${Number(id)}"]`);
+          payload = { admin_response: input ? input.value.trim() : '' };
+        }
+        const res = await ApiClient.moderateAdminReview(id, payload);
+        if (!res || !res.success) throw new Error((res && res.error) || 'Failed to update review');
+        AdminApp.showToast('Review moderation saved!');
+        await loadAllCmsData();
+      } catch (err) {
+        AdminApp.showToast(err.message || 'Moderation failed', 'error');
+      } finally {
+        btn.disabled = false;
+      }
+    });
+
+    // Confirm Delete Handler (Festivals & Reviews)
+    document.getElementById('confirmCmsDeleteBtn').addEventListener('click', async () => {
+      if (!pendingCmsDelete) return;
+      const btn = document.getElementById('confirmCmsDeleteBtn');
+      btn.disabled = true;
+      try {
+        let res;
+        if (pendingCmsDelete.type === 'festival') {
+          res = await ApiClient.deleteAdminFestival(pendingCmsDelete.id);
+        } else if (pendingCmsDelete.type === 'review') {
+          res = await ApiClient.deleteAdminReview(pendingCmsDelete.id);
+        }
+        if (!res || !res.success) throw new Error((res && res.error) || 'Delete failed');
+        document.getElementById('cmsDeleteModal').classList.add('hidden');
+        pendingCmsDelete = null;
+        AdminApp.showToast(res.message || 'Item deleted');
+        await loadAllCmsData();
+      } catch (err) {
+        AdminApp.showToast(err.message || 'Delete failed', 'error');
+      } finally {
+        btn.disabled = false;
+      }
+    });
+
+    // Event Bindings
+    document.querySelectorAll('[data-cms-tab]').forEach((btn) => {
+      btn.addEventListener('click', () => switchTab(btn.getAttribute('data-cms-tab')));
+    });
+
+    document.getElementById('openNewDestBtn').addEventListener('click', () => openDestModal(''));
+    document.getElementById('closeDestModalBtn').addEventListener('click', () => document.getElementById('destModal').classList.add('hidden'));
+    document.getElementById('cancelDestModalBtn').addEventListener('click', () => document.getElementById('destModal').classList.add('hidden'));
+
+    document.getElementById('openNewFestBtn').addEventListener('click', () => openFestModal(''));
+    document.getElementById('closeFestModalBtn').addEventListener('click', () => document.getElementById('festModal').classList.add('hidden'));
+    document.getElementById('cancelFestModalBtn').addEventListener('click', () => document.getElementById('festModal').classList.add('hidden'));
+
+    document.getElementById('closeCmsDeleteBtn').addEventListener('click', () => document.getElementById('cmsDeleteModal').classList.add('hidden'));
+    document.getElementById('cancelCmsDeleteBtn').addEventListener('click', () => document.getElementById('cmsDeleteModal').classList.add('hidden'));
+
+    document.getElementById('refreshCmsBtn').addEventListener('click', loadAllCmsData);
+    document.getElementById('reviewSearchInput').addEventListener('input', renderReviewsList);
+    document.getElementById('reviewFilterSelect').addEventListener('change', renderReviewsList);
+
+    document.addEventListener('DOMContentLoaded', loadAllCmsData);
+  </script>
+</body>
+</html>

@@ -4,57 +4,162 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="color-scheme" content="light only">
-  <title>Notifications — Bhutan Fast Rate Operations</title>
+  <title>Notifications &amp; Dispatch Hub — Bhutan Fast Rate Operations</title>
   <link rel="stylesheet" href="../css/tour-theme.css">
   <link rel="stylesheet" href="css/admin-theme.css">
 </head>
 <body class="admin-layout">
-  <!-- Dynamic Sidebar -->
   <aside id="adminSidebar" class="admin-sidebar"></aside>
 
-  <!-- Main Workspace -->
   <div class="admin-main">
     <header class="admin-header">
       <div class="flex items-center gap-3">
-        <button id="sidebarToggle" class="lg:hidden p-2 text-zinc-400 hover:text-white rounded">
+        <button id="sidebarToggle" class="lg:hidden p-2 text-zinc-400 hover:text-white rounded" aria-label="Toggle navigation">
           <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
         </button>
-        <h1 class="text-base font-extrabold text-white">Notifications</h1>
+        <div>
+          <h1 class="text-base font-extrabold text-white">Notifications &amp; Client Dispatch Hub</h1>
+          <p class="text-[11px] text-zinc-400">Live operational alerts, WhatsApp click-to-send queue &amp; manual client/guide messaging</p>
+        </div>
       </div>
-      <div class="flex items-center gap-4 text-xs">
-        <span class="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 font-bold">API Online</span>
-        <a href="notifications.html" class="p-2 rounded-lg bg-zinc-800 text-zinc-300 hover:text-white">🔔</a>
+      <div class="flex items-center gap-3 text-xs">
+        <span class="px-2.5 py-1 rounded bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 font-bold">API Live</span>
+        <a href="notifications.html" class="notif-bell-btn" title="Notifications">🔔</a>
       </div>
     </header>
 
     <main class="p-6 sm:p-8 space-y-6">
-      
-  <div class="stat-card space-y-4">
-    <div class="flex items-center justify-between">
-      <h2 class="text-base font-extrabold text-white">System Notification Center</h2>
-      <button onclick="AdminApp.showToast('All notifications marked as read.')" class="text-xs font-bold text-zinc-400 hover:text-white">
-        Mark All as Read
-      </button>
-    </div>
+      <div id="notifError" class="hidden admin-alert admin-alert-error"></div>
+      <div id="composerResultBanner" class="hidden admin-alert admin-alert-success flex flex-wrap items-center justify-between gap-2"></div>
 
-    <div class="space-y-2 text-xs">
-      <div class="p-4 bg-zinc-800 rounded-xl border border-zinc-700 flex justify-between items-center">
-        <div>
-          <div class="font-bold text-white text-sm">Passport Scans Uploaded</div>
-          <div class="text-zinc-400">Dr. Evelyn Martinez uploaded color passport bio-page for booking BFR-2026-8841.</div>
+      <!-- KPI Summary -->
+      <div class="admin-grid-3">
+        <div class="stat-card p-4">
+          <div class="text-[10px] font-bold uppercase tracking-wider text-zinc-400">Unread Alerts</div>
+          <div id="statNotifUnread" class="text-2xl font-black text-[#E05A47] mt-1">—</div>
         </div>
-        <span class="badge badge-green">NEW</span>
-      </div>
-      <div class="p-4 bg-zinc-800 rounded-xl border border-zinc-700 flex justify-between items-center">
-        <div>
-          <div class="font-bold text-white text-sm">Wire Payment Verified</div>
-          <div class="text-zinc-400">$5,180 received for Essential Bhutan Heritage.</div>
+        <div class="stat-card p-4">
+          <div class="text-[10px] font-bold uppercase tracking-wider text-zinc-400">WhatsApp Pending Queue</div>
+          <div id="statWaPending" class="text-2xl font-black text-emerald-400 mt-1">—</div>
         </div>
-        <span class="text-zinc-500">2h ago</span>
+        <div class="stat-card p-4">
+          <div class="text-[10px] font-bold uppercase tracking-wider text-zinc-400">Loaded Log Entries</div>
+          <div id="statNotifTotal" class="text-2xl font-black text-white mt-1">—</div>
+        </div>
       </div>
-    </div>
-  </div>
 
+      <!-- Top Grid: WhatsApp Pending Queue + Manual Client Composer -->
+      <div class="admin-grid-12">
+        <!-- WhatsApp Pending Queue -->
+        <div class="stat-card admin-col-6 space-y-4">
+          <div class="flex flex-wrap items-center justify-between gap-2 pb-3 border-b border-zinc-700">
+            <div>
+              <h2 class="text-base font-extrabold text-white">WhatsApp Pending Dispatch Queue</h2>
+              <p class="text-[11px] text-zinc-400">Queued client confirmations &amp; visa updates awaiting operator WhatsApp send</p>
+            </div>
+            <span id="waQueueBadge" class="badge badge-amber">0 Pending</span>
+          </div>
+          <div id="waQueueList" class="space-y-2.5 max-h-[380px] overflow-y-auto text-xs">
+            <div class="admin-panel-sub text-zinc-400">Loading WhatsApp pending queue...</div>
+          </div>
+        </div>
+
+        <!-- Manual WhatsApp / Email Client Composer -->
+        <div class="stat-card admin-col-6 space-y-4">
+          <div class="pb-3 border-b border-zinc-700">
+            <h2 class="text-base font-extrabold text-white">Manual WhatsApp / Email Client Composer</h2>
+            <p class="text-[11px] text-zinc-400">Dispatch ad-hoc itinerary confirmations, payment reminders, or visa updates</p>
+          </div>
+          <form id="manualNotifyForm" class="space-y-3 text-xs">
+            <div class="admin-grid-2">
+              <div>
+                <label for="compBookingSelect" class="block font-bold text-zinc-300 mb-1">Link Booking (Optional)</label>
+                <select id="compBookingSelect" class="w-full px-3 py-2 rounded-lg border border-zinc-600 font-semibold">
+                  <option value="">Standalone Message (No Booking)</option>
+                </select>
+              </div>
+              <div>
+                <label for="compChannel" class="block font-bold text-zinc-300 mb-1">Channel *</label>
+                <select id="compChannel" class="w-full px-3 py-2 rounded-lg border border-zinc-600 font-semibold">
+                  <option value="whatsapp">WhatsApp</option>
+                  <option value="email">Email (SMTP)</option>
+                  <option value="in_app">In-App Portal Alert</option>
+                </select>
+              </div>
+              <div>
+                <label for="compRecipientType" class="block font-bold text-zinc-300 mb-1">Recipient Role</label>
+                <select id="compRecipientType" class="w-full px-3 py-2 rounded-lg border border-zinc-600 font-semibold">
+                  <option value="client">Client Traveler</option>
+                  <option value="guide">Field Guide</option>
+                  <option value="admin">Internal Staff</option>
+                </select>
+              </div>
+              <div>
+                <label for="compPhone" class="block font-bold text-zinc-300 mb-1">WhatsApp / Phone</label>
+                <input type="tel" id="compPhone" placeholder="+1 415 555 0199" class="w-full px-3 py-2 rounded-lg border border-zinc-600 font-semibold">
+              </div>
+              <div>
+                <label for="compEmail" class="block font-bold text-zinc-300 mb-1">Recipient Email</label>
+                <input type="email" id="compEmail" placeholder="guest@example.com" class="w-full px-3 py-2 rounded-lg border border-zinc-600 font-semibold">
+              </div>
+              <div>
+                <label for="compSubject" class="block font-bold text-zinc-300 mb-1">Subject / Title *</label>
+                <input type="text" id="compSubject" required placeholder="Bhutan Itinerary &amp; Visa Update" class="w-full px-3 py-2 rounded-lg border border-zinc-600 font-semibold">
+              </div>
+            </div>
+            <div>
+              <label for="compMessage" class="block font-bold text-zinc-300 mb-1">Message Body *</label>
+              <textarea id="compMessage" rows="3" required placeholder="Kuzuzangpo La! Here is your latest update from Bhutan Fast Rate Tours..." class="w-full px-3 py-2 rounded-lg border border-zinc-600"></textarea>
+            </div>
+            <div class="flex justify-end">
+              <button type="submit" id="sendComposerBtn" class="admin-btn admin-btn-primary">
+                📤 Send / Queue Notification
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <!-- Live Notification Inbox -->
+      <div class="stat-card space-y-4">
+        <div class="flex flex-wrap items-center justify-between gap-3 pb-3 border-b border-zinc-700">
+          <div class="flex flex-wrap items-center gap-2.5">
+            <h2 class="text-base font-extrabold text-white mr-2">Notification Inbox</h2>
+            <select id="inboxUnreadFilter" class="px-3 py-1.5 rounded-lg border border-zinc-600 text-xs">
+              <option value="">All Messages</option>
+              <option value="1">Unread Only</option>
+              <option value="0">Read Only</option>
+            </select>
+            <select id="inboxChannelFilter" class="px-3 py-1.5 rounded-lg border border-zinc-600 text-xs">
+              <option value="All">All Channels</option>
+              <option value="whatsapp">WhatsApp</option>
+              <option value="email">Email</option>
+              <option value="in_app">In-App</option>
+            </select>
+            <select id="inboxCategoryFilter" class="px-3 py-1.5 rounded-lg border border-zinc-600 text-xs">
+              <option value="All">All Categories</option>
+              <option value="booking_new">New Booking</option>
+              <option value="booking_confirmed">Booking Confirmed</option>
+              <option value="payment_received">Payment Received</option>
+              <option value="visa_submitted">Visa Submitted</option>
+              <option value="visa_approved">Visa Approved</option>
+              <option value="clearance_issued">Clearance Issued</option>
+              <option value="visa_rejected">Visa Rejected</option>
+              <option value="guide_assignment">Guide Assignment</option>
+              <option value="manual_dispatch">Manual Dispatch</option>
+              <option value="test_notification">System Test</option>
+            </select>
+          </div>
+          <div class="flex items-center gap-2">
+            <button type="button" id="markAllReadBtn" class="admin-btn admin-btn-secondary admin-btn-sm">✓ Mark All Read</button>
+            <button type="button" id="refreshNotifsBtn" class="admin-btn admin-btn-secondary admin-btn-sm">↻ Refresh</button>
+          </div>
+        </div>
+
+        <div id="notifInboxList" class="space-y-2.5 text-xs">
+          <div class="admin-panel-sub text-zinc-400">Loading notifications from database...</div>
+        </div>
+      </div>
     </main>
   </div>
 
@@ -62,13 +167,275 @@
   <script src="js/admin-app.js"></script>
   <script>
     AdminApp.requireAuth();
-    AdminApp.renderSidebar('notifications');
-    const toggle = document.getElementById('sidebarToggle');
-    if (toggle) {
-      toggle.addEventListener('click', () => {
-        document.getElementById('adminSidebar').classList.toggle('open');
-      });
+    AdminApp.renderSidebar('notifications', { skipNotifFetch: true });
+
+    let allNotifications = [];
+    let bookingOptions = [];
+
+    function openSafeWhatsApp(url) {
+      const target = String(url || '').trim();
+      if (!/^https:\/\/wa\.me\//i.test(target)) {
+        AdminApp.showToast('Invalid or missing WhatsApp URL.', 'error');
+        return false;
+      }
+      window.open(target, '_blank', 'noopener');
+      return true;
     }
+
+    function safeActionHref(actionUrl) {
+      const raw = String(actionUrl || '').trim();
+      if (!raw) return '';
+      if (/^javascript:/i.test(raw) || /^data:/i.test(raw)) return '';
+      if (raw.startsWith('admin/')) return raw.slice(6);
+      if (/^https?:\/\//i.test(raw)) return raw;
+      return `../${raw.replace(/^\/+/, '')}`;
+    }
+
+    async function loadBookingsForComposer() {
+      try {
+        const res = await ApiClient.getAdminBookings();
+        bookingOptions = (res && res.data) || [];
+        const sel = document.getElementById('compBookingSelect');
+        sel.innerHTML = '<option value="">Standalone Message (No Booking)</option>' +
+          bookingOptions.map((b) => `<option value="${AdminApp.esc(b.id)}">${AdminApp.esc(b.id)} — ${AdminApp.esc(b.lead_name)} (${AdminApp.esc(b.lead_phone || b.lead_email)})</option>`).join('');
+      } catch (_) {}
+    }
+
+    async function loadNotifications() {
+      const errBox = document.getElementById('notifError');
+      errBox.classList.add('hidden');
+      try {
+        const unread = document.getElementById('inboxUnreadFilter').value;
+        const channel = document.getElementById('inboxChannelFilter').value;
+        const category = document.getElementById('inboxCategoryFilter').value;
+
+        const [filteredRes, queueRes] = await Promise.all([
+          ApiClient.getNotifications({ unread, channel, category, limit: 100 }),
+          ApiClient.getNotifications({ is_sent: '0', limit: 50 })
+        ]);
+
+        allNotifications = (filteredRes && filteredRes.data) || [];
+        const unreadCount = Number((filteredRes && filteredRes.unread_count) || 0);
+        AdminApp.updateUnreadBadge(unreadCount);
+
+        const queueItems = ((queueRes && queueRes.data) || []).filter((n) =>
+          (String(n.channel || '').toLowerCase() === 'whatsapp' || /^https:\/\/wa\.me\//i.test(String(n.whatsapp_url || ''))) &&
+          Number(n.is_sent) === 0
+        );
+
+        document.getElementById('statNotifUnread').textContent = String(unreadCount);
+        document.getElementById('statWaPending').textContent = String(queueItems.length);
+        document.getElementById('statNotifTotal').textContent = String(allNotifications.length);
+
+        const waBadge = document.getElementById('waQueueBadge');
+        waBadge.textContent = `${queueItems.length} Pending`;
+        waBadge.className = `badge ${queueItems.length > 0 ? 'badge-amber' : 'badge-green'}`;
+
+        renderWhatsAppQueue(queueItems);
+        renderInbox(allNotifications);
+      } catch (err) {
+        errBox.textContent = `Unable to load notifications: ${err.message || 'Server error'}`;
+        errBox.classList.remove('hidden');
+      }
+    }
+
+    function renderWhatsAppQueue(items) {
+      const container = document.getElementById('waQueueList');
+      if (!items.length) {
+        container.innerHTML = `<div class="admin-panel-sub text-emerald-400 text-center py-6 font-semibold">No pending WhatsApp dispatches in queue.</div>`;
+        return;
+      }
+
+      container.innerHTML = items.map((n) => {
+        const hasWa = /^https:\/\/wa\.me\//i.test(String(n.whatsapp_url || ''));
+        return `
+          <div class="admin-panel-sub space-y-2 border-l-4" style="border-left-color:#10B981;">
+            <div class="flex items-start justify-between gap-2">
+              <div class="min-w-0">
+                <div class="font-bold text-white">${AdminApp.esc(n.title)}</div>
+                <div class="text-[11px] text-zinc-400">
+                  To: <span class="text-zinc-200">${AdminApp.esc(n.recipient_id || n.recipient_type || 'Client')}</span>
+                  · ${AdminApp.esc(AdminApp.formatDateTime(n.created_at))}
+                </div>
+              </div>
+              <span class="badge badge-amber">Queued</span>
+            </div>
+            <p class="text-[11px] text-zinc-300 line-clamp-2 whitespace-pre-wrap">${AdminApp.esc(n.message)}</p>
+            <div class="flex flex-wrap items-center gap-2 pt-1">
+              ${hasWa ? `
+                <button type="button" data-wa-send="${Number(n.id)}" data-wa-url="${AdminApp.esc(n.whatsapp_url)}" class="admin-btn admin-btn-emerald admin-btn-sm">
+                  💬 Open WhatsApp &amp; Mark Sent ↗
+                </button>
+              ` : ''}
+              <button type="button" data-mark-sent="${Number(n.id)}" class="admin-btn admin-btn-secondary admin-btn-sm">
+                Mark Sent Only
+              </button>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function renderInbox(items) {
+      const container = document.getElementById('notifInboxList');
+      if (!items.length) {
+        container.innerHTML = `<div class="admin-panel-sub text-zinc-400 text-center py-6">No notifications match the selected filters.</div>`;
+        return;
+      }
+
+      container.innerHTML = items.map((n) => {
+        const isUnread = Number(n.is_read) === 0;
+        const isSent = Number(n.is_sent) === 1;
+        const hasWa = /^https:\/\/wa\.me\//i.test(String(n.whatsapp_url || ''));
+        const actionHref = safeActionHref(n.action_url);
+
+        return `
+          <div class="admin-panel-sub flex flex-col sm:flex-row sm:items-start justify-between gap-3 ${isUnread ? 'border-l-4' : ''}" ${isUnread ? 'style="border-left-color:#E05A47;"' : ''}>
+            <div class="space-y-1 min-w-0 flex-1">
+              <div class="flex flex-wrap items-center gap-2">
+                ${isUnread ? '<span class="badge badge-red">Unread</span>' : '<span class="badge badge-zinc">Read</span>'}
+                <span class="badge badge-blue">${AdminApp.esc(n.channel || 'in_app')}</span>
+                ${n.category ? `<span class="badge badge-purple">${AdminApp.esc(AdminApp.humanize(n.category))}</span>` : ''}
+                <span class="badge ${isSent ? 'badge-green' : 'badge-amber'}">${isSent ? 'Sent' : 'Pending Send'}</span>
+                <span class="text-[11px] text-zinc-400 font-mono">${AdminApp.esc(AdminApp.formatDateTime(n.created_at))}</span>
+              </div>
+              <div class="font-bold text-white text-sm">${AdminApp.esc(n.title)}</div>
+              <div class="text-zinc-300 whitespace-pre-wrap leading-relaxed">${AdminApp.esc(n.message)}</div>
+              <div class="text-[11px] text-zinc-400">
+                Recipient: ${AdminApp.esc(n.recipient_type || 'client')} (${AdminApp.esc(n.recipient_id || '—')})
+                ${n.error_message ? ` · <span class="text-red-400">Error: ${AdminApp.esc(n.error_message)}</span>` : ''}
+              </div>
+            </div>
+
+            <div class="flex flex-wrap items-center gap-1.5 shrink-0">
+              ${actionHref ? `<a href="${AdminApp.esc(actionHref)}" class="admin-btn admin-btn-secondary admin-btn-sm">Inspect ↗</a>` : ''}
+              ${hasWa ? `<button type="button" data-wa-open="${AdminApp.esc(n.whatsapp_url)}" class="admin-btn admin-btn-emerald admin-btn-sm">WhatsApp ↗</button>` : ''}
+              ${isUnread ? `<button type="button" data-mark-read="${Number(n.id)}" class="admin-btn admin-btn-primary admin-btn-sm">Mark Read</button>` : ''}
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    document.getElementById('compBookingSelect').addEventListener('change', (e) => {
+      const bId = e.target.value;
+      const booking = bookingOptions.find((b) => String(b.id) === String(bId));
+      if (!booking) return;
+      if (booking.lead_phone) document.getElementById('compPhone').value = booking.lead_phone;
+      if (booking.lead_email) document.getElementById('compEmail').value = booking.lead_email;
+      if (!document.getElementById('compSubject').value.trim()) {
+        document.getElementById('compSubject').value = `Update for Booking ${booking.id} — ${booking.tour_title}`;
+      }
+    });
+
+    document.getElementById('manualNotifyForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const btn = document.getElementById('sendComposerBtn');
+      const banner = document.getElementById('composerResultBanner');
+      banner.classList.add('hidden');
+
+      const payload = {
+        event: 'manual_dispatch',
+        booking_id: document.getElementById('compBookingSelect').value || undefined,
+        channel: document.getElementById('compChannel').value,
+        recipient_type: document.getElementById('compRecipientType').value,
+        recipient_phone: document.getElementById('compPhone').value.trim() || undefined,
+        recipient_email: document.getElementById('compEmail').value.trim() || undefined,
+        subject: document.getElementById('compSubject').value.trim(),
+        message: document.getElementById('compMessage').value.trim()
+      };
+
+      btn.disabled = true;
+      try {
+        const res = await ApiClient.sendNotification(payload);
+        if (!res || !res.success) throw new Error((res && res.error) || 'Failed to send notification');
+
+        AdminApp.showToast('Notification logged & dispatched!');
+        const waUrl = res.whatsapp_share_url || res.whatsapp_url;
+        const hasWa = /^https:\/\/wa\.me\//i.test(String(waUrl || ''));
+        banner.innerHTML = `
+          <span>Dispatched via <strong>${AdminApp.esc(res.channel)}</strong> (SMTP: ${AdminApp.esc(res.smtp_status)}, WA API: ${AdminApp.esc(res.whatsapp_api_status)}).</span>
+          ${hasWa ? `<button type="button" id="composerOpenWaBtn" class="admin-btn admin-btn-emerald admin-btn-sm">Open WhatsApp Web ↗</button>` : ''}
+        `;
+        banner.classList.remove('hidden');
+        if (hasWa) {
+          document.getElementById('composerOpenWaBtn').addEventListener('click', () => openSafeWhatsApp(waUrl));
+        }
+
+        document.getElementById('compMessage').value = '';
+        await loadNotifications();
+      } catch (err) {
+        AdminApp.showToast(err.message || 'Send failed', 'error');
+      } finally {
+        btn.disabled = false;
+      }
+    });
+
+    document.getElementById('waQueueList').addEventListener('click', async (e) => {
+      const sendBtn = e.target.closest('[data-wa-send]');
+      const sentOnlyBtn = e.target.closest('[data-mark-sent]');
+      if (sendBtn) {
+        const id = sendBtn.getAttribute('data-wa-send');
+        const url = sendBtn.getAttribute('data-wa-url');
+        openSafeWhatsApp(url);
+        sendBtn.disabled = true;
+        try {
+          await ApiClient.markNotificationSent(id);
+          AdminApp.showToast('WhatsApp opened & notification marked sent.');
+          await loadNotifications();
+        } catch (err) {
+          AdminApp.showToast(err.message || 'Failed to mark sent', 'error');
+        }
+      } else if (sentOnlyBtn) {
+        const id = sentOnlyBtn.getAttribute('data-mark-sent');
+        sentOnlyBtn.disabled = true;
+        try {
+          await ApiClient.markNotificationSent(id);
+          AdminApp.showToast('Marked as sent.');
+          await loadNotifications();
+        } catch (err) {
+          AdminApp.showToast(err.message || 'Failed to mark sent', 'error');
+        }
+      }
+    });
+
+    document.getElementById('notifInboxList').addEventListener('click', async (e) => {
+      const readBtn = e.target.closest('[data-mark-read]');
+      const waBtn = e.target.closest('[data-wa-open]');
+      if (waBtn) {
+        openSafeWhatsApp(waBtn.getAttribute('data-wa-open'));
+      } else if (readBtn) {
+        const id = readBtn.getAttribute('data-mark-read');
+        readBtn.disabled = true;
+        try {
+          await ApiClient.markNotificationRead(id);
+          AdminApp.showToast('Notification marked read.');
+          await loadNotifications();
+        } catch (err) {
+          AdminApp.showToast(err.message || 'Failed to mark read', 'error');
+        }
+      }
+    });
+
+    document.getElementById('markAllReadBtn').addEventListener('click', async () => {
+      try {
+        const res = await ApiClient.markAllNotificationsRead();
+        AdminApp.showToast((res && res.message) || 'All notifications marked read.');
+        await loadNotifications();
+      } catch (err) {
+        AdminApp.showToast(err.message || 'Failed to mark all read', 'error');
+      }
+    });
+
+    document.getElementById('refreshNotifsBtn').addEventListener('click', loadNotifications);
+    document.getElementById('inboxUnreadFilter').addEventListener('change', loadNotifications);
+    document.getElementById('inboxChannelFilter').addEventListener('change', loadNotifications);
+    document.getElementById('inboxCategoryFilter').addEventListener('change', loadNotifications);
+
+    document.addEventListener('DOMContentLoaded', () => {
+      loadBookingsForComposer();
+      loadNotifications();
+    });
   </script>
 </body>
 </html>
