@@ -16,46 +16,104 @@
       <p class="text-xs text-zinc-400">Department of Tourism Certified Back-Office Portal</p>
     </div>
 
+    <div id="loginError" class="hidden admin-alert admin-alert-error" role="alert"></div>
+
     <form id="loginForm" class="space-y-4">
       <div>
-        <label class="block text-xs font-bold text-zinc-300 mb-1">Staff Email Address</label>
-        <input type="email" id="loginEmail" value="admin@bhutanfastratetours.bt" required class="w-full px-4 py-3 rounded-lg border border-zinc-600 text-sm font-medium">
+        <label for="loginEmail" class="block text-xs font-bold text-zinc-300 mb-1">Staff Email or Username</label>
+        <input type="text" id="loginEmail" autocomplete="username" placeholder="staff@bhutanfastratetours.bt" required class="w-full px-4 py-3 rounded-lg border border-zinc-600 text-sm font-medium">
       </div>
       <div>
-        <label class="block text-xs font-bold text-zinc-300 mb-1">Password</label>
-        <input type="password" id="loginPass" value="admin123" required class="w-full px-4 py-3 rounded-lg border border-zinc-600 text-sm font-medium">
+        <label for="loginPass" class="block text-xs font-bold text-zinc-300 mb-1">Password</label>
+        <input type="password" id="loginPass" autocomplete="current-password" placeholder="Enter your staff password" required class="w-full px-4 py-3 rounded-lg border border-zinc-600 text-sm font-medium">
       </div>
 
-      <button type="submit" class="w-full py-3.5 rounded-lg bg-[#E05A47] hover:bg-[#C94937] text-white font-black text-xs uppercase tracking-wider transition-all shadow-md">
+      <button type="submit" id="loginSubmitBtn" class="w-full py-3.5 rounded-lg bg-[#E05A47] hover:bg-[#C94937] text-white font-black text-xs uppercase tracking-wider transition-all shadow-md">
         Sign In to Operations
       </button>
     </form>
 
-    <div class="p-4 rounded-xl bg-zinc-800/80 border border-zinc-700 text-xs text-zinc-400 space-y-1">
-      <div class="font-bold text-zinc-200">Demo Staff Credentials:</div>
-      <div>• <strong>Admin:</strong> admin@bhutanfastratetours.bt / admin123</div>
-      <div>• <strong>Concierge:</strong> dechen@bhutanfastratetours.bt / concierge123</div>
-      <div>• <strong>Guide:</strong> kinley@bhutanfastratetours.bt / guide123</div>
+    <div class="p-4 rounded-xl bg-zinc-900 border border-zinc-700 text-xs text-zinc-400 space-y-1.5">
+      <div class="font-bold text-zinc-200">Authorized Staff Access Only</div>
+      <p class="leading-relaxed">Sign in with your assigned Super Admin, Operations Admin, Concierge, or Finance Officer credentials. All sessions are JWT-authenticated and audited.</p>
+      <div class="pt-1 flex items-center justify-between text-[11px]">
+        <a href="../index.html" class="text-zinc-400 hover:text-white">← Public Website</a>
+        <a href="../guide/login.html" class="text-[#E05A47] hover:underline font-bold">Guide Field Portal →</a>
+      </div>
     </div>
   </div>
 
   <script src="../js/api-client.js"></script>
   <script src="js/admin-app.js"></script>
   <script>
-    document.getElementById('loginForm').addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const email = document.getElementById('loginEmail').value;
-      const pass = document.getElementById('loginPass').value;
+    (function () {
+      const form = document.getElementById('loginForm');
+      const emailInput = document.getElementById('loginEmail');
+      const passInput = document.getElementById('loginPass');
+      const errorBox = document.getElementById('loginError');
+      const submitBtn = document.getElementById('loginSubmitBtn');
 
-      const res = await window.ApiClient.adminLogin(email, pass);
-      if (res && res.success) {
-        localStorage.setItem('bfr_admin_user', JSON.stringify(res.user));
-        localStorage.setItem('bfr_admin_token', res.token);
-        window.location.href = 'dashboard.html';
-      } else {
-        alert(res ? res.error : 'Login failed. Check credentials.');
+      function showError(msg) {
+        errorBox.textContent = msg;
+        errorBox.classList.remove('hidden');
       }
-    });
+
+      function clearError() {
+        errorBox.textContent = '';
+        errorBox.classList.add('hidden');
+      }
+
+      // Redirect silently if a valid active staff token is already stored
+      document.addEventListener('DOMContentLoaded', async () => {
+        const existingToken = window.ApiClient.getToken('admin');
+        if (!existingToken) return;
+        try {
+          const me = await window.ApiClient.getAdminMe();
+          if (me && me.success && me.user) {
+            window.ApiClient.setAdminSession(existingToken, me.user);
+            window.location.href = 'dashboard.html';
+          }
+        } catch (_) {
+          window.ApiClient.clearPortalSession('admin');
+        }
+      });
+
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        clearError();
+
+        const email = emailInput.value.trim();
+        const password = passInput.value;
+
+        if (!email || !password) {
+          showError('Please enter both your staff email/username and password.');
+          return;
+        }
+
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Verifying Credentials...';
+
+        try {
+          const res = await window.ApiClient.adminLogin(email, password);
+          if (res && res.success && res.token) {
+            window.location.href = 'dashboard.html';
+            return;
+          }
+          showError((res && res.error) || 'Invalid staff credentials.');
+        } catch (err) {
+          if (err && err.status === 401) {
+            showError(err.message || 'Invalid email/username or password.');
+          } else if (err && err.status === 403) {
+            showError(err.message || 'Your account does not have Admin Portal access or is deactivated.');
+          } else {
+            showError((err && err.message) || 'Unable to reach operations server. Please check connection.');
+          }
+        } finally {
+          submitBtn.disabled = false;
+          submitBtn.textContent = 'Sign In to Operations';
+        }
+      });
+    })();
   </script>
 </body>
 </html>

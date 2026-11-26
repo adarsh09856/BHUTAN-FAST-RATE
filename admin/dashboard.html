@@ -9,99 +9,175 @@
   <link rel="stylesheet" href="css/admin-theme.css">
 </head>
 <body class="admin-layout">
-  <!-- Dynamic Sidebar -->
   <aside id="adminSidebar" class="admin-sidebar"></aside>
 
-  <!-- Main Workspace -->
   <div class="admin-main">
     <header class="admin-header">
       <div class="flex items-center gap-3">
-        <button id="sidebarToggle" class="lg:hidden p-2 text-zinc-400 hover:text-white rounded">
+        <button id="sidebarToggle" class="lg:hidden p-2 text-zinc-400 hover:text-white rounded" aria-label="Toggle navigation">
           <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
         </button>
-        <h1 class="text-base font-extrabold text-white">Executive Dashboard</h1>
+        <div>
+          <h1 class="text-base font-extrabold text-white">Executive Dashboard</h1>
+          <p id="welcomeSubline" class="text-[11px] text-zinc-400">Live Department of Tourism &amp; Revenue Operations</p>
+        </div>
       </div>
-      <div class="flex items-center gap-4 text-xs">
-        <span class="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 font-bold">API Online</span>
-        <a href="notifications.html" class="p-2 rounded-lg bg-zinc-800 text-zinc-300 hover:text-white">🔔</a>
+      <div class="flex items-center gap-3 text-xs">
+        <span id="apiStatusPill" class="px-2.5 py-1 rounded bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 font-bold">API Live</span>
+        <a href="notifications.html" class="notif-bell-btn" title="Notifications">🔔</a>
       </div>
     </header>
 
     <main class="p-6 sm:p-8 space-y-6">
-      
-  <!-- KPI Metrics Grid -->
-  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-    <div class="stat-card space-y-1">
-      <span class="text-xs font-bold text-zinc-400 uppercase tracking-wider">Total Revenue (USD)</span>
-      <div id="statRev" class="text-3xl font-black text-white">$84,600</div>
-      <span class="text-[11px] text-emerald-400 font-bold">↑ 18% vs previous month</span>
-    </div>
-    <div class="stat-card space-y-1">
-      <span class="text-xs font-bold text-zinc-400 uppercase tracking-wider">Active Bookings</span>
-      <div id="statBookings" class="text-3xl font-black text-white">24</div>
-      <span class="text-[11px] text-zinc-400">4 active on trail right now</span>
-    </div>
-    <div class="stat-card space-y-1">
-      <span class="text-xs font-bold text-zinc-400 uppercase tracking-wider">Visas Pending Clearance</span>
-      <div id="statVisas" class="text-3xl font-black text-amber-400">3</div>
-      <span class="text-[11px] text-zinc-400">Department of Immigration queue</span>
-    </div>
-    <div class="stat-card space-y-1">
-      <span class="text-xs font-bold text-zinc-400 uppercase tracking-wider">New Client Leads</span>
-      <div id="statInq" class="text-3xl font-black text-[#E05A47]">7</div>
-      <span class="text-[11px] text-zinc-400">Require itinerary proposals</span>
-    </div>
-  </div>
+      <div id="dashboardError" class="hidden admin-alert admin-alert-error"></div>
 
-  <!-- Booking Pipeline Overview -->
-  <div class="stat-card space-y-4">
-    <div class="flex items-center justify-between">
-      <h2 class="text-base font-extrabold text-white">Live Booking Pipeline by Stage</h2>
-      <a href="bookings.html" class="text-xs font-bold text-[#E05A47] hover:underline">View Pipeline Table →</a>
-    </div>
-    <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 text-xs">
-      <div class="p-3 bg-zinc-800 rounded-lg border border-zinc-700">
-        <span class="text-zinc-400">New Inquiries</span>
-        <div class="text-xl font-bold text-white mt-1">6</div>
+      <!-- Quick Action Command Bar -->
+      <div class="stat-card flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div>
+          <div class="text-xs font-bold uppercase tracking-wider text-zinc-400">Concierge &amp; Operations Dispatch</div>
+          <div class="text-sm font-bold text-white mt-0.5">Create assisted reservations, review pending wire receipts, or clear DoI visas.</div>
+        </div>
+        <div class="flex flex-wrap items-center gap-2.5">
+          <a href="bookings.html?new=1" data-roles="super_admin,admin,concierge" class="admin-btn admin-btn-primary">
+            + Create Booking on Behalf of Client
+          </a>
+          <a href="visa-desk.html" class="admin-btn admin-btn-secondary">
+            🛂 Visa Desk
+          </a>
+          <button type="button" id="refreshDashboardBtn" class="admin-btn admin-btn-secondary">
+            ↻ Refresh
+          </button>
+        </div>
       </div>
-      <div class="p-3 bg-zinc-800 rounded-lg border border-zinc-700">
-        <span class="text-zinc-400">Payment Pending</span>
-        <div class="text-xl font-bold text-amber-400 mt-1">4</div>
-      </div>
-      <div class="p-3 bg-zinc-800 rounded-lg border border-zinc-700">
-        <span class="text-zinc-400">Visa Submitted</span>
-        <div class="text-xl font-bold text-blue-400 mt-1">3</div>
-      </div>
-      <div class="p-3 bg-zinc-800 rounded-lg border border-zinc-700">
-        <span class="text-zinc-400">Visa Approved</span>
-        <div class="text-xl font-bold text-emerald-400 mt-1">7</div>
-      </div>
-      <div class="p-3 bg-zinc-800 rounded-lg border border-zinc-700">
-        <span class="text-zinc-400">Active on Trail</span>
-        <div class="text-xl font-bold text-purple-400 mt-1">4</div>
-      </div>
-    </div>
-  </div>
 
-  <!-- Recent Audit Feed -->
-  <div class="stat-card space-y-4">
-    <h2 class="text-base font-extrabold text-white">Recent Operational Actions</h2>
-    <div id="activityFeed" class="space-y-2 text-xs">
-      <div class="p-3 bg-zinc-800/60 rounded-lg border border-zinc-700 flex justify-between items-center">
-        <span><strong>Sonam Dorji</strong> verified visa clearance for <strong>BFR-2026-8841</strong></span>
-        <span class="text-zinc-400">Today</span>
+      <!-- Primary KPI Metrics Grid -->
+      <div class="admin-grid-4">
+        <div class="stat-card space-y-1.5">
+          <span class="text-xs font-bold text-zinc-400 uppercase tracking-wider">Total Revenue (USD)</span>
+          <div id="statRev" class="text-3xl font-black text-white">—</div>
+          <div id="statRevSub" class="text-[11px] text-emerald-400 font-semibold">Loading live ledger...</div>
+        </div>
+        <div class="stat-card space-y-1.5">
+          <span class="text-xs font-bold text-zinc-400 uppercase tracking-wider">Active Bookings</span>
+          <div id="statBookings" class="text-3xl font-black text-white">—</div>
+          <div id="statBookingsSub" class="text-[11px] text-zinc-400">Loading active trail count...</div>
+        </div>
+        <div class="stat-card space-y-1.5">
+          <span class="text-xs font-bold text-zinc-400 uppercase tracking-wider">Visas Pending Clearance</span>
+          <div id="statVisas" class="text-3xl font-black text-amber-400">—</div>
+          <div class="text-[11px] text-zinc-400"><a href="visa-desk.html" class="text-amber-300 hover:underline">Department of Immigration queue →</a></div>
+        </div>
+        <div class="stat-card space-y-1.5">
+          <span class="text-xs font-bold text-zinc-400 uppercase tracking-wider">New Client Leads</span>
+          <div id="statInq" class="text-3xl font-black text-[#E05A47]">—</div>
+          <div class="text-[11px] text-zinc-400"><a href="inquiries.html" class="text-[#E05A47] hover:underline">Review inquiry leads →</a></div>
+        </div>
       </div>
-      <div class="p-3 bg-zinc-800/60 rounded-lg border border-zinc-700 flex justify-between items-center">
-        <span><strong>Dechen Wangmo</strong> assigned Kinley Tshering to <strong>BFR-2026-8850</strong></span>
-        <span class="text-zinc-400">Yesterday</span>
-      </div>
-      <div class="p-3 bg-zinc-800/60 rounded-lg border border-zinc-700 flex justify-between items-center">
-        <span><strong>System</strong> recorded $5,180 wire transfer for <strong>BFR-2026-8841</strong></span>
-        <span class="text-zinc-400">2 days ago</span>
-      </div>
-    </div>
-  </div>
 
+      <!-- Revenue Breakdown + Pending Attention Cards -->
+      <div class="admin-grid-12">
+        <div class="stat-card admin-col-8 space-y-4">
+          <div class="flex flex-wrap items-center justify-between gap-2 border-b border-zinc-700 pb-3">
+            <div>
+              <h2 class="text-base font-extrabold text-white">Revenue Collection &amp; Monthly Trend</h2>
+              <p class="text-[11px] text-zinc-400">Authoritative USD-normalized totals across all non-cancelled bookings</p>
+            </div>
+            <div class="flex items-center gap-4 text-xs">
+              <div><span class="text-zinc-400">MTD:</span> <strong id="statMtdRev" class="text-white">—</strong></div>
+              <div><span class="text-zinc-400">YTD:</span> <strong id="statYtdRev" class="text-emerald-400">—</strong></div>
+            </div>
+          </div>
+
+          <div class="space-y-2">
+            <div class="flex items-center justify-between text-xs">
+              <span class="text-zinc-300 font-semibold">Collected vs Outstanding Receivable</span>
+              <span id="collectionRatioLabel" class="font-mono text-zinc-300">—</span>
+            </div>
+            <div class="pipeline-bar-track" style="height:10px;">
+              <div id="collectionRatioBar" class="pipeline-bar-fill" style="width:0%; background:#10B981;"></div>
+            </div>
+            <div class="flex flex-wrap justify-between gap-2 text-[11px] text-zinc-400 pt-1">
+              <span>Collected: <strong id="statCollectedRev" class="text-emerald-400">—</strong></span>
+              <span>Outstanding: <strong id="statOutstandingRev" class="text-amber-400">—</strong></span>
+              <span>MTD Cash Collected: <strong id="statMtdCollected" class="text-white">—</strong></span>
+            </div>
+          </div>
+
+          <div id="monthlyRevenueList" class="space-y-2.5 pt-2">
+            <div class="text-xs text-zinc-400">Loading monthly revenue breakdown...</div>
+          </div>
+        </div>
+
+        <div class="admin-col-4 space-y-4">
+          <div class="stat-card space-y-3 border-l-4" style="border-left-color:#F59E0B;">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-extrabold uppercase tracking-wider text-amber-400">Receipt Verification Queue</span>
+              <span id="badgePendingReceipts" class="badge badge-amber">0 Pending</span>
+            </div>
+            <p id="pendingReceiptsSummary" class="text-xs text-zinc-300">Checking client-uploaded wire transfer receipts...</p>
+            <div class="flex items-center gap-2">
+              <a href="finance.html" data-roles="super_admin,admin,finance" class="admin-btn admin-btn-amber admin-btn-sm">Verify in Finance →</a>
+              <a href="bookings.html?status=inquiry" class="admin-btn admin-btn-secondary admin-btn-sm">View Inquiries</a>
+            </div>
+          </div>
+
+          <div class="stat-card space-y-3 border-l-4" style="border-left-color:#3B82F6;">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-extrabold uppercase tracking-wider text-blue-400">DoI Visa &amp; SDF Compliance</span>
+              <span id="badgeVisaAttention" class="badge badge-blue">0 In Queue</span>
+            </div>
+            <div class="text-xs text-zinc-300 space-y-1">
+              <div>SDF Collected (Full Paid): <strong id="statSdfCollected" class="text-white">—</strong></div>
+              <div>SDF Remitted to RMA: <strong id="statSdfRemitted" class="text-emerald-400">—</strong></div>
+              <div>Pending Remittance: <strong id="statSdfPending" class="text-amber-400">—</strong></div>
+            </div>
+            <a href="visa-desk.html" class="admin-btn admin-btn-secondary admin-btn-sm">Open Visa Clearance Desk →</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Live Booking Pipeline by Stage -->
+      <div class="stat-card space-y-4">
+        <div class="flex flex-wrap items-center justify-between gap-2">
+          <div>
+            <h2 class="text-base font-extrabold text-white">Live Booking Pipeline by Stage</h2>
+            <p class="text-[11px] text-zinc-400">Real-time database counts across reservation lifecycle stages</p>
+          </div>
+          <a href="bookings.html" class="text-xs font-bold text-[#E05A47] hover:underline">View Pipeline Table →</a>
+        </div>
+        <div id="pipelineGrid" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 text-xs">
+          <div class="admin-panel-sub text-zinc-400">Loading pipeline stages...</div>
+        </div>
+      </div>
+
+      <!-- Today's Guide Field Check-ins & Live Recent Operational Actions -->
+      <div class="admin-grid-12">
+        <div class="stat-card admin-col-5 space-y-4">
+          <div class="flex items-center justify-between border-b border-zinc-700 pb-3">
+            <div>
+              <h2 class="text-base font-extrabold text-white">Today's Guide Field Check-ins</h2>
+              <p class="text-[11px] text-zinc-400">Live valley &amp; trail updates submitted by field guides</p>
+            </div>
+            <span id="todayCheckinsBadge" class="badge badge-green">0 Today</span>
+          </div>
+          <div id="todayCheckinsFeed" class="space-y-2.5 text-xs">
+            <div class="text-zinc-400">Loading guide field check-ins...</div>
+          </div>
+        </div>
+
+        <div class="stat-card admin-col-7 space-y-4">
+          <div class="flex items-center justify-between border-b border-zinc-700 pb-3">
+            <div>
+              <h2 class="text-base font-extrabold text-white">Recent Operational Actions</h2>
+              <p class="text-[11px] text-zinc-400">Live immutable audit trail across staff, client, and guide portals</p>
+            </div>
+            <a href="audit-log.html" class="text-xs font-bold text-[#E05A47] hover:underline">Full Audit Trail →</a>
+          </div>
+          <div id="activityFeed" class="space-y-2 text-xs">
+            <div class="text-zinc-400">Loading recent operational audit events...</div>
+          </div>
+        </div>
+      </div>
     </main>
   </div>
 
@@ -109,13 +185,211 @@
   <script src="js/admin-app.js"></script>
   <script>
     AdminApp.requireAuth();
-    AdminApp.renderSidebar('dashboard');
-    const toggle = document.getElementById('sidebarToggle');
-    if (toggle) {
-      toggle.addEventListener('click', () => {
-        document.getElementById('adminSidebar').classList.toggle('open');
-      });
+    AdminApp.renderSidebar('dashboard', { skipNotifFetch: true });
+
+    const PIPELINE_STAGES = [
+      { key: 'inquiry', label: 'New Inquiries', color: '#94A3B8', textClass: 'text-white' },
+      { key: 'deposit_paid', label: 'Deposit Paid', color: '#F59E0B', textClass: 'text-amber-400' },
+      { key: 'documents_complete', label: 'Docs Complete', color: '#3B82F6', textClass: 'text-blue-400' },
+      { key: 'fully_paid', label: 'Fully Paid', color: '#10B981', textClass: 'text-emerald-400' },
+      { key: 'confirmed', label: 'Confirmed', color: '#10B981', textClass: 'text-emerald-400' },
+      { key: 'active_trip', label: 'Active on Trail', color: '#A855F7', textClass: 'text-purple-400' },
+      { key: 'completed', label: 'Completed', color: '#64748B', textClass: 'text-zinc-300' }
+    ];
+
+    async function loadDashboard() {
+      const errorBox = document.getElementById('dashboardError');
+      errorBox.classList.add('hidden');
+
+      const staff = AdminApp.getStaffUser();
+      if (staff) {
+        const sub = document.getElementById('welcomeSubline');
+        if (sub) {
+          sub.textContent = `Signed in as ${staff.name || staff.full_name || 'Staff'} (${AdminApp.humanize(staff.role)})`;
+        }
+      }
+
+      try {
+        const res = await window.ApiClient.getAdminStats();
+        if (!res || !res.success || !res.stats) {
+          throw new Error((res && res.error) || 'Failed to load dashboard statistics.');
+        }
+
+        const s = res.stats;
+        AdminApp.updateUnreadBadge(s.unread_notifications);
+
+        // KPI Cards
+        document.getElementById('statRev').textContent = AdminApp.formatMoney(s.total_revenue_usd, 'USD');
+        document.getElementById('statRevSub').textContent =
+          `Collected: ${AdminApp.formatMoney(s.collected_revenue_usd, 'USD')} · MTD: ${AdminApp.formatMoney(s.mtd_revenue_usd, 'USD')}`;
+
+        document.getElementById('statBookings').textContent = String(s.total_bookings ?? 0);
+        document.getElementById('statBookingsSub').textContent =
+          `${s.active_trips ?? 0} active on trail right now`;
+
+        document.getElementById('statVisas').textContent = String(s.pending_visas ?? 0);
+        document.getElementById('statInq').textContent = String(s.new_inquiries ?? 0);
+
+        // Revenue & Monthly Breakdown
+        const totalRev = Number(s.total_revenue_usd) || 0;
+        const collectedRev = Number(s.collected_revenue_usd) || 0;
+        const pct = totalRev > 0 ? Math.min(100, Math.round((collectedRev / totalRev) * 100)) : 0;
+
+        document.getElementById('statMtdRev').textContent = AdminApp.formatMoney(s.mtd_revenue_usd, 'USD');
+        document.getElementById('statYtdRev').textContent = AdminApp.formatMoney(s.ytd_revenue_usd, 'USD');
+        document.getElementById('statCollectedRev').textContent = AdminApp.formatMoney(collectedRev, 'USD');
+        document.getElementById('statOutstandingRev').textContent = AdminApp.formatMoney(s.outstanding_balance_usd, 'USD');
+        document.getElementById('statMtdCollected').textContent = AdminApp.formatMoney(s.mtd_collected_usd, 'USD');
+        document.getElementById('collectionRatioLabel').textContent = `${pct}% Collected`;
+        document.getElementById('collectionRatioBar').style.width = `${pct}%`;
+
+        renderMonthlyRevenue(s.monthly_revenue || []);
+
+        // Attention Cards
+        const pendingPay = Number(s.pending_verifications) || 0;
+        const pendingBadge = document.getElementById('badgePendingReceipts');
+        pendingBadge.textContent = `${pendingPay} Pending`;
+        pendingBadge.className = `badge ${pendingPay > 0 ? 'badge-amber' : 'badge-green'}`;
+        document.getElementById('pendingReceiptsSummary').textContent = pendingPay > 0
+          ? `${pendingPay} client-uploaded wire transfer receipt(s) await Finance verification.`
+          : 'All client wire receipts are currently verified and reconciled.';
+
+        const pendingVisas = Number(s.pending_visas) || 0;
+        const visaBadge = document.getElementById('badgeVisaAttention');
+        visaBadge.textContent = `${pendingVisas} In Queue`;
+        visaBadge.className = `badge ${pendingVisas > 0 ? 'badge-amber' : 'badge-green'}`;
+        document.getElementById('statSdfCollected').textContent = AdminApp.formatMoney(s.sdf_collected_usd, 'USD');
+        document.getElementById('statSdfRemitted').textContent = AdminApp.formatMoney(s.sdf_remitted_usd, 'USD');
+        document.getElementById('statSdfPending').textContent = AdminApp.formatMoney(s.sdf_pending_remittance_usd, 'USD');
+
+        // Pipeline Breakdown
+        renderPipeline(s.pipeline || [], Number(s.total_bookings) || 0);
+
+        // Today's Check-ins
+        renderTodayCheckins(s.today_checkins || [], Number(s.today_checkins_count) || 0);
+
+        // Audit Activity
+        renderRecentActivity(s.recent_activity || []);
+      } catch (err) {
+        errorBox.textContent = `Unable to load live dashboard metrics: ${err.message || 'Server error'}`;
+        errorBox.classList.remove('hidden');
+        document.getElementById('apiStatusPill').textContent = 'API Error';
+        document.getElementById('apiStatusPill').className = 'px-2.5 py-1 rounded bg-red-500/20 text-red-400 border border-red-500/30 font-bold';
+        AdminApp.showToast(err.message || 'Failed to load dashboard stats', 'error');
+      }
     }
+
+    function renderMonthlyRevenue(months) {
+      const container = document.getElementById('monthlyRevenueList');
+      if (!months.length) {
+        container.innerHTML = `<div class="admin-panel-sub text-xs text-zinc-400">No monthly revenue records yet.</div>`;
+        return;
+      }
+      const recent = months.slice(-6);
+      const maxRev = Math.max(1, ...recent.map((m) => Number(m.revenue_usd) || 0));
+
+      container.innerHTML = recent.map((m) => {
+        const rev = Number(m.revenue_usd) || 0;
+        const coll = Number(m.collected_usd) || 0;
+        const barPct = Math.max(4, Math.round((rev / maxRev) * 100));
+        return `
+          <div class="space-y-1 text-xs">
+            <div class="flex items-center justify-between">
+              <span class="font-mono font-bold text-zinc-200">${AdminApp.esc(m.month)} <span class="text-zinc-500 font-sans">(${Number(m.bookings_count || 0)} bookings)</span></span>
+              <span class="text-zinc-300 font-semibold">${AdminApp.formatMoney(rev, 'USD')} <span class="text-emerald-400 text-[11px]">(${AdminApp.formatMoney(coll, 'USD')} paid)</span></span>
+            </div>
+            <div class="pipeline-bar-track">
+              <div class="pipeline-bar-fill" style="width:${barPct}%; background:#E05A47;"></div>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function renderPipeline(pipelineList, totalBookings) {
+      const counts = new Map(pipelineList.map((row) => [row.booking_status, Number(row.count) || 0]));
+      const total = Math.max(1, totalBookings);
+      const grid = document.getElementById('pipelineGrid');
+
+      grid.innerHTML = PIPELINE_STAGES.map((stage) => {
+        const count = counts.get(stage.key) || 0;
+        const pct = Math.round((count / total) * 100);
+        return `
+          <a href="bookings.html?status=${encodeURIComponent(stage.key)}" class="admin-panel-sub block hover:border-[#E05A47] transition space-y-2" style="text-decoration:none;">
+            <div class="flex items-center justify-between">
+              <span class="text-zinc-400 font-semibold">${AdminApp.esc(stage.label)}</span>
+              <span class="text-[10px] text-zinc-500">${pct}%</span>
+            </div>
+            <div class="text-2xl font-black ${stage.textClass}">${count}</div>
+            <div class="pipeline-bar-track">
+              <div class="pipeline-bar-fill" style="width:${count > 0 ? Math.max(8, pct) : 0}%; background:${stage.color};"></div>
+            </div>
+          </a>
+        `;
+      }).join('');
+    }
+
+    function renderTodayCheckins(checkins, count) {
+      const badge = document.getElementById('todayCheckinsBadge');
+      badge.textContent = `${count} Today`;
+      badge.className = `badge ${count > 0 ? 'badge-green' : 'badge-zinc'}`;
+
+      const feed = document.getElementById('todayCheckinsFeed');
+      if (!checkins.length) {
+        feed.innerHTML = `
+          <div class="admin-panel-sub text-zinc-400 text-center py-6">
+            No guide field check-ins logged today yet.
+          </div>
+        `;
+        return;
+      }
+
+      feed.innerHTML = checkins.map((c) => `
+        <div class="admin-panel-sub space-y-1">
+          <div class="flex items-center justify-between gap-2">
+            <strong class="text-white">${AdminApp.esc(c.guide_name || `Guide #${c.guide_id}`)}</strong>
+            <a href="booking-detail.html?id=${encodeURIComponent(c.booking_id)}" class="font-mono font-bold text-[#E05A47] hover:underline">${AdminApp.esc(c.booking_id)}</a>
+          </div>
+          <div class="text-zinc-300">📍 ${AdminApp.esc(c.location)} ${c.weather ? `· 🌤 ${AdminApp.esc(c.weather)}` : ''}</div>
+          <div class="flex items-center justify-between text-[11px] text-zinc-400">
+            <span class="badge badge-green">${AdminApp.esc(c.guest_status || 'All Well')}</span>
+            <span>${AdminApp.esc(AdminApp.formatDateTime(c.created_at))}</span>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function renderRecentActivity(logs) {
+      const feed = document.getElementById('activityFeed');
+      if (!logs.length) {
+        feed.innerHTML = `<div class="admin-panel-sub text-zinc-400 text-center py-6">No recent audit events recorded.</div>`;
+        return;
+      }
+
+      feed.innerHTML = logs.map((log) => {
+        const entityLink = log.entity_type === 'booking' && log.entity_id
+          ? `<a href="booking-detail.html?id=${encodeURIComponent(log.entity_id)}" class="font-mono font-bold text-[#E05A47] hover:underline">${AdminApp.esc(log.entity_id)}</a>`
+          : `<span class="font-mono text-zinc-300">${AdminApp.esc(log.entity_id || log.entity_type || '')}</span>`;
+
+        return `
+          <div class="admin-panel-sub flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+            <div class="space-y-0.5 min-w-0">
+              <div class="text-zinc-200">
+                <strong class="text-white">${AdminApp.esc(log.user_name || 'System')}</strong>
+                <span class="text-zinc-400">(${AdminApp.esc(log.user_role || 'staff')})</span>
+                · <span class="font-semibold text-emerald-400">${AdminApp.esc(log.action)}</span>
+                ${entityLink ? `on ${entityLink}` : ''}
+              </div>
+              ${log.new_value ? `<div class="text-[11px] text-zinc-400 truncate">${AdminApp.esc(log.new_value)}</div>` : ''}
+            </div>
+            <span class="text-[11px] text-zinc-500 shrink-0 font-mono">${AdminApp.esc(AdminApp.formatDateTime(log.created_at))}</span>
+          </div>
+        `;
+      }).join('');
+    }
+
+    document.getElementById('refreshDashboardBtn').addEventListener('click', loadDashboard);
+    document.addEventListener('DOMContentLoaded', loadDashboard);
   </script>
 </body>
 </html>

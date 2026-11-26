@@ -7,58 +7,83 @@
   <title>Bookings Pipeline — Bhutan Fast Rate Operations</title>
   <link rel="stylesheet" href="../css/tour-theme.css">
   <link rel="stylesheet" href="css/admin-theme.css">
-  <style>
-    input, select, textarea {
-      color-scheme: light !important;
-      background-color: #ffffff !important;
-      color: #1f2923 !important;
-    }
-  </style>
 </head>
 <body class="admin-layout">
-  <!-- Dynamic Sidebar -->
   <aside id="adminSidebar" class="admin-sidebar"></aside>
 
-  <!-- Main Workspace -->
   <div class="admin-main">
     <header class="admin-header">
       <div class="flex items-center gap-3">
-        <button id="sidebarToggle" class="lg:hidden p-2 text-zinc-400 hover:text-white rounded">
+        <button id="sidebarToggle" class="lg:hidden p-2 text-zinc-400 hover:text-white rounded" aria-label="Toggle navigation">
           <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
         </button>
         <div>
           <h1 class="text-base font-extrabold text-white">Bookings &amp; Reservations Pipeline</h1>
-          <p class="text-[11px] text-zinc-400">Live booking records synced from public booking engines and inquiries</p>
+          <p class="text-[11px] text-zinc-400">Live booking records across web checkout, concierge phone/WhatsApp, and agent channels</p>
         </div>
       </div>
-      <div class="flex items-center gap-4 text-xs">
-        <span class="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 font-bold">API Online</span>
-        <a href="notifications.html" class="p-2 rounded-lg bg-zinc-800 text-zinc-300 hover:text-white">🔔</a>
+      <div class="flex items-center gap-3 text-xs">
+        <span class="px-2.5 py-1 rounded bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 font-bold">API Live</span>
+        <a href="notifications.html" class="notif-bell-btn" title="Notifications">🔔</a>
       </div>
     </header>
 
     <main class="p-6 sm:p-8 space-y-6">
-      
+      <div id="bookingsPageError" class="hidden admin-alert admin-alert-error"></div>
+
       <div class="stat-card space-y-4">
-        <div class="flex flex-wrap items-center justify-between gap-4 pb-2 border-b border-zinc-800">
-          <div class="flex items-center gap-3">
-            <input type="text" id="bookingSearch" placeholder="Search by name, ref, or tour..." class="px-3 py-2 rounded-lg border border-zinc-700 text-xs w-64 focus:outline-none focus:border-[#E05A47]">
-            <select id="bookingStatusFilter" class="px-3 py-2 rounded-lg border border-zinc-700 text-xs focus:outline-none">
-              <option value="All">All Statuses</option>
+        <div class="flex flex-wrap items-center justify-between gap-3 pb-3 border-b border-zinc-700">
+          <div class="flex flex-wrap items-center gap-2.5">
+            <input type="text" id="bookingSearch" placeholder="Search ref, name, email, or tour..." class="px-3 py-2 rounded-lg border border-zinc-600 text-xs w-60 focus:outline-none">
+            <select id="bookingStatusFilter" class="px-3 py-2 rounded-lg border border-zinc-600 text-xs focus:outline-none">
+              <option value="All">All Booking Statuses</option>
               <option value="inquiry">Inquiry</option>
               <option value="deposit_paid">Deposit Paid</option>
               <option value="documents_complete">Docs Complete</option>
               <option value="visa_approved">Visa Approved</option>
+              <option value="confirmed">Confirmed</option>
               <option value="fully_paid">Fully Paid</option>
               <option value="active_trip">Active Trip</option>
               <option value="completed">Completed</option>
+              <option value="cancelled">Cancelled</option>
+            </select>
+            <select id="bookingVisaFilter" class="px-3 py-2 rounded-lg border border-zinc-600 text-xs focus:outline-none">
+              <option value="All">All Visa States</option>
+              <option value="not_started">Not Started</option>
+              <option value="pending_docs">Pending Docs</option>
+              <option value="docs_received">Docs Received</option>
+              <option value="documents_complete">Docs Complete</option>
+              <option value="payment_verified">Payment Verified</option>
+              <option value="under_review">Under Review</option>
+              <option value="submitted_to_doi">Submitted to DoI</option>
+              <option value="approved">Approved</option>
+              <option value="clearance_letter_issued">Clearance Issued</option>
+              <option value="rejected">Rejected</option>
+            </select>
+            <select id="bookingSourceFilter" class="px-3 py-2 rounded-lg border border-zinc-600 text-xs focus:outline-none">
+              <option value="All">All Sources</option>
+              <option value="website">Website</option>
+              <option value="admin_concierge">Concierge Desk</option>
+              <option value="phone">Phone Call</option>
+              <option value="whatsapp">WhatsApp</option>
+              <option value="email_inquiry">Email Inquiry</option>
+              <option value="partner_agent">Partner Agent</option>
             </select>
           </div>
-          <div class="flex items-center gap-2">
-            <button onclick="exportCsv()" class="px-4 py-2 rounded-lg bg-zinc-800 hover:bg-zinc-700 text-white text-xs font-bold border border-zinc-600">
+
+          <div class="flex flex-wrap items-center gap-2">
+            <button type="button" id="openNewBookingBtn" data-roles="super_admin,admin,concierge" class="admin-btn admin-btn-primary">
+              + Create Booking on Behalf of Client
+            </button>
+            <button type="button" id="exportCsvBtn" class="admin-btn admin-btn-secondary">
               Export CSV
             </button>
           </div>
+        </div>
+
+        <div class="flex items-center justify-between text-xs text-zinc-400">
+          <span id="bookingsCountLabel">Loading bookings...</span>
+          <button type="button" id="resetFiltersBtn" class="text-[#E05A47] hover:underline font-semibold">Reset Filters</button>
         </div>
 
         <div class="overflow-x-auto">
@@ -70,7 +95,7 @@
                 <th>Tour Package</th>
                 <th>Travel Dates</th>
                 <th>Guests</th>
-                <th>Total ($)</th>
+                <th>Authoritative Total</th>
                 <th>Booking Status</th>
                 <th>Visa Status</th>
                 <th>Action</th>
@@ -84,8 +109,281 @@
           </table>
         </div>
       </div>
-
     </main>
+  </div>
+
+  <!-- Modal: Create Booking on Behalf of Client + WhatsApp Confirmation Ready -->
+  <div id="onBehalfModal" class="admin-modal-backdrop hidden" role="dialog" aria-modal="true" aria-labelledby="onBehalfModalTitle">
+    <div class="admin-modal admin-modal-xl">
+      <div class="admin-modal-header">
+        <div>
+          <h2 id="onBehalfModalTitle" class="text-base font-extrabold text-white">Create Booking on Behalf of Client</h2>
+          <p class="text-[11px] text-zinc-400">Authoritative SDF &amp; package calculation with instant WhatsApp &amp; Email confirmation dispatch</p>
+        </div>
+        <button type="button" id="closeOnBehalfModalBtn" class="p-1.5 rounded-lg text-zinc-400 hover:text-white hover:bg-zinc-800 text-lg leading-none" aria-label="Close modal">✕</button>
+      </div>
+
+      <!-- View 1: Creation Form -->
+      <form id="onBehalfForm" class="flex flex-col flex-1 overflow-hidden">
+        <div class="admin-modal-body space-y-5">
+          <div id="onBehalfError" class="hidden admin-alert admin-alert-error"></div>
+
+          <!-- Section 1: Channel & Lead Traveler -->
+          <div class="admin-panel-sub space-y-3">
+            <div class="text-xs font-extrabold uppercase tracking-wider text-[#E05A47]">1. Lead Guest &amp; Booking Channel</div>
+            <div class="admin-grid-3 text-xs">
+              <div>
+                <label class="block font-bold text-zinc-300 mb-1" for="obSource">Booking Source *</label>
+                <select id="obSource" class="w-full px-3 py-2 rounded-lg border border-zinc-600 text-xs font-semibold">
+                  <option value="whatsapp">WhatsApp Concierge</option>
+                  <option value="phone">Phone Call</option>
+                  <option value="admin_concierge">Walk-in / Concierge Desk</option>
+                  <option value="email_inquiry">Email Inquiry</option>
+                  <option value="partner_agent">Partner Travel Agent</option>
+                </select>
+              </div>
+              <div>
+                <label class="block font-bold text-zinc-300 mb-1" for="obLeadName">Lead Guest Full Name *</label>
+                <input type="text" id="obLeadName" required placeholder="e.g. Elena Rostova" class="w-full px-3 py-2 rounded-lg border border-zinc-600 text-xs font-semibold">
+              </div>
+              <div>
+                <label class="block font-bold text-zinc-300 mb-1" for="obLeadEmail">Lead Email Address *</label>
+                <input type="email" id="obLeadEmail" required placeholder="guest@example.com" class="w-full px-3 py-2 rounded-lg border border-zinc-600 text-xs font-semibold">
+              </div>
+              <div>
+                <label class="block font-bold text-zinc-300 mb-1" for="obLeadPhone">WhatsApp / Phone Number *</label>
+                <input type="tel" id="obLeadPhone" required placeholder="+1 415 555 0199" class="w-full px-3 py-2 rounded-lg border border-zinc-600 text-xs font-semibold">
+              </div>
+              <div>
+                <label class="block font-bold text-zinc-300 mb-1" for="obLeadCountry">Country / Passport Origin</label>
+                <input type="text" id="obLeadCountry" value="United States" placeholder="United States, India, UK..." class="w-full px-3 py-2 rounded-lg border border-zinc-600 text-xs font-semibold">
+              </div>
+              <div>
+                <label class="block font-bold text-zinc-300 mb-1" for="obPassportNo">Lead Passport / ID No. (Optional)</label>
+                <input type="text" id="obPassportNo" placeholder="Optional at creation" class="w-full px-3 py-2 rounded-lg border border-zinc-600 text-xs font-semibold">
+              </div>
+            </div>
+          </div>
+
+          <!-- Section 2: Trip Package or Custom Bespoke -->
+          <div class="admin-panel-sub space-y-3">
+            <div class="flex flex-wrap items-center justify-between gap-2">
+              <div class="text-xs font-extrabold uppercase tracking-wider text-[#E05A47]">2. Itinerary, Dates &amp; Accommodation</div>
+              <div class="flex items-center gap-4 text-xs text-zinc-200">
+                <label class="inline-flex items-center gap-1.5 cursor-pointer">
+                  <input type="radio" name="obTripMode" value="catalog" checked> Catalog Tour Package
+                </label>
+                <label class="inline-flex items-center gap-1.5 cursor-pointer">
+                  <input type="radio" name="obTripMode" value="custom"> Custom Bespoke Trip
+                </label>
+              </div>
+            </div>
+
+            <div id="obCatalogWrap" class="admin-grid-2 text-xs">
+              <div>
+                <label class="block font-bold text-zinc-300 mb-1" for="obTourId">Select Tour Package *</label>
+                <select id="obTourId" class="w-full px-3 py-2 rounded-lg border border-zinc-600 text-xs font-semibold">
+                  <option value="">Loading active tours...</option>
+                </select>
+              </div>
+              <div>
+                <label class="block font-bold text-zinc-300 mb-1" for="obCustomTitleOverride">Display Title Override (Optional)</label>
+                <input type="text" id="obCustomTitleOverride" placeholder="Leave blank to use catalog title" class="w-full px-3 py-2 rounded-lg border border-zinc-600 text-xs font-semibold">
+              </div>
+            </div>
+
+            <div id="obCustomWrap" class="hidden admin-grid-2 text-xs">
+              <div>
+                <label class="block font-bold text-zinc-300 mb-1" for="obBespokeTitle">Bespoke Expedition Title *</label>
+                <input type="text" id="obBespokeTitle" value="Custom Bespoke Bhutan Expedition" class="w-full px-3 py-2 rounded-lg border border-zinc-600 text-xs font-semibold">
+              </div>
+              <div>
+                <label class="block font-bold text-zinc-300 mb-1" for="obCustomDailyRate">Custom Daily Rate / Adult (USD, Optional)</label>
+                <input type="number" id="obCustomDailyRate" min="1" step="1" placeholder="Leave blank for tier default rate" class="w-full px-3 py-2 rounded-lg border border-zinc-600 text-xs font-semibold">
+              </div>
+            </div>
+
+            <div class="admin-grid-3 text-xs">
+              <div>
+                <label class="block font-bold text-zinc-300 mb-1" for="obStartDate">Arrival Date *</label>
+                <input type="date" id="obStartDate" required class="w-full px-3 py-2 rounded-lg border border-zinc-600 text-xs font-semibold">
+              </div>
+              <div>
+                <label class="block font-bold text-zinc-300 mb-1" for="obNights">Duration (Nights) *</label>
+                <input type="number" id="obNights" min="1" max="365" value="6" required class="w-full px-3 py-2 rounded-lg border border-zinc-600 text-xs font-semibold">
+              </div>
+              <div>
+                <label class="block font-bold text-zinc-300 mb-1" for="obHotelTier">Hotel Tier *</label>
+                <select id="obHotelTier" class="w-full px-3 py-2 rounded-lg border border-zinc-600 text-xs font-semibold">
+                  <option value="3-Star Standard Heritage">3-Star Standard Heritage</option>
+                  <option value="4-Star Premium" selected>4-Star Premium</option>
+                  <option value="5-Star Luxury">5-Star Luxury</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <!-- Section 3: Travelers, Currency & Pricing Adjustments -->
+          <div class="admin-panel-sub space-y-3">
+            <div class="text-xs font-extrabold uppercase tracking-wider text-[#E05A47]">3. Travelers, Currency &amp; SDF Quote</div>
+            <div class="admin-grid-4 text-xs">
+              <div>
+                <label class="block font-bold text-zinc-300 mb-1" for="obNationalityType">Nationality &amp; Currency *</label>
+                <select id="obNationalityType" class="w-full px-3 py-2 rounded-lg border border-zinc-600 text-xs font-semibold">
+                  <option value="international">International (USD · $100 SDF + $40 Visa)</option>
+                  <option value="india">India / Regional (INR · ₹1,200 SDF)</option>
+                </select>
+              </div>
+              <div>
+                <label class="block font-bold text-zinc-300 mb-1" for="obAdults">Adults (13+) *</label>
+                <input type="number" id="obAdults" min="1" value="2" required class="w-full px-3 py-2 rounded-lg border border-zinc-600 text-xs font-semibold">
+              </div>
+              <div>
+                <label class="block font-bold text-zinc-300 mb-1" for="obChildren612">Children (6–12)</label>
+                <input type="number" id="obChildren612" min="0" value="0" class="w-full px-3 py-2 rounded-lg border border-zinc-600 text-xs font-semibold">
+              </div>
+              <div>
+                <label class="block font-bold text-zinc-300 mb-1" for="obChildrenUnder6">Under 6 (SDF Exempt)</label>
+                <input type="number" id="obChildrenUnder6" min="0" value="0" class="w-full px-3 py-2 rounded-lg border border-zinc-600 text-xs font-semibold">
+              </div>
+            </div>
+
+            <div class="admin-grid-3 text-xs items-end">
+              <div>
+                <label class="block font-bold text-zinc-300 mb-1" for="obExtrasUsd">Extras / Flights / Upgrades (USD)</label>
+                <input type="number" id="obExtrasUsd" min="0" value="0" class="w-full px-3 py-2 rounded-lg border border-zinc-600 text-xs font-semibold">
+              </div>
+              <div>
+                <label class="block font-bold text-zinc-300 mb-1" for="obDiscountUsd">Operator Discount (USD)</label>
+                <input type="number" id="obDiscountUsd" min="0" value="0" class="w-full px-3 py-2 rounded-lg border border-zinc-600 text-xs font-semibold">
+              </div>
+              <div class="pb-1.5">
+                <label class="inline-flex items-center gap-2 text-xs text-zinc-200 font-semibold cursor-pointer">
+                  <input type="checkbox" id="obSdfWaived"> Apply 100% SDF Waiver (Official Exemption)
+                </label>
+              </div>
+            </div>
+
+            <!-- Live Authoritative Quote Box -->
+            <div id="obQuoteBox" class="p-3.5 rounded-xl bg-zinc-900 border border-zinc-700 text-xs space-y-2">
+              <div class="flex items-center justify-between">
+                <span class="font-bold text-zinc-300 uppercase tracking-wider text-[11px]">Authoritative Server Quote</span>
+                <span id="obQuoteStatus" class="text-[11px] text-emerald-400 font-semibold">Calculating...</span>
+              </div>
+              <div class="grid grid-cols-2 sm:grid-cols-5 gap-2 text-[11px]">
+                <div><span class="text-zinc-400 block">Package Base</span><strong id="qBase" class="text-white">—</strong></div>
+                <div><span class="text-zinc-400 block">Royal SDF</span><strong id="qSdf" class="text-white">—</strong></div>
+                <div><span class="text-zinc-400 block">Visa Fee</span><strong id="qVisa" class="text-white">—</strong></div>
+                <div><span class="text-zinc-400 block">30% Deposit</span><strong id="qDeposit" class="text-amber-400">—</strong></div>
+                <div><span class="text-zinc-400 block">Total Price</span><strong id="qTotal" class="text-[#E05A47] text-sm">—</strong></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Section 4: Initial Deposit, Guide Assignment & Notes -->
+          <div class="admin-panel-sub space-y-3">
+            <div class="text-xs font-extrabold uppercase tracking-wider text-[#E05A47]">4. Initial Payment, Guide Dispatch &amp; Notes</div>
+            <div class="admin-grid-4 text-xs">
+              <div>
+                <label class="block font-bold text-zinc-300 mb-1" for="obPaymentPlan">Payment Plan</label>
+                <select id="obPaymentPlan" class="w-full px-3 py-2 rounded-lg border border-zinc-600 text-xs font-semibold">
+                  <option value="deposit_30">30% Deposit + Balance</option>
+                  <option value="full_100">100% Full Advance</option>
+                </select>
+              </div>
+              <div>
+                <label class="block font-bold text-zinc-300 mb-1" for="obInitialDeposit">Initial Deposit Received (USD)</label>
+                <input type="number" id="obInitialDeposit" min="0" value="0" class="w-full px-3 py-2 rounded-lg border border-zinc-600 text-xs font-semibold">
+              </div>
+              <div>
+                <label class="block font-bold text-zinc-300 mb-1" for="obPaymentMethod">Payment Method</label>
+                <select id="obPaymentMethod" class="w-full px-3 py-2 rounded-lg border border-zinc-600 text-xs font-semibold">
+                  <option value="bank_transfer">Bank Wire Transfer</option>
+                  <option value="swift">SWIFT International</option>
+                  <option value="cash">Cash / Office POS</option>
+                  <option value="card_pos">Card Payment</option>
+                </select>
+              </div>
+              <div>
+                <label class="block font-bold text-zinc-300 mb-1" for="obTxRef">Transaction Ref (Optional)</label>
+                <input type="text" id="obTxRef" placeholder="e.g. BOB-88291" class="w-full px-3 py-2 rounded-lg border border-zinc-600 text-xs font-semibold">
+              </div>
+            </div>
+
+            <div class="admin-grid-3 text-xs items-end">
+              <div>
+                <label class="block font-bold text-zinc-300 mb-1" for="obGuideId">Assign Certified Guide (Optional)</label>
+                <select id="obGuideId" class="w-full px-3 py-2 rounded-lg border border-zinc-600 text-xs font-semibold">
+                  <option value="">Unassigned (Assign Later)</option>
+                </select>
+              </div>
+              <div>
+                <label class="block font-bold text-zinc-300 mb-1" for="obVehicle">Assigned Vehicle (Optional)</label>
+                <input type="text" id="obVehicle" placeholder="e.g. Toyota Prado (BP-1-A8921)" class="w-full px-3 py-2 rounded-lg border border-zinc-600 text-xs font-semibold">
+              </div>
+              <div class="pb-1.5">
+                <label class="inline-flex items-center gap-2 text-xs text-emerald-300 font-bold cursor-pointer">
+                  <input type="checkbox" id="obInstantConfirm"> Instant Confirm Booking (requires guide)
+                </label>
+              </div>
+            </div>
+
+            <div class="admin-grid-2 text-xs">
+              <div>
+                <label class="block font-bold text-zinc-300 mb-1" for="obSpecialRequests">Client Special Requests</label>
+                <textarea id="obSpecialRequests" rows="2" placeholder="Dietary preferences, flight assistance, rooming..." class="w-full px-3 py-2 rounded-lg border border-zinc-600 text-xs"></textarea>
+              </div>
+              <div>
+                <label class="block font-bold text-zinc-300 mb-1" for="obInternalNotes">Internal Operations Notes</label>
+                <textarea id="obInternalNotes" rows="2" placeholder="Staff-only notes (VIP, agent commission, call summary)..." class="w-full px-3 py-2 rounded-lg border border-zinc-600 text-xs"></textarea>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="admin-modal-footer">
+          <button type="button" id="cancelOnBehalfBtn" class="admin-btn admin-btn-secondary">Cancel</button>
+          <button type="submit" id="submitOnBehalfBtn" class="admin-btn admin-btn-primary">Create Booking &amp; Prepare Confirmation</button>
+        </div>
+      </form>
+
+      <!-- View 2: WhatsApp & Email Confirmation Ready -->
+      <div id="confirmationReadyPanel" class="hidden flex-col flex-1 overflow-hidden">
+        <div class="admin-modal-body space-y-5">
+          <div class="admin-alert admin-alert-success flex flex-wrap items-center justify-between gap-2">
+            <div>
+              <strong class="text-sm">Booking Created Successfully!</strong>
+              <span id="confReadySubtitle" class="block text-xs mt-0.5">WhatsApp &amp; Email confirmation ready for immediate dispatch.</span>
+            </div>
+            <span id="waDispatchBadge" class="badge badge-amber">Ready for WhatsApp Dispatch</span>
+          </div>
+
+          <div class="admin-panel-sub grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs">
+            <div><span class="text-zinc-400 block">Booking Ref</span><strong id="confRef" class="font-mono text-white text-sm">—</strong></div>
+            <div><span class="text-zinc-400 block">Lead Traveler</span><strong id="confGuest" class="text-white">—</strong></div>
+            <div><span class="text-zinc-400 block">Authoritative Total</span><strong id="confTotal" class="text-[#E05A47]">—</strong></div>
+            <div><span class="text-zinc-400 block">Status</span><span id="confStatus" class="inline-block mt-0.5">—</span></div>
+          </div>
+
+          <div class="space-y-2 text-xs">
+            <div class="flex flex-wrap items-center justify-between gap-2">
+              <label for="waDispatchMessage" class="font-bold text-white uppercase tracking-wider text-[11px]">WhatsApp &amp; Client Confirmation Message (Editable)</label>
+              <span id="confPortalLinkWrap" class="text-[11px] text-zinc-400"></span>
+            </div>
+            <textarea id="waDispatchMessage" rows="8" class="w-full px-3.5 py-2.5 rounded-lg border border-zinc-600 text-xs font-mono leading-relaxed"></textarea>
+          </div>
+        </div>
+
+        <div class="admin-modal-footer flex-wrap justify-between">
+          <button type="button" id="createAnotherBtn" class="admin-btn admin-btn-secondary">+ Create Another</button>
+          <div class="flex flex-wrap items-center gap-2">
+            <button type="button" id="confPrintInvoiceBtn" class="admin-btn admin-btn-secondary">🖨 Print Invoice</button>
+            <a id="confInspectorLink" href="#" class="admin-btn admin-btn-secondary">Open Booking Inspector →</a>
+            <button type="button" id="waDispatchBtn" class="admin-btn admin-btn-emerald">💬 Open in WhatsApp &amp; Mark Dispatched</button>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 
   <script src="../js/api-client.js"></script>
@@ -93,113 +391,447 @@
   <script>
     AdminApp.requireAuth();
     AdminApp.renderSidebar('bookings');
-    const toggle = document.getElementById('sidebarToggle');
-    if (toggle) {
-      toggle.addEventListener('click', () => {
-        document.getElementById('adminSidebar').classList.toggle('open');
-      });
-    }
 
     let loadedBookings = [];
+    let catalogTours = [];
+    let activeGuides = [];
+    let createdBookingResult = null;
+    let quoteDebounceTimer = null;
+
+    const searchInput = document.getElementById('bookingSearch');
+    const statusFilter = document.getElementById('bookingStatusFilter');
+    const visaFilter = document.getElementById('bookingVisaFilter');
+    const sourceFilter = document.getElementById('bookingSourceFilter');
+
+    function defaultDepartureDate() {
+      const dt = new Date();
+      dt.setUTCDate(dt.getUTCDate() + 30);
+      return dt.toISOString().split('T')[0];
+    }
 
     async function loadBookings() {
+      const errBox = document.getElementById('bookingsPageError');
+      errBox.classList.add('hidden');
       try {
-        const search = document.getElementById('bookingSearch').value.trim();
-        const status = document.getElementById('bookingStatusFilter').value;
-
-        const res = await ApiClient.getAdminBookings({ search, status });
-        loadedBookings = res.data || [];
+        const res = await window.ApiClient.getAdminBookings({
+          search: searchInput.value.trim(),
+          status: statusFilter.value,
+          visa_status: visaFilter.value,
+          source: sourceFilter.value
+        });
+        loadedBookings = (res && res.data) || [];
+        document.getElementById('bookingsCountLabel').textContent = `Showing ${loadedBookings.length} booking(s)`;
         renderTable(loadedBookings);
       } catch (err) {
-        console.error('Failed to load bookings:', err);
-        document.getElementById('bookingsTableBody').innerHTML = `
-          <tr><td colspan="9" class="py-6 text-center text-red-400">Failed to load bookings. Verify server connection.</td></tr>
-        `;
+        errBox.textContent = `Failed to load bookings: ${err.message || 'Server error'}`;
+        errBox.classList.remove('hidden');
+        document.getElementById('bookingsTableBody').innerHTML =
+          '<tr><td colspan="9" class="py-8 text-center text-red-400">Failed to load bookings from API.</td></tr>';
       }
     }
 
     function renderTable(bookings) {
       const tbody = document.getElementById('bookingsTableBody');
       if (!bookings || bookings.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="9" class="py-8 text-center text-zinc-400">No bookings found.</td></tr>`;
+        tbody.innerHTML = '<tr><td colspan="9" class="py-8 text-center text-zinc-400">No bookings match the selected filters.</td></tr>';
         return;
       }
 
-      tbody.innerHTML = bookings.map(b => {
-        let bStatusBadge = '<span class="badge badge-zinc">' + b.booking_status + '</span>';
-        if (b.booking_status === 'confirmed' || b.booking_status === 'fully_paid') {
-          bStatusBadge = '<span class="badge badge-green">Confirmed</span>';
-        } else if (b.booking_status === 'active_trip') {
-          bStatusBadge = '<span class="badge badge-blue">Active Trip</span>';
-        } else if (b.booking_status === 'deposit_paid' || b.booking_status === 'documents_complete') {
-          bStatusBadge = '<span class="badge badge-amber">' + b.booking_status.replace('_', ' ') + '</span>';
-        }
-
-        let vStatusBadge = '<span class="text-zinc-500 text-xs font-mono">Not Started</span>';
-        if (b.visa_status === 'approved' || b.visa_status === 'clearance_letter_issued') {
-          vStatusBadge = '<span class="badge badge-green">Cleared</span>';
-        } else if (b.visa_status === 'submitted_to_doi') {
-          vStatusBadge = '<span class="badge badge-amber">DoI Review</span>';
-        } else if (b.visa_status === 'under_review') {
-          vStatusBadge = '<span class="badge badge-blue">Docs Review</span>';
-        }
+      tbody.innerHTML = bookings.map((b) => {
+        const isIndia = String(b.nationality_type || '').toLowerCase() === 'india' || String(b.currency || '').toUpperCase() === 'INR';
+        const usdTotal = AdminApp.formatMoney(b.total_price_usd, 'USD');
+        const rate = Number(b.exchange_rate || 85) || 85;
+        const inrTotal = isIndia ? AdminApp.formatMoney(Math.round((Number(b.total_price_usd) || 0) * rate), 'INR') : '';
 
         return `
           <tr>
             <td class="font-mono font-bold text-white">
-              <a href="booking-detail.html?id=${b.id}" class="text-[#E05A47] hover:underline">${b.id}</a>
+              <a href="booking-detail.html?id=${encodeURIComponent(b.id)}" class="text-[#E05A47] hover:underline">${AdminApp.esc(b.id)}</a>
+              <div class="text-[10px] text-zinc-500 mt-0.5">${AdminApp.esc(AdminApp.humanize(b.source || 'website'))}</div>
             </td>
             <td>
-              <div class="font-bold text-white text-xs">${b.lead_name}</div>
-              <div class="text-[10px] text-zinc-400">${b.lead_country || 'International'} · ${b.lead_email}</div>
+              <div class="font-bold text-white text-xs">${AdminApp.esc(b.lead_name)}</div>
+              <div class="text-[10px] text-zinc-400">${AdminApp.esc(b.lead_country || 'International')} · ${AdminApp.esc(b.lead_email)}</div>
             </td>
             <td>
-              <div class="text-xs text-zinc-200 max-w-[200px] truncate">${b.tour_title}</div>
-              <div class="text-[10px] text-zinc-400">${b.hotel_tier || '3-Star Standard'}</div>
+              <div class="text-xs text-zinc-200 max-w-[210px] truncate">${AdminApp.esc(b.tour_title)}</div>
+              <div class="text-[10px] text-zinc-400">${AdminApp.esc(b.hotel_tier || '4-Star Premium')}</div>
             </td>
-            <td><span class="text-xs text-zinc-300 font-mono">${b.travel_date_start} → ${b.travel_date_end}</span></td>
-            <td><span class="text-xs text-zinc-300">${b.total_travelers}</span></td>
-            <td class="font-bold text-white text-xs">$${Number(b.total_price_usd).toLocaleString()}</td>
-            <td>${bStatusBadge}</td>
-            <td>${vStatusBadge}</td>
+            <td><span class="text-xs text-zinc-300 font-mono">${AdminApp.esc(b.travel_date_start)} → ${AdminApp.esc(b.travel_date_end)}</span></td>
+            <td><span class="text-xs text-zinc-300">${Number(b.total_travelers) || 1}</span></td>
             <td>
-              <a href="booking-detail.html?id=${b.id}" class="text-xs text-[#E05A47] font-bold hover:underline">Manage →</a>
+              <div class="font-bold text-white text-xs">${AdminApp.esc(usdTotal)}</div>
+              ${inrTotal ? `<div class="text-[10px] text-amber-300">${AdminApp.esc(inrTotal)} INR</div>` : ''}
+            </td>
+            <td>${AdminApp.bookingStatusBadge(b.booking_status)}</td>
+            <td>${AdminApp.visaStatusBadge(b.visa_status)}</td>
+            <td>
+              <a href="booking-detail.html?id=${encodeURIComponent(b.id)}" class="text-xs text-[#E05A47] font-bold hover:underline whitespace-nowrap">Inspect →</a>
             </td>
           </tr>
         `;
       }).join('');
     }
 
-    function exportCsv() {
-      if (!loadedBookings.length) return AdminApp.showToast('No bookings to export.');
-      const headers = ['ID', 'Lead Name', 'Email', 'Tour', 'Start Date', 'End Date', 'Travelers', 'Total USD', 'Booking Status', 'Visa Status'];
-      const rows = loadedBookings.map(b => [
-        b.id,
-        `"${b.lead_name}"`,
-        b.lead_email,
-        `"${b.tour_title}"`,
-        b.travel_date_start,
-        b.travel_date_end,
-        b.total_travelers,
-        b.total_price_usd,
-        b.booking_status,
-        b.visa_status
-      ]);
-      const csvContent = 'data:text/csv;charset=utf-8,' + [headers.join(','), ...rows.map(r => r.join(','))].join('\n');
-      const encodedUri = encodeURI(csvContent);
-      const link = document.createElement('a');
-      link.setAttribute('href', encodedUri);
-      link.setAttribute('download', `bhutan_bookings_${new Date().toISOString().split('T')[0]}.csv`);
-      document.body.appendChild(link);
-      link.click();
-      link.remove();
-      AdminApp.showToast('Bookings CSV exported successfully.');
+    async function loadModalDependencies() {
+      try {
+        const [toursRes, guidesRes] = await Promise.all([
+          window.ApiClient.getAdminTours({ status: 'active' }).catch(() => ({ data: [] })),
+          window.ApiClient.getAdminGuides({ active: 1 }).catch(() => ({ data: [] }))
+        ]);
+
+        catalogTours = (toursRes && toursRes.data) || [];
+        if (!catalogTours.length) {
+          catalogTours = await window.ApiClient.getTours().catch(() => []);
+        }
+
+        const tourSelect = document.getElementById('obTourId');
+        if (catalogTours.length) {
+          tourSelect.innerHTML = catalogTours.map((t) =>
+            `<option value="${AdminApp.esc(t.id)}" data-nights="${Number(t.duration_nights) || 6}">${AdminApp.esc(t.title)} (${Number(t.duration_days) || 7}D/${Number(t.duration_nights) || 6}N · $${Number(t.price_3star_usd || t.price_usd || 0).toLocaleString()})</option>`
+          ).join('');
+          const firstOpt = tourSelect.options[0];
+          if (firstOpt && firstOpt.dataset.nights) {
+            document.getElementById('obNights').value = firstOpt.dataset.nights;
+          }
+        } else {
+          tourSelect.innerHTML = '<option value="">No active catalog tours found</option>';
+        }
+
+        activeGuides = (guidesRes && guidesRes.data) || [];
+        const guideSelect = document.getElementById('obGuideId');
+        guideSelect.innerHTML = '<option value="">Unassigned (Assign Later)</option>' + activeGuides.map((g) =>
+          `<option value="${AdminApp.esc(g.id)}">${AdminApp.esc(g.full_name)}${g.license_no ? ` (${AdminApp.esc(g.license_no)})` : ''}</option>`
+        ).join('');
+      } catch (err) {
+        AdminApp.showToast(`Failed to load tours/guides: ${err.message}`, 'error');
+      }
     }
 
-    document.getElementById('bookingSearch').addEventListener('input', loadBookings);
-    document.getElementById('bookingStatusFilter').addEventListener('change', loadBookings);
+    function getTripMode() {
+      const checked = document.querySelector('input[name="obTripMode"]:checked');
+      return checked ? checked.value : 'catalog';
+    }
 
-    document.addEventListener('DOMContentLoaded', loadBookings);
+    function syncTripModeUI() {
+      const isCustom = getTripMode() === 'custom';
+      document.getElementById('obCatalogWrap').classList.toggle('hidden', isCustom);
+      document.getElementById('obCustomWrap').classList.toggle('hidden', !isCustom);
+      scheduleQuoteCalculation();
+    }
+
+    function scheduleQuoteCalculation() {
+      clearTimeout(quoteDebounceTimer);
+      quoteDebounceTimer = setTimeout(calculateLiveQuote, 180);
+    }
+
+    async function calculateLiveQuote() {
+      const statusEl = document.getElementById('obQuoteStatus');
+      statusEl.textContent = 'Calculating...';
+      statusEl.className = 'text-[11px] text-zinc-400 font-semibold';
+
+      const isCustom = getTripMode() === 'custom';
+      const tourId = isCustom ? '' : document.getElementById('obTourId').value;
+      const customRateRaw = document.getElementById('obCustomDailyRate').value;
+      const nights = Math.max(1, parseInt(document.getElementById('obNights').value, 10) || 1);
+      const adults = Math.max(1, parseInt(document.getElementById('obAdults').value, 10) || 1);
+      const c1 = Math.max(0, parseInt(document.getElementById('obChildren612').value, 10) || 0);
+      const c2 = Math.max(0, parseInt(document.getElementById('obChildrenUnder6').value, 10) || 0);
+      const nat = document.getElementById('obNationalityType').value;
+
+      try {
+        const q = await window.ApiClient.calculateSDF({
+          ...(tourId ? { tour_id: tourId } : {}),
+          ...(isCustom && customRateRaw ? { custom_daily_rate: Number(customRateRaw) } : {}),
+          nights,
+          adults,
+          children_6_12: c1,
+          children_under_6: c2,
+          nationality_type: nat,
+          hotel_tier: document.getElementById('obHotelTier').value,
+          extras_usd: Number(document.getElementById('obExtrasUsd').value) || 0,
+          discount_usd: Number(document.getElementById('obDiscountUsd').value) || 0,
+          is_sdf_waived: document.getElementById('obSdfWaived').checked
+        });
+
+        const curr = q.currency || 'USD';
+        document.getElementById('qBase').textContent = AdminApp.formatMoney(q.package_total_local ?? q.package_total_usd, curr, { withCode: true });
+        document.getElementById('qSdf').textContent = AdminApp.formatMoney(q.total_sdf_local ?? q.total_sdf_usd, curr, { withCode: true });
+        document.getElementById('qVisa').textContent = curr === 'INR' ? 'Exempt (₹0)' : AdminApp.formatMoney(q.visa_fee_usd, 'USD');
+        document.getElementById('qDeposit').textContent = AdminApp.formatMoney(q.deposit_amount_local ?? q.deposit_amount_usd, curr, { withCode: true });
+        document.getElementById('qTotal').textContent = curr === 'INR'
+          ? `${AdminApp.formatMoney(q.total_price_local, 'INR')} (~${AdminApp.formatMoney(q.total_price_usd, 'USD')})`
+          : AdminApp.formatMoney(q.total_price_usd, 'USD', { withCode: true });
+
+        statusEl.textContent = `Verified (${curr})`;
+        statusEl.className = 'text-[11px] text-emerald-400 font-semibold';
+      } catch (err) {
+        statusEl.textContent = err.message || 'Quote error';
+        statusEl.className = 'text-[11px] text-red-400 font-semibold';
+      }
+    }
+
+    function openOnBehalfModal() {
+      const modal = document.getElementById('onBehalfModal');
+      modal.classList.remove('hidden');
+      resetModalToForm();
+      if (!catalogTours.length || !activeGuides.length) {
+        loadModalDependencies().then(calculateLiveQuote);
+      } else {
+        calculateLiveQuote();
+      }
+    }
+
+    function closeOnBehalfModal() {
+      document.getElementById('onBehalfModal').classList.add('hidden');
+    }
+
+    function resetModalToForm() {
+      createdBookingResult = null;
+      document.getElementById('onBehalfForm').classList.remove('hidden');
+      document.getElementById('confirmationReadyPanel').classList.add('hidden');
+      document.getElementById('confirmationReadyPanel').classList.remove('flex');
+      document.getElementById('onBehalfError').classList.add('hidden');
+      document.getElementById('onBehalfForm').reset();
+      document.getElementById('obStartDate').value = defaultDepartureDate();
+      document.getElementById('obHotelTier').value = '4-Star Premium';
+      document.getElementById('obAdults').value = '2';
+      syncTripModeUI();
+    }
+
+    function buildConfirmationMessage(res) {
+      const b = res.booking || {};
+      const q = res.quote || {};
+      const curr = b.currency || q.currency || 'USD';
+      const totalStr = curr === 'INR'
+        ? `${AdminApp.formatMoney(q.total_price_local ?? Math.round((b.total_price_usd || 0) * (b.exchange_rate || 85)), 'INR', { withCode: true })}`
+        : `${AdminApp.formatMoney(b.total_price_usd, 'USD', { withCode: true })}`;
+
+      const lines = [
+        `Kuzuzangpo La ${b.lead_name}!`,
+        `Your Bhutan reservation (${b.id}) has been prepared by our Concierge Desk.`,
+        `Package: ${b.tour_title} (${b.hotel_tier || '4-Star Premium'})`,
+        `Travel Dates: ${b.travel_date_start} to ${b.travel_date_end} (${b.total_nights} Nights)`,
+        `Travelers: ${b.total_travelers} guest(s)`,
+        `Authoritative Total: ${totalStr}`,
+        Number(b.deposit_paid_usd) > 0 ? `Deposit Recorded: $${Number(b.deposit_paid_usd).toLocaleString()} USD` : `Status: ${AdminApp.humanize(b.booking_status)}`,
+        `Client Portal & Documents: ${res.client_portal_url || `${window.location.origin}/client/login.html?ref=${encodeURIComponent(b.id)}&email=${encodeURIComponent(b.lead_email)}`}`,
+        `Bhutan Fast Rate Tours (Licensed Tour Operator #TR/2018/9882)`
+      ];
+      return lines.join('\n');
+    }
+
+    function showConfirmationReady(res) {
+      createdBookingResult = res;
+      const b = res.booking || {};
+      const q = res.quote || {};
+      const curr = b.currency || q.currency || 'USD';
+
+      document.getElementById('onBehalfForm').classList.add('hidden');
+      const panel = document.getElementById('confirmationReadyPanel');
+      panel.classList.remove('hidden');
+      panel.classList.add('flex');
+
+      document.getElementById('confRef').textContent = b.id || '—';
+      document.getElementById('confGuest').textContent = `${b.lead_name || ''} (${b.lead_phone || ''})`;
+      document.getElementById('confTotal').textContent = curr === 'INR'
+        ? `${AdminApp.formatMoney(q.total_price_local || 0, 'INR', { withCode: true })} (${AdminApp.formatMoney(b.total_price_usd, 'USD')})`
+        : AdminApp.formatMoney(b.total_price_usd, 'USD', { withCode: true });
+      document.getElementById('confStatus').innerHTML = AdminApp.bookingStatusBadge(b.booking_status);
+      document.getElementById('confInspectorLink').href = `booking-detail.html?id=${encodeURIComponent(b.id)}`;
+      document.getElementById('waDispatchMessage').value = buildConfirmationMessage(res);
+
+      const badge = document.getElementById('waDispatchBadge');
+      badge.textContent = 'Ready for WhatsApp Dispatch';
+      badge.className = 'badge badge-amber';
+
+      const portalWrap = document.getElementById('confPortalLinkWrap');
+      if (res.client_portal_url) {
+        portalWrap.innerHTML = `<a href="${AdminApp.esc(res.client_portal_url)}" target="_blank" rel="noopener" class="text-[#E05A47] hover:underline font-semibold">Open Client Portal Link ↗</a>`;
+      } else {
+        portalWrap.textContent = '';
+      }
+    }
+
+    document.getElementById('onBehalfForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const errBox = document.getElementById('onBehalfError');
+      errBox.classList.add('hidden');
+
+      const submitBtn = document.getElementById('submitOnBehalfBtn');
+      const isCustom = getTripMode() === 'custom';
+      const guideId = document.getElementById('obGuideId').value;
+      const instantConfirm = document.getElementById('obInstantConfirm').checked;
+
+      if (instantConfirm && !guideId) {
+        errBox.textContent = 'Cannot instant-confirm booking without selecting an assigned certified guide.';
+        errBox.classList.remove('hidden');
+        return;
+      }
+
+      const payload = {
+        source: document.getElementById('obSource').value,
+        lead_name: document.getElementById('obLeadName').value.trim(),
+        lead_email: document.getElementById('obLeadEmail').value.trim(),
+        lead_phone: document.getElementById('obLeadPhone').value.trim(),
+        lead_country: document.getElementById('obLeadCountry').value.trim(),
+        lead_passport_no: document.getElementById('obPassportNo').value.trim() || undefined,
+        is_custom_trip: isCustom,
+        ...(isCustom
+          ? {
+            tour_title: document.getElementById('obBespokeTitle').value.trim() || 'Custom Bespoke Bhutan Expedition',
+            ...(document.getElementById('obCustomDailyRate').value ? { custom_daily_rate: Number(document.getElementById('obCustomDailyRate').value) } : {})
+          }
+          : {
+            tour_id: document.getElementById('obTourId').value,
+            ...(document.getElementById('obCustomTitleOverride').value.trim() ? { tour_title: document.getElementById('obCustomTitleOverride').value.trim() } : {})
+          }),
+        travel_date_start: document.getElementById('obStartDate').value,
+        nights: Number(document.getElementById('obNights').value) || 6,
+        hotel_tier: document.getElementById('obHotelTier').value,
+        nationality_type: document.getElementById('obNationalityType').value,
+        adults_count: Number(document.getElementById('obAdults').value) || 1,
+        children_6_12: Number(document.getElementById('obChildren612').value) || 0,
+        children_under_6: Number(document.getElementById('obChildrenUnder6').value) || 0,
+        extras_usd: Number(document.getElementById('obExtrasUsd').value) || 0,
+        discount_usd: Number(document.getElementById('obDiscountUsd').value) || 0,
+        is_sdf_waived: document.getElementById('obSdfWaived').checked,
+        payment_plan: document.getElementById('obPaymentPlan').value,
+        initial_deposit_usd: Number(document.getElementById('obInitialDeposit').value) || 0,
+        payment_method: document.getElementById('obPaymentMethod').value,
+        transaction_ref: document.getElementById('obTxRef').value.trim() || undefined,
+        ...(guideId ? { assigned_guide_id: Number(guideId) } : {}),
+        ...(document.getElementById('obVehicle').value.trim() ? { assigned_vehicle: document.getElementById('obVehicle').value.trim() } : {}),
+        instant_confirm: instantConfirm,
+        special_requests: document.getElementById('obSpecialRequests').value.trim() || undefined,
+        internal_notes: document.getElementById('obInternalNotes').value.trim() || undefined
+      };
+
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Creating Booking...';
+
+      try {
+        const res = await window.ApiClient.createAdminBooking(payload);
+        if (!res || !res.success || !res.booking) {
+          throw new Error((res && res.error) || 'Failed to create assisted booking.');
+        }
+        AdminApp.showToast(`Booking ${res.booking.id} created on behalf of ${res.booking.lead_name}!`);
+        showConfirmationReady(res);
+        loadBookings();
+        AdminApp.refreshUnreadCount();
+      } catch (err) {
+        const msg = err && err.status === 409 && err.data && err.data.conflicting_booking_id
+          ? `Guide Conflict (409): ${err.message}`
+          : (err.message || 'Failed to create booking.');
+        errBox.textContent = msg;
+        errBox.classList.remove('hidden');
+        AdminApp.showToast(msg, 'error');
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Create Booking & Prepare Confirmation';
+      }
+    });
+
+    document.getElementById('waDispatchBtn').addEventListener('click', async () => {
+      if (!createdBookingResult || !createdBookingResult.booking) return;
+      const b = createdBookingResult.booking;
+      const text = document.getElementById('waDispatchMessage').value.trim();
+      const waUrl = window.ApiClient.buildWhatsAppUrl(b.lead_phone, text);
+      window.open(waUrl, '_blank', 'noopener');
+
+      if (createdBookingResult.notification_id) {
+        try {
+          await window.ApiClient.markNotificationSent(createdBookingResult.notification_id);
+          const badge = document.getElementById('waDispatchBadge');
+          badge.textContent = 'Dispatched ✓';
+          badge.className = 'badge badge-green';
+          AdminApp.showToast('WhatsApp opened and notification marked as dispatched!');
+        } catch (err) {
+          AdminApp.showToast(`WhatsApp opened, but failed to mark dispatched: ${err.message}`, 'warn');
+        }
+      } else {
+        AdminApp.showToast('WhatsApp dispatch link opened.');
+      }
+    });
+
+    document.getElementById('confPrintInvoiceBtn').addEventListener('click', () => {
+      if (!createdBookingResult || !createdBookingResult.booking) return;
+      const url = window.ApiClient.getInvoiceViewUrl(createdBookingResult.booking.id);
+      window.open(url, '_blank', 'noopener');
+    });
+
+    document.getElementById('exportCsvBtn').addEventListener('click', async () => {
+      try {
+        await window.ApiClient.downloadBookingsCsv(`bhutan_bookings_${new Date().toISOString().split('T')[0]}.csv`);
+        AdminApp.showToast('Authenticated Bookings CSV report downloaded.');
+      } catch (err) {
+        AdminApp.showToast(err.message || 'CSV export failed', 'error');
+      }
+    });
+
+    document.getElementById('openNewBookingBtn').addEventListener('click', openOnBehalfModal);
+    document.getElementById('closeOnBehalfModalBtn').addEventListener('click', closeOnBehalfModal);
+    document.getElementById('cancelOnBehalfBtn').addEventListener('click', closeOnBehalfModal);
+    document.getElementById('createAnotherBtn').addEventListener('click', () => {
+      resetModalToForm();
+      calculateLiveQuote();
+    });
+
+    document.getElementById('obTourId').addEventListener('change', (e) => {
+      const opt = e.target.options[e.target.selectedIndex];
+      if (opt && opt.dataset.nights) {
+        document.getElementById('obNights').value = opt.dataset.nights;
+      }
+      scheduleQuoteCalculation();
+    });
+
+    document.getElementById('obLeadCountry').addEventListener('change', (e) => {
+      const val = e.target.value.trim().toLowerCase();
+      document.getElementById('obNationalityType').value = val === 'india' ? 'india' : 'international';
+      scheduleQuoteCalculation();
+    });
+
+    document.querySelectorAll('input[name="obTripMode"]').forEach((r) => {
+      r.addEventListener('change', syncTripModeUI);
+    });
+
+    ['obCustomDailyRate', 'obNights', 'obHotelTier', 'obNationalityType', 'obAdults', 'obChildren612', 'obChildrenUnder6', 'obExtrasUsd', 'obDiscountUsd', 'obSdfWaived'].forEach((id) => {
+      const el = document.getElementById(id);
+      if (el) el.addEventListener('change', scheduleQuoteCalculation);
+      if (el && (el.type === 'number' || el.type === 'text')) {
+        el.addEventListener('input', scheduleQuoteCalculation);
+      }
+    });
+
+    document.getElementById('resetFiltersBtn').addEventListener('click', () => {
+      searchInput.value = '';
+      statusFilter.value = 'All';
+      visaFilter.value = 'All';
+      sourceFilter.value = 'All';
+      loadBookings();
+    });
+
+    let searchTimer = null;
+    searchInput.addEventListener('input', () => {
+      clearTimeout(searchTimer);
+      searchTimer = setTimeout(loadBookings, 200);
+    });
+    statusFilter.addEventListener('change', loadBookings);
+    visaFilter.addEventListener('change', loadBookings);
+    sourceFilter.addEventListener('change', loadBookings);
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const params = new URLSearchParams(window.location.search);
+      const qStatus = params.get('status');
+      if (qStatus) {
+        statusFilter.value = qStatus;
+      }
+      loadBookings();
+      loadModalDependencies();
+      if (params.get('new') === '1' && AdminApp.canOps()) {
+        openOnBehalfModal();
+      }
+    });
   </script>
 </body>
 </html>

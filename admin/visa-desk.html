@@ -7,73 +7,76 @@
   <title>Visa Clearance Desk — Bhutan Fast Rate Operations</title>
   <link rel="stylesheet" href="../css/tour-theme.css">
   <link rel="stylesheet" href="css/admin-theme.css">
-  <style>
-    input, select, textarea {
-      color-scheme: light !important;
-      background-color: #ffffff !important;
-      color: #1f2923 !important;
-    }
-  </style>
 </head>
 <body class="admin-layout">
-  <!-- Dynamic Sidebar -->
   <aside id="adminSidebar" class="admin-sidebar"></aside>
 
-  <!-- Main Workspace -->
   <div class="admin-main">
     <header class="admin-header">
       <div class="flex items-center gap-3">
-        <button id="sidebarToggle" class="lg:hidden p-2 text-zinc-400 hover:text-white rounded">
+        <button id="sidebarToggle" class="lg:hidden p-2 text-zinc-400 hover:text-white rounded" aria-label="Toggle navigation">
           <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
         </button>
         <div>
-          <h1 class="text-base font-extrabold text-white">Department of Immigration — Visa Clearance Desk</h1>
-          <p class="text-[11px] text-zinc-400">Royal Government of Bhutan official clearance workflow &amp; e-visa clearance generation</p>
+          <h1 class="text-base font-extrabold text-white">Department of Immigration — Visa &amp; Permit Desk</h1>
+          <p class="text-[11px] text-zinc-400">Strict DoI compliance gating: 100% full advance payment &amp; 6-month valid passport scans required</p>
         </div>
       </div>
-      <div class="flex items-center gap-4 text-xs">
-        <span class="px-2.5 py-1 rounded bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 font-bold">DoI Gateway Online</span>
-        <a href="notifications.html" class="p-2 rounded-lg bg-zinc-800 text-zinc-300 hover:text-white">🔔</a>
+      <div class="flex items-center gap-3 text-xs">
+        <span class="px-2.5 py-1 rounded bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 font-bold">DoI Rules Active</span>
+        <a href="notifications.html" class="notif-bell-btn" title="Notifications">🔔</a>
       </div>
     </header>
 
     <main class="p-6 sm:p-8 space-y-6">
-      
+      <div id="visaDeskAlert" class="hidden admin-alert admin-alert-error"></div>
+
       <!-- Statistics KPI Cards -->
-      <div class="grid grid-cols-1 sm:grid-cols-4 gap-4">
+      <div class="admin-grid-4">
         <div class="stat-card p-4">
-          <div class="text-[10px] text-zinc-400 font-bold uppercase tracking-wider">Total Visa Applications</div>
-          <div class="text-2xl font-black text-white mt-1" id="statTotalVisas">-</div>
+          <div class="text-[10px] text-zinc-400 font-bold uppercase tracking-wider">Total Applications</div>
+          <div class="text-2xl font-black text-white mt-1" id="statTotalVisas">—</div>
         </div>
         <div class="stat-card p-4">
-          <div class="text-[10px] text-zinc-400 font-bold uppercase tracking-wider">Pending Review / DoI</div>
-          <div class="text-2xl font-black text-amber-400 mt-1" id="statPendingVisas">-</div>
+          <div class="text-[10px] text-zinc-400 font-bold uppercase tracking-wider">Pending / DoI Queue</div>
+          <div class="text-2xl font-black text-amber-400 mt-1" id="statPendingVisas">—</div>
         </div>
         <div class="stat-card p-4">
           <div class="text-[10px] text-zinc-400 font-bold uppercase tracking-wider">Approved &amp; Cleared</div>
-          <div class="text-2xl font-black text-emerald-400 mt-1" id="statClearedVisas">-</div>
+          <div class="text-2xl font-black text-emerald-400 mt-1" id="statClearedVisas">—</div>
         </div>
         <div class="stat-card p-4">
-          <div class="text-[10px] text-zinc-400 font-bold uppercase tracking-wider">SDF Revenue Verified</div>
-          <div class="text-2xl font-black text-[#E4C87E] mt-1" id="statTotalSdf">-</div>
+          <div class="text-[10px] text-zinc-400 font-bold uppercase tracking-wider">SDF Total (USD Equiv.)</div>
+          <div class="text-2xl font-black text-[#E05A47] mt-1" id="statTotalSdf">—</div>
         </div>
       </div>
 
       <!-- Main Queue Table Card -->
       <div class="stat-card space-y-4">
-        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-2 border-b border-zinc-800">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-3 border-b border-zinc-700">
           <div class="flex flex-wrap items-center gap-3">
-            <input type="text" id="visaSearchInput" placeholder="Search ref, guest name, or passport..." class="px-3.5 py-2 rounded-lg border border-zinc-700 text-xs w-64 focus:outline-none focus:border-[#E05A47]">
-            <select id="visaStatusFilter" class="px-3 py-2 rounded-lg border border-zinc-700 text-xs focus:outline-none">
+            <input type="text" id="visaSearchInput" placeholder="Search ref, guest, country, or passport..." class="px-3.5 py-2 rounded-lg border border-zinc-600 text-xs w-64 focus:outline-none">
+            <select id="visaStatusFilter" class="px-3 py-2 rounded-lg border border-zinc-600 text-xs focus:outline-none">
               <option value="All">All Visa States</option>
+              <option value="not_started">Not Started</option>
+              <option value="pending_docs">Pending Docs</option>
+              <option value="docs_received">Docs Received</option>
               <option value="documents_complete">Docs Complete</option>
+              <option value="payment_verified">Payment Verified</option>
+              <option value="under_review">Under Review</option>
               <option value="submitted_to_doi">Submitted to DoI</option>
               <option value="approved">Approved</option>
-              <option value="clearance_letter_issued">Letter Issued</option>
+              <option value="clearance_letter_issued">Clearance Letter Issued</option>
+              <option value="rejected">Rejected</option>
+            </select>
+            <select id="visaPermitFilter" class="px-3 py-2 rounded-lg border border-zinc-600 text-xs focus:outline-none">
+              <option value="All">All Permit Types</option>
+              <option value="international">International e-Visa</option>
+              <option value="india">India Entry Permit</option>
             </select>
           </div>
-          <button onclick="batchSubmitToDoi()" class="px-4 py-2.5 rounded-lg bg-[#E05A47] hover:bg-[#c94b39] text-white text-xs font-bold transition shadow-lg">
-            ⚡ Batch Submit All Complete to DoI
+          <button type="button" id="batchSubmitBtn" data-roles="super_admin,admin,concierge" class="admin-btn admin-btn-primary">
+            ⚡ Batch Submit Ready Files to DoI
           </button>
         </div>
 
@@ -82,12 +85,12 @@
             <thead>
               <tr>
                 <th>Booking Ref</th>
-                <th>Lead Guest &amp; Country</th>
-                <th>Tour Package</th>
-                <th>SDF Verified</th>
+                <th>Lead Guest &amp; Permit Type</th>
+                <th>Payment Gate</th>
+                <th>Docs / Passports</th>
                 <th>DoI Status</th>
-                <th>Clearance Number</th>
-                <th>Actions</th>
+                <th>Clearance #</th>
+                <th>Stage Progression &amp; Actions</th>
               </tr>
             </thead>
             <tbody id="visaTableBody">
@@ -98,8 +101,34 @@
           </table>
         </div>
       </div>
-
     </main>
+  </div>
+
+  <!-- Rejection Reason Modal -->
+  <div id="visaDeskRejectModal" class="admin-modal-backdrop hidden" role="dialog" aria-modal="true" aria-labelledby="visaDeskRejectTitle">
+    <div class="admin-modal">
+      <div class="admin-modal-header">
+        <div>
+          <h2 id="visaDeskRejectTitle" class="text-sm font-extrabold text-white">Reject Visa / Request Document Correction</h2>
+          <p id="visaDeskRejectSub" class="text-[11px] text-zinc-400">Booking Ref</p>
+        </div>
+        <button type="button" id="closeDeskRejectBtn" class="p-1.5 rounded-lg text-zinc-400 hover:text-white hover:bg-zinc-800 text-lg leading-none" aria-label="Close modal">✕</button>
+      </div>
+      <form id="visaDeskRejectForm">
+        <div class="admin-modal-body space-y-3 text-xs">
+          <div id="visaDeskRejectError" class="hidden admin-alert admin-alert-error"></div>
+          <p class="text-zinc-300">Department of Immigration rejection or document deficiency details are required and will notify the lead traveler.</p>
+          <div>
+            <label for="visaDeskRejectInput" class="block font-bold text-zinc-200 mb-1">Rejection Reason *</label>
+            <textarea id="visaDeskRejectInput" rows="4" required placeholder="e.g. Companion traveler #2 passport scan is missing and lead passport expires within 6 months." class="w-full px-3 py-2 rounded-lg border border-zinc-600 text-xs"></textarea>
+          </div>
+        </div>
+        <div class="admin-modal-footer">
+          <button type="button" id="cancelDeskRejectBtn" class="admin-btn admin-btn-secondary admin-btn-sm">Cancel</button>
+          <button type="submit" id="confirmDeskRejectBtn" class="admin-btn admin-btn-danger admin-btn-sm">Confirm Rejection</button>
+        </div>
+      </form>
+    </div>
   </div>
 
   <script src="../js/api-client.js"></script>
@@ -107,122 +136,232 @@
   <script>
     AdminApp.requireAuth();
     AdminApp.renderSidebar('visa');
-    const toggle = document.getElementById('sidebarToggle');
-    if (toggle) {
-      toggle.addEventListener('click', () => {
-        document.getElementById('adminSidebar').classList.toggle('open');
-      });
-    }
 
     let allBookings = [];
+    const readinessCache = new Map();
+    let rejectTargetBookingId = null;
+
+    function isIndiaBooking(b) {
+      const nat = String(b.nationality_type || '').toLowerCase();
+      return nat === 'india' || nat === 'regional_india' || nat === 'regional' || String(b.lead_country || '').toLowerCase() === 'india';
+    }
+
+    function checkTravelerReadiness(traveler, travelEndStr, regional) {
+      const missing = [];
+      const errors = [];
+      const hasScan = Boolean(traveler.passport_scan || traveler.id_scan);
+      const hasPhoto = Boolean(traveler.photo_url);
+
+      if (regional) {
+        if (!traveler.passport_number && !traveler.national_id) missing.push('ID/Passport #');
+        if (!hasScan) missing.push('ID Scan');
+        if (!hasPhoto) missing.push('Photo');
+        return { ready: missing.length === 0, issues: missing };
+      }
+
+      if (!traveler.passport_number) missing.push('Passport #');
+      if (!traveler.passport_expiry) missing.push('Expiry');
+      if (!hasScan) missing.push('Passport Scan');
+      if (!hasPhoto) missing.push('Photo');
+
+      if (traveler.passport_expiry && travelEndStr) {
+        const expMatch = String(traveler.passport_expiry).match(/^(\d{4})-(\d{2})-(\d{2})/);
+        const endMatch = String(travelEndStr).match(/^(\d{4})-(\d{2})-(\d{2})/);
+        if (expMatch && endMatch) {
+          const exp = new Date(Date.UTC(Number(expMatch[1]), Number(expMatch[2]) - 1, Number(expMatch[3])));
+          const endYear = Number(endMatch[1]);
+          const endMonth = Number(endMatch[2]) - 1;
+          const endDay = Number(endMatch[3]);
+          const totalMonths = endYear * 12 + endMonth + 6;
+          const targetYear = Math.floor(totalMonths / 12);
+          const targetMonth = ((totalMonths % 12) + 12) % 12;
+          const lastDay = new Date(Date.UTC(targetYear, targetMonth + 1, 0)).getUTCDate();
+          const minReq = new Date(Date.UTC(targetYear, targetMonth, Math.min(endDay, lastDay)));
+          if (exp < minReq) {
+            errors.push('<6mo passport validity');
+          }
+        }
+      }
+
+      const issues = [...missing, ...errors];
+      return { ready: issues.length === 0, issues };
+    }
+
+    function computeBookingDocsSummary(bookingDetail) {
+      const regional = isIndiaBooking(bookingDetail);
+      const travelers = Array.isArray(bookingDetail.travelers) ? bookingDetail.travelers : [];
+      if (!travelers.length) {
+        return { ready: false, readyCount: 0, total: 0, summary: 'No travelers on file' };
+      }
+      let readyCount = 0;
+      const issueSet = new Set();
+      travelers.forEach((tr) => {
+        const r = checkTravelerReadiness(tr, bookingDetail.travel_date_end, regional);
+        if (r.ready) readyCount += 1;
+        r.issues.forEach((iss) => issueSet.add(iss));
+      });
+      return {
+        ready: readyCount === travelers.length,
+        readyCount,
+        total: travelers.length,
+        summary: Array.from(issueSet).slice(0, 3).join(', ')
+      };
+    }
+
+    async function hydrateReadiness(bookings) {
+      const queue = bookings.filter((b) => !readinessCache.has(b.id));
+      const batchSize = 5;
+      for (let i = 0; i < queue.length; i += batchSize) {
+        const chunk = queue.slice(i, i + batchSize);
+        await Promise.all(chunk.map(async (b) => {
+          try {
+            const detail = await window.ApiClient.getAdminBooking(b.id);
+            if (detail && detail.success && detail.booking) {
+              readinessCache.set(b.id, computeBookingDocsSummary(detail.booking));
+            }
+          } catch (_) {
+            readinessCache.set(b.id, { ready: false, readyCount: 0, total: Number(b.total_travelers) || 1, summary: 'Inspect file' });
+          }
+        }));
+        renderTable();
+      }
+    }
 
     async function loadVisaDesk() {
+      const alertBox = document.getElementById('visaDeskAlert');
+      alertBox.classList.add('hidden');
       try {
-        const res = await ApiClient.getAdminBookings();
-        allBookings = res.data || [];
-        
-        // Calculate stats
-        const pending = allBookings.filter(b => ['documents_complete', 'under_review', 'submitted_to_doi', 'not_started'].includes(b.visa_status)).length;
-        const cleared = allBookings.filter(b => ['approved', 'clearance_letter_issued'].includes(b.visa_status)).length;
+        const res = await window.ApiClient.getAdminBookings();
+        allBookings = ((res && res.data) || []).filter((b) => b.booking_status !== 'cancelled');
+        readinessCache.clear();
+
+        const pending = allBookings.filter((b) => !['approved', 'clearance_letter_issued', 'rejected'].includes(b.visa_status)).length;
+        const cleared = allBookings.filter((b) => ['approved', 'clearance_letter_issued'].includes(b.visa_status)).length;
         const totalSdf = allBookings.reduce((sum, b) => sum + (Number(b.sdf_total_usd) || 0), 0);
 
-        document.getElementById('statTotalVisas').innerText = allBookings.length;
-        document.getElementById('statPendingVisas').innerText = pending;
-        document.getElementById('statClearedVisas').innerText = cleared;
-        document.getElementById('statTotalSdf').innerText = '$' + totalSdf.toLocaleString();
+        document.getElementById('statTotalVisas').textContent = String(allBookings.length);
+        document.getElementById('statPendingVisas').textContent = String(pending);
+        document.getElementById('statClearedVisas').textContent = String(cleared);
+        document.getElementById('statTotalSdf').textContent = AdminApp.formatMoney(totalSdf, 'USD');
 
         renderTable();
+        hydrateReadiness(allBookings);
       } catch (err) {
-        console.error('Failed to load visa desk data:', err);
-        document.getElementById('visaTableBody').innerHTML = `
-          <tr><td colspan="7" class="py-6 text-center text-red-400">Error connecting to Visa Operations API.</td></tr>
-        `;
+        alertBox.textContent = `Error loading Visa Desk data: ${err.message || 'API connection failed'}`;
+        alertBox.classList.remove('hidden');
+        document.getElementById('visaTableBody').innerHTML =
+          '<tr><td colspan="7" class="py-6 text-center text-red-400">Failed to connect to Visa Operations API.</td></tr>';
       }
     }
 
     function renderTable() {
       const search = (document.getElementById('visaSearchInput')?.value || '').toLowerCase().trim();
       const statusFilter = document.getElementById('visaStatusFilter')?.value || 'All';
+      const permitFilter = document.getElementById('visaPermitFilter')?.value || 'All';
 
-      let filtered = [...allBookings];
+      let filtered = allBookings.slice();
 
       if (statusFilter !== 'All') {
-        filtered = filtered.filter(b => b.visa_status === statusFilter);
+        filtered = filtered.filter((b) => b.visa_status === statusFilter);
+      }
+      if (permitFilter === 'india') {
+        filtered = filtered.filter((b) => isIndiaBooking(b));
+      } else if (permitFilter === 'international') {
+        filtered = filtered.filter((b) => !isIndiaBooking(b));
       }
 
       if (search) {
-        filtered = filtered.filter(b => {
-          return (b.id || '').toLowerCase().includes(search) ||
-                 (b.lead_name || '').toLowerCase().includes(search) ||
-                 (b.lead_country || '').toLowerCase().includes(search) ||
-                 (b.lead_passport_no || '').toLowerCase().includes(search);
-        });
+        filtered = filtered.filter((b) =>
+          (b.id || '').toLowerCase().includes(search) ||
+          (b.lead_name || '').toLowerCase().includes(search) ||
+          (b.lead_country || '').toLowerCase().includes(search) ||
+          (b.lead_passport_no || '').toLowerCase().includes(search)
+        );
       }
 
       const tbody = document.getElementById('visaTableBody');
-      if (filtered.length === 0) {
-        tbody.innerHTML = `
-          <tr><td colspan="7" class="py-8 text-center text-zinc-400">No applications found matching criteria.</td></tr>
-        `;
+      if (!filtered.length) {
+        tbody.innerHTML = '<tr><td colspan="7" class="py-8 text-center text-zinc-400">No applications found matching criteria.</td></tr>';
         return;
       }
 
-      tbody.innerHTML = filtered.map(b => {
+      const canOps = AdminApp.canOps();
+
+      tbody.innerHTML = filtered.map((b) => {
+        const regional = isIndiaBooking(b);
         const isApproved = ['approved', 'clearance_letter_issued'].includes(b.visa_status);
         const isSubmitted = b.visa_status === 'submitted_to_doi';
-        
-        let badge = '<span class="badge badge-zinc">Draft</span>';
-        if (isApproved) {
-          badge = '<span class="badge badge-green">Cleared (DoI Approved)</span>';
-        } else if (isSubmitted) {
-          badge = '<span class="badge badge-amber">Submitted to DoI</span>';
-        } else if (b.visa_status === 'under_review' || b.visa_status === 'documents_complete') {
-          badge = '<span class="badge badge-blue">Ready for DoI</span>';
+        const isFullPaid = Number(b.full_paid) === 1 || Number(b.deposit_paid_usd || 0) >= Number(b.total_price_usd || 0);
+        const docsInfo = readinessCache.get(b.id);
+
+        const paymentHtml = isFullPaid
+          ? `<span class="badge badge-green">✓ Paid 100%</span><div class="text-[10px] text-zinc-400 mt-0.5">SDF: ${AdminApp.formatMoney(b.sdf_total_usd, 'USD')}</div>`
+          : (Number(b.deposit_paid_usd) > 0
+            ? `<span class="badge badge-amber">✗ Deposit Only</span><div class="text-[10px] text-amber-300 mt-0.5">${AdminApp.formatMoney(b.deposit_paid_usd, 'USD')} / ${AdminApp.formatMoney(b.total_price_usd, 'USD')}</div>`
+            : `<span class="badge badge-red">✗ Unpaid</span><div class="text-[10px] text-zinc-400 mt-0.5">Due: ${AdminApp.formatMoney(b.total_price_usd, 'USD')}</div>`);
+
+        let docsHtml = `<span class="badge badge-zinc">Checking...</span>`;
+        if (docsInfo) {
+          docsHtml = docsInfo.ready
+            ? `<span class="badge badge-green">✓ Ready (${docsInfo.readyCount}/${docsInfo.total})</span>`
+            : `<span class="badge badge-red">✗ ${docsInfo.readyCount}/${docsInfo.total} Ready</span>${docsInfo.summary ? `<div class="text-[10px] text-red-400 mt-0.5 max-w-[160px]">${AdminApp.esc(docsInfo.summary)}</div>` : ''}`;
         }
 
-        const sdfPaid = b.deposit_paid_usd > 0
-          ? `<span class="text-emerald-400 font-bold">$${Number(b.sdf_total_usd || 0).toLocaleString()} (Paid)</span>`
-          : '<span class="text-amber-400 font-bold">Unpaid</span>';
+        const permitBadge = regional
+          ? '<span class="badge badge-amber">🇮🇳 India Entry Permit</span>'
+          : '<span class="badge badge-blue">🛂 Int\'l e-Visa</span>';
 
-        const clearanceBadge = b.visa_clearance_number 
-          ? `<span class="font-mono text-emerald-400 font-bold text-xs">${b.visa_clearance_number}</span>`
+        const clearanceHtml = b.visa_clearance_number
+          ? `<span class="font-mono text-emerald-400 font-bold text-xs">${AdminApp.esc(b.visa_clearance_number)}</span>`
           : `<span class="text-zinc-500 font-mono text-xs">Pending Issuance</span>`;
+
+        const clearanceUrl = window.ApiClient.getClearanceViewUrl(b.id);
 
         return `
           <tr>
             <td>
-              <a href="booking-detail.html?id=${b.id}" class="font-mono font-bold text-[#E05A47] hover:underline">${b.id}</a>
-              <div class="text-[10px] text-zinc-400">${b.travel_date_start} → ${b.travel_date_end}</div>
+              <a href="booking-detail.html?id=${encodeURIComponent(b.id)}" class="font-mono font-bold text-[#E05A47] hover:underline">${AdminApp.esc(b.id)}</a>
+              <div class="text-[10px] text-zinc-400 mt-0.5">${AdminApp.esc(b.travel_date_start)} → ${AdminApp.esc(b.travel_date_end)}</div>
             </td>
             <td>
-              <div class="font-bold text-white text-xs">${b.lead_name}</div>
-              <div class="text-[10px] text-zinc-400">${b.lead_country} · Pass: ${b.lead_passport_no || 'On File'}</div>
+              <div class="font-bold text-white text-xs">${AdminApp.esc(b.lead_name)}</div>
+              <div class="text-[10px] text-zinc-400 mb-1">${AdminApp.esc(b.lead_country || 'International')} · ${Number(b.total_travelers) || 1} Guest(s)</div>
+              ${permitBadge}
             </td>
+            <td>${paymentHtml}</td>
+            <td>${docsHtml}</td>
             <td>
-              <div class="text-xs text-zinc-300 max-w-[180px] truncate">${b.tour_title}</div>
-              <div class="text-[10px] text-zinc-500">${b.total_travelers} Traveler(s) · ${b.total_nights} Nights</div>
+              ${AdminApp.visaStatusBadge(b.visa_status)}
+              ${b.visa_status === 'rejected' && b.visa_rejection_reason ? `<div class="text-[10px] text-red-400 mt-1 max-w-[160px] truncate" title="${AdminApp.esc(b.visa_rejection_reason)}">${AdminApp.esc(b.visa_rejection_reason)}</div>` : ''}
             </td>
-            <td>${sdfPaid}</td>
-            <td>${badge}</td>
-            <td>${clearanceBadge}</td>
+            <td>${clearanceHtml}</td>
             <td>
-              <div class="flex items-center gap-1.5">
-                ${!isApproved ? `
-                  <button onclick="approveVisa('${b.id}')" class="px-3 py-1 rounded bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold transition shadow">
-                    Approve Visa
-                  </button>
+              <div class="flex flex-wrap items-center gap-1.5">
+                ${canOps && !isApproved ? `
                   ${!isSubmitted ? `
-                    <button onclick="submitToDoi('${b.id}')" class="px-2.5 py-1 rounded bg-zinc-800 hover:bg-zinc-700 text-zinc-300 text-xs font-bold border border-zinc-700">
-                      Send to DoI
+                    <button type="button" onclick="transitionVisa('${AdminApp.esc(b.id)}', 'submitted_to_doi')" class="admin-btn admin-btn-secondary admin-btn-sm">
+                      Submit to DoI
                     </button>
                   ` : ''}
-                ` : `
-                  <a href="../track-visa.html?ref=${b.id}" target="_blank" class="px-2.5 py-1 rounded bg-zinc-800 hover:bg-zinc-700 text-emerald-400 text-xs font-bold border border-zinc-700">
-                    View Letter ↗
+                  <button type="button" onclick="transitionVisa('${AdminApp.esc(b.id)}', 'approved')" class="admin-btn admin-btn-emerald admin-btn-sm">
+                    Approve Visa
+                  </button>
+                  <button type="button" onclick="openRejectModal('${AdminApp.esc(b.id)}')" class="admin-btn admin-btn-danger admin-btn-sm">
+                    Reject
+                  </button>
+                ` : ''}
+                ${isApproved ? `
+                  <a href="${AdminApp.esc(clearanceUrl)}" target="_blank" rel="noopener" class="admin-btn admin-btn-emerald admin-btn-sm">
+                    📜 Clearance Letter ↗
                   </a>
-                `}
-                <a href="booking-detail.html?id=${b.id}" class="p-1 text-zinc-400 hover:text-white" title="Manage Details">
-                  ⚙️
+                  ${canOps && b.visa_status !== 'clearance_letter_issued' ? `
+                    <button type="button" onclick="transitionVisa('${AdminApp.esc(b.id)}', 'clearance_letter_issued')" class="admin-btn admin-btn-secondary admin-btn-sm">
+                      Mark Issued
+                    </button>
+                  ` : ''}
+                ` : ''}
+                <a href="booking-detail.html?id=${encodeURIComponent(b.id)}" class="admin-btn admin-btn-secondary admin-btn-sm" title="Inspect Full File">
+                  Inspect
                 </a>
               </div>
             </td>
@@ -231,51 +370,106 @@
       }).join('');
     }
 
-    async function submitToDoi(bookingId) {
+    async function transitionVisa(bookingId, targetStage) {
+      const alertBox = document.getElementById('visaDeskAlert');
+      alertBox.classList.add('hidden');
       try {
-        const staff = AdminApp.getStaffUser();
-        const res = await ApiClient.updateVisaStatus(bookingId, 'submitted_to_doi', '', staff ? staff.name : 'Visa Officer');
-        if (res.success) {
-          AdminApp.showToast(`Application ${bookingId} submitted to Bhutan Department of Immigration!`);
-          loadVisaDesk();
-        } else {
-          AdminApp.showToast(res.error || 'Failed to submit', 'error');
-        }
+        const res = await window.ApiClient.updateVisaStatus(bookingId, { visa_status: targetStage });
+        const clearanceInfo = res && res.visa_clearance_number ? ` (Clearance: ${res.visa_clearance_number})` : '';
+        AdminApp.showToast(`${bookingId} updated to ${AdminApp.humanize(targetStage)}${clearanceInfo}`);
+        loadVisaDesk();
       } catch (err) {
-        AdminApp.showToast(err.message, 'error');
+        const details = err && err.data && Array.isArray(err.data.errors) && err.data.errors.length
+          ? ` — ${err.data.errors.join(' | ')}`
+          : '';
+        const msg = `${bookingId} blocked by DoI compliance gate: ${err.message || 'Unmet requirements'}${details}`;
+        alertBox.textContent = msg;
+        alertBox.classList.remove('hidden');
+        AdminApp.showToast(err.message || 'DoI compliance gate blocked update', 'error');
       }
     }
 
-    async function approveVisa(bookingId) {
-      try {
-        const staff = AdminApp.getStaffUser();
-        const res = await ApiClient.updateVisaStatus(bookingId, 'approved', '', staff ? staff.name : 'Visa Officer');
-        if (res.success) {
-          AdminApp.showToast(`Visa APPROVED for ${bookingId}! Clearance: ${res.visa_clearance_number}`);
-          loadVisaDesk();
-        } else {
-          AdminApp.showToast(res.error || 'Failed to approve visa', 'error');
-        }
-      } catch (err) {
-        AdminApp.showToast(err.message, 'error');
-      }
+    function openRejectModal(bookingId) {
+      rejectTargetBookingId = bookingId;
+      document.getElementById('visaDeskRejectSub').textContent = `Booking Ref: ${bookingId}`;
+      document.getElementById('visaDeskRejectError').classList.add('hidden');
+      document.getElementById('visaDeskRejectInput').value = '';
+      document.getElementById('visaDeskRejectModal').classList.remove('hidden');
     }
 
-    async function batchSubmitToDoi() {
-      const pending = allBookings.filter(b => ['documents_complete', 'under_review'].includes(b.visa_status));
-      if (pending.length === 0) {
-        AdminApp.showToast('All documents are already submitted or approved.');
+    function closeRejectModal() {
+      rejectTargetBookingId = null;
+      document.getElementById('visaDeskRejectModal').classList.add('hidden');
+    }
+
+    document.getElementById('closeDeskRejectBtn').addEventListener('click', closeRejectModal);
+    document.getElementById('cancelDeskRejectBtn').addEventListener('click', closeRejectModal);
+    document.getElementById('visaDeskRejectForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      if (!rejectTargetBookingId) return;
+      const errBox = document.getElementById('visaDeskRejectError');
+      errBox.classList.add('hidden');
+      const reason = document.getElementById('visaDeskRejectInput').value.trim();
+      if (!reason) {
+        errBox.textContent = 'A non-empty rejection reason is required.';
+        errBox.classList.remove('hidden');
         return;
       }
-      for (const b of pending) {
-        await ApiClient.updateVisaStatus(b.id, 'submitted_to_doi');
+      try {
+        const res = await window.ApiClient.updateVisaStatus(rejectTargetBookingId, {
+          visa_status: 'rejected',
+          rejection_reason: reason
+        });
+        const id = rejectTargetBookingId;
+        closeRejectModal();
+        AdminApp.showToast((res && res.message) || `Application ${id} marked rejected.`);
+        loadVisaDesk();
+      } catch (err) {
+        errBox.textContent = err.message || 'Failed to reject visa application.';
+        errBox.classList.remove('hidden');
       }
-      AdminApp.showToast(`Batch of ${pending.length} applications submitted to Department of Immigration!`);
+    });
+
+    document.getElementById('batchSubmitBtn').addEventListener('click', async () => {
+      const alertBox = document.getElementById('visaDeskAlert');
+      alertBox.classList.add('hidden');
+
+      const candidates = allBookings.filter((b) =>
+        ['documents_complete', 'docs_received', 'payment_verified', 'under_review', 'pending_docs', 'not_started'].includes(b.visa_status)
+      );
+      if (!candidates.length) {
+        AdminApp.showToast('No pending applications available to submit.', 'warn');
+        return;
+      }
+
+      let submitted = 0;
+      const skipped = [];
+      for (const b of candidates) {
+        try {
+          await window.ApiClient.updateVisaStatus(b.id, { visa_status: 'submitted_to_doi' });
+          submitted += 1;
+        } catch (err) {
+          skipped.push(`${b.id}: ${err.message}`);
+        }
+      }
+
+      if (submitted > 0) {
+        AdminApp.showToast(`Submitted ${submitted} compliant application(s) to DoI.${skipped.length ? ` ${skipped.length} skipped (unmet gates).` : ''}`);
+      } else {
+        AdminApp.showToast('0 applications met DoI payment & passport gates.', 'error');
+      }
+
+      if (skipped.length) {
+        alertBox.innerHTML = `<strong>Batch DoI Summary (${submitted} submitted, ${skipped.length} blocked by DoI gates):</strong><ul class="list-disc pl-4 mt-1 space-y-0.5">${skipped.map((s) => `<li>${AdminApp.esc(s)}</li>`).join('')}</ul>`;
+        alertBox.classList.remove('hidden');
+      }
+
       loadVisaDesk();
-    }
+    });
 
     document.getElementById('visaSearchInput')?.addEventListener('input', renderTable);
     document.getElementById('visaStatusFilter')?.addEventListener('change', renderTable);
+    document.getElementById('visaPermitFilter')?.addEventListener('change', renderTable);
 
     document.addEventListener('DOMContentLoaded', loadVisaDesk);
   </script>

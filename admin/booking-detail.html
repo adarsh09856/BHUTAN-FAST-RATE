@@ -7,46 +7,106 @@
   <title>Booking File Inspection — Bhutan Fast Rate Operations</title>
   <link rel="stylesheet" href="../css/tour-theme.css">
   <link rel="stylesheet" href="css/admin-theme.css">
-  <style>
-    input, select, textarea {
-      color-scheme: light !important;
-      background-color: #ffffff !important;
-      color: #1f2923 !important;
-    }
-  </style>
 </head>
 <body class="admin-layout">
-  <!-- Dynamic Sidebar -->
   <aside id="adminSidebar" class="admin-sidebar"></aside>
 
-  <!-- Main Workspace -->
   <div class="admin-main">
     <header class="admin-header">
       <div class="flex items-center gap-3">
-        <button id="sidebarToggle" class="lg:hidden p-2 text-zinc-400 hover:text-white rounded">
+        <button id="sidebarToggle" class="lg:hidden p-2 text-zinc-400 hover:text-white rounded" aria-label="Toggle navigation">
           <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
         </button>
         <div>
           <h1 class="text-base font-extrabold text-white">Booking Inspection &amp; Operations File</h1>
-          <p class="text-[11px] text-zinc-400">Department of Tourism clearance, assigned guide, and financial ledger</p>
+          <p class="text-[11px] text-zinc-400">Department of Tourism clearance, guide dispatch, traveler documents &amp; financial ledger</p>
         </div>
       </div>
-      <div class="flex items-center gap-4 text-xs">
-        <span class="px-2.5 py-1 rounded bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 font-bold">API Online</span>
-        <a href="notifications.html" class="p-2 rounded-lg bg-zinc-800 text-zinc-300 hover:text-white">🔔</a>
+      <div class="flex items-center gap-3 text-xs">
+        <span class="px-2.5 py-1 rounded bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 font-bold">API Live</span>
+        <a href="notifications.html" class="notif-bell-btn" title="Notifications">🔔</a>
       </div>
     </header>
 
     <main class="p-6 sm:p-8 space-y-6">
-      
       <div class="space-y-6" id="bookingDetailContent">
         <div class="py-16 text-center text-zinc-400">
           <div class="inline-block w-8 h-8 border-4 border-[#E05A47] border-t-transparent rounded-full animate-spin mb-3"></div>
           <div>Loading Booking File from Database...</div>
         </div>
       </div>
-
     </main>
+  </div>
+
+  <!-- Private Document Preview Modal -->
+  <div id="docPreviewModal" class="admin-modal-backdrop hidden" role="dialog" aria-modal="true" aria-labelledby="docPreviewTitle">
+    <div class="admin-modal admin-modal-lg">
+      <div class="admin-modal-header">
+        <div>
+          <h2 id="docPreviewTitle" class="text-sm font-extrabold text-white">Private Document Preview</h2>
+          <p id="docPreviewSubtitle" class="text-[11px] text-zinc-400">Authenticated Staff Document Stream</p>
+        </div>
+        <button type="button" id="closeDocPreviewBtn" class="p-1.5 rounded-lg text-zinc-400 hover:text-white hover:bg-zinc-800 text-lg leading-none" aria-label="Close modal">✕</button>
+      </div>
+      <div class="admin-modal-body space-y-3">
+        <div id="docPreviewBody" class="bg-zinc-900 border border-zinc-700 rounded-xl p-3 flex items-center justify-center min-h-[380px]"></div>
+      </div>
+      <div class="admin-modal-footer justify-between">
+        <span class="text-[11px] text-zinc-400">Served over authenticated staff token stream</span>
+        <div class="flex items-center gap-2">
+          <a id="docPreviewOpenTab" href="#" target="_blank" rel="noopener" class="admin-btn admin-btn-secondary admin-btn-sm">Open in New Tab ↗</a>
+          <button type="button" id="docPreviewCloseFooterBtn" class="admin-btn admin-btn-primary admin-btn-sm">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Visa Rejection Reason Modal -->
+  <div id="visaRejectModal" class="admin-modal-backdrop hidden" role="dialog" aria-modal="true" aria-labelledby="visaRejectTitle">
+    <div class="admin-modal">
+      <div class="admin-modal-header">
+        <h2 id="visaRejectTitle" class="text-sm font-extrabold text-white">Reject DoI Visa Application</h2>
+        <button type="button" id="closeVisaRejectBtn" class="p-1.5 rounded-lg text-zinc-400 hover:text-white hover:bg-zinc-800 text-lg leading-none" aria-label="Close modal">✕</button>
+      </div>
+      <form id="visaRejectForm">
+        <div class="admin-modal-body space-y-3 text-xs">
+          <div id="visaRejectError" class="hidden admin-alert admin-alert-error"></div>
+          <p class="text-zinc-300">Provide an explicit Department of Immigration rejection or document correction reason. This will be recorded in the audit log and included in the client notification.</p>
+          <div>
+            <label for="visaRejectReasonInput" class="block font-bold text-zinc-200 mb-1">Rejection / Correction Reason *</label>
+            <textarea id="visaRejectReasonInput" rows="4" required placeholder="e.g. Lead traveler passport scan is blurred and expiry date is under 6 months from departure." class="w-full px-3 py-2 rounded-lg border border-zinc-600 text-xs"></textarea>
+          </div>
+        </div>
+        <div class="admin-modal-footer">
+          <button type="button" id="cancelVisaRejectBtn" class="admin-btn admin-btn-secondary admin-btn-sm">Cancel</button>
+          <button type="submit" id="confirmVisaRejectBtn" class="admin-btn admin-btn-danger admin-btn-sm">Confirm Visa Rejection</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Super Admin Cancel Booking Modal -->
+  <div id="cancelBookingModal" class="admin-modal-backdrop hidden" role="dialog" aria-modal="true" aria-labelledby="cancelBookingTitle">
+    <div class="admin-modal">
+      <div class="admin-modal-header">
+        <h2 id="cancelBookingTitle" class="text-sm font-extrabold text-white">Cancel Booking (Super Admin)</h2>
+        <button type="button" id="closeCancelBookingBtn" class="p-1.5 rounded-lg text-zinc-400 hover:text-white hover:bg-zinc-800 text-lg leading-none" aria-label="Close modal">✕</button>
+      </div>
+      <form id="cancelBookingForm">
+        <div class="admin-modal-body space-y-3 text-xs">
+          <div id="cancelBookingError" class="hidden admin-alert admin-alert-error"></div>
+          <p class="text-zinc-300">Cancelling releases any scheduled guide assignments. Note: bookings with unrefunded verified payments cannot be cancelled until refunded.</p>
+          <div>
+            <label for="cancelBookingReasonInput" class="block font-bold text-zinc-200 mb-1">Cancellation Reason *</label>
+            <textarea id="cancelBookingReasonInput" rows="3" required placeholder="e.g. Client requested postponement; full refund issued." class="w-full px-3 py-2 rounded-lg border border-zinc-600 text-xs"></textarea>
+          </div>
+        </div>
+        <div class="admin-modal-footer">
+          <button type="button" id="abortCancelBookingBtn" class="admin-btn admin-btn-secondary admin-btn-sm">Keep Booking</button>
+          <button type="submit" id="confirmCancelBookingBtn" class="admin-btn admin-btn-danger admin-btn-sm">Cancel Booking</button>
+        </div>
+      </form>
+    </div>
   </div>
 
   <script src="../js/api-client.js"></script>
@@ -54,330 +114,984 @@
   <script>
     AdminApp.requireAuth();
     AdminApp.renderSidebar('bookings');
-    const toggle = document.getElementById('sidebarToggle');
-    if (toggle) {
-      toggle.addEventListener('click', () => {
-        document.getElementById('adminSidebar').classList.toggle('open');
-      });
-    }
 
     let currentBooking = null;
+    let activeGuides = [];
+    let lastMessengerResult = null;
+
+    function checkSixMonthExpiry(expiryStr, travelEndStr) {
+      if (!expiryStr || !travelEndStr) return { ok: true, warning: null };
+      const expMatch = String(expiryStr).match(/^(\d{4})-(\d{2})-(\d{2})/);
+      const endMatch = String(travelEndStr).match(/^(\d{4})-(\d{2})-(\d{2})/);
+      if (!expMatch || !endMatch) return { ok: true, warning: null };
+      const exp = new Date(Date.UTC(Number(expMatch[1]), Number(expMatch[2]) - 1, Number(expMatch[3])));
+      const endYear = Number(endMatch[1]);
+      const endMonth = Number(endMatch[2]) - 1;
+      const endDay = Number(endMatch[3]);
+      const totalMonths = endYear * 12 + endMonth + 6;
+      const targetYear = Math.floor(totalMonths / 12);
+      const targetMonth = ((totalMonths % 12) + 12) % 12;
+      const lastDay = new Date(Date.UTC(targetYear, targetMonth + 1, 0)).getUTCDate();
+      const minRequired = new Date(Date.UTC(targetYear, targetMonth, Math.min(endDay, lastDay)));
+      if (exp < minRequired) {
+        return { ok: false, warning: `Expires ${expiryStr} (< 6 mo after ${travelEndStr})` };
+      }
+      return { ok: true, warning: null };
+    }
 
     async function loadBookingDetail() {
       const urlParams = new URLSearchParams(window.location.search);
-      const refId = urlParams.get('id') || 'BFR-2026-8841';
+      const refId = (urlParams.get('id') || '').trim();
+      const container = document.getElementById('bookingDetailContent');
+
+      if (!refId) {
+        container.innerHTML = `
+          <div class="stat-card text-center py-12 space-y-4 max-w-lg mx-auto">
+            <h2 class="text-lg font-extrabold text-white">Select a Booking Reference</h2>
+            <p class="text-xs text-zinc-400">Open a booking from the pipeline or enter a reference ID (e.g. BFR-2026-8841).</p>
+            <form id="jumpBookingForm" class="flex items-center justify-center gap-2 max-w-xs mx-auto">
+              <input type="text" id="jumpBookingInput" placeholder="BFR-2026-..." required class="px-3 py-2 rounded-lg border border-zinc-600 text-xs font-mono">
+              <button type="submit" class="admin-btn admin-btn-primary admin-btn-sm">Inspect</button>
+            </form>
+            <div><a href="bookings.html" class="text-xs text-[#E05A47] hover:underline font-bold">← Return to Bookings Pipeline</a></div>
+          </div>
+        `;
+        document.getElementById('jumpBookingForm').addEventListener('submit', (e) => {
+          e.preventDefault();
+          const val = document.getElementById('jumpBookingInput').value.trim();
+          if (val) window.location.href = `booking-detail.html?id=${encodeURIComponent(val)}`;
+        });
+        return;
+      }
 
       try {
-        const res = await ApiClient.getAdminBooking(refId);
-        if (!res.success || !res.booking) {
-          document.getElementById('bookingDetailContent').innerHTML = `
-            <div class="stat-card text-center py-12">
+        const [bookingRes, guidesRes] = await Promise.all([
+          window.ApiClient.getAdminBooking(refId),
+          window.ApiClient.getAdminGuides({ active: 1 }).catch(() => ({ data: [] }))
+        ]);
+
+        if (!bookingRes || !bookingRes.success || !bookingRes.booking) {
+          container.innerHTML = `
+            <div class="stat-card text-center py-12 space-y-3">
               <h2 class="text-xl font-bold text-red-400">Booking File Not Found</h2>
-              <p class="text-xs text-zinc-400 mt-2">Could not locate reference "${refId}".</p>
-              <a href="bookings.html" class="inline-block mt-4 px-4 py-2 rounded bg-zinc-800 text-white font-bold text-xs">Return to Bookings</a>
+              <p class="text-xs text-zinc-400">Could not locate reference "${AdminApp.esc(refId)}".</p>
+              <a href="bookings.html" class="admin-btn admin-btn-secondary admin-btn-sm">Return to Bookings</a>
             </div>
           `;
           return;
         }
 
-        currentBooking = res.booking;
+        currentBooking = bookingRes.booking;
+        activeGuides = (guidesRes && guidesRes.data) || [];
         renderBooking(currentBooking);
       } catch (err) {
-        console.error('Failed to load booking:', err);
-        document.getElementById('bookingDetailContent').innerHTML = `
-          <div class="stat-card text-center py-12 text-red-400">Failed to connect to API server.</div>
+        container.innerHTML = `
+          <div class="stat-card text-center py-12 space-y-3">
+            <h2 class="text-lg font-bold text-red-400">Unable to Load Booking File</h2>
+            <p class="text-xs text-zinc-300">${AdminApp.esc(err.message || 'API connection error')}</p>
+            <a href="bookings.html" class="admin-btn admin-btn-secondary admin-btn-sm">← Back to Bookings</a>
+          </div>
         `;
       }
     }
 
     function renderBooking(b) {
       const isApproved = ['approved', 'clearance_letter_issued'].includes(b.visa_status);
-      const isFullyPaid = b.deposit_paid_usd >= b.total_price_usd;
+      const isIndia = String(b.nationality_type || '').toLowerCase() === 'india' || String(b.currency || '').toUpperCase() === 'INR';
+      const rate = Number(b.exchange_rate || 85) || 85;
+      const totalUsd = Number(b.total_price_usd || 0);
+      const paidUsd = Number(b.deposit_paid_usd || 0);
+      const balanceUsd = Math.max(0, totalUsd - paidUsd);
+      const isFullyPaid = Number(b.full_paid) === 1 || paidUsd >= totalUsd;
+
+      const invoiceUrl = window.ApiClient.getInvoiceViewUrl(b.id);
+      const clearanceUrl = window.ApiClient.getClearanceViewUrl(b.id);
+
+      const travelers = Array.isArray(b.travelers) ? b.travelers : [];
+      const payments = Array.isArray(b.payments) ? b.payments : [];
+      const audit = Array.isArray(b.audit) ? b.audit : [];
+      const checkins = Array.isArray(b.checkins) ? b.checkins : [];
+
+      const guideOptions = [
+        '<option value="">Select Certified Guide...</option>',
+        ...activeGuides.map((g) => {
+          const selected = Number(b.assigned_guide_id) === Number(g.id) ? 'selected' : '';
+          return `<option value="${AdminApp.esc(g.id)}" ${selected}>${AdminApp.esc(g.full_name)}${g.license_no ? ` (${AdminApp.esc(g.license_no)})` : ''}</option>`;
+        })
+      ].join('');
 
       document.getElementById('bookingDetailContent').innerHTML = `
+        <!-- Top Action Header -->
         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
             <a href="bookings.html" class="text-xs font-bold text-[#E05A47] hover:underline">← Back to Bookings Pipeline</a>
-            <h2 class="text-2xl font-black text-white mt-1">Booking Ref: ${b.id}</h2>
-            <p class="text-xs text-zinc-400">${b.lead_name} (${b.lead_country || 'International'}) • ${b.tour_title}</p>
+            <div class="flex flex-wrap items-center gap-2.5 mt-1">
+              <h2 class="text-2xl font-black text-white">Booking Ref: ${AdminApp.esc(b.id)}</h2>
+              ${AdminApp.bookingStatusBadge(b.booking_status)}
+              ${AdminApp.visaStatusBadge(b.visa_status)}
+              <span class="badge ${isIndia ? 'badge-amber' : 'badge-blue'}">${isIndia ? '🇮🇳 Entry Permit (INR)' : '🛂 Int\'l e-Visa (USD)'}</span>
+            </div>
+            <p class="text-xs text-zinc-400 mt-1">
+              ${AdminApp.esc(b.lead_name)} (${AdminApp.esc(b.lead_country || 'International')}) · ${AdminApp.esc(b.tour_title)} · Source: ${AdminApp.esc(AdminApp.humanize(b.source || 'website'))}
+            </p>
           </div>
           <div class="flex flex-wrap items-center gap-2">
-            <a href="../track-visa.html?ref=${b.id}" target="_blank" class="px-3.5 py-2 rounded-lg bg-zinc-800 hover:bg-zinc-700 text-emerald-400 text-xs font-bold border border-zinc-700 transition">
+            <a href="../track-visa.html?ref=${encodeURIComponent(b.id)}" target="_blank" rel="noopener" class="admin-btn admin-btn-secondary admin-btn-sm">
               Client Tracker ↗
             </a>
+            <a href="${AdminApp.esc(invoiceUrl)}" target="_blank" rel="noopener" class="admin-btn admin-btn-secondary admin-btn-sm">
+              🖨 Print Invoice
+            </a>
             ${isApproved ? `
-              <button onclick="AdminApp.showToast('Clearance Letter VCL generated & dispatched.')" class="px-4 py-2 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold transition">
-                Print Clearance PDF
-              </button>
+              <a href="${AdminApp.esc(clearanceUrl)}" target="_blank" rel="noopener" class="admin-btn admin-btn-emerald admin-btn-sm">
+                📜 Print Clearance Letter ↗
+              </a>
             ` : `
-              <button onclick="quickApproveVisa()" class="px-4 py-2 rounded-lg bg-[#E05A47] hover:bg-[#c94b39] text-white text-xs font-bold transition">
+              <button type="button" id="quickApproveVisaBtn" data-roles="super_admin,admin,concierge" class="admin-btn admin-btn-primary admin-btn-sm">
                 Approve Visa &amp; Issue Clearance
               </button>
             `}
+            <button type="button" id="openCancelBookingModalBtn" data-roles="super_admin" class="admin-btn admin-btn-danger admin-btn-sm">
+              Cancel Booking
+            </button>
           </div>
         </div>
 
-        <!-- Details Grid -->
-        <div class="grid lg:grid-cols-12 gap-6">
-          <div class="lg:col-span-8 space-y-6">
-            
-            <!-- Metadata Card -->
+        <!-- Main Grid -->
+        <div class="admin-grid-12">
+          <!-- Left 8 Columns -->
+          <div class="admin-col-8 space-y-6">
+
+            <!-- Traveler & Tour File Metadata -->
             <div class="stat-card space-y-4">
-              <h3 class="text-sm font-bold text-white uppercase tracking-wider border-b border-zinc-800 pb-2">Traveler &amp; Tour File</h3>
+              <h3 class="text-sm font-bold text-white uppercase tracking-wider border-b border-zinc-700 pb-2">Traveler &amp; Tour File</h3>
               <div class="grid grid-cols-2 sm:grid-cols-3 gap-4 text-xs">
                 <div>
-                  <span class="text-zinc-400 block">Lead Guest:</span>
-                  <div class="font-bold text-white text-sm mt-0.5">${b.lead_name}</div>
-                  <div class="text-[10px] text-zinc-500">${b.lead_email}</div>
-                  <div class="text-[10px] text-zinc-500">${b.lead_phone || '-'}</div>
+                  <span class="text-zinc-400 block">Lead Guest</span>
+                  <div class="font-bold text-white text-sm mt-0.5">${AdminApp.esc(b.lead_name)}</div>
+                  <div class="text-[11px] text-zinc-400">${AdminApp.esc(b.lead_email)}</div>
+                  <div class="text-[11px] text-zinc-400">${AdminApp.esc(b.lead_phone || '—')}</div>
                 </div>
                 <div>
-                  <span class="text-zinc-400 block">Passport Number:</span>
-                  <div class="font-bold text-white font-mono text-sm mt-0.5">${b.lead_passport_no || 'On File'}</div>
-                  <div class="text-[10px] text-zinc-500">Origin: ${b.lead_country || 'International'}</div>
+                  <span class="text-zinc-400 block">Lead Passport / ID</span>
+                  <div class="font-bold text-white font-mono text-sm mt-0.5">${AdminApp.esc(b.lead_passport_no || 'Pending Upload')}</div>
+                  <div class="text-[11px] text-zinc-400">Expiry: ${AdminApp.esc(b.lead_passport_expiry || '—')}</div>
+                  <div class="text-[11px] text-zinc-400">Origin: ${AdminApp.esc(b.lead_country || 'International')}</div>
                 </div>
                 <div>
-                  <span class="text-zinc-400 block">Travelers Breakdown:</span>
-                  <div class="font-bold text-white text-sm mt-0.5">${b.total_travelers} Guest(s)</div>
-                  <div class="text-[10px] text-zinc-500">${b.adults_count || b.total_travelers} Adults, ${b.children_6_12 || 0} Children</div>
+                  <span class="text-zinc-400 block">Party Size</span>
+                  <div class="font-bold text-white text-sm mt-0.5">${Number(b.total_travelers) || 1} Guest(s)</div>
+                  <div class="text-[11px] text-zinc-400">${Number(b.adults_count || 1)} Adult(s), ${Number(b.children_6_12 || 0)} Child (6–12), ${Number(b.children_under_6 || 0)} Under 6</div>
                 </div>
                 <div>
-                  <span class="text-zinc-400 block">Travel Dates:</span>
-                  <div class="font-bold text-white font-mono mt-0.5">${b.travel_date_start} → ${b.travel_date_end}</div>
-                  <div class="text-[10px] text-zinc-500">${b.total_nights} Nights</div>
+                  <span class="text-zinc-400 block">Travel Dates</span>
+                  <div class="font-bold text-white font-mono mt-0.5">${AdminApp.esc(b.travel_date_start)} → ${AdminApp.esc(b.travel_date_end)}</div>
+                  <div class="text-[11px] text-zinc-400">${Number(b.total_nights) || 1} Nights · Plan: ${AdminApp.esc(b.payment_plan || 'deposit_30')}</div>
                 </div>
                 <div>
-                  <span class="text-zinc-400 block">Accommodation Tier:</span>
-                  <div class="font-bold text-white mt-0.5">${b.hotel_tier || '3-Star Standard Heritage'}</div>
+                  <span class="text-zinc-400 block">Accommodation Tier</span>
+                  <div class="font-bold text-white mt-0.5">${AdminApp.esc(b.hotel_tier || '4-Star Premium')}</div>
+                  <div class="text-[11px] text-zinc-400">${Number(b.flight_assistance) === 1 ? '✈️ Flight Assistance Requested' : 'Standard Ground Package'}</div>
                 </div>
                 <div>
-                  <span class="text-zinc-400 block">Assigned Guide:</span>
+                  <span class="text-zinc-400 block">Assigned Field Guide</span>
                   <div class="font-bold ${b.assigned_guide_id ? 'text-emerald-400' : 'text-amber-400'} mt-0.5">
-                    ${b.guide ? b.guide.full_name : (b.assigned_guide_id ? 'Guide #' + b.assigned_guide_id : 'Pending Assignment')}
+                    ${b.guide ? AdminApp.esc(b.guide.full_name) : (b.assigned_guide_id ? `Guide #${AdminApp.esc(b.assigned_guide_id)}` : 'Pending Assignment')}
                   </div>
-                  <div class="text-[10px] text-zinc-500">${b.assigned_vehicle || 'Vehicle Unassigned'}</div>
+                  <div class="text-[11px] text-zinc-400">${AdminApp.esc(b.assigned_vehicle || 'Vehicle Unassigned')}</div>
                 </div>
               </div>
+              ${b.cancellation_reason ? `
+                <div class="admin-alert admin-alert-error">
+                  <strong>Cancellation Reason:</strong> ${AdminApp.esc(b.cancellation_reason)}
+                </div>
+              ` : ''}
             </div>
 
-            <!-- Visa State Machine Operations -->
-            <div class="stat-card space-y-4 border-l-4 ${isApproved ? 'border-l-emerald-500' : 'border-l-amber-500'}">
-              <div class="flex items-center justify-between">
-                <h3 class="text-sm font-bold text-white uppercase tracking-wider">Bhutan Immigration Clearance Control</h3>
-                <span class="badge ${isApproved ? 'badge-green' : 'badge-amber'}">${(b.visa_status || 'draft').toUpperCase()}</span>
-              </div>
-              
-              <div class="p-4 bg-zinc-800/80 rounded-xl space-y-3 text-xs">
-                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-                  <div>
-                    <div class="text-zinc-400">Clearance Document Number:</div>
-                    <div class="font-mono font-bold text-base ${isApproved ? 'text-emerald-400' : 'text-zinc-400'}">
-                      ${b.visa_clearance_number || 'Awaiting DoI Approval'}
-                    </div>
-                  </div>
-                  ${b.visa_approved_date ? `
-                    <div class="text-right">
-                      <span class="text-zinc-500 text-[10px]">Approved On:</span>
-                      <div class="text-zinc-300 font-mono">${b.visa_approved_date}</div>
-                    </div>
-                  ` : ''}
-                </div>
+            <!-- Status & Guide Assignment Controls -->
+            <div class="stat-card space-y-4" data-roles="super_admin,admin,concierge">
+              <h3 class="text-sm font-bold text-white uppercase tracking-wider border-b border-zinc-700 pb-2">Status &amp; Guide Dispatch Controls</h3>
+              <div id="opsActionAlert" class="hidden admin-alert admin-alert-error"></div>
 
-                <!-- Status Update Form -->
-                <div class="flex flex-wrap items-center gap-3 pt-3 border-t border-zinc-700">
-                  <span class="text-zinc-400 font-bold">Advance State:</span>
-                  <select id="actionVisaStatus" class="px-3 py-1.5 rounded border border-zinc-600 text-xs font-bold">
-                    <option value="under_review" ${b.visa_status === 'under_review' ? 'selected' : ''}>Under Review</option>
-                    <option value="submitted_to_doi" ${b.visa_status === 'submitted_to_doi' ? 'selected' : ''}>Submitted to DoI</option>
-                    <option value="approved" ${b.visa_status === 'approved' ? 'selected' : ''}>Approved by DoI</option>
-                    <option value="clearance_letter_issued" ${b.visa_status === 'clearance_letter_issued' ? 'selected' : ''}>Issue Official Clearance Letter</option>
-                  </select>
-                  <button onclick="updateVisaState()" class="px-4 py-1.5 rounded bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs transition">
-                    Save Visa State
-                  </button>
-                </div>
-              </div>
-            </div>
-
-            <!-- Booking Status & Guide Assignment Controls -->
-            <div class="stat-card space-y-4">
-              <h3 class="text-sm font-bold text-white uppercase tracking-wider border-b border-zinc-800 pb-2">Operational Workflow Controls</h3>
-              <div class="grid sm:grid-cols-2 gap-4 text-xs">
-                <div class="space-y-2">
-                  <label class="block font-bold text-zinc-400">Booking Lifecycle Status:</label>
+              <div class="admin-grid-2 text-xs">
+                <div class="admin-panel-sub space-y-2.5">
+                  <label for="actionBookingStatus" class="block font-bold text-zinc-300">Booking Lifecycle Status</label>
                   <div class="flex items-center gap-2">
-                    <select id="actionBookingStatus" class="w-full px-3 py-2 rounded border border-zinc-600 text-xs font-bold">
+                    <select id="actionBookingStatus" class="w-full px-3 py-2 rounded-lg border border-zinc-600 text-xs font-bold">
                       <option value="inquiry" ${b.booking_status === 'inquiry' ? 'selected' : ''}>Inquiry</option>
                       <option value="deposit_paid" ${b.booking_status === 'deposit_paid' ? 'selected' : ''}>Deposit Paid</option>
                       <option value="documents_complete" ${b.booking_status === 'documents_complete' ? 'selected' : ''}>Docs Complete</option>
                       <option value="visa_approved" ${b.booking_status === 'visa_approved' ? 'selected' : ''}>Visa Approved</option>
+                      <option value="confirmed" ${b.booking_status === 'confirmed' ? 'selected' : ''}>Confirmed (Requires Guide)</option>
                       <option value="fully_paid" ${b.booking_status === 'fully_paid' ? 'selected' : ''}>Fully Paid</option>
                       <option value="active_trip" ${b.booking_status === 'active_trip' ? 'selected' : ''}>Active Trip (In Country)</option>
-                      <option value="completed" ${b.booking_status === 'completed' ? 'selected' : ''}>Trip Completed</option>
+                      <option value="completed" ${b.booking_status === 'completed' ? 'selected' : ''}>Completed</option>
                     </select>
-                    <button onclick="updateBookingState()" class="px-4 py-2 rounded bg-zinc-700 hover:bg-zinc-600 text-white font-bold shrink-0">
-                      Update
-                    </button>
+                    <button type="button" id="updateBookingStatusBtn" class="admin-btn admin-btn-secondary shrink-0">Update</button>
                   </div>
                 </div>
 
-                <div class="space-y-2">
-                  <label class="block font-bold text-zinc-400">Assign Certified Guide &amp; Chauffeur:</label>
-                  <div class="flex items-center gap-2">
-                    <select id="actionGuideSelect" class="w-full px-3 py-2 rounded border border-zinc-600 text-xs font-bold">
-                      <option value="3">Kinley Tshering (Cultural Senior Guide)</option>
-                      <option value="4">Dorji Penjor (High Mountain Trek Specialist)</option>
+                <div class="admin-panel-sub space-y-2.5">
+                  <label for="actionGuideSelect" class="block font-bold text-zinc-300">Assign Certified Guide &amp; Vehicle</label>
+                  <div class="space-y-2">
+                    <select id="actionGuideSelect" class="w-full px-3 py-2 rounded-lg border border-zinc-600 text-xs font-bold">
+                      ${guideOptions}
                     </select>
-                    <button onclick="assignGuideAction()" class="px-4 py-2 rounded bg-[#E05A47] hover:bg-[#c94b39] text-white font-bold shrink-0">
-                      Assign
-                    </button>
+                    <div class="flex items-center gap-2">
+                      <input type="text" id="actionVehicleInput" value="${AdminApp.esc(b.assigned_vehicle || 'Toyota Prado SUV')}" placeholder="Vehicle & Plate" class="w-full px-3 py-2 rounded-lg border border-zinc-600 text-xs font-semibold">
+                      <button type="button" id="assignGuideBtn" class="admin-btn admin-btn-primary shrink-0">Assign</button>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
 
+            <!-- Travelers Table + Private Document Preview -->
+            <div class="stat-card space-y-4">
+              <div class="flex flex-wrap items-center justify-between gap-2 border-b border-zinc-700 pb-2">
+                <div>
+                  <h3 class="text-sm font-bold text-white uppercase tracking-wider">Travelers Roster &amp; Private Documents (${travelers.length})</h3>
+                  <p class="text-[11px] text-zinc-400">Click any uploaded document to inspect securely via staff token stream</p>
+                </div>
+              </div>
+
+              <div class="overflow-x-auto">
+                <table class="admin-table">
+                  <thead>
+                    <tr>
+                      <th>Traveler</th>
+                      <th>Passport / Nationality</th>
+                      <th>Validity &amp; Notes</th>
+                      <th>Uploaded Docs</th>
+                      <th>Visa</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    ${travelers.length ? travelers.map((t) => {
+                      const expCheck = isIndia ? { ok: true } : checkSixMonthExpiry(t.passport_expiry, b.travel_date_end);
+                      const passportUrl = t.passport_scan ? window.ApiClient.getAdminDocumentUrl(t.id, 'passport_scan') : '';
+                      const photoUrl = t.photo_url ? window.ApiClient.getAdminDocumentUrl(t.id, 'photo_url') : '';
+                      const insUrl = t.insurance_doc ? window.ApiClient.getAdminDocumentUrl(t.id, 'insurance_doc') : '';
+
+                      return `
+                        <tr>
+                          <td>
+                            <div class="font-bold text-white text-xs">${AdminApp.esc(t.full_name)}</div>
+                            <div class="text-[10px] text-zinc-400">${AdminApp.esc(AdminApp.humanize(t.age_category || 'adult'))}${t.gender ? ` · ${AdminApp.esc(t.gender)}` : ''}</div>
+                          </td>
+                          <td>
+                            <div class="font-mono text-xs text-zinc-200">${AdminApp.esc(t.passport_number || 'Missing No.')}</div>
+                            <div class="text-[10px] text-zinc-400">${AdminApp.esc(t.nationality || b.lead_country || '—')}</div>
+                          </td>
+                          <td>
+                            <div class="text-[11px] font-mono ${expCheck.ok ? 'text-zinc-300' : 'text-red-400 font-bold'}">
+                              Exp: ${AdminApp.esc(t.passport_expiry || '—')}
+                            </div>
+                            ${!expCheck.ok ? `<div class="text-[10px] text-red-400 font-semibold">${AdminApp.esc(expCheck.warning)}</div>` : ''}
+                            ${(t.dietary_needs || t.medical_notes) ? `<div class="text-[10px] text-amber-300 mt-0.5">${AdminApp.esc([t.dietary_needs, t.medical_notes].filter(Boolean).join(' · '))}</div>` : ''}
+                          </td>
+                          <td>
+                            <div class="flex flex-wrap gap-1.5">
+                              ${passportUrl
+                                ? `<button type="button" class="admin-btn admin-btn-secondary admin-btn-sm doc-preview-trigger" data-doc-url="${AdminApp.esc(passportUrl)}" data-doc-title="${AdminApp.esc(t.full_name)} — Passport Scan" data-doc-path="${AdminApp.esc(t.passport_scan)}">🛂 Passport</button>`
+                                : `<span class="badge badge-red">No Passport</span>`}
+                              ${photoUrl
+                                ? `<button type="button" class="admin-btn admin-btn-secondary admin-btn-sm doc-preview-trigger" data-doc-url="${AdminApp.esc(photoUrl)}" data-doc-title="${AdminApp.esc(t.full_name)} — ID Photo" data-doc-path="${AdminApp.esc(t.photo_url)}">📷 Photo</button>`
+                                : `<span class="badge badge-amber">No Photo</span>`}
+                              ${insUrl
+                                ? `<button type="button" class="admin-btn admin-btn-secondary admin-btn-sm doc-preview-trigger" data-doc-url="${AdminApp.esc(insUrl)}" data-doc-title="${AdminApp.esc(t.full_name)} — Travel Insurance" data-doc-path="${AdminApp.esc(t.insurance_doc)}">🛡 Insurance</button>`
+                                : `<span class="badge badge-zinc">No Ins.</span>`}
+                            </div>
+                          </td>
+                          <td>${AdminApp.visaStatusBadge(t.visa_status)}</td>
+                        </tr>
+                      `;
+                    }).join('') : '<tr><td colspan="5" class="text-center py-4 text-zinc-400">No traveler records found.</td></tr>'}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <!-- Bhutan Immigration Visa Control -->
+            <div class="stat-card space-y-4 border-l-4" style="border-left-color:${isApproved ? '#10B981' : '#F59E0B'};">
+              <div class="flex flex-wrap items-center justify-between gap-2">
+                <h3 class="text-sm font-bold text-white uppercase tracking-wider">Bhutan DoI Immigration Clearance Control</h3>
+                ${AdminApp.visaStatusBadge(b.visa_status)}
+              </div>
+
+              <div id="visaGateAlert" class="hidden admin-alert admin-alert-error"></div>
+
+              <div class="admin-panel-sub space-y-3 text-xs">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                  <div>
+                    <div class="text-zinc-400">Official Clearance Document Number</div>
+                    <div class="font-mono font-bold text-base ${isApproved ? 'text-emerald-400' : 'text-zinc-300'}">
+                      ${AdminApp.esc(b.visa_clearance_number || 'Awaiting DoI Approval')}
+                    </div>
+                  </div>
+                  <div class="text-left sm:text-right text-[11px] text-zinc-400 space-y-0.5">
+                    ${b.visa_submitted_date ? `<div>Submitted: <span class="font-mono text-zinc-200">${AdminApp.esc(b.visa_submitted_date)}</span></div>` : ''}
+                    ${b.visa_approved_date ? `<div>Approved: <span class="font-mono text-emerald-400">${AdminApp.esc(b.visa_approved_date)}</span></div>` : ''}
+                  </div>
+                </div>
+
+                ${b.visa_rejection_reason ? `
+                  <div class="admin-alert admin-alert-error">
+                    <strong>Rejection Note:</strong> ${AdminApp.esc(b.visa_rejection_reason)}
+                  </div>
+                ` : ''}
+
+                <div class="flex flex-wrap items-center gap-2.5 pt-3 border-t border-zinc-700" data-roles="super_admin,admin,concierge">
+                  <select id="actionVisaStatus" class="px-3 py-2 rounded-lg border border-zinc-600 text-xs font-bold">
+                    <option value="pending_docs" ${b.visa_status === 'pending_docs' ? 'selected' : ''}>Pending Docs</option>
+                    <option value="docs_received" ${b.visa_status === 'docs_received' ? 'selected' : ''}>Docs Received</option>
+                    <option value="documents_complete" ${b.visa_status === 'documents_complete' ? 'selected' : ''}>Docs Complete</option>
+                    <option value="payment_verified" ${b.visa_status === 'payment_verified' ? 'selected' : ''}>Payment Verified</option>
+                    <option value="under_review" ${b.visa_status === 'under_review' ? 'selected' : ''}>Under Review (DoI Gate)</option>
+                    <option value="submitted_to_doi" ${b.visa_status === 'submitted_to_doi' ? 'selected' : ''}>Submitted to DoI (DoI Gate)</option>
+                    <option value="approved" ${b.visa_status === 'approved' ? 'selected' : ''}>Approved by DoI (DoI Gate)</option>
+                    <option value="clearance_letter_issued" ${b.visa_status === 'clearance_letter_issued' ? 'selected' : ''}>Issue Official Clearance Letter</option>
+                  </select>
+                  <input type="text" id="visaClearanceInput" value="${AdminApp.esc(b.visa_clearance_number || '')}" placeholder="Clearance # (auto if blank)" class="px-3 py-2 rounded-lg border border-zinc-600 text-xs font-mono w-48">
+                  <button type="button" id="saveVisaStateBtn" class="admin-btn admin-btn-emerald admin-btn-sm">Save Visa State</button>
+                  <button type="button" id="openVisaRejectModalBtn" class="admin-btn admin-btn-danger admin-btn-sm">Reject Visa</button>
+                  ${isApproved ? `
+                    <a href="${AdminApp.esc(clearanceUrl)}" target="_blank" rel="noopener" class="admin-btn admin-btn-secondary admin-btn-sm">
+                      📜 Open Clearance Letter ↗
+                    </a>
+                  ` : ''}
+                </div>
+              </div>
+            </div>
+
+            <!-- Payment Ledger & Receipt Verification -->
+            <div class="stat-card space-y-4">
+              <div class="flex flex-wrap items-center justify-between gap-2 border-b border-zinc-700 pb-2">
+                <div>
+                  <h3 class="text-sm font-bold text-white uppercase tracking-wider">Payment Ledger &amp; Client Wire Receipts (${payments.length})</h3>
+                  <p class="text-[11px] text-zinc-400">Verify or reject client-uploaded wire transfer receipts and review recorded transactions</p>
+                </div>
+              </div>
+              <div id="paymentLedgerAlert" class="hidden admin-alert admin-alert-error"></div>
+
+              <div class="overflow-x-auto">
+                <table class="admin-table">
+                  <thead>
+                    <tr>
+                      <th>Date</th>
+                      <th>Type &amp; Method</th>
+                      <th>Tx Ref</th>
+                      <th>Amount</th>
+                      <th>Status</th>
+                      <th>Receipt &amp; Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    ${payments.length ? payments.map((p) => {
+                      const receiptUrl = p.receipt_file ? window.ApiClient.getAdminPaymentReceiptUrl(p.id) : '';
+                      const amtUsd = Number(p.amount_usd || 0);
+                      const pBadge = p.status === 'verified'
+                        ? '<span class="badge badge-green">Verified</span>'
+                        : (p.status === 'rejected' ? '<span class="badge badge-red">Rejected</span>' : '<span class="badge badge-amber">Pending</span>');
+
+                      return `
+                        <tr>
+                          <td class="text-[11px] font-mono text-zinc-300">${AdminApp.esc(AdminApp.formatDateTime(p.created_at))}</td>
+                          <td>
+                            <div class="font-bold text-white text-xs">${AdminApp.esc(AdminApp.humanize(p.payment_type || 'payment'))}</div>
+                            <div class="text-[10px] text-zinc-400">${AdminApp.esc(AdminApp.humanize(p.payment_method || 'wire'))}</div>
+                          </td>
+                          <td>
+                            <div class="font-mono text-xs text-zinc-200">${AdminApp.esc(p.transaction_ref || `#${p.id}`)}</div>
+                            ${p.notes ? `<div class="text-[10px] text-zinc-400 max-w-[160px] truncate">${AdminApp.esc(p.notes)}</div>` : ''}
+                          </td>
+                          <td>
+                            <div class="font-bold ${amtUsd < 0 ? 'text-red-400' : 'text-white'} text-xs">
+                              ${AdminApp.esc(AdminApp.formatMoney(amtUsd, 'USD'))}
+                            </div>
+                            ${p.currency === 'INR' && p.amount_local ? `<div class="text-[10px] text-amber-300">${AdminApp.esc(AdminApp.formatMoney(p.amount_local, 'INR'))} INR</div>` : ''}
+                          </td>
+                          <td>${pBadge}</td>
+                          <td>
+                            <div class="flex flex-wrap items-center gap-1.5">
+                              ${receiptUrl ? `
+                                <button type="button" class="admin-btn admin-btn-secondary admin-btn-sm doc-preview-trigger" data-doc-url="${AdminApp.esc(receiptUrl)}" data-doc-title="Payment #${AdminApp.esc(p.id)} Receipt" data-doc-path="${AdminApp.esc(p.receipt_file)}">
+                                  🧾 Receipt
+                                </button>
+                              ` : '<span class="text-[10px] text-zinc-500">No file</span>'}
+                              ${p.status === 'pending' ? `
+                                <button type="button" data-roles="super_admin,admin,finance" class="admin-btn admin-btn-emerald admin-btn-sm verify-pay-btn" data-payment-id="${AdminApp.esc(p.id)}" data-action="verified">Verify ✓</button>
+                                <button type="button" data-roles="super_admin,admin,finance" class="admin-btn admin-btn-danger admin-btn-sm verify-pay-btn" data-payment-id="${AdminApp.esc(p.id)}" data-action="rejected">Reject ✗</button>
+                              ` : ''}
+                            </div>
+                          </td>
+                        </tr>
+                      `;
+                    }).join('') : '<tr><td colspan="6" class="text-center py-4 text-zinc-400">No payment transactions recorded yet.</td></tr>'}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <!-- Direct WhatsApp / Email Client Messenger -->
+            <div class="stat-card space-y-4">
+              <div class="flex flex-wrap items-center justify-between gap-2 border-b border-zinc-700 pb-2">
+                <div>
+                  <h3 class="text-sm font-bold text-white uppercase tracking-wider">Direct WhatsApp &amp; Email Client Messenger</h3>
+                  <p class="text-[11px] text-zinc-400">Send logged communications to ${AdminApp.esc(b.lead_name)} (${AdminApp.esc(b.lead_phone)} · ${AdminApp.esc(b.lead_email)})</p>
+                </div>
+              </div>
+
+              <div class="admin-grid-2 text-xs">
+                <div>
+                  <label class="block font-bold text-zinc-300 mb-1" for="msgPreset">Quick Message Template</label>
+                  <select id="msgPreset" class="w-full px-3 py-2 rounded-lg border border-zinc-600 text-xs font-semibold">
+                    <option value="custom">Custom Concierge Message</option>
+                    <option value="payment_reminder">Payment Balance Reminder</option>
+                    <option value="doc_request">Passport &amp; Photo Upload Request</option>
+                    <option value="pre_departure">Pre-Departure Guide &amp; Paro Briefing</option>
+                  </select>
+                </div>
+                <div>
+                  <label class="block font-bold text-zinc-300 mb-1" for="msgChannel">Primary Channel</label>
+                  <select id="msgChannel" class="w-full px-3 py-2 rounded-lg border border-zinc-600 text-xs font-semibold">
+                    <option value="whatsapp">WhatsApp (+ Email if SMTP configured)</option>
+                    <option value="email">Email Only</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="text-xs">
+                <label class="block font-bold text-zinc-300 mb-1" for="msgSubject">Subject</label>
+                <input type="text" id="msgSubject" value="Update on Your Bhutan Trip (${AdminApp.esc(b.id)})" class="w-full px-3 py-2 rounded-lg border border-zinc-600 text-xs font-semibold">
+              </div>
+
+              <div class="text-xs">
+                <label class="block font-bold text-zinc-300 mb-1" for="msgBody">Message Content</label>
+                <textarea id="msgBody" rows="4" class="w-full px-3 py-2 rounded-lg border border-zinc-600 text-xs" placeholder="Write message to client..."></textarea>
+              </div>
+
+              <div class="flex flex-wrap items-center justify-between gap-2">
+                <button type="button" id="sendClientMsgBtn" class="admin-btn admin-btn-primary">Send &amp; Log Notification</button>
+                <div id="msgDispatchResult" class="hidden flex items-center gap-2 text-xs">
+                  <span class="badge badge-green">Logged ✓</span>
+                  <button type="button" id="openSentWaBtn" class="admin-btn admin-btn-emerald admin-btn-sm">💬 Open in WhatsApp &amp; Mark Sent</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Guide Field Check-ins & Audit Timeline -->
+            <div class="stat-card space-y-4">
+              <h3 class="text-sm font-bold text-white uppercase tracking-wider border-b border-zinc-700 pb-2">Field Check-ins &amp; Immutable Audit Timeline</h3>
+              ${checkins.length ? `
+                <div class="space-y-2 text-xs">
+                  <div class="font-bold text-emerald-400">Guide Field Check-ins (${checkins.length})</div>
+                  ${checkins.map((c) => `
+                    <div class="admin-panel-sub flex items-center justify-between gap-2">
+                      <div>
+                        <strong class="text-white">📍 ${AdminApp.esc(c.location)}</strong>
+                        ${c.weather ? `<span class="text-zinc-400">· ${AdminApp.esc(c.weather)}</span>` : ''}
+                        <span class="badge badge-green ml-1">${AdminApp.esc(c.guest_status || 'All Well')}</span>
+                        ${c.notes ? `<div class="text-[11px] text-zinc-400 mt-0.5">${AdminApp.esc(c.notes)}</div>` : ''}
+                      </div>
+                      <span class="text-[10px] font-mono text-zinc-500">${AdminApp.esc(AdminApp.formatDateTime(c.created_at))}</span>
+                    </div>
+                  `).join('')}
+                </div>
+              ` : ''}
+
+              <div class="space-y-2 text-xs">
+                <div class="font-bold text-zinc-300">Audit Events (${audit.length})</div>
+                ${audit.length ? audit.map((a) => `
+                  <div class="admin-panel-sub flex flex-col sm:flex-row sm:items-center justify-between gap-1.5">
+                    <div>
+                      <strong class="text-white">${AdminApp.esc(a.user_name || 'System')}</strong>
+                      <span class="text-zinc-500">(${AdminApp.esc(a.user_role || 'system')})</span>
+                      · <span class="text-emerald-400 font-semibold">${AdminApp.esc(a.action)}</span>
+                      ${a.old_value ? `<span class="text-zinc-400"> [${AdminApp.esc(a.old_value)} → ${AdminApp.esc(a.new_value || '')}]</span>` : (a.new_value ? `<span class="text-zinc-300"> · ${AdminApp.esc(a.new_value)}</span>` : '')}
+                    </div>
+                    <span class="text-[10px] font-mono text-zinc-500 shrink-0">${AdminApp.esc(AdminApp.formatDateTime(a.created_at))}</span>
+                  </div>
+                `).join('') : '<div class="text-zinc-400">No audit events recorded for this booking.</div>'}
+              </div>
+            </div>
           </div>
 
-          <!-- Financial Ledger Sidebar -->
-          <div class="lg:col-span-4 stat-card space-y-4">
-            <h3 class="text-sm font-bold text-white uppercase tracking-wider border-b border-zinc-800 pb-2">Financial Accounting</h3>
-            <div class="space-y-3 text-xs border-b border-zinc-700 pb-4">
-              <div class="flex justify-between">
-                <span class="text-zinc-400">Tour Package Base:</span>
-                <span class="font-bold text-white">$${Number(b.base_price_usd || 0).toLocaleString()}</span>
+          <!-- Right 4 Columns: Financial Summary, SDF Remittance & Editable Staff Notes -->
+          <div class="admin-col-4 space-y-6">
+            <div class="stat-card space-y-4">
+              <h3 class="text-sm font-bold text-white uppercase tracking-wider border-b border-zinc-700 pb-2">Financial Accounting</h3>
+              <div class="space-y-2.5 text-xs border-b border-zinc-700 pb-4">
+                <div class="flex justify-between">
+                  <span class="text-zinc-400">Tour Package Base</span>
+                  <span class="font-bold text-white">${AdminApp.esc(AdminApp.formatMoney(b.base_price_usd, 'USD'))}</span>
+                </div>
+                <div class="flex justify-between">
+                  <span class="text-zinc-400">Royal SDF Tourism Tax</span>
+                  <span class="font-bold text-white">${AdminApp.esc(AdminApp.formatMoney(b.sdf_total_usd, 'USD'))}</span>
+                </div>
+                <div class="flex justify-between">
+                  <span class="text-zinc-400">Visa Processing Fee</span>
+                  <span class="font-bold text-white">${AdminApp.esc(AdminApp.formatMoney(b.visa_fee_usd, 'USD'))}</span>
+                </div>
+                ${Number(b.extras_usd) > 0 ? `
+                  <div class="flex justify-between">
+                    <span class="text-zinc-400">Extras / Upgrades</span>
+                    <span class="font-bold text-white">+${AdminApp.esc(AdminApp.formatMoney(b.extras_usd, 'USD'))}</span>
+                  </div>
+                ` : ''}
+                ${Number(b.discount_usd) > 0 ? `
+                  <div class="flex justify-between">
+                    <span class="text-zinc-400">Operator Discount</span>
+                    <span class="font-bold text-emerald-400">-${AdminApp.esc(AdminApp.formatMoney(b.discount_usd, 'USD'))}</span>
+                  </div>
+                ` : ''}
+                <div class="flex justify-between text-base font-black text-white pt-2 border-t border-zinc-700">
+                  <span>Total Invoice</span>
+                  <span class="text-[#E05A47]">${AdminApp.esc(AdminApp.formatMoney(totalUsd, 'USD'))}</span>
+                </div>
+                ${isIndia ? `
+                  <div class="flex justify-between text-[11px] text-amber-300">
+                    <span>INR Equivalent (Rate ${rate})</span>
+                    <strong>${AdminApp.esc(AdminApp.formatMoney(Math.round(totalUsd * rate), 'INR'))} INR</strong>
+                  </div>
+                ` : ''}
+                <div class="flex justify-between text-xs font-bold text-emerald-400">
+                  <span>Verified Paid</span>
+                  <span>${AdminApp.esc(AdminApp.formatMoney(paidUsd, 'USD'))}</span>
+                </div>
+                <div class="flex justify-between text-xs font-bold text-amber-400">
+                  <span>Outstanding Balance</span>
+                  <span>${AdminApp.esc(AdminApp.formatMoney(balanceUsd, 'USD'))}</span>
+                </div>
+                <div class="flex justify-between text-[11px] text-zinc-400">
+                  <span>Balance Due Date</span>
+                  <span class="font-mono">${AdminApp.esc(b.balance_due_date || '—')}</span>
+                </div>
               </div>
-              <div class="flex justify-between">
-                <span class="text-zinc-400">Royal SDF Tourism Tax:</span>
-                <span class="font-bold text-white">$${Number(b.sdf_total_usd || 0).toLocaleString()}</span>
+
+              <div class="p-3 border rounded-xl text-xs font-bold text-center ${isFullyPaid ? 'bg-emerald-500/10 border-emerald-500/30 text-emerald-400' : 'bg-amber-500/10 border-amber-500/30 text-amber-300'}">
+                ${isFullyPaid ? '✓ 100% Fully Settled (DoI Payment Gate Met)' : `⚠️ Balance Due: ${AdminApp.esc(AdminApp.formatMoney(balanceUsd, 'USD'))}`}
               </div>
-              <div class="flex justify-between">
-                <span class="text-zinc-400">Visa Processing Fee:</span>
-                <span class="font-bold text-white">$${Number(b.visa_fee_usd || 0).toLocaleString()}</span>
-              </div>
-              <div class="flex justify-between text-base font-black text-white pt-2 border-t border-zinc-700">
-                <span>Total Invoice:</span>
-                <span class="text-[#E05A47]">$${Number(b.total_price_usd || 0).toLocaleString()}</span>
-              </div>
-              <div class="flex justify-between text-xs font-bold text-emerald-400">
-                <span>Paid to Date:</span>
-                <span>$${Number(b.deposit_paid_usd || 0).toLocaleString()}</span>
-              </div>
-              <div class="flex justify-between text-xs font-bold text-amber-400">
-                <span>Outstanding Balance:</span>
-                <span>$${Math.max(0, (b.total_price_usd || 0) - (b.deposit_paid_usd || 0)).toLocaleString()}</span>
+
+              <!-- Record Payment or Refund Form -->
+              <form id="recordPaymentForm" data-roles="super_admin,admin,finance" class="pt-3 space-y-2.5 border-t border-zinc-700 text-xs">
+                <div class="font-bold text-zinc-200 uppercase tracking-wider text-[11px]">Record Payment or Refund</div>
+                <div class="grid grid-cols-2 gap-2">
+                  <div>
+                    <label class="block text-[10px] text-zinc-400 mb-0.5" for="payType">Type</label>
+                    <select id="payType" class="w-full px-2.5 py-1.5 rounded border border-zinc-600 text-xs font-bold">
+                      <option value="balance">Balance Wire</option>
+                      <option value="deposit">Deposit</option>
+                      <option value="full_payment">Full Payment</option>
+                      <option value="refund">Refund (-)</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label class="block text-[10px] text-zinc-400 mb-0.5" for="payAmount">Amount (USD)</label>
+                    <input type="number" id="payAmount" min="1" step="1" value="${balanceUsd > 0 ? balanceUsd : ''}" placeholder="USD" required class="w-full px-2.5 py-1.5 rounded border border-zinc-600 text-xs font-bold">
+                  </div>
+                </div>
+                <div class="grid grid-cols-2 gap-2">
+                  <div>
+                    <label class="block text-[10px] text-zinc-400 mb-0.5" for="payMethod">Method</label>
+                    <select id="payMethod" class="w-full px-2.5 py-1.5 rounded border border-zinc-600 text-xs font-bold">
+                      <option value="bank_wire">Bank of Bhutan Wire</option>
+                      <option value="swift">SWIFT Transfer</option>
+                      <option value="card_pos">Card / Stripe</option>
+                      <option value="cash">Cash Office</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label class="block text-[10px] text-zinc-400 mb-0.5" for="payTxRef">Transaction Ref</label>
+                    <input type="text" id="payTxRef" placeholder="BOB-..." class="w-full px-2.5 py-1.5 rounded border border-zinc-600 text-xs font-mono">
+                  </div>
+                </div>
+                <input type="text" id="payNotes" placeholder="Optional finance note..." class="w-full px-2.5 py-1.5 rounded border border-zinc-600 text-xs">
+                <button type="submit" id="recordPaymentBtn" class="admin-btn admin-btn-emerald w-full">Record Transaction</button>
+              </form>
+
+              <!-- SDF Government Remittance -->
+              <div class="pt-3 space-y-2.5 border-t border-zinc-700 text-xs">
+                <div class="flex items-center justify-between">
+                  <span class="font-bold text-zinc-200 uppercase tracking-wider text-[11px]">RMA SDF Remittance</span>
+                  ${b.sdf_remitted_at
+                    ? '<span class="badge badge-green">Remitted</span>'
+                    : '<span class="badge badge-amber">Pending Remittance</span>'}
+                </div>
+                ${b.sdf_remitted_at ? `
+                  <div class="admin-panel-sub text-[11px] space-y-1">
+                    <div>Ref: <strong class="font-mono text-emerald-400">${AdminApp.esc(b.sdf_remittance_ref || 'RMA')}</strong></div>
+                    <div class="text-zinc-400">Date: ${AdminApp.esc(AdminApp.formatDateTime(b.sdf_remitted_at))}</div>
+                  </div>
+                ` : `
+                  <div data-roles="super_admin,admin,finance" class="space-y-2">
+                    <input type="text" id="sdfRemitRefInput" placeholder="RMA Ref (auto if blank)" class="w-full px-2.5 py-1.5 rounded border border-zinc-600 text-xs font-mono">
+                    <button type="button" id="remitSdfBtn" class="admin-btn admin-btn-amber w-full admin-btn-sm">Mark SDF Remitted to RMA</button>
+                  </div>
+                `}
               </div>
             </div>
 
-            <!-- Payment Status Badge -->
-            <div class="p-3 ${isFullyPaid ? 'bg-emerald-500/10 border-emerald-500/30 text-emerald-400' : 'bg-amber-500/10 border-amber-500/30 text-amber-300'} border rounded-xl text-xs font-bold text-center">
-              ${isFullyPaid ? '✓ 100% Fully Settled' : '⚠️ Deposit Paid - Balance Due'}
+            <!-- Editable Staff Notes & Client Requests -->
+            <div class="stat-card space-y-3 text-xs">
+              <h3 class="text-sm font-bold text-white uppercase tracking-wider border-b border-zinc-700 pb-2">Staff Notes &amp; Requests</h3>
+              <form id="notesForm" class="space-y-3">
+                <div>
+                  <label class="block font-bold text-zinc-300 mb-1" for="editSpecialRequests">Client Special Requests</label>
+                  <textarea id="editSpecialRequests" rows="3" class="w-full px-3 py-2 rounded-lg border border-zinc-600 text-xs" placeholder="Dietary, rooming, trekking pace...">${AdminApp.esc(b.special_requests || '')}</textarea>
+                </div>
+                <div>
+                  <label class="block font-bold text-zinc-300 mb-1" for="editInternalNotes">Internal Staff Notes (Private)</label>
+                  <textarea id="editInternalNotes" rows="4" class="w-full px-3 py-2 rounded-lg border border-zinc-600 text-xs" placeholder="VIP handling, agent commission, flight PNR...">${AdminApp.esc(b.internal_notes || '')}</textarea>
+                </div>
+                <button type="submit" id="saveNotesBtn" data-roles="super_admin,admin,concierge" class="admin-btn admin-btn-secondary w-full">Save Operational Notes</button>
+              </form>
             </div>
-
-            <!-- Quick Record Payment Form -->
-            <div class="pt-2 space-y-2 border-t border-zinc-800">
-              <span class="block text-xs font-bold text-zinc-300">Record Incoming Wire Payment</span>
-              <div class="flex items-center gap-2">
-                <input type="number" id="payAmount" placeholder="Amount USD" class="w-full px-3 py-1.5 rounded border border-zinc-600 text-xs font-bold" value="${Math.max(0, (b.total_price_usd || 0) - (b.deposit_paid_usd || 0))}">
-                <button onclick="recordPaymentAction()" class="px-4 py-1.5 rounded bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs shrink-0">
-                  Record
-                </button>
-              </div>
-            </div>
-
           </div>
         </div>
       `;
+
+      AdminApp.applyRoleVisibility();
+      bindRenderedHandlers(b);
     }
 
-    async function quickApproveVisa() {
-      if (!currentBooking) return;
-      try {
-        const staff = AdminApp.getStaffUser();
-        const res = await ApiClient.updateVisaStatus(currentBooking.id, 'approved', '', staff ? staff.name : 'Visa Officer');
-        if (res.success) {
-          AdminApp.showToast(`Visa Approved! Clearance: ${res.visa_clearance_number}`);
-          loadBookingDetail();
-        } else {
-          AdminApp.showToast(res.error || 'Failed to approve', 'error');
-        }
-      } catch (err) {
-        AdminApp.showToast(err.message, 'error');
+    function bindRenderedHandlers(b) {
+      const quickApproveBtn = document.getElementById('quickApproveVisaBtn');
+      if (quickApproveBtn) {
+        quickApproveBtn.addEventListener('click', () => runVisaTransition('approved'));
       }
-    }
 
-    async function updateVisaState() {
-      if (!currentBooking) return;
-      const val = document.getElementById('actionVisaStatus').value;
-      try {
-        const staff = AdminApp.getStaffUser();
-        const res = await ApiClient.updateVisaStatus(currentBooking.id, val, '', staff ? staff.name : 'Visa Officer');
-        if (res.success) {
-          AdminApp.showToast(`Visa state updated to ${val}`);
-          loadBookingDetail();
-        } else {
-          AdminApp.showToast(res.error || 'Failed to update', 'error');
-        }
-      } catch (err) {
-        AdminApp.showToast(err.message, 'error');
-      }
-    }
-
-    async function updateBookingState() {
-      if (!currentBooking) return;
-      const status = document.getElementById('actionBookingStatus').value;
-      try {
-        const staff = AdminApp.getStaffUser();
-        const res = await ApiClient.updateBookingStatus(currentBooking.id, status, staff ? staff.name : 'Staff');
-        if (res.success) {
-          AdminApp.showToast(`Booking status updated to ${status}`);
-          loadBookingDetail();
-        } else {
-          AdminApp.showToast(res.error || 'Failed to update', 'error');
-        }
-      } catch (err) {
-        AdminApp.showToast(err.message, 'error');
-      }
-    }
-
-    async function assignGuideAction() {
-      if (!currentBooking) return;
-      const guideId = document.getElementById('actionGuideSelect').value;
-      try {
-        const staff = AdminApp.getStaffUser();
-        const res = await ApiClient.assignGuide(currentBooking.id, guideId, 'Toyota Land Cruiser (BP-1-A8921)', staff ? staff.name : 'Operations');
-        if (res.success) {
-          AdminApp.showToast(`Guide assigned successfully!`);
-          loadBookingDetail();
-        } else {
-          AdminApp.showToast(res.error || 'Failed to assign', 'error');
-        }
-      } catch (err) {
-        AdminApp.showToast(err.message, 'error');
-      }
-    }
-
-    async function recordPaymentAction() {
-      if (!currentBooking) return;
-      const amount = document.getElementById('payAmount').value;
-      if (!amount || amount <= 0) return AdminApp.showToast('Enter valid amount', 'error');
-      try {
-        const staff = AdminApp.getStaffUser();
-        const res = await ApiClient.recordPayment(currentBooking.id, {
-          amount_usd: amount,
-          payment_type: 'bank_wire',
-          payment_method: 'Bank of Bhutan Wire Transfer',
-          user_name: staff ? staff.name : 'Finance Officer'
+      const saveVisaBtn = document.getElementById('saveVisaStateBtn');
+      if (saveVisaBtn) {
+        saveVisaBtn.addEventListener('click', () => {
+          const val = document.getElementById('actionVisaStatus').value;
+          const clearance = document.getElementById('visaClearanceInput').value.trim();
+          runVisaTransition(val, { visa_clearance_number: clearance || undefined });
         });
-        if (res.success) {
-          AdminApp.showToast(res.message);
-          loadBookingDetail();
-        } else {
-          AdminApp.showToast(res.error || 'Failed to record payment', 'error');
+      }
+
+      const openRejectBtn = document.getElementById('openVisaRejectModalBtn');
+      if (openRejectBtn) {
+        openRejectBtn.addEventListener('click', () => {
+          document.getElementById('visaRejectError').classList.add('hidden');
+          document.getElementById('visaRejectReasonInput').value = b.visa_rejection_reason || '';
+          document.getElementById('visaRejectModal').classList.remove('hidden');
+        });
+      }
+
+      const updateStatusBtn = document.getElementById('updateBookingStatusBtn');
+      if (updateStatusBtn) {
+        updateStatusBtn.addEventListener('click', async () => {
+          const alertBox = document.getElementById('opsActionAlert');
+          alertBox.classList.add('hidden');
+          const status = document.getElementById('actionBookingStatus').value;
+          try {
+            const res = await window.ApiClient.updateBookingStatus(b.id, status);
+            AdminApp.showToast((res && res.message) || `Booking status updated to ${status}`);
+            loadBookingDetail();
+          } catch (err) {
+            alertBox.textContent = err.message || 'Failed to update booking status.';
+            alertBox.classList.remove('hidden');
+            AdminApp.showToast(err.message || 'Status update blocked', 'error');
+          }
+        });
+      }
+
+      const assignGuideBtn = document.getElementById('assignGuideBtn');
+      if (assignGuideBtn) {
+        assignGuideBtn.addEventListener('click', async () => {
+          const alertBox = document.getElementById('opsActionAlert');
+          alertBox.classList.add('hidden');
+          const guideId = document.getElementById('actionGuideSelect').value;
+          const vehicle = document.getElementById('actionVehicleInput').value.trim();
+          if (!guideId) {
+            alertBox.textContent = 'Please select a certified guide before assigning.';
+            alertBox.classList.remove('hidden');
+            return;
+          }
+          try {
+            const res = await window.ApiClient.assignGuide(b.id, Number(guideId), vehicle);
+            AdminApp.showToast((res && res.message) || 'Guide assigned successfully.');
+            loadBookingDetail();
+          } catch (err) {
+            if (err && err.status === 409 && err.data && err.data.conflicting_booking_id) {
+              const conflictId = err.data.conflicting_booking_id;
+              alertBox.innerHTML = `<strong>Schedule Conflict (409):</strong> ${AdminApp.esc(err.message)} — <a href="booking-detail.html?id=${encodeURIComponent(conflictId)}" class="underline font-bold text-white">Inspect ${AdminApp.esc(conflictId)} →</a>`;
+            } else {
+              alertBox.textContent = err.message || 'Failed to assign guide.';
+            }
+            alertBox.classList.remove('hidden');
+            AdminApp.showToast(err.message || 'Guide assignment failed', 'error');
+          }
+        });
+      }
+
+      // Private Document Preview triggers
+      document.querySelectorAll('.doc-preview-trigger').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          const url = btn.getAttribute('data-doc-url');
+          const title = btn.getAttribute('data-doc-title') || 'Document Preview';
+          const rawPath = btn.getAttribute('data-doc-path') || '';
+          openDocumentModal(url, title, rawPath);
+        });
+      });
+
+      // Verify / Reject pending client receipts
+      document.querySelectorAll('.verify-pay-btn').forEach((btn) => {
+        btn.addEventListener('click', async () => {
+          const paymentId = btn.getAttribute('data-payment-id');
+          const action = btn.getAttribute('data-action');
+          const alertBox = document.getElementById('paymentLedgerAlert');
+          alertBox.classList.add('hidden');
+          try {
+            const res = await window.ApiClient.verifyPayment(paymentId, action);
+            AdminApp.showToast((res && res.message) || `Payment #${paymentId} marked ${action}.`);
+            loadBookingDetail();
+          } catch (err) {
+            alertBox.textContent = err.message || 'Failed to update receipt status.';
+            alertBox.classList.remove('hidden');
+            AdminApp.showToast(err.message || 'Receipt verification error', 'error');
+          }
+        });
+      });
+
+      // Record Payment / Refund
+      const payForm = document.getElementById('recordPaymentForm');
+      if (payForm) {
+        payForm.addEventListener('submit', async (e) => {
+          e.preventDefault();
+          const alertBox = document.getElementById('paymentLedgerAlert');
+          alertBox.classList.add('hidden');
+          const amount = Number(document.getElementById('payAmount').value);
+          if (!Number.isFinite(amount) || amount <= 0) {
+            AdminApp.showToast('Enter a valid positive USD amount.', 'error');
+            return;
+          }
+          try {
+            const res = await window.ApiClient.recordPayment(b.id, {
+              amount_usd: amount,
+              payment_type: document.getElementById('payType').value,
+              payment_method: document.getElementById('payMethod').value,
+              transaction_ref: document.getElementById('payTxRef').value.trim() || undefined,
+              notes: document.getElementById('payNotes').value.trim() || undefined
+            });
+            AdminApp.showToast((res && res.message) || 'Transaction recorded.');
+            loadBookingDetail();
+          } catch (err) {
+            alertBox.textContent = err.message || 'Failed to record transaction.';
+            alertBox.classList.remove('hidden');
+            AdminApp.showToast(err.message || 'Payment error', 'error');
+          }
+        });
+      }
+
+      // Mark SDF Remitted
+      const remitBtn = document.getElementById('remitSdfBtn');
+      if (remitBtn) {
+        remitBtn.addEventListener('click', async () => {
+          const ref = document.getElementById('sdfRemitRefInput').value.trim();
+          try {
+            const res = await window.ApiClient.remitBookingSdf(b.id, ref ? { sdf_remittance_ref: ref } : {});
+            AdminApp.showToast((res && res.message) || 'SDF Remittance recorded.');
+            loadBookingDetail();
+          } catch (err) {
+            AdminApp.showToast(err.message || 'SDF remittance failed', 'error');
+          }
+        });
+      }
+
+      // Editable Notes
+      const notesForm = document.getElementById('notesForm');
+      if (notesForm) {
+        notesForm.addEventListener('submit', async (e) => {
+          e.preventDefault();
+          try {
+            const res = await window.ApiClient.updateBookingNotes(b.id, {
+              special_requests: document.getElementById('editSpecialRequests').value,
+              internal_notes: document.getElementById('editInternalNotes').value
+            });
+            AdminApp.showToast((res && res.message) || 'Notes saved.');
+            loadBookingDetail();
+          } catch (err) {
+            AdminApp.showToast(err.message || 'Failed to save notes', 'error');
+          }
+        });
+      }
+
+      // Direct Client Messenger presets & send
+      const msgPreset = document.getElementById('msgPreset');
+      const msgBody = document.getElementById('msgBody');
+      const msgSubject = document.getElementById('msgSubject');
+      const balUsd = Math.max(0, Number(b.total_price_usd || 0) - Number(b.deposit_paid_usd || 0));
+
+      function fillPreset(key) {
+        if (key === 'payment_reminder') {
+          msgSubject.value = `Payment Balance Reminder — ${b.id}`;
+          msgBody.value = `Kuzuzangpo La ${b.lead_name}!\nThis is a friendly reminder regarding your Bhutan trip ${b.id} (${b.tour_title}, ${b.travel_date_start} to ${b.travel_date_end}). Outstanding balance is $${balUsd.toLocaleString()} USD due by ${b.balance_due_date || 'departure'}. Please upload your wire slip in the Client Portal once remitted.\nBhutan Fast Rate Tours (#TR/2018/9882)`;
+        } else if (key === 'doc_request') {
+          msgSubject.value = `Passport & Photo Required for DoI Visa — ${b.id}`;
+          msgBody.value = `Kuzuzangpo La ${b.lead_name}!\nTo submit your Bhutan visa/permit application (${b.id}) to the Department of Immigration, please upload clear passport bio-page scans (6+ months validity beyond ${b.travel_date_end}) and passport photos in your Client Portal.\nBhutan Fast Rate Tours (#TR/2018/9882)`;
+        } else if (key === 'pre_departure') {
+          msgSubject.value = `Pre-Departure Guide & Arrival Briefing — ${b.id}`;
+          msgBody.value = `Kuzuzangpo La ${b.lead_name}!\nYour Bhutan journey (${b.id}) starts on ${b.travel_date_start}. ${b.guide ? `Your certified guide ${b.guide.full_name} (${b.guide.phone || ''}) ` : 'Our airport team '}will greet you upon arrival. Please carry your printed Clearance Letter and valid passport.\nBhutan Fast Rate Tours (#TR/2018/9882)`;
         }
-      } catch (err) {
-        AdminApp.showToast(err.message, 'error');
+      }
+      msgPreset.addEventListener('change', (e) => fillPreset(e.target.value));
+      if (!msgBody.value.trim()) fillPreset('doc_request');
+
+      document.getElementById('sendClientMsgBtn').addEventListener('click', async () => {
+        const subject = msgSubject.value.trim();
+        const message = msgBody.value.trim();
+        const channel = document.getElementById('msgChannel').value;
+        if (!message) {
+          AdminApp.showToast('Please enter a message before sending.', 'error');
+          return;
+        }
+        try {
+          const res = await window.ApiClient.sendNotification({
+            booking_id: b.id,
+            channel,
+            recipient_type: 'client',
+            recipient_phone: b.lead_phone,
+            recipient_email: b.lead_email,
+            subject,
+            message
+          });
+          lastMessengerResult = res;
+          document.getElementById('msgDispatchResult').classList.remove('hidden');
+          AdminApp.showToast('Client notification dispatched and logged!');
+          AdminApp.refreshUnreadCount();
+        } catch (err) {
+          AdminApp.showToast(err.message || 'Failed to send notification', 'error');
+        }
+      });
+
+      document.getElementById('openSentWaBtn').addEventListener('click', async () => {
+        const text = msgBody.value.trim();
+        const waUrl = (lastMessengerResult && lastMessengerResult.whatsapp_share_url)
+          || window.ApiClient.buildWhatsAppUrl(b.lead_phone, text);
+        window.open(waUrl, '_blank', 'noopener');
+        if (lastMessengerResult && lastMessengerResult.id) {
+          try {
+            await window.ApiClient.markNotificationSent(lastMessengerResult.id);
+            AdminApp.showToast('WhatsApp opened & notification marked sent.');
+          } catch (_) {}
+        }
+      });
+
+      // Super Admin Cancel Booking Modal trigger
+      const cancelBtn = document.getElementById('openCancelBookingModalBtn');
+      if (cancelBtn) {
+        cancelBtn.addEventListener('click', () => {
+          document.getElementById('cancelBookingError').classList.add('hidden');
+          document.getElementById('cancelBookingReasonInput').value = '';
+          document.getElementById('cancelBookingModal').classList.remove('hidden');
+        });
       }
     }
+
+    async function runVisaTransition(targetStage, extra = {}) {
+      if (!currentBooking) return;
+      const alertBox = document.getElementById('visaGateAlert');
+      if (alertBox) alertBox.classList.add('hidden');
+
+      try {
+        const res = await window.ApiClient.updateVisaStatus(currentBooking.id, {
+          visa_status: targetStage,
+          ...extra
+        });
+        AdminApp.showToast((res && res.message) || `Visa status updated to ${targetStage}`);
+        loadBookingDetail();
+      } catch (err) {
+        if (alertBox) {
+          const errs = err && err.data && Array.isArray(err.data.errors) && err.data.errors.length
+            ? `<ul class="list-disc pl-4 mt-1 space-y-0.5">${err.data.errors.map((e) => `<li>${AdminApp.esc(e)}</li>`).join('')}</ul>`
+            : '';
+          alertBox.innerHTML = `<strong>DoI Compliance Gate Blocked Transition:</strong> ${AdminApp.esc(err.message || 'Validation error')}${errs}`;
+          alertBox.classList.remove('hidden');
+        }
+        AdminApp.showToast(err.message || 'Visa update blocked by DoI gate', 'error');
+      }
+    }
+
+    function openDocumentModal(url, title, rawPath) {
+      document.getElementById('docPreviewTitle').textContent = title;
+      document.getElementById('docPreviewSubtitle').textContent = rawPath || 'Authenticated Staff File Stream';
+      document.getElementById('docPreviewOpenTab').href = url;
+
+      const body = document.getElementById('docPreviewBody');
+      const isPdf = /\.pdf(\?|$)/i.test(rawPath || url);
+      if (isPdf) {
+        body.innerHTML = `<iframe src="${AdminApp.esc(url)}" title="${AdminApp.esc(title)}" class="w-full rounded-lg border border-zinc-700" style="height:460px;background:#fff;"></iframe>`;
+      } else {
+        body.innerHTML = `<img src="${AdminApp.esc(url)}" alt="${AdminApp.esc(title)}" class="max-h-[460px] max-w-full rounded-lg object-contain">`;
+      }
+      document.getElementById('docPreviewModal').classList.remove('hidden');
+    }
+
+    function closeDocumentModal() {
+      document.getElementById('docPreviewModal').classList.add('hidden');
+      document.getElementById('docPreviewBody').innerHTML = '';
+    }
+
+    document.getElementById('closeDocPreviewBtn').addEventListener('click', closeDocumentModal);
+    document.getElementById('docPreviewCloseFooterBtn').addEventListener('click', closeDocumentModal);
+
+    // Visa Rejection Modal handlers
+    function closeVisaRejectModal() {
+      document.getElementById('visaRejectModal').classList.add('hidden');
+    }
+    document.getElementById('closeVisaRejectBtn').addEventListener('click', closeVisaRejectModal);
+    document.getElementById('cancelVisaRejectBtn').addEventListener('click', closeVisaRejectModal);
+    document.getElementById('visaRejectForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      if (!currentBooking) return;
+      const errBox = document.getElementById('visaRejectError');
+      errBox.classList.add('hidden');
+      const reason = document.getElementById('visaRejectReasonInput').value.trim();
+      if (!reason) {
+        errBox.textContent = 'A non-empty rejection reason is required.';
+        errBox.classList.remove('hidden');
+        return;
+      }
+      try {
+        const res = await window.ApiClient.updateVisaStatus(currentBooking.id, {
+          visa_status: 'rejected',
+          rejection_reason: reason
+        });
+        closeVisaRejectModal();
+        AdminApp.showToast((res && res.message) || 'Visa application marked rejected.');
+        loadBookingDetail();
+      } catch (err) {
+        errBox.textContent = err.message || 'Failed to reject visa application.';
+        errBox.classList.remove('hidden');
+      }
+    });
+
+    // Cancel Booking Modal handlers (Super Admin)
+    function closeCancelBookingModal() {
+      document.getElementById('cancelBookingModal').classList.add('hidden');
+    }
+    document.getElementById('closeCancelBookingBtn').addEventListener('click', closeCancelBookingModal);
+    document.getElementById('abortCancelBookingBtn').addEventListener('click', closeCancelBookingModal);
+    document.getElementById('cancelBookingForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      if (!currentBooking) return;
+      const errBox = document.getElementById('cancelBookingError');
+      errBox.classList.add('hidden');
+      const reason = document.getElementById('cancelBookingReasonInput').value.trim();
+      try {
+        const res = await window.ApiClient.cancelAdminBooking(currentBooking.id, reason);
+        closeCancelBookingModal();
+        AdminApp.showToast((res && res.message) || 'Booking cancelled.');
+        loadBookingDetail();
+      } catch (err) {
+        errBox.textContent = err.message || 'Cannot cancel booking.';
+        errBox.classList.remove('hidden');
+        AdminApp.showToast(err.message || 'Cancellation blocked', 'error');
+      }
+    });
 
     document.addEventListener('DOMContentLoaded', loadBookingDetail);
   </script>
