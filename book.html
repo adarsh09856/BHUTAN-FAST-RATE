@@ -1,0 +1,931 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light only">
+  <title>Book Your Bhutan Journey — Bhutan Fast Rate Tours | Licensed #TR/2018/9882</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --forest: #0B2A22;
+      --forest2: #123A30;
+      --gold: #C9A24B;
+      --gold2: #E4C87E;
+      --cream: #FFF8EC;
+      --cream2: #F7EDD8;
+      --ink: #101613;
+      --muted: #5F6A64;
+      --line: #E7DCC4;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: 'Manrope', system-ui, sans-serif;
+      background: var(--cream);
+      color: var(--ink);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    .font-serif { font-family: 'Fraunces', Georgia, serif; }
+    .topbar { background: var(--forest); color: #fff; font-size: 12px; border-bottom: 1px solid var(--forest2); }
+    .wrap { max-width: 1280px; margin: 0 auto; padding: 0 20px; width: 100%; }
+    .topbar-inner { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 10px; padding: 9px 0; }
+    header.site-hdr {
+      position: sticky; top: 0; z-index: 40;
+      background: rgba(255, 248, 236, 0.96); backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--line);
+    }
+    .hdr-inner { height: 72px; display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+    .brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: inherit; }
+    .brand-mark { width: 40px; height: 40px; border-radius: 999px; background: var(--forest); color: var(--gold); display: grid; place-items: center; font-family: 'Fraunces', serif; font-size: 20px; font-weight: 700; }
+    .nav-links { display: none; gap: 6px; font-size: 14px; font-weight: 700; }
+    .nav-links a { padding: 8px 14px; border-radius: 999px; color: var(--ink); text-decoration: none; }
+    .nav-links a:hover { background: var(--cream2); }
+    @media (min-width: 1024px) { .nav-links { display: flex; } }
+
+    .hero-band { background: var(--forest); color: #fff; padding: 34px 0 48px; }
+    .stepper { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-top: 22px; }
+    @media (max-width: 720px) { .stepper { grid-template-columns: repeat(2, 1fr); } }
+    .step-pill {
+      display: flex; align-items: center; gap: 10px; padding: 12px 14px; border-radius: 16px;
+      background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.14); color: rgba(255,255,255,0.72);
+      font-size: 13px; font-weight: 700; cursor: pointer; text-align: left;
+    }
+    .step-pill.active { background: #fff; color: var(--forest); border-color: var(--gold); }
+    .step-pill.done { background: rgba(201,162,75,0.22); border-color: var(--gold); color: #fff; }
+    .step-num { width: 26px; height: 26px; border-radius: 999px; display: grid; place-items: center; background: var(--gold); color: var(--forest); font-weight: 800; font-size: 12px; flex-shrink: 0; }
+
+    main { flex: 1; padding: 28px 0 60px; margin-top: -22px; }
+    .checkout-grid { display: grid; grid-template-columns: 1fr; gap: 24px; align-items: start; }
+    @media (min-width: 1024px) { .checkout-grid { grid-template-columns: 1.55fr 1fr; } }
+
+    .card {
+      background: #fff; border: 1px solid var(--line); border-radius: 24px; padding: 26px;
+      box-shadow: 0 10px 30px rgba(11, 42, 34, 0.05);
+    }
+    .summary-card { position: sticky; top: 92px; }
+    h2.sec-title { font-family: 'Fraunces', serif; font-size: 26px; margin: 0 0 6px; color: var(--forest); }
+    p.sec-sub { margin: 0 0 20px; font-size: 14px; color: var(--muted); }
+
+    .grid-2 { display: grid; grid-template-columns: 1fr; gap: 14px; }
+    .grid-3 { display: grid; grid-template-columns: 1fr; gap: 14px; }
+    @media (min-width: 640px) {
+      .grid-2 { grid-template-columns: repeat(2, 1fr); }
+      .grid-3 { grid-template-columns: repeat(3, 1fr); }
+    }
+
+    label.fld { display: block; font-size: 13px; font-weight: 700; color: var(--forest); }
+    label.fld span.req { color: #b91c1c; }
+    input.inp, select.inp, textarea.inp {
+      width: 100%; margin-top: 6px; padding: 11px 14px; border-radius: 12px;
+      border: 1px solid #d7cab0; background: #ffffff !important; color: #0f172a !important;
+      color-scheme: light !important; font: inherit; font-size: 14px; outline: none;
+    }
+    input.inp:focus, select.inp:focus, textarea.inp:focus { border-color: var(--forest); box-shadow: 0 0 0 3px rgba(11, 42, 34, 0.1); }
+
+    .tier-grid { display: grid; grid-template-columns: 1fr; gap: 12px; margin-top: 8px; }
+    @media (min-width: 640px) { .tier-grid { grid-template-columns: repeat(3, 1fr); } }
+    .choice-card {
+      border: 1.5px solid var(--line); border-radius: 16px; padding: 14px; cursor: pointer;
+      background: var(--cream); transition: all .15s; text-align: left; width: 100%;
+    }
+    .choice-card.selected { border-color: var(--forest); background: #fff; box-shadow: 0 0 0 2px var(--forest); }
+
+    .guest-box { border: 1px solid var(--line); border-radius: 18px; padding: 18px; background: #FFFCF6; margin-bottom: 14px; }
+    .badge { display: inline-flex; align-items: center; gap: 5px; padding: 4px 10px; border-radius: 999px; font-size: 11px; font-weight: 800; }
+    .badge-ok { background: #dcfce7; color: #166534; }
+    .badge-warn { background: #fef3c7; color: #92400e; }
+    .badge-err { background: #fee2e2; color: #991b1b; }
+
+    .btn-row { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; margin-top: 24px; padding-top: 18px; border-top: 1px solid var(--line); }
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+      padding: 13px 24px; border-radius: 999px; font-weight: 800; font-size: 14px; cursor: pointer; border: none; text-decoration: none;
+    }
+    .btn-primary { background: var(--forest); color: #fff; }
+    .btn-primary:hover { background: var(--forest2); }
+    .btn-gold { background: var(--gold); color: var(--forest); }
+    .btn-gold:hover { background: var(--gold2); }
+    .btn-outline { background: #fff; color: var(--forest); border: 1.5px solid var(--line); }
+    .btn:disabled { opacity: 0.6; cursor: not-allowed; }
+
+    .alert-err { background: #fef2f2; border: 1px solid #fecaca; color: #991b1b; padding: 13px 16px; border-radius: 14px; font-size: 13px; font-weight: 700; margin-bottom: 16px; }
+    .alert-info { background: #FFF8EC; border: 1px solid var(--gold); color: var(--forest); padding: 12px 15px; border-radius: 14px; font-size: 13px; margin-bottom: 14px; }
+    .hidden { display: none !important; }
+    .line-item { display: flex; justify-content: space-between; gap: 12px; padding: 8px 0; font-size: 14px; border-bottom: 1px dashed var(--line); }
+    .line-item.total { border-bottom: none; padding-top: 12px; font-size: 18px; font-weight: 800; color: var(--forest); }
+
+    footer.site-ftr { background: var(--forest); color: rgba(255,255,255,0.78); padding: 36px 0; font-size: 13px; margin-top: auto; }
+  </style>
+</head>
+<body>
+  <div class="topbar">
+    <div class="wrap topbar-inner">
+      <span>✓ Official DoI SDF Included · Licensed Operator #<span data-bfr-license>TR/2018/9882</span></span>
+      <span>USD &amp; Regional INR Accepted · 24–48h Bhutan Visa Clearance</span>
+    </div>
+  </div>
+
+  <header class="site-hdr">
+    <div class="wrap hdr-inner">
+      <a href="index.html" class="brand">
+        <span class="brand-mark">B</span>
+        <span>
+          <span class="font-serif" style="display:block;font-size:19px;font-weight:700;line-height:1;" data-bfr-company>BHUTAN FAST RATE</span>
+          <span style="display:block;font-size:10px;font-weight:800;letter-spacing:.22em;color:var(--gold);margin-top:2px;">DIRECT BOOKING DESK</span>
+        </span>
+      </a>
+      <nav class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="tours.html">Tours</a>
+        <a href="sdf-calculator.html">SDF Calculator</a>
+        <a href="track-visa.html">Track Visa</a>
+        <a href="client/login.html">Client Portal</a>
+      </nav>
+      <a href="tours.html" class="btn btn-outline" style="padding:9px 16px;font-size:13px;">← All Tours</a>
+    </div>
+  </header>
+
+  <section class="hero-band">
+    <div class="wrap">
+      <span style="font-size:11px;font-weight:800;letter-spacing:.22em;color:var(--gold2);text-transform:uppercase;">OFFICIAL RESERVATION CHECKOUT</span>
+      <h1 class="font-serif" style="font-size:clamp(28px,4vw,42px);margin:6px 0 4px;">Reserve Your Bhutan Expedition</h1>
+      <p style="margin:0;color:rgba(255,255,255,0.78);font-size:14px;">Authoritative server-verified SDF calculation, multi-guest DoI visa roster &amp; instant WhatsApp concierge dispatch.</p>
+
+      <div class="stepper" id="checkoutStepper">
+        <button type="button" class="step-pill active" data-step="1"><span class="step-num">1</span><span>Dates, Tier &amp; Guests</span></button>
+        <button type="button" class="step-pill" data-step="2"><span class="step-num">2</span><span>Lead &amp; Traveler Roster</span></button>
+        <button type="button" class="step-pill" data-step="3"><span class="step-num">3</span><span>Quote, Plan &amp; Terms</span></button>
+        <button type="button" class="step-pill" data-step="4"><span class="step-num">4</span><span>Confirm Reservation</span></button>
+      </div>
+    </div>
+  </section>
+
+  <main>
+    <div class="wrap">
+      <div class="checkout-grid">
+        <!-- Left Main Wizard Column -->
+        <div class="card">
+          <div id="checkoutErrorBanner" class="alert-err hidden" role="alert"></div>
+
+          <!-- STEP 1 -->
+          <section id="stepPanel1">
+            <h2 class="sec-title">1. Expedition, Hotel Tier &amp; Guests</h2>
+            <p class="sec-sub">Select your package (or Custom Bespoke Trip), accommodation tier, travel dates, and nationality rate.</p>
+
+            <div class="grid-2" style="margin-bottom:16px;">
+              <label class="fld">
+                Select Tour Package <span class="req">*</span>
+                <select id="bkTour" class="inp">
+                  <option value="">Loading active packages…</option>
+                </select>
+              </label>
+              <label class="fld" id="bkCustomRateWrap">
+                Custom Daily Package Rate (USD/night/adult)
+                <input id="bkCustomRate" type="number" min="150" step="10" value="320" class="inp">
+              </label>
+            </div>
+
+            <div class="grid-3" style="margin-bottom:16px;">
+              <label class="fld">
+                Travel Start Date <span class="req">*</span>
+                <input id="bkStartDate" type="date" class="inp" required>
+              </label>
+              <label class="fld">
+                Nights in Bhutan <span class="req">*</span>
+                <input id="bkNights" type="number" min="1" max="30" value="6" class="inp">
+              </label>
+              <label class="fld">
+                Departure Date (Auto)
+                <input id="bkEndDate" type="date" class="inp" readonly>
+              </label>
+            </div>
+
+            <div style="margin-bottom:16px;">
+              <span class="fld" style="margin-bottom:6px;">Nationality Track (SDF Tax Rule) <span class="req">*</span></span>
+              <div class="grid-2">
+                <button type="button" class="choice-card selected" data-nation="international">
+                  <strong style="display:block;font-size:15px;">International Passport (USD)</strong>
+                  <span style="font-size:12px;color:var(--muted);">$100/night SDF · $40 DoI Visa · 6-month passport required</span>
+                </button>
+                <button type="button" class="choice-card" data-nation="india">
+                  <strong style="display:block;font-size:15px;">Indian Nationals (INR ₹)</strong>
+                  <span style="font-size:12px;color:var(--muted);">₹1,200/night SDF · ₹0 Visa Fee · Passport or Voter ID permit</span>
+                </button>
+              </div>
+            </div>
+
+            <div style="margin-bottom:18px;">
+              <span class="fld" style="margin-bottom:6px;">Hotel Tier Selection <span class="req">*</span></span>
+              <div class="tier-grid" id="tierCards">
+                <button type="button" class="choice-card selected" data-tier="3-star">
+                  <strong style="display:block;font-size:15px;">3-Star Heritage</strong>
+                  <span id="tierPrice3" style="font-size:13px;font-weight:800;color:var(--gold);">Included</span>
+                  <span style="display:block;font-size:12px;color:var(--muted);margin-top:2px;">Certified heritage inns &amp; lodges</span>
+                </button>
+                <button type="button" class="choice-card" data-tier="4-star">
+                  <strong style="display:block;font-size:15px;">4-Star Premium</strong>
+                  <span id="tierPrice4" style="font-size:13px;font-weight:800;color:var(--gold);">Loading…</span>
+                  <span style="display:block;font-size:12px;color:var(--muted);margin-top:2px;">Boutique valley resorts &amp; spa access</span>
+                </button>
+                <button type="button" class="choice-card" data-tier="5-star">
+                  <strong style="display:block;font-size:15px;">5-Star Luxury</strong>
+                  <span id="tierPrice5" style="font-size:13px;font-weight:800;color:var(--gold);">Loading…</span>
+                  <span style="display:block;font-size:12px;color:var(--muted);margin-top:2px;">Six Senses / Amankora / Pemako tier</span>
+                </button>
+              </div>
+            </div>
+
+            <div class="grid-3" style="margin-bottom:16px;">
+              <label class="fld">
+                Adults (13+ yrs)
+                <input id="bkAdults" type="number" min="0" max="20" value="2" class="inp">
+              </label>
+              <label class="fld">
+                Children (6–12 yrs · 50% SDF)
+                <input id="bkChild612" type="number" min="0" max="15" value="0" class="inp">
+              </label>
+              <label class="fld">
+                Children (&lt;6 yrs · SDF Free)
+                <input id="bkChildU6" type="number" min="0" max="15" value="0" class="inp">
+              </label>
+            </div>
+
+            <div class="alert-info">
+              <label style="display:flex;align-items:center;gap:10px;cursor:pointer;font-weight:700;">
+                <input id="bkFlightAssist" type="checkbox" style="width:18px;height:18px;accent-color:var(--forest);">
+                <span>Include Drukair / Bhutan Airlines Paro Flight Assistance</span>
+              </label>
+              <div id="bkFlightSectorWrap" class="hidden" style="margin-top:10px;">
+                <label class="fld">
+                  Preferred Entry Hub / Notes
+                  <input id="bkFlightSector" type="text" placeholder="e.g. Delhi (DEL) → Paro (PBH), Bangkok (BKK), or Bagdogra/Phuentsholing" class="inp">
+                </label>
+              </div>
+            </div>
+
+            <div class="btn-row">
+              <span style="font-size:12px;color:var(--muted);">Step 1 of 4</span>
+              <button type="button" id="btnStep1Next" class="btn btn-primary">Continue to Traveler Roster →</button>
+            </div>
+          </section>
+
+          <!-- STEP 2 -->
+          <section id="stepPanel2" class="hidden">
+            <h2 class="sec-title">2. Lead Contact &amp; Per-Guest Roster</h2>
+            <p class="sec-sub">Enter lead booking contact details and traveler information matching your party size. Scans can be uploaded right after in the Client Portal.</p>
+
+            <div class="grid-2" style="margin-bottom:14px;">
+              <label class="fld">Lead Full Name <span class="req">*</span><input id="leadName" type="text" required placeholder="As on passport / ID" class="inp"></label>
+              <label class="fld">Lead Email Address <span class="req">*</span><input id="leadEmail" type="email" required placeholder="you@example.com" class="inp"></label>
+            </div>
+            <div class="grid-3" style="margin-bottom:14px;">
+              <label class="fld">Phone <span class="req">*</span><input id="leadPhone" type="tel" required placeholder="+1 555 234 5678" class="inp"></label>
+              <label class="fld">WhatsApp Number<input id="leadWhatsapp" type="tel" placeholder="Same as phone if blank" class="inp"></label>
+              <label class="fld">Nationality / Country<input id="leadCountry" type="text" placeholder="e.g. United States / India" class="inp"></label>
+            </div>
+            <label class="fld" style="margin-bottom:20px;">
+              Special Requests / Rooming / Mobility Notes
+              <textarea id="leadRequests" rows="2" placeholder="Twin beds, vegetarian meals, celebrating anniversary…" class="inp"></textarea>
+            </label>
+
+            <h3 class="font-serif" style="font-size:20px;margin:0 0 10px;color:var(--forest);">Traveler Roster (<span id="rosterCountLbl">2</span> Guests)</h3>
+            <div id="travelersRosterContainer"></div>
+
+            <div class="btn-row">
+              <button type="button" id="btnStep2Back" class="btn btn-outline">← Back</button>
+              <button type="button" id="btnStep2Next" class="btn btn-primary">Continue to Quote &amp; Terms →</button>
+            </div>
+          </section>
+
+          <!-- STEP 3 -->
+          <section id="stepPanel3" class="hidden">
+            <h2 class="sec-title">3. Authoritative SDF Quote, Payment Plan &amp; Terms</h2>
+            <p class="sec-sub">Verified live by the server SDF engine. Choose your reservation payment schedule.</p>
+
+            <div id="step3QuoteBreakdown" class="card" style="background:var(--cream);padding:18px;margin-bottom:18px;"></div>
+
+            <div style="margin-bottom:18px;">
+              <span class="fld" style="margin-bottom:8px;">Payment Schedule Option <span class="req">*</span></span>
+              <div class="grid-2">
+                <button type="button" class="choice-card selected" data-plan="deposit_30">
+                  <strong style="display:block;font-size:15px;">30% Deposit Reservation</strong>
+                  <span id="planDepositAmt" style="display:block;font-size:16px;font-weight:800;color:var(--forest);margin-top:4px;">—</span>
+                  <span style="font-size:12px;color:var(--muted);">Lock guide &amp; hotels now. Remainder due before DoI visa filing.</span>
+                </button>
+                <button type="button" class="choice-card" data-plan="full_100">
+                  <strong style="display:block;font-size:15px;">100% Full Settlement (Fast-Track Visa)</strong>
+                  <span id="planFullAmt" style="display:block;font-size:16px;font-weight:800;color:var(--forest);margin-top:4px;">—</span>
+                  <span style="font-size:12px;color:var(--muted);">Eligible immediately for 24–48h DoI visa clearance once scans upload.</span>
+                </button>
+              </div>
+            </div>
+
+            <div class="card" style="background:#FFFCF6;padding:16px;margin-bottom:16px;">
+              <strong style="display:block;font-size:13px;color:var(--forest);margin-bottom:6px;">Cancellation &amp; DoI Visa Compliance Policy</strong>
+              <ul id="cancellationTermsList" style="margin:0;padding-left:18px;font-size:12px;color:var(--muted);line-height:1.6;">
+                <li>30+ days before arrival: Full refund minus bank/administrative handling fee.</li>
+                <li>15–29 days before arrival: 50% refund or complimentary date transfer within 12 months.</li>
+                <li>Under 15 days before arrival: Non-refundable SDF/hotel commitments unless approved by DoI.</li>
+                <li>International passports must be valid for at least 6 months past the Bhutan departure date.</li>
+              </ul>
+            </div>
+
+            <label style="display:flex;align-items:flex-start;gap:10px;font-size:13px;font-weight:700;cursor:pointer;">
+              <input id="bkTermsAgree" type="checkbox" style="width:18px;height:18px;margin-top:2px;accent-color:var(--forest);">
+              <span>I agree to the Bhutan Fast Rate Tours Booking Terms, DoI 6-month passport / regional permit requirements, and Cancellation Policy.</span>
+            </label>
+
+            <div class="btn-row">
+              <button type="button" id="btnStep3Back" class="btn btn-outline">← Back</button>
+              <button type="button" id="btnStep3Next" class="btn btn-primary">Review Final Reservation →</button>
+            </div>
+          </section>
+
+          <!-- STEP 4 -->
+          <section id="stepPanel4" class="hidden">
+            <h2 class="sec-title">4. Review &amp; Confirm Booking</h2>
+            <p class="sec-sub">Confirm your details below. Your Booking Reference, Official Invoice, and Client Portal access will be issued immediately.</p>
+
+            <div id="finalReviewSummary" style="space-y:12px;margin-bottom:18px;"></div>
+
+            <div class="btn-row">
+              <button type="button" id="btnStep4Back" class="btn btn-outline">← Edit Terms</button>
+              <button type="button" id="btnConfirmBooking" class="btn btn-gold" style="padding:14px 30px;font-size:15px;">Confirm &amp; Generate Booking Reference →</button>
+            </div>
+          </section>
+        </div>
+
+        <!-- Right Sticky Live Summary -->
+        <aside class="card summary-card">
+          <span style="font-size:11px;font-weight:800;letter-spacing:.18em;color:var(--gold);text-transform:uppercase;">LIVE SERVER QUOTE</span>
+          <h3 id="sumTourTitle" class="font-serif" style="font-size:22px;margin:4px 0 4px;color:var(--forest);">Loading expedition…</h3>
+          <p id="sumSubMeta" style="font-size:13px;color:var(--muted);margin:0 0 14px;">—</p>
+
+          <div id="sumBreakdown">
+            <div class="line-item"><span>Calculating authoritative breakdown…</span><span>—</span></div>
+          </div>
+
+          <div style="margin-top:16px;padding:14px;border-radius:16px;background:var(--cream);font-size:12px;color:var(--muted);line-height:1.55;">
+            <strong style="color:var(--forest);display:block;margin-bottom:4px;">Why book direct with Bhutan Fast Rate Tours?</strong>
+            • Royally Licensed #TR/2018/9882<br>
+            • 100% of SDF remitted transparently to DoI<br>
+            • Upload passports &amp; track DoI clearance live<br>
+            • Certified English-speaking Bhutanese guides
+          </div>
+        </aside>
+      </div>
+    </div>
+  </main>
+
+  <footer class="site-ftr">
+    <div class="wrap" style="display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;">
+      <span>© <span id="ftrYear">2026</span> Bhutan Fast Rate Tours · Licensed Operator #<span data-bfr-license>TR/2018/9882</span></span>
+      <span>Hotline: <span data-bfr-phone>+975 17 654 321</span> · <span data-bfr-email>reservations@bhutanfastratetours.bt</span></span>
+    </div>
+  </footer>
+
+  <script src="js/api-client.js"></script>
+  <script src="js/site-shell.js"></script>
+  <script>
+    (function () {
+      'use strict';
+
+      const esc = (v) => (window.SiteShell ? window.SiteShell.escapeHtml(v) : String(v || '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c])));
+      const fmtCur = (amt, cur) => window.ApiClient.formatCurrency(amt, cur);
+
+      function addDaysIso(isoDate, days) {
+        if (!isoDate) return '';
+        const d = new Date(`${isoDate}T00:00:00Z`);
+        if (Number.isNaN(d.getTime())) return '';
+        d.setUTCDate(d.getUTCDate() + Math.max(1, Number(days) || 1));
+        return d.toISOString().slice(0, 10);
+      }
+
+      function addMonthsUtc(isoDate, months) {
+        const d = new Date(`${isoDate}T00:00:00Z`);
+        if (Number.isNaN(d.getTime())) return null;
+        const targetMonth = d.getUTCMonth() + months;
+        const targetYear = d.getUTCFullYear() + Math.floor(targetMonth / 12);
+        const normMonth = ((targetMonth % 12) + 12) % 12;
+        const origDay = d.getUTCDate();
+        const maxDay = new Date(Date.UTC(targetYear, normMonth + 1, 0)).getUTCDate();
+        return new Date(Date.UTC(targetYear, normMonth, Math.min(origDay, maxDay)));
+      }
+
+      function defaultFutureStart() {
+        const d = new Date();
+        d.setUTCDate(d.getUTCDate() + 45);
+        return d.toISOString().slice(0, 10);
+      }
+
+      function createCheckoutKey() {
+        if (window.crypto && typeof window.crypto.randomUUID === 'function') {
+          return window.crypto.randomUUID();
+        }
+        return 'bfr-chk-' + Date.now().toString(36) + '-' + Math.random().toString(36).slice(2, 10);
+      }
+
+      const state = {
+        step: 1,
+        tours: [],
+        settings: {},
+        selectedTourId: '',
+        isCustom: false,
+        customDailyRate: 320,
+        hotelTier: '3-star',
+        nationalityType: 'international',
+        startDate: defaultFutureStart(),
+        nights: 6,
+        endDate: '',
+        adults: 2,
+        children612: 0,
+        childrenUnder6: 0,
+        flightAssistance: false,
+        flightSector: '',
+        lead: { name: '', email: '', phone: '', whatsapp: '', country: '', requests: '' },
+        travelers: [],
+        paymentPlan: 'deposit_30',
+        termsAgreed: false,
+        quote: null,
+        submitting: false,
+        idempotencyKey: createCheckoutKey()
+      };
+
+      function showError(msg) {
+        const box = document.getElementById('checkoutErrorBanner');
+        if (!box) return;
+        if (!msg) {
+          box.classList.add('hidden');
+          box.textContent = '';
+          return;
+        }
+        box.textContent = String(msg);
+        box.classList.remove('hidden');
+        box.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+
+      function invalidateIdempotency() {
+        state.idempotencyKey = createCheckoutKey();
+      }
+
+      function syncTravelerSlots() {
+        const desired = [];
+        for (let i = 0; i < state.adults; i++) desired.push({ role: 'Adult (13+)', category: 'adult' });
+        for (let i = 0; i < state.children612; i++) desired.push({ role: 'Child (6–12)', category: 'child_6_12' });
+        for (let i = 0; i < state.childrenUnder6; i++) desired.push({ role: 'Child (<6)', category: 'child_under_6' });
+
+        const prev = state.travelers;
+        state.travelers = desired.map((slot, idx) => {
+          const existing = prev[idx] || {};
+          return {
+            index: idx,
+            age_category: slot.category,
+            roleLabel: slot.role,
+            full_name: existing.full_name || (idx === 0 ? state.lead.name : ''),
+            nationality: existing.nationality || (state.nationalityType === 'india' ? 'India' : (state.lead.country || '')),
+            passport_number: existing.passport_number || '',
+            passport_expiry: existing.passport_expiry || '',
+            date_of_birth: existing.date_of_birth || '',
+            dietary_notes: existing.dietary_notes || '',
+            emergency_contact: existing.emergency_contact || ''
+          };
+        });
+      }
+
+      function renderRoster() {
+        syncTravelerSlots();
+        const container = document.getElementById('travelersRosterContainer');
+        const countLbl = document.getElementById('rosterCountLbl');
+        if (countLbl) countLbl.textContent = String(state.travelers.length);
+        if (!container) return;
+
+        container.innerHTML = state.travelers.map((t, i) => {
+          const isIndia = state.nationalityType === 'india';
+          let expBadge = '<span class="badge badge-warn">Passport expiry not entered yet (upload later in Client Portal)</span>';
+          if (isIndia) {
+            expBadge = '<span class="badge badge-ok">Regional Entry Permit Track (Passport or Voter ID)</span>';
+          } else if (t.passport_expiry && state.endDate) {
+            const minValid = addMonthsUtc(state.endDate, 6);
+            const exp = new Date(`${t.passport_expiry}T00:00:00Z`);
+            if (minValid && !Number.isNaN(exp.getTime())) {
+              if (exp < minValid) {
+                expBadge = `<span class="badge badge-err">⚠ Less than 6 months valid after ${esc(state.endDate)} — DoI requires validity past ${esc(minValid.toISOString().slice(0, 10))}</span>`;
+              } else {
+                expBadge = '<span class="badge badge-ok">✓ Meets 6-month DoI passport validity</span>';
+              }
+            }
+          }
+
+          return `
+            <div class="guest-box" data-traveler-idx="${i}">
+              <div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:8px;margin-bottom:12px;">
+                <strong style="font-size:15px;color:var(--forest);">Traveler ${i + 1} · ${esc(t.roleLabel)}${i === 0 ? ' (Lead)' : ''}</strong>
+                <div data-exp-badge="${i}">${expBadge}</div>
+              </div>
+              <div class="grid-3" style="margin-bottom:10px;">
+                <label class="fld">
+                  Full Name ${i === 0 ? '<span class="req">*</span>' : ''}
+                  <input type="text" class="inp" data-t-field="full_name" data-idx="${i}" value="${esc(t.full_name)}" placeholder="Passport full name">
+                </label>
+                <label class="fld">
+                  Nationality
+                  <input type="text" class="inp" data-t-field="nationality" data-idx="${i}" value="${esc(t.nationality)}" placeholder="${isIndia ? 'India' : 'Country'}">
+                </label>
+                <label class="fld">
+                  Date of Birth
+                  <input type="date" class="inp" data-t-field="date_of_birth" data-idx="${i}" value="${esc(t.date_of_birth)}">
+                </label>
+              </div>
+              <div class="grid-3">
+                <label class="fld">
+                  ${isIndia ? 'Passport or Voter ID Number' : 'Passport Number'}
+                  <input type="text" class="inp" data-t-field="passport_number" data-idx="${i}" value="${esc(t.passport_number)}" placeholder="Optional now, required for visa">
+                </label>
+                <label class="fld">
+                  Passport Expiry Date
+                  <input type="date" class="inp" data-t-field="passport_expiry" data-idx="${i}" value="${esc(t.passport_expiry)}">
+                </label>
+                <label class="fld">
+                  Dietary / Medical Notes
+                  <input type="text" class="inp" data-t-field="dietary_notes" data-idx="${i}" value="${esc(t.dietary_notes)}" placeholder="Vegetarian, allergies…">
+                </label>
+              </div>
+            </div>
+          `;
+        }).join('');
+      }
+
+      async function refreshServerQuote() {
+        state.endDate = addDaysIso(state.startDate, state.nights);
+        const endEl = document.getElementById('bkEndDate');
+        if (endEl) endEl.value = state.endDate;
+
+        const tour = state.tours.find((t) => t.id === state.selectedTourId || t.slug === state.selectedTourId);
+        const titleEl = document.getElementById('sumTourTitle');
+        const metaEl = document.getElementById('sumSubMeta');
+        if (titleEl) titleEl.textContent = state.isCustom ? 'Custom Bespoke Bhutan Trip' : (tour ? tour.title : 'Bhutan Expedition');
+        if (metaEl) metaEl.textContent = `${state.nights} nights (${state.startDate} → ${state.endDate}) · ${state.hotelTier} · ${state.adults}A/${state.children612}C/${state.childrenUnder6}U6`;
+
+        // Update tier preview prices from selected tour
+        if (!state.isCustom && tour) {
+          const p3 = Number(tour.price_3star_usd || tour.price_usd || 0);
+          const p4 = Number(tour.price_4star_usd || Math.round(p3 * 1.25));
+          const p5 = Number(tour.price_5star_usd || Math.round(p3 * 1.6));
+          document.getElementById('tierPrice3').textContent = `$${p3.toLocaleString('en-US')} / adult`;
+          document.getElementById('tierPrice4').textContent = `$${p4.toLocaleString('en-US')} / adult`;
+          document.getElementById('tierPrice5').textContent = `$${p5.toLocaleString('en-US')} / adult`;
+        } else {
+          document.getElementById('tierPrice3').textContent = `$${state.customDailyRate}/night base`;
+          document.getElementById('tierPrice4').textContent = `+$${Number(state.settings.hotel_4star_surcharge_usd || 95)}/night`;
+          document.getElementById('tierPrice5').textContent = `+$${Number(state.settings.hotel_5star_surcharge_usd || 280)}/night`;
+        }
+
+        if (state.adults + state.children612 + state.childrenUnder6 < 1) return;
+
+        try {
+          const payload = {
+            nights: state.nights,
+            adults: state.adults,
+            children_6_12: state.children612,
+            children_under_6: state.childrenUnder6,
+            nationality_type: state.nationalityType,
+            hotel_tier: state.hotelTier
+          };
+          if (state.isCustom) {
+            payload.custom_daily_rate = state.customDailyRate;
+          } else if (tour) {
+            payload.tour_id = tour.id;
+          }
+          const q = await window.ApiClient.calculateSDF(payload);
+          state.quote = q;
+          renderQuotePanels();
+        } catch (err) {
+          showError(err.message || 'Unable to reach pricing API.');
+        }
+      }
+
+      function renderQuotePanels() {
+        const q = state.quote;
+        if (!q) return;
+        const cur = q.currency || (state.nationalityType === 'india' ? 'INR' : 'USD');
+        const rows = `
+          <div class="line-item"><span>Package Base (${esc(state.hotelTier)})</span><span>${esc(fmtCur(q.package_total_local, cur))}</span></div>
+          <div class="line-item"><span>Royal Gov SDF (${state.nights} nights)</span><span>${esc(fmtCur(q.total_sdf_local, cur))}</span></div>
+          <div class="line-item"><span>DoI Visa / Permit Fee</span><span>${q.visa_fee_local > 0 ? esc(fmtCur(q.visa_fee_local, cur)) : 'Exempt (' + esc(fmtCur(0, cur)) + ')'}</span></div>
+          <div class="line-item total"><span>Total (${esc(cur)})</span><span>${esc(fmtCur(q.total_price_local, cur))}</span></div>
+          ${cur === 'INR' ? `<div style="font-size:12px;color:var(--muted);text-align:right;">USD Eqv: ~$${Number(q.total_price_usd || 0).toLocaleString('en-US')} (1 USD = ₹${q.exchange_rate})</div>` : ''}
+        `;
+
+        const sumEl = document.getElementById('sumBreakdown');
+        if (sumEl) sumEl.innerHTML = rows;
+        const step3El = document.getElementById('step3QuoteBreakdown');
+        if (step3El) step3El.innerHTML = rows;
+
+        const depEl = document.getElementById('planDepositAmt');
+        const fullEl = document.getElementById('planFullAmt');
+        if (depEl) depEl.textContent = fmtCur(q.deposit_amount_local, cur) + ' due now';
+        if (fullEl) fullEl.textContent = fmtCur(q.total_price_local, cur) + ' due now';
+      }
+
+      function renderFinalReview() {
+        const box = document.getElementById('finalReviewSummary');
+        if (!box) return;
+        const q = state.quote || {};
+        const cur = q.currency || 'USD';
+        const dueNow = state.paymentPlan === 'full_100' ? q.total_price_local : q.deposit_amount_local;
+        const tour = state.tours.find((t) => t.id === state.selectedTourId);
+        const title = state.isCustom ? 'Custom Bespoke Bhutan Trip' : (tour ? tour.title : state.selectedTourId);
+
+        box.innerHTML = `
+          <div class="guest-box">
+            <div class="line-item"><span>Expedition</span><strong>${esc(title)}</strong></div>
+            <div class="line-item"><span>Dates</span><strong>${esc(state.startDate)} → ${esc(state.endDate)} (${state.nights} nights)</strong></div>
+            <div class="line-item"><span>Tier &amp; Track</span><strong>${esc(state.hotelTier)} · ${state.nationalityType === 'india' ? 'Indian INR Permit' : 'International USD e-Visa'}</strong></div>
+            <div class="line-item"><span>Lead Contact</span><strong>${esc(state.lead.name)} (${esc(state.lead.email)})</strong></div>
+            <div class="line-item"><span>Travelers</span><strong>${state.travelers.length} (${state.adults} adults, ${state.children612} child 6–12, ${state.childrenUnder6} under 6)</strong></div>
+            <div class="line-item"><span>Payment Plan</span><strong>${state.paymentPlan === 'full_100' ? '100% Full Settlement' : '30% Deposit Reservation'}</strong></div>
+            <div class="line-item total"><span>Total (${esc(cur)}) / Due Now</span><span>${esc(fmtCur(q.total_price_local || 0, cur))} · Due ${esc(fmtCur(dueNow || 0, cur))}</span></div>
+          </div>
+        `;
+      }
+
+      function goToStep(target) {
+        showError('');
+        if (target >= 2) {
+          if (!state.startDate || state.nights < 1) return showError('Please choose a valid travel start date and duration.');
+          if (state.adults + state.children612 + state.childrenUnder6 < 1) return showError('At least 1 traveler is required.');
+        }
+        if (target >= 3) {
+          if (!state.lead.name.trim() || !state.lead.email.trim() || !state.lead.phone.trim()) {
+            return showError('Please complete Lead Full Name, Email Address, and Phone before continuing.');
+          }
+        }
+        if (target >= 4 && !state.termsAgreed) {
+          return showError('Please review and accept the Booking Terms & Cancellation Policy.');
+        }
+
+        state.step = target;
+        [1, 2, 3, 4].forEach((n) => {
+          document.getElementById(`stepPanel${n}`)?.classList.toggle('hidden', n !== target);
+        });
+        document.querySelectorAll('#checkoutStepper .step-pill').forEach((btn) => {
+          const s = Number(btn.getAttribute('data-step'));
+          btn.classList.toggle('active', s === target);
+          btn.classList.toggle('done', s < target);
+        });
+        if (target === 2) renderRoster();
+        if (target === 3) renderQuotePanels();
+        if (target === 4) renderFinalReview();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+
+      async function handleFinalSubmit() {
+        if (state.submitting) return;
+        showError('');
+        state.submitting = true;
+        const btn = document.getElementById('btnConfirmBooking');
+        if (btn) {
+          btn.disabled = true;
+          btn.textContent = 'Reserving with Paro Desk…';
+        }
+
+        try {
+          const payload = {
+            tour_id: state.isCustom ? null : state.selectedTourId,
+            is_custom_trip: state.isCustom,
+            custom_daily_rate: state.isCustom ? state.customDailyRate : undefined,
+            travel_date_start: state.startDate,
+            travel_date_end: state.endDate,
+            nights: state.nights,
+            adults_count: state.adults,
+            children_6_12: state.children612,
+            children_under_6: state.childrenUnder6,
+            nationality_type: state.nationalityType,
+            hotel_tier: state.hotelTier,
+            payment_plan: state.paymentPlan,
+            flight_assistance: state.flightAssistance,
+            flight_notes: state.flightSector.trim(),
+            lead_name: state.lead.name.trim(),
+            lead_email: state.lead.email.trim(),
+            lead_phone: state.lead.phone.trim(),
+            lead_whatsapp: (state.lead.whatsapp || state.lead.phone).trim(),
+            lead_country: state.lead.country.trim(),
+            special_requests: state.lead.requests.trim(),
+            travelers: state.travelers.map((t, idx) => ({
+              full_name: t.full_name.trim() || (idx === 0 ? state.lead.name.trim() : `Guest ${idx + 1} (${t.age_category})`),
+              age_category: t.age_category,
+              nationality: t.nationality.trim() || (state.nationalityType === 'india' ? 'India' : state.lead.country.trim()),
+              passport_number: t.passport_number.trim() || null,
+              passport_expiry: t.passport_expiry.trim() || null,
+              date_of_birth: t.date_of_birth.trim() || null,
+              dietary_notes: t.dietary_notes.trim() || null,
+              is_lead: idx === 0
+            }))
+          };
+
+          const res = await window.ApiClient.submitBooking(payload, { idempotencyKey: state.idempotencyKey });
+          if (res.client_token) {
+            window.ApiClient.setToken('client', res.client_token);
+          }
+          try {
+            sessionStorage.setItem('bfr_last_booking', JSON.stringify({
+              booking: res.booking,
+              quote: res.quote,
+              whatsapp_concierge_url: res.whatsapp_concierge_url,
+              client_token: res.client_token
+            }));
+          } catch (_) {}
+
+          window.location.href = `booking-confirmed.html?ref=${encodeURIComponent(res.booking.id)}`;
+        } catch (err) {
+          showError(err.message || 'Could not confirm booking. Please verify your details and try again.');
+        } finally {
+          state.submitting = false;
+          if (btn) {
+            btn.disabled = false;
+            btn.textContent = 'Confirm & Generate Booking Reference →';
+          }
+        }
+      }
+
+      async function init() {
+        document.getElementById('ftrYear').textContent = String(new Date().getFullYear());
+        const sp = new URLSearchParams(window.location.search);
+
+        if (sp.get('custom') === '1') state.isCustom = true;
+        if (sp.get('daily_rate') && Number(sp.get('daily_rate')) > 0) state.customDailyRate = Number(sp.get('daily_rate'));
+        if (sp.get('tier')) state.hotelTier = sp.get('tier');
+        if (sp.get('nationality') || sp.get('nation')) state.nationalityType = (sp.get('nationality') || sp.get('nation')).toLowerCase().includes('ind') ? 'india' : 'international';
+        if (sp.get('start')) state.startDate = sp.get('start');
+        if (sp.get('nights') && Number(sp.get('nights')) > 0) state.nights = Number(sp.get('nights'));
+        if (sp.get('adults') !== null && !Number.isNaN(Number(sp.get('adults')))) state.adults = Math.max(0, Number(sp.get('adults')));
+        if (sp.get('children_6_12') || sp.get('children612')) state.children612 = Math.max(0, Number(sp.get('children_6_12') || sp.get('children612')));
+        if (sp.get('children_under_6') || sp.get('childrenUnder6')) state.childrenUnder6 = Math.max(0, Number(sp.get('children_under_6') || sp.get('childrenUnder6')));
+
+        try {
+          const [toursList, pubSettings] = await Promise.all([
+            window.ApiClient.getTours(),
+            window.ApiClient.getPublicSettings()
+          ]);
+          state.tours = Array.isArray(toursList) ? toursList : [];
+          state.settings = (pubSettings && pubSettings.data) || {};
+
+          if (state.settings.cancellation_policy_30plus) {
+            document.getElementById('cancellationTermsList').innerHTML = `
+              <li><strong>30+ days prior:</strong> ${esc(state.settings.cancellation_policy_30plus)}</li>
+              <li><strong>15–29 days prior:</strong> ${esc(state.settings.cancellation_policy_15_29 || '50% refundable / transferable')}</li>
+              <li><strong>Under 15 days:</strong> ${esc(state.settings.cancellation_policy_under15 || 'Non-refundable SDF commitments')}</li>
+              <li><strong>DoI Rule:</strong> Passports must remain valid at least 6 calendar months beyond your departure date.</li>
+            `;
+          }
+
+          const tourSel = document.getElementById('bkTour');
+          tourSel.innerHTML = state.tours.map((t) => `<option value="${esc(t.id)}">${esc(t.title)} (${t.duration_days}D · $${Number(t.price_3star_usd || t.price_usd)} USD)</option>`).join('') +
+            '<option value="__custom__">✦ Custom Bespoke Bhutan Itinerary</option>';
+
+          const qTour = sp.get('tour') || sp.get('slug');
+          if (!state.isCustom && qTour) {
+            const match = state.tours.find((t) => t.id === qTour || t.slug === qTour || t.slug === `tour-${qTour}.html` || t.id === qTour.replace(/^tour-/, ''));
+            state.selectedTourId = match ? match.id : (state.tours[0] ? state.tours[0].id : '__custom__');
+            if (match && !sp.get('nights')) state.nights = Number(match.duration_nights || 6);
+          } else if (state.isCustom) {
+            state.selectedTourId = '__custom__';
+          } else if (state.tours[0]) {
+            state.selectedTourId = state.tours[0].id;
+            if (!sp.get('nights')) state.nights = Number(state.tours[0].duration_nights || 6);
+          }
+          tourSel.value = state.selectedTourId;
+        } catch (err) {
+          showError(err.message || 'Could not load tours from booking server.');
+        }
+
+        // Sync inputs
+        document.getElementById('bkStartDate').value = state.startDate;
+        document.getElementById('bkNights').value = state.nights;
+        document.getElementById('bkCustomRate').value = state.customDailyRate;
+        document.getElementById('bkCustomRateWrap').classList.toggle('hidden', !state.isCustom);
+        document.getElementById('bkAdults').value = state.adults;
+        document.getElementById('bkChild612').value = state.children612;
+        document.getElementById('bkChildU6').value = state.childrenUnder6;
+        document.querySelectorAll('[data-nation]').forEach((b) => b.classList.toggle('selected', b.getAttribute('data-nation') === state.nationalityType));
+        document.querySelectorAll('[data-tier]').forEach((b) => b.classList.toggle('selected', b.getAttribute('data-tier') === state.hotelTier));
+
+        // Events
+        document.getElementById('bkTour').addEventListener('change', (e) => {
+          invalidateIdempotency();
+          if (e.target.value === '__custom__') {
+            state.isCustom = true;
+            state.selectedTourId = '__custom__';
+          } else {
+            state.isCustom = false;
+            state.selectedTourId = e.target.value;
+            const found = state.tours.find((t) => t.id === state.selectedTourId);
+            if (found && found.duration_nights) {
+              state.nights = Number(found.duration_nights);
+              document.getElementById('bkNights').value = state.nights;
+            }
+          }
+          document.getElementById('bkCustomRateWrap').classList.toggle('hidden', !state.isCustom);
+          refreshServerQuote();
+        });
+
+        document.getElementById('bkCustomRate').addEventListener('input', (e) => {
+          invalidateIdempotency();
+          state.customDailyRate = Math.max(100, Number(e.target.value) || 320);
+          refreshServerQuote();
+        });
+        document.getElementById('bkStartDate').addEventListener('change', (e) => { invalidateIdempotency(); state.startDate = e.target.value; refreshServerQuote(); });
+        document.getElementById('bkNights').addEventListener('change', (e) => { invalidateIdempotency(); state.nights = Math.max(1, Math.min(30, Number(e.target.value) || 1)); refreshServerQuote(); });
+        document.getElementById('bkAdults').addEventListener('change', (e) => { invalidateIdempotency(); state.adults = Math.max(0, Number(e.target.value) || 0); refreshServerQuote(); });
+        document.getElementById('bkChild612').addEventListener('change', (e) => { invalidateIdempotency(); state.children612 = Math.max(0, Number(e.target.value) || 0); refreshServerQuote(); });
+        document.getElementById('bkChildU6').addEventListener('change', (e) => { invalidateIdempotency(); state.childrenUnder6 = Math.max(0, Number(e.target.value) || 0); refreshServerQuote(); });
+
+        document.querySelectorAll('[data-nation]').forEach((btn) => {
+          btn.addEventListener('click', () => {
+            invalidateIdempotency();
+            state.nationalityType = btn.getAttribute('data-nation') || 'international';
+            document.querySelectorAll('[data-nation]').forEach((b) => b.classList.toggle('selected', b === btn));
+            refreshServerQuote();
+          });
+        });
+
+        document.querySelectorAll('[data-tier]').forEach((btn) => {
+          btn.addEventListener('click', () => {
+            invalidateIdempotency();
+            state.hotelTier = btn.getAttribute('data-tier') || '3-star';
+            document.querySelectorAll('[data-tier]').forEach((b) => b.classList.toggle('selected', b === btn));
+            refreshServerQuote();
+          });
+        });
+
+        document.getElementById('bkFlightAssist').addEventListener('change', (e) => {
+          state.flightAssistance = Boolean(e.target.checked);
+          document.getElementById('bkFlightSectorWrap').classList.toggle('hidden', !state.flightAssistance);
+        });
+        document.getElementById('bkFlightSector').addEventListener('input', (e) => { state.flightSector = e.target.value; });
+
+        // Lead inputs
+        document.getElementById('leadName').addEventListener('input', (e) => {
+          invalidateIdempotency();
+          state.lead.name = e.target.value;
+          const firstNameInput = document.querySelector('[data-t-field="full_name"][data-idx="0"]');
+          if (firstNameInput && !state.travelers[0]?._edited) {
+            state.travelers[0].full_name = e.target.value;
+            firstNameInput.value = e.target.value;
+          }
+        });
+        document.getElementById('leadEmail').addEventListener('input', (e) => { invalidateIdempotency(); state.lead.email = e.target.value; });
+        document.getElementById('leadPhone').addEventListener('input', (e) => { invalidateIdempotency(); state.lead.phone = e.target.value; });
+        document.getElementById('leadWhatsapp').addEventListener('input', (e) => { state.lead.whatsapp = e.target.value; });
+        document.getElementById('leadCountry').addEventListener('input', (e) => { state.lead.country = e.target.value; });
+        document.getElementById('leadRequests').addEventListener('input', (e) => { state.lead.requests = e.target.value; });
+
+        document.getElementById('travelersRosterContainer').addEventListener('input', (e) => {
+          const el = e.target;
+          const field = el.getAttribute('data-t-field');
+          const idx = Number(el.getAttribute('data-idx'));
+          if (!field || Number.isNaN(idx) || !state.travelers[idx]) return;
+          state.travelers[idx][field] = el.value;
+          if (field === 'full_name') state.travelers[idx]._edited = true;
+          if (field === 'passport_expiry') renderRoster();
+        });
+
+        document.querySelectorAll('[data-plan]').forEach((btn) => {
+          btn.addEventListener('click', () => {
+            invalidateIdempotency();
+            state.paymentPlan = btn.getAttribute('data-plan') || 'deposit_30';
+            document.querySelectorAll('[data-plan]').forEach((b) => b.classList.toggle('selected', b === btn));
+          });
+        });
+
+        document.getElementById('bkTermsAgree').addEventListener('change', (e) => { state.termsAgreed = Boolean(e.target.checked); });
+
+        document.getElementById('btnStep1Next').addEventListener('click', () => goToStep(2));
+        document.getElementById('btnStep2Back').addEventListener('click', () => goToStep(1));
+        document.getElementById('btnStep2Next').addEventListener('click', () => goToStep(3));
+        document.getElementById('btnStep3Back').addEventListener('click', () => goToStep(2));
+        document.getElementById('btnStep3Next').addEventListener('click', () => goToStep(4));
+        document.getElementById('btnStep4Back').addEventListener('click', () => goToStep(3));
+        document.getElementById('btnConfirmBooking').addEventListener('click', handleFinalSubmit);
+
+        document.querySelectorAll('#checkoutStepper .step-pill').forEach((btn) => {
+          btn.addEventListener('click', () => {
+            const target = Number(btn.getAttribute('data-step'));
+            if (target < state.step) goToStep(target);
+          });
+        });
+
+        await refreshServerQuote();
+        if (window.SiteShell) window.SiteShell.init();
+      }
+
+      document.addEventListener('DOMContentLoaded', init);
+    })();
+  </script>
+</body>
+</html>

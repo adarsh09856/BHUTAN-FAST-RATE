@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light only">
+  <title>Reservation Confirmed — Bhutan Fast Rate Tours</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root { --forest:#0B2A22; --gold:#C9A24B; --gold2:#E4C87E; --cream:#FFF8EC; --line:#E7DCC4; --ink:#101613; --muted:#5F6A64; }
+    * { box-sizing:border-box; }
+    body { margin:0; font-family:'Manrope',sans-serif; background:var(--cream); color:var(--ink); min-height:100vh; display:flex; flex-direction:column; }
+    .font-serif { font-family:'Fraunces',serif; }
+    .wrap { max-width:980px; margin:0 auto; padding:0 20px; width:100%; }
+    header { background:var(--forest); color:#fff; padding:18px 0; border-bottom:1px solid rgba(255,255,255,.12); }
+    .card { background:#fff; border:1px solid var(--line); border-radius:24px; padding:28px; box-shadow:0 10px 30px rgba(11,42,34,.06); margin:28px 0; }
+    .ref-pill { display:inline-block; background:var(--gold); color:var(--forest); font-weight:800; font-size:14px; padding:7px 16px; border-radius:999px; letter-spacing:.08em; }
+    .grid-2 { display:grid; grid-template-columns:1fr; gap:18px; margin-top:20px; }
+    @media(min-width:720px){ .grid-2 { grid-template-columns:repeat(2,1fr); } }
+    .sub-card { background:#FFFCF6; border:1px solid var(--line); border-radius:18px; padding:18px; }
+    .btn { display:inline-flex; align-items:center; justify-content:center; gap:8px; padding:12px 22px; border-radius:999px; font-weight:800; font-size:14px; text-decoration:none; cursor:pointer; }
+    .btn-primary { background:var(--forest); color:#fff; }
+    .btn-gold { background:var(--gold); color:var(--forest); }
+    .btn-wa { background:#15803d; color:#fff; }
+    .btn-outline { background:#fff; color:var(--forest); border:1.5px solid var(--line); }
+    .kv { display:flex; justify-content:space-between; gap:10px; padding:7px 0; border-bottom:1px dashed var(--line); font-size:14px; }
+    .kv:last-child { border-bottom:none; }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="wrap" style="display:flex;align-items:center;justify-content:space-between;">
+      <a href="index.html" style="color:#fff;text-decoration:none;font-family:'Fraunces',serif;font-size:20px;font-weight:700;">BHUTAN FAST RATE TOURS</a>
+      <span style="font-size:12px;color:var(--gold2);font-weight:700;">Licensed #<span data-bfr-license>TR/2018/9882</span></span>
+    </div>
+  </header>
+
+  <main class="wrap" style="flex:1;">
+    <div class="card">
+      <div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:12px;">
+        <div>
+          <span class="ref-pill" id="confRefPill">CONFIRMED</span>
+          <h1 class="font-serif" style="font-size:32px;margin:12px 0 4px;color:var(--forest);">Kuzu Zangpo! Your Reservation Is Recorded.</h1>
+          <p id="confSubtitle" style="margin:0;font-size:14px;color:var(--muted);">Next step: enter your Client Portal to upload passport scans and settle your wire deposit.</p>
+        </div>
+      </div>
+
+      <div id="confActions" style="display:flex;flex-wrap:wrap;gap:10px;margin-top:20px;"></div>
+
+      <div class="grid-2">
+        <div class="sub-card">
+          <h3 class="font-serif" style="margin:0 0 10px;font-size:20px;color:var(--forest);">Reservation Summary</h3>
+          <div id="confSummaryBody"><p style="font-size:14px;color:var(--muted);">Loading confirmation summary…</p></div>
+        </div>
+        <div class="sub-card">
+          <h3 class="font-serif" style="margin:0 0 10px;font-size:20px;color:var(--forest);">Bank Wire &amp; Visa Clearance</h3>
+          <div id="confWireBody"><p style="font-size:14px;color:var(--muted);">Sign in to Client Portal for verified bank wire instructions and live receipt uploads.</p></div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer style="background:var(--forest);color:rgba(255,255,255,.7);padding:24px 0;font-size:12px;text-align:center;">
+    © <span id="yr">2026</span> Bhutan Fast Rate Tours · Licensed #<span data-bfr-license>TR/2018/9882</span>
+  </footer>
+
+  <script src="js/api-client.js"></script>
+  <script src="js/site-shell.js"></script>
+  <script>
+    (function () {
+      'use strict';
+      const esc = (v) => (window.SiteShell ? window.SiteShell.escapeHtml(v) : String(v || '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c])));
+      const fmt = (amt, cur) => window.ApiClient.formatCurrency(amt, cur);
+
+      async function init() {
+        document.getElementById('yr').textContent = String(new Date().getFullYear());
+        const sp = new URLSearchParams(window.location.search);
+        const ref = sp.get('ref') || '';
+        document.getElementById('confRefPill').textContent = ref || 'BOOKING CONFIRMATION';
+
+        let cached = null;
+        try {
+          const raw = sessionStorage.getItem('bfr_last_booking');
+          if (raw) {
+            const parsed = JSON.parse(raw);
+            if (!ref || (parsed.booking && parsed.booking.id === ref)) cached = parsed;
+          }
+        } catch (_) {}
+
+        let booking = cached && cached.booking;
+        let quote = cached && cached.quote;
+        let bankWire = null;
+        let waUrl = cached && cached.whatsapp_concierge_url;
+
+        if (window.ApiClient.getToken('client')) {
+          try {
+            const prof = await window.ApiClient.getClientBookingProfile();
+            if (prof && prof.data) {
+              booking = prof.data.booking || booking;
+              bankWire = prof.data.bank_wire || null;
+            }
+          } catch (_) {}
+        }
+
+        if (!booking && ref) {
+          try {
+            const trk = await window.ApiClient.trackBooking(ref);
+            booking = trk && trk.data;
+          } catch (_) {}
+        }
+
+        if (!booking) {
+          document.getElementById('confSummaryBody').innerHTML = `<p style="font-size:14px;">Reference <strong>${esc(ref || 'N/A')}</strong>. Use <a href="track-visa.html">Track Visa Status</a> or sign into the <a href="client/login.html">Client Portal</a>.</p>`;
+          if (window.SiteShell) window.SiteShell.init();
+          return;
+        }
+
+        const cur = (quote && quote.currency) || booking.currency || 'USD';
+        const totalLocal = (quote && quote.total_price_local) || Math.round(Number(booking.total_price_usd || 0) * Number(booking.exchange_rate || 1));
+        const portalHref = `client/login.html?ref=${encodeURIComponent(booking.id)}${booking.lead_email ? `&email=${encodeURIComponent(booking.lead_email)}` : ''}`;
+        const safeWa = /^https:\/\/wa\.me\//i.test(String(waUrl || ''))
+          ? waUrl
+          : window.ApiClient.buildWhatsAppUrl('97517654321', `Kuzu Zangpo! Confirming booking ${booking.id}.`);
+        const invoiceHref = window.ApiClient.getInvoiceViewUrl(booking.id, (cached && cached.client_token) || window.ApiClient.getToken('client'));
+
+        document.getElementById('confActions').innerHTML = `
+          <a href="${esc(portalHref)}" class="btn btn-gold">Enter Client Portal (Upload Passports &amp; Receipt) →</a>
+          <a href="${esc(invoiceHref)}" target="_blank" rel="noopener noreferrer" class="btn btn-primary">Print Official Invoice</a>
+          <a href="${esc(safeWa)}" target="_blank" rel="noopener noreferrer" class="btn btn-wa">Open WhatsApp Concierge</a>
+          <a href="tours.html" class="btn btn-outline">Browse More Tours</a>
+        `;
+
+        document.getElementById('confSummaryBody').innerHTML = `
+          <div class="kv"><span>Booking Reference</span><strong>${esc(booking.id)}</strong></div>
+          <div class="kv"><span>Expedition</span><strong>${esc(booking.tour_title || booking.tour_id || 'Bhutan Expedition')}</strong></div>
+          <div class="kv"><span>Travel Dates</span><strong>${esc(booking.travel_date_start || '—')} → ${esc(booking.travel_date_end || '—')}</strong></div>
+          <div class="kv"><span>Party Size</span><strong>${esc(booking.total_travelers || ((Number(booking.adults_count)||0) + (Number(booking.children_6_12)||0) + (Number(booking.children_under_6)||0)))} Guests</strong></div>
+          <div class="kv"><span>Package Total (${esc(cur)})</span><strong>${esc(fmt(totalLocal, cur))}</strong></div>
+          <div class="kv"><span>Visa / Permit Status</span><strong>${esc(String(booking.visa_status || 'pending_docs').replace(/_/g, ' ').toUpperCase())}</strong></div>
+        `;
+
+        if (bankWire) {
+          document.getElementById('confWireBody').innerHTML = `
+            <div class="kv"><span>Bank Name</span><strong>${esc(bankWire.bank_name || 'Bank of Bhutan')}</strong></div>
+            <div class="kv"><span>Beneficiary</span><strong>${esc(bankWire.bank_account_name || 'Bhutan Fast Rate Tours')}</strong></div>
+            <div class="kv"><span>Account No.</span><strong>${esc(bankWire.bank_account || '—')}</strong></div>
+            <div class="kv"><span>SWIFT Code</span><strong>${esc(bankWire.bank_swift || '—')}</strong></div>
+            <p style="font-size:12px;color:var(--muted);margin:10px 0 0;">${esc(bankWire.bank_routing_info || 'Include your Booking Reference in the wire memo, then upload your wire receipt inside Client Portal.')}</p>
+          `;
+        }
+
+        if (window.SiteShell) window.SiteShell.init();
+      }
+
+      document.addEventListener('DOMContentLoaded', init);
+    })();
+  </script>
+</body>
+</html>

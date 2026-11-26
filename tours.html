@@ -41,7 +41,7 @@
   <div class="bg-[#0B2A22] text-white text-[12px] sm:text-[13px] border-b border-[#123A30]">
     <div class="max-w-[1360px] mx-auto px-4 sm:px-6 py-2.5 flex flex-wrap gap-x-6 gap-y-1 justify-between items-center">
       <span class="font-semibold flex items-center gap-1.5">
-        <span class="text-[#E4C87E]">✓</span> SDF fee included · Licensed Bhutan operator #BT-8842
+        <span class="text-[#E4C87E]">✓</span> SDF fee included · Licensed Bhutan operator #<span data-bfr-license>TR/2018/9882</span>
       </span>
       <span class="hidden md:flex items-center gap-4 text-white/80">
         <span>USD & INR Accepted</span>
@@ -91,8 +91,8 @@
           <svg class="w-4 h-4 text-[#C9A24B]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>
           SDF Calculator
         </a>
-        <a href="contact.html" class="inline-flex items-center gap-1.5 text-xs sm:text-sm font-bold bg-[#C9A24B] hover:bg-[#E4C87E] text-[#0B2A22] px-4 sm:px-5 py-2.5 rounded-full shadow-sm transition transform active:scale-95">
-          Build My Route
+        <a href="book.html" class="inline-flex items-center gap-1.5 text-xs sm:text-sm font-bold bg-[#C9A24B] hover:bg-[#E4C87E] text-[#0B2A22] px-4 sm:px-5 py-2.5 rounded-full shadow-sm transition transform active:scale-95">
+          Book Now →
         </a>
       </div>
     </div>
@@ -222,8 +222,8 @@
           <span class="text-xs text-[#66706A]">Total package cost</span>
           <span class="block font-serif text-xl font-bold text-[#0B2A22]" id="modalTourPrice">$1,899 / person</span>
         </div>
-        <a id="modalBookLink" href="contact.html" class="px-6 py-2.5 rounded-full font-bold bg-[#C9A24B] hover:bg-[#E4C87E] text-[#0B2A22] text-sm shadow-sm transition">
-          Book This Tour
+        <a id="modalBookLink" href="book.html" class="px-6 py-2.5 rounded-full font-bold bg-[#C9A24B] hover:bg-[#E4C87E] text-[#0B2A22] text-sm shadow-sm transition">
+          Book This Tour →
         </a>
       </div>
     </div>
@@ -246,7 +246,7 @@
             The Kingdom of Bhutan’s trusted luxury & bespoke tour operator. Full SDF management, direct Drukair airline bookings, and licensed local cultural guides.
           </p>
           <div class="mt-6 flex items-center gap-3 text-xs text-[#E4C87E] font-semibold bg-white/5 border border-white/10 px-4 py-2.5 rounded-2xl w-fit">
-            <span>🇧🇹 Licensed by Department of Tourism · License #BT-8842</span>
+            <span>🇧🇹 Licensed by Department of Tourism · License #<span data-bfr-license>TR/2018/9882</span></span>
           </div>
         </div>
 
@@ -300,11 +300,25 @@
 
   <!-- Page Interactivity Scripts -->
   <script src="js/api-client.js"></script>
+  <script src="js/site-shell.js"></script>
   <script>
+    const esc = (v) => (window.SiteShell ? window.SiteShell.escapeHtml(v) : String(v || '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c])));
     let allTours = [];
     let currentCategory = 'All';
 
-    // Itinerary Modal controller
+    function safeCoverImg(raw) {
+      const s = String(raw || '').trim();
+      if (/^(https?:\/\/|assets\/|\/assets\/)/i.test(s) && !s.startsWith('//')) return s;
+      return 'assets/images/tigers-nest.webp';
+    }
+
+    function resolveTourDetailUrl(tour) {
+      const s = String((tour && (tour.slug || tour.id)) || '').trim();
+      if (!s) return 'tours.html';
+      if (/\.html$/i.test(s)) return s;
+      return `tour-${encodeURIComponent(s)}.html`;
+    }
+
     function openItineraryModal(tourId) {
       const tour = allTours.find(t => t.id === tourId || t.slug === tourId);
       if (!tour) return;
@@ -312,23 +326,18 @@
       document.getElementById('modalTourCat').innerText = (tour.category || 'Cultural Journey') + ' · ' + tour.duration_days + ' Days / ' + tour.duration_nights + ' Nights';
       document.getElementById('modalTourTitle').innerText = tour.title;
       document.getElementById('modalTourRoute').innerText = 'Route: ' + (tour.valleys || 'Paro, Thimphu, Punakha');
-      document.getElementById('modalTourPrice').innerText = '$' + Number(tour.price_usd).toLocaleString() + ' / person';
-      document.getElementById('modalBookLink').href = 'contact.html?tour=' + encodeURIComponent(tour.title);
+      document.getElementById('modalTourPrice').innerText = '$' + Number(tour.price_3star_usd || tour.price_usd || 0).toLocaleString('en-US') + ' / person';
+      document.getElementById('modalBookLink').href = 'book.html?tour=' + encodeURIComponent(tour.id || tour.slug);
 
       const timelineEl = document.getElementById('modalTimeline');
-      let days = [];
-      if (Array.isArray(tour.itinerary) && tour.itinerary.length > 0) {
-        days = tour.itinerary;
-      } else {
-        // Fallback realistic itinerary generated for this duration
+      let days = Array.isArray(tour.itinerary) && tour.itinerary.length > 0 ? tour.itinerary : [];
+      if (days.length === 0) {
         const total = tour.duration_days || 7;
         days = [
-          { day: 'Day 1', title: 'Arrival in Paro & Scenic Valley Transfer', desc: 'Welcome by your private licensed guide, traditional Khadar scarf ceremony, and scenic drive along the Pa Chhu river.' },
-          { day: 'Day 2', title: 'Cultural Landmarks & Monastic Heritage', desc: 'Visit iconic fortress monasteries, ancient dzongs, and witness monks in meditation.' },
-          { day: 'Day 3', title: 'High Himalayan Mountain Pass (Dochula)', desc: 'Panoramic vistas across 108 memorial stupas with spectacular Himalayan snow peak views.' },
-          { day: 'Day 4', title: 'Valley Excursions & Local Farmhouse Experience', desc: 'Authentic Bhutanese farmhouse hospitality, butter tea, and organic local cuisine.' },
-          { day: 'Day ' + (total - 1), title: 'Tiger’s Nest Pilgrimage (Paro Taktsang)', desc: 'Ascend to the breathtaking sacred cliffside monastery hanging 900m above the valley floor.' },
-          { day: 'Day ' + total, title: 'Paro International Airport Farewell', desc: 'Morning breakfast and escorted transfer for your scenic Drukair flight departure.' }
+          { day: 'Day 1', title: 'Arrival in Paro & Valley Transfer', desc: 'Welcome by your licensed guide and scenic transfer to Thimphu.' },
+          { day: 'Day 2', title: 'Cultural Landmarks & Monasteries', desc: 'Visit fortress dzongs and living heritage temples.' },
+          { day: 'Day ' + Math.max(3, total - 1), title: 'Tiger’s Nest (Paro Taktsang)', desc: 'Guided hike to the iconic cliffside monastery.' },
+          { day: 'Day ' + total, title: 'Paro International Departure', desc: 'Morning transfer to Paro Airport.' }
         ];
       }
 
@@ -339,10 +348,10 @@
           </div>
           <div>
             <div class="flex items-center gap-2">
-              <span class="text-xs font-extrabold text-[#C9A24B]">${d.day || ('Day ' + (i+1))}</span>
-              <h4 class="font-serif font-bold text-base text-[#0B2A22]">${d.title || ''}</h4>
+              <span class="text-xs font-extrabold text-[#C9A24B]">${esc(d.day || ('Day ' + (i + 1)))}</span>
+              <h4 class="font-serif font-bold text-base text-[#0B2A22]">${esc(d.title || '')}</h4>
             </div>
-            <p class="text-xs sm:text-sm text-[#66706A] mt-1 leading-relaxed">${d.desc || d.description || ''}</p>
+            <p class="text-xs sm:text-sm text-[#66706A] mt-1 leading-relaxed">${esc(typeof d === 'string' ? d : (d.desc || d.description || ''))}</p>
           </div>
         </div>
       `).join('');
@@ -354,7 +363,6 @@
       document.getElementById('itineraryModal').classList.add('hidden');
     }
 
-    // Dynamic Tour Card Renderer
     function renderTourCards(tours) {
       const grid = document.getElementById('tourGrid');
       if (!tours || tours.length === 0) {
@@ -363,7 +371,7 @@
             <div class="text-4xl mb-3">🏔️</div>
             <h3 class="font-serif text-xl font-bold text-[#0B2A22]">No Matching Journeys Found</h3>
             <p class="text-xs sm:text-sm text-zinc-500 mt-1 max-w-md mx-auto">We could not find any active tours matching your search criteria. Try selecting another category or resetting filters.</p>
-            <button onclick="resetFilters()" class="mt-4 px-5 py-2.5 rounded-full bg-[#0B2A22] text-white text-xs font-bold hover:bg-[#123A30] transition">
+            <button type="button" data-action="reset-filters" class="mt-4 px-5 py-2.5 rounded-full bg-[#0B2A22] text-white text-xs font-bold hover:bg-[#123A30] transition">
               Reset All Filters
             </button>
           </div>
@@ -372,67 +380,64 @@
       }
 
       grid.innerHTML = tours.map(tour => {
-        const coverImg = tour.cover_image || 'assets/images/tigers-nest.webp';
-        const rating = (4.8 + ((tour.id.charCodeAt(0) % 3) / 10)).toFixed(1);
-        const tourSlug = tour.slug || ('tour-' + tour.id + '.html');
-        const highlights = Array.isArray(tour.inclusions) && tour.inclusions.length > 0 
+        const coverImg = safeCoverImg(tour.cover_image);
+        const rating = Number(tour.rating || 4.9).toFixed(1);
+        const tourUrl = resolveTourDetailUrl(tour);
+        const bookUrl = 'book.html?tour=' + encodeURIComponent(tour.id || tour.slug);
+        const price = Number(tour.price_3star_usd || tour.price_usd || 0);
+        const highlights = Array.isArray(tour.inclusions) && tour.inclusions.length > 0
           ? tour.inclusions.slice(0, 3)
-          : ['Licensed English Guide Included', 'Daily SDF Paid & Visa Handled', 'Private Transport & 3-Star Hotels'];
+          : ['Licensed English Guide Included', 'Daily SDF Paid & Visa Handled', 'Private Transport & 3-Star+ Hotels'];
 
         return `
-          <div class="tour-card bg-white rounded-3xl overflow-hidden border border-[#E7DCC4] shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between"
-               data-cat="${tour.category || 'Classic'}"
-               data-days="${tour.duration_days}"
-               data-price="${tour.price_usd}"
-               data-name="${tour.title}">
+          <div class="tour-card bg-white rounded-3xl overflow-hidden border border-[#E7DCC4] shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between">
             <div>
-              <div class="relative h-[240px] overflow-hidden group">
-                <img src="${coverImg}" alt="${tour.title}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" onerror="this.src='assets/images/tigers-nest.webp'">
+              <a href="${esc(tourUrl)}" class="block relative h-[240px] overflow-hidden group">
+                <img src="${esc(coverImg)}" alt="${esc(tour.title)}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
                 <span class="absolute top-4 left-4 bg-[#0B2A22]/90 backdrop-blur-md text-[#E4C87E] text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">
-                  ${tour.category || 'Tour'} · ${tour.duration_days} Days
+                  ${esc(tour.category || 'Tour')} · ${Number(tour.duration_days) || 6} Days
                 </span>
                 <span class="absolute top-4 right-4 bg-white/95 text-[#0B2A22] text-xs font-extrabold px-2.5 py-1 rounded-full shadow-sm">
-                  ★ ${rating}
+                  ★ ${esc(rating)}
                 </span>
                 <div class="absolute bottom-3 left-3 right-3 bg-gradient-to-t from-black/80 to-transparent p-2 rounded-xl text-white text-xs">
-                  <span class="font-bold">Route:</span> ${tour.valleys || 'Paro • Thimphu • Punakha'}
+                  <span class="font-bold">Route:</span> ${esc(tour.valleys || 'Paro • Thimphu • Punakha')}
                 </div>
-              </div>
+              </a>
               <div class="p-6">
                 <div class="flex items-baseline justify-between mb-2">
                   <span class="text-xs font-extrabold text-[#C9A24B] uppercase tracking-wider">SDF Included</span>
-                  <span class="text-xs text-[#66706A] font-semibold">${tour.difficulty || 'Easy'}</span>
+                  <span class="text-xs text-[#66706A] font-semibold">${esc(tour.difficulty || 'Easy')}</span>
                 </div>
                 <h3 class="font-serif text-2xl font-bold text-[#0B2A22] leading-snug">
-                  <a href="${tourSlug}" class="hover:text-[#C9A24B] transition">${tour.title}</a>
+                  <a href="${esc(tourUrl)}" class="hover:text-[#C9A24B] transition">${esc(tour.title)}</a>
                 </h3>
                 <p class="mt-2 text-sm text-[#66706A] line-clamp-2">
-                  ${tour.highlight_text || tour.subtitle || 'Experience the authentic magic of Bhutan with hand-selected boutique stays and private guide.'}
+                  ${esc(tour.highlight_text || tour.subtitle || 'Experience the authentic magic of Bhutan with hand-selected stays and private guide.')}
                 </p>
                 <ul class="mt-4 space-y-1.5 text-xs text-[#101613] font-medium border-t border-[#E7DCC4] pt-3">
                   ${highlights.map(h => `
                     <li class="flex items-center gap-2">
-                      <span class="text-[#C9A24B] font-bold">✓</span> ${h}
+                      <span class="text-[#C9A24B] font-bold">✓</span> ${esc(h)}
                     </li>
                   `).join('')}
                 </ul>
               </div>
             </div>
-            <div class="p-6 pt-0 border-t border-[#E7DCC4]/60 mt-4 flex items-center justify-between">
+            <div class="p-6 pt-0 border-t border-[#E7DCC4]/60 mt-4 flex items-center justify-between gap-2">
               <div>
-                <span class="block text-xs text-[#66706A] font-medium">All-inclusive from</span>
-                <span class="font-serif text-2xl font-bold text-[#0B2A22]">$${Number(tour.price_usd).toLocaleString()}</span>
-                <span class="text-xs text-[#66706A]">/ person</span>
+                <span class="block text-xs text-[#66706A] font-medium">From (3★)</span>
+                <span class="font-serif text-2xl font-bold text-[#0B2A22]">$${price.toLocaleString('en-US')}</span>
               </div>
               <div class="flex items-center gap-2">
-                <button onclick="openItineraryModal('${tour.id}')" class="px-3.5 py-2 rounded-full border border-[#0B2A22] text-[#0B2A22] hover:bg-[#F7EDD8] text-xs font-bold transition">
+                <button type="button" data-action="modal" data-tour-id="${esc(tour.id)}" class="px-3 py-2 rounded-full border border-[#0B2A22] text-[#0B2A22] hover:bg-[#F7EDD8] text-xs font-bold transition">
                   Itinerary
                 </button>
-                <a href="${tourSlug}" class="px-3.5 py-2 rounded-full bg-[#F7EDD8] hover:bg-[#EADFC8] text-[#0B2A22] text-xs font-bold transition">
+                <a href="${esc(tourUrl)}" class="px-3 py-2 rounded-full bg-[#F7EDD8] hover:bg-[#EADFC8] text-[#0B2A22] text-xs font-bold transition">
                   Details
                 </a>
-                <a href="contact.html?tour=${encodeURIComponent(tour.title)}" class="px-4 py-2 rounded-full bg-[#0B2A22] hover:bg-[#123A30] text-white text-xs font-bold transition shadow-sm">
-                  Inquire
+                <a href="${esc(bookUrl)}" class="px-4 py-2 rounded-full bg-[#0B2A22] hover:bg-[#123A30] text-white text-xs font-bold transition shadow-sm">
+                  Book Now
                 </a>
               </div>
             </div>
@@ -441,15 +446,12 @@
       }).join('');
     }
 
-    // Filter and Sort Engine
     function filterAndSort() {
       const search = (document.getElementById('searchInput')?.value || '').toLowerCase().trim();
       const durationVal = document.getElementById('durationSelect')?.value || 'all';
       const sortVal = document.getElementById('sortSelect')?.value || 'popular';
-
       let filtered = [...allTours];
 
-      // Category filter
       if (currentCategory && currentCategory !== 'All') {
         const catLower = currentCategory.toLowerCase();
         filtered = filtered.filter(t => {
@@ -464,34 +466,19 @@
         });
       }
 
-      // Search filter
       if (search) {
-        filtered = filtered.filter(t => {
-          const title = (t.title || '').toLowerCase();
-          const valleys = (t.valleys || '').toLowerCase();
-          const subtitle = (t.subtitle || '').toLowerCase();
-          const highlight = (t.highlight_text || '').toLowerCase();
-          return title.includes(search) || valleys.includes(search) || subtitle.includes(search) || highlight.includes(search);
-        });
+        filtered = filtered.filter(t =>
+          `${t.title || ''} ${t.valleys || ''} ${t.subtitle || ''} ${t.highlight_text || ''}`.toLowerCase().includes(search)
+        );
       }
 
-      // Duration filter
-      if (durationVal === 'short') {
-        filtered = filtered.filter(t => t.duration_days >= 3 && t.duration_days <= 6);
-      } else if (durationVal === 'medium') {
-        filtered = filtered.filter(t => t.duration_days >= 7 && t.duration_days <= 9);
-      } else if (durationVal === 'long') {
-        filtered = filtered.filter(t => t.duration_days >= 10);
-      }
+      if (durationVal === 'short') filtered = filtered.filter(t => t.duration_days >= 3 && t.duration_days <= 6);
+      else if (durationVal === 'medium') filtered = filtered.filter(t => t.duration_days >= 7 && t.duration_days <= 9);
+      else if (durationVal === 'long') filtered = filtered.filter(t => t.duration_days >= 10);
 
-      // Sorting
-      if (sortVal === 'price-low') {
-        filtered.sort((a, b) => a.price_usd - b.price_usd);
-      } else if (sortVal === 'price-high') {
-        filtered.sort((a, b) => b.price_usd - a.price_usd);
-      } else if (sortVal === 'days') {
-        filtered.sort((a, b) => b.duration_days - a.duration_days);
-      }
+      if (sortVal === 'price-low') filtered.sort((a, b) => (a.price_3star_usd || a.price_usd) - (b.price_3star_usd || b.price_usd));
+      else if (sortVal === 'price-high') filtered.sort((a, b) => (b.price_3star_usd || b.price_usd) - (a.price_3star_usd || a.price_usd));
+      else if (sortVal === 'days') filtered.sort((a, b) => b.duration_days - a.duration_days);
 
       renderTourCards(filtered);
     }
@@ -501,9 +488,7 @@
       if (document.getElementById('searchInput')) document.getElementById('searchInput').value = '';
       if (document.getElementById('durationSelect')) document.getElementById('durationSelect').value = 'all';
       if (document.getElementById('sortSelect')) document.getElementById('sortSelect').value = 'popular';
-
-      const pills = document.querySelectorAll('.cat-pill');
-      pills.forEach(p => {
+      document.querySelectorAll('.cat-pill').forEach(p => {
         p.classList.remove('bg-[#C9A24B]', 'text-[#0B2A22]');
         p.classList.add('bg-white/10', 'text-white');
       });
@@ -512,29 +497,20 @@
         allPill.classList.remove('bg-white/10', 'text-white');
         allPill.classList.add('bg-[#C9A24B]', 'text-[#0B2A22]');
       }
-
       filterAndSort();
     }
 
-    // Initialize Page
     async function initToursPage() {
+      if (window.SiteShell) window.SiteShell.init();
       try {
         allTours = await ApiClient.getTours();
-        
-        // Update "All Tours (X)" pill
         const allPill = document.querySelector('.cat-pill[data-cat="All"]');
-        if (allPill) {
-          allPill.innerText = 'All Tours (' + allTours.length + ')';
-        }
+        if (allPill) allPill.innerText = 'All Tours (' + allTours.length + ')';
 
-        // Setup filter pills
         const pills = document.querySelectorAll('.cat-pill');
         pills.forEach(pill => {
           pill.addEventListener('click', () => {
-            pills.forEach(p => {
-              p.classList.remove('bg-[#C9A24B]', 'text-[#0B2A22]');
-              p.classList.add('bg-white/10', 'text-white');
-            });
+            pills.forEach(p => { p.classList.remove('bg-[#C9A24B]', 'text-[#0B2A22]'); p.classList.add('bg-white/10', 'text-white'); });
             pill.classList.remove('bg-white/10', 'text-white');
             pill.classList.add('bg-[#C9A24B]', 'text-[#0B2A22]');
             currentCategory = pill.getAttribute('data-cat') || 'All';
@@ -542,12 +518,18 @@
           });
         });
 
-        // Setup inputs
-        document.getElementById('searchInput')?.addEventListener('input', () => filterAndSort());
-        document.getElementById('durationSelect')?.addEventListener('change', () => filterAndSort());
-        document.getElementById('sortSelect')?.addEventListener('change', () => filterAndSort());
+        document.getElementById('tourGrid')?.addEventListener('click', (e) => {
+          const btn = e.target.closest('button[data-action]');
+          if (!btn) return;
+          const act = btn.getAttribute('data-action');
+          if (act === 'modal') openItineraryModal(btn.getAttribute('data-tour-id'));
+          if (act === 'reset-filters') resetFilters();
+        });
 
-        // Check URL parameters for cat filter
+        document.getElementById('searchInput')?.addEventListener('input', filterAndSort);
+        document.getElementById('durationSelect')?.addEventListener('change', filterAndSort);
+        document.getElementById('sortSelect')?.addEventListener('change', filterAndSort);
+
         const urlParams = new URLSearchParams(window.location.search);
         const catParam = urlParams.get('cat');
         if (catParam) {
@@ -558,19 +540,15 @@
           filterAndSort();
         }
       } catch (err) {
-        console.error('Failed to load tours from API:', err);
-        renderTourCards([]);
+        const grid = document.getElementById('tourGrid');
+        if (grid) grid.innerHTML = `<div class="col-span-full py-12 text-center bg-white rounded-3xl border border-red-200 p-8 text-red-700 font-bold">Unable to load live tours: ${esc(err.message)}</div>`;
       }
     }
 
-    // Mobile Drawer Toggle
-    const mobileMenuBtn = document.getElementById('mobileMenuBtn');
-    const closeDrawerBtn = document.getElementById('closeDrawerBtn');
-    const mobileDrawer = document.getElementById('mobileDrawer');
-    mobileMenuBtn?.addEventListener('click', () => mobileDrawer.classList.remove('hidden'));
-    closeDrawerBtn?.addEventListener('click', () => mobileDrawer.classList.add('hidden'));
-    mobileDrawer?.addEventListener('click', (e) => {
-      if (e.target === mobileDrawer) mobileDrawer.classList.add('hidden');
+    document.getElementById('mobileMenuBtn')?.addEventListener('click', () => document.getElementById('mobileDrawer')?.classList.remove('hidden'));
+    document.getElementById('closeDrawerBtn')?.addEventListener('click', () => document.getElementById('mobileDrawer')?.classList.add('hidden'));
+    document.getElementById('mobileDrawer')?.addEventListener('click', (e) => {
+      if (e.target.id === 'mobileDrawer') document.getElementById('mobileDrawer').classList.add('hidden');
     });
 
     document.addEventListener('DOMContentLoaded', initToursPage);

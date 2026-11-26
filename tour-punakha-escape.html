@@ -36,8 +36,8 @@
           <a href="contact.html" class="hover:text-[#E05A47] transition-colors py-2">Contact & Visa</a>
         </nav>
         <div class="flex items-center gap-3">
-          <a href="contact.html" class="hidden sm:inline-flex items-center justify-center px-4 py-2 rounded-lg text-xs font-bold uppercase tracking-wider text-white bg-[#E05A47] hover:bg-[#c94937] shadow transition-all">
-            Inquire / Get Quote
+          <a href="book.html?tour=punakha-escape" class="hidden sm:inline-flex items-center justify-center px-4 py-2 rounded-lg text-xs font-bold uppercase tracking-wider text-white bg-[#E05A47] hover:bg-[#c94937] shadow transition-all">
+            Book This Tour
           </a>
           <button id="tourMobileBtn" class="lg:hidden p-2 rounded-lg text-white hover:bg-white/10 border border-white/20">
             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"/></svg>
@@ -69,11 +69,11 @@
       <div class="flex flex-wrap items-center justify-between gap-4">
         <div>
           <span class="px-2.5 py-0.5 rounded bg-[#E05A47] text-white font-black text-[10px] uppercase">5 Days / 4 Nights</span>
-          <h1 class="text-3xl sm:text-4xl font-extrabold mt-3 leading-tight">Punakha Valley Subtropical Luxury Escape (5 Days / 4 Nights)</h1>
+          <h1 class="text-3xl sm:text-4xl font-extrabold mt-3 leading-tight" data-tour-title>Punakha Valley Subtropical Luxury Escape (5 Days / 4 Nights)</h1>
           <p class="text-xs text-zinc-300 mt-2">Route: <strong>Paro • Thimphu • Punakha</strong></p>
         </div>
         <div class="text-right">
-          <div class="text-3xl font-extrabold text-[#E05A47]">$1,520 / person</div>
+          <div class="text-3xl font-extrabold text-[#E05A47]" data-tour-price>$1,520 / person</div>
           <p class="text-[11px] text-zinc-400">Includes SDF Tax, Private Guide &amp; Transport</p>
         </div>
       </div>
@@ -131,25 +131,7 @@
       </div>
 
       <div class="lg:col-span-4">
-        <div class="sticky top-28 bg-white p-6 rounded-2xl border border-zinc-200 shadow-sm space-y-5">
-          <span class="text-xs font-bold uppercase text-[#E05A47]">FAST-TRACK BOOKING</span>
-          <h3 class="text-xl font-bold text-[#14231E]">Book This Tour Package</h3>
-          <p class="text-xs text-zinc-600 leading-relaxed">
-            Reserve your dates with 0% risk. We issue official Bhutan tourist visas within 24 to 48 hours directly with the Department of Tourism.
-          </p>
-          <a href="contact.html?tour=Punakha%20Valley%20Subtropical%20Luxury%20Escape%20(5%20Days%20%2F%204%20Nights)" class="block text-center py-3.5 rounded-lg bg-[#E05A47] text-white font-extrabold text-xs uppercase tracking-wider hover:bg-[#c94937] transition-colors shadow">
-            Inquire / Get Fast Quote
-          </a>
-          <a href="https://wa.me/97517654321" target="_blank" class="block text-center py-3 rounded-lg border border-zinc-300 text-zinc-700 font-bold text-xs uppercase tracking-wider hover:bg-zinc-50 transition-colors">
-            WhatsApp Live Specialist
-          </a>
-          <hr class="border-zinc-200">
-          <div class="text-xs space-y-1.5 text-zinc-500">
-            <p><strong>Operator:</strong> Bhutan Fast Rate Tours</p>
-            <p><strong>License:</strong> Royal Gov License #TR/2018/9882</p>
-            <p><strong>Cancellation:</strong> 100% Refundable up to 30 days</p>
-          </div>
-        </div>
+        <div id="tourBookingWidget" class="sticky top-28"></div>
       </div>
     </div>
   </main>
@@ -164,7 +146,7 @@
             <div class="font-extrabold text-sm uppercase">BHUTAN FAST RATE TOURS</div>
           </div>
           <p class="mt-4 text-xs text-zinc-400 leading-relaxed">
-            Registered Tour Operator under Department of Tourism, Royal Government of Bhutan. License #TR/2018/9882. Guaranteed fast-track SDF visa processing and bespoke private itineraries.
+            Registered Tour Operator under Department of Tourism, Royal Government of Bhutan. License #<span data-bfr-license>TR/2018/9882</span>. Guaranteed fast-track SDF visa processing and bespoke private itineraries.
           </p>
         </div>
         <div>
@@ -191,8 +173,8 @@
           <p class="text-xs text-zinc-400 leading-relaxed">
             Norzin Lam, Opposite Clock Tower Square<br>
             Thimphu, Kingdom of Bhutan<br><br>
-            <strong>Hotline (WhatsApp):</strong> +975 17 654 321<br>
-            <strong>Email:</strong> reservations@bhutanfastratetours.bt
+            <strong>Hotline (WhatsApp):</strong> <span data-bfr-phone>+975 17 654 321</span><br>
+            <strong>Email:</strong> <span data-bfr-email>reservations@bhutanfastratetours.bt</span>
           </p>
         </div>
       </div>
@@ -209,5 +191,10 @@
     btn.addEventListener('click', () => menu.classList.toggle('hidden'));
   }
 </script>
+  <script src="js/api-client.js"></script>
+  <script src="js/site-shell.js"></script>
+  <script src="js/booking-widget.js"></script>
+  <script src="js/tour-detail.js"></script>
+  <script>document.addEventListener('DOMContentLoaded', function () { if (window.SiteShell) window.SiteShell.init(); });</script>
 </body>
 </html>
