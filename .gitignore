@@ -2,3 +2,6 @@ node_modules/
 .env
 *.log
 database/*.db
+.worktrees/
+.superpowers/
+uploads/
