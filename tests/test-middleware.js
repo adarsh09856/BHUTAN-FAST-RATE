@@ -74,8 +74,9 @@ async function runTests() {
     const tamperedPayload = Buffer.from(JSON.stringify({ id: 7, role: 'super_admin', exp: decoded.exp })).toString('base64url');
     assert.strictEqual(verifyToken(`${parts[0]}.${tamperedPayload}.${parts[2]}`), null, 'Tampered payload must fail signature');
 
-    // Tampered signature rejected
-    const flippedSig = parts[2].slice(0, -1) + (parts[2].slice(-1) === 'A' ? 'B' : 'A');
+    // Tampered signature rejected (flip index 5 to avoid trailing 2 padding bits of 43-char base64url HMAC-SHA256)
+    const flipChar = parts[2][5] === 'A' ? 'B' : 'A';
+    const flippedSig = parts[2].slice(0, 5) + flipChar + parts[2].slice(6);
     assert.strictEqual(verifyToken(`${parts[0]}.${parts[1]}.${flippedSig}`), null, 'Tampered signature must fail');
     assert.strictEqual(verifyToken(''), null);
     assert.strictEqual(verifyToken(null), null);
