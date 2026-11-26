@@ -6,8 +6,8 @@
   "scripts": {
     "start": "node server.js",
     "seed": "node database/seed.js",
-    "test": "node scratch/test_api.js",
-    "test:crud": "node scratch/test_real_crud.js"
+    "test": "node tests/test-db-parity.js",
+    "test:crud": "node test-crud.js"
   },
   "keywords": [
     "bhutan",
@@ -24,6 +24,8 @@
     "cors": "^2.8.5",
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
+    "multer": "^2.5.0",
+    "nodemailer": "^10.6.1",
     "pg": "^8.13.1"
   }
 }

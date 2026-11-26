@@ -1,5 +1,10 @@
-const fs = require('fs');
-const path = require('path');
+const crypto = require('crypto');
+
+function hashPasswordScrypt(plain) {
+  const saltHex = crypto.randomBytes(16).toString('hex');
+  const derivedHex = crypto.scryptSync(String(plain), saltHex, 64).toString('hex');
+  return `scrypt$${saltHex}$${derivedHex}`;
+}
 
 function getSeedData() {
   const users = [
@@ -8,40 +13,107 @@ function getSeedData() {
       full_name: 'Sonam Dorji (Managing Director)',
       email: 'admin@bhutanfastratetours.bt',
       phone: '+975 17 654 321',
-      password_hash: 'admin123', // In production hashed with bcrypt
-      role: 'super_admin'
+      password_hash: hashPasswordScrypt('admin123'),
+      role: 'super_admin',
+      license_no: null,
+      languages: 'English, Dzongkha',
+      specialty: 'Managing Director & DoI Compliance'
     },
     {
       uuid: 'usr-concierge-001',
       full_name: 'Dechen Wangmo (Lead Concierge)',
       email: 'dechen@bhutanfastratetours.bt',
       phone: '+975 17 888 999',
-      password_hash: 'concierge123',
-      role: 'concierge'
+      password_hash: hashPasswordScrypt('concierge123'),
+      role: 'concierge',
+      license_no: null,
+      languages: 'English, Dzongkha, Hindi',
+      specialty: 'Bespoke Itineraries & Visa Operations'
     },
     {
       uuid: 'usr-guide-001',
-      full_name: 'Kinley Tshering (Senior Certified Cultural & Trekking Guide)',
+      full_name: 'Kinley Tshering',
       email: 'kinley@bhutanfastratetours.bt',
       phone: '+975 77 123 456',
-      password_hash: 'guide123',
-      role: 'guide'
+      password_hash: hashPasswordScrypt('guide123'),
+      role: 'guide',
+      license_no: 'GD/2012/441',
+      languages: 'English, Japanese, Dzongkha',
+      specialty: 'Senior Cultural & Alpine Trekking Guide'
+    },
+    {
+      uuid: 'usr-guide-002',
+      full_name: 'Dorji Penjor',
+      email: 'dorji@bhutanfastratetours.bt',
+      phone: '+975 17 999 111',
+      password_hash: hashPasswordScrypt('guide123'),
+      role: 'guide',
+      license_no: 'GD/2015/892',
+      languages: 'English, French, Dzongkha',
+      specialty: 'High-Altitude Trekking & Wilderness Specialist'
+    },
+    {
+      uuid: 'usr-finance-001',
+      full_name: 'Pema Lhamo (Finance Controller)',
+      email: 'finance@bhutanfastratetours.bt',
+      phone: '+975 17 772 880',
+      password_hash: hashPasswordScrypt('finance123'),
+      role: 'finance',
+      license_no: null,
+      languages: 'English, Dzongkha',
+      specialty: 'RMA SDF Remittance & Wire Reconciliation'
     }
   ];
 
   const settings = [
+    // General
     { key: 'company_name', value: 'Bhutan Fast Rate Tours', category: 'general', description: 'Official Business Name' },
     { key: 'company_license', value: 'TR/2018/9882', category: 'general', description: 'Department of Tourism License' },
     { key: 'company_email', value: 'reservations@bhutanfastratetours.bt', category: 'general', description: 'Central Booking Desk' },
     { key: 'company_phone', value: '+975 17 654 321', category: 'general', description: '24/7 Hotline' },
     { key: 'company_whatsapp', value: '+97517654321', category: 'general', description: 'WhatsApp Direct Connect' },
+    { key: 'company_address', value: 'Norzin Lam, Clock Tower Square, Thimphu & Paro Valley, Bhutan', category: 'general', description: 'Registered Office Address' },
+
+    // Pricing & Compliance
     { key: 'sdf_rate_international', value: '100', category: 'pricing', description: 'SDF per adult per night (USD)' },
     { key: 'sdf_rate_india', value: '1200', category: 'pricing', description: 'SDF per person per night (INR)' },
     { key: 'sdf_child_6_12_discount', value: '50', category: 'pricing', description: 'Percentage discount for children 6-12' },
     { key: 'sdf_child_under_6_exempt', value: '1', category: 'pricing', description: '1 = Children under 6 pay $0 SDF' },
     { key: 'sdf_waiver_active', value: '0', category: 'pricing', description: '0 = Standard, 1 = Govt promo active' },
     { key: 'sdf_waiver_percent', value: '0', category: 'pricing', description: 'Active waiver discount %' },
-    { key: 'visa_fee_usd', value: '40', category: 'pricing', description: 'One-time government visa application fee' }
+    { key: 'visa_fee_usd', value: '40', category: 'pricing', description: 'One-time government visa application fee' },
+    { key: 'deposit_percent', value: '30', category: 'pricing', description: 'Default upfront deposit % for web bookings' },
+    { key: 'min_advance_booking_days', value: '7', category: 'pricing', description: 'Minimum days before travel start for bookings' },
+    { key: 'cancellation_free_days', value: '60', category: 'pricing', description: 'Days before departure eligible for full refund' },
+    { key: 'cancellation_partial_days', value: '30', category: 'pricing', description: 'Days before departure eligible for partial refund' },
+    { key: 'cancellation_partial_refund_percent', value: '50', category: 'pricing', description: 'Partial refund percentage' },
+    { key: 'usd_to_inr_rate', value: '85', category: 'pricing', description: 'FX multiplier for regional INR invoices' },
+    { key: 'child_6_12_package_discount_pct', value: '40', category: 'pricing', description: 'Land package % discount for ages 6-12' },
+    { key: 'child_under_6_package_discount_pct', value: '100', category: 'pricing', description: 'Land package % discount for under 6' },
+    { key: 'custom_daily_rate_3star_usd', value: '220', category: 'pricing', description: 'Custom bespoke 3-Star nightly rate (USD)' },
+    { key: 'custom_daily_rate_4star_usd', value: '295', category: 'pricing', description: 'Custom bespoke 4-Star nightly rate (USD)' },
+    { key: 'custom_daily_rate_5star_usd', value: '490', category: 'pricing', description: 'Custom bespoke 5-Star nightly rate (USD)' },
+    { key: 'final_payment_due_days', value: '30', category: 'pricing', description: 'Days before departure when balance is due' },
+    { key: 'require_insurance_for_visa', value: '1', category: 'pricing', description: '1 = Require travel insurance doc for DoI submission' },
+
+    // Banking & Wire
+    { key: 'bank_beneficiary', value: 'Bhutan Fast Rate Tours Ltd.', category: 'banking', description: 'Wire Transfer Beneficiary Name' },
+    { key: 'bank_name', value: 'Bank of Bhutan Ltd.', category: 'banking', description: 'Receiving Bank Name' },
+    { key: 'bank_swift', value: 'BOBTBT22XXX', category: 'banking', description: 'SWIFT / BIC Code' },
+    { key: 'bank_account', value: '200884910023', category: 'banking', description: 'Beneficiary Account Number' },
+    { key: 'bank_instructions', value: 'Include Booking Reference BFR-YYYY-XXXX in wire memo', category: 'banking', description: 'Wire Memo Instructions' },
+
+    // Integrations
+    { key: 'whatsapp_provider', value: 'webhook', category: 'integrations', description: 'WhatsApp dispatch driver (webhook | meta_cloud | twilio)' },
+    { key: 'whatsapp_api_url', value: '', category: 'integrations', description: 'WhatsApp API / Webhook Endpoint URL' },
+    { key: 'whatsapp_api_token', value: '', category: 'integrations', description: 'WhatsApp API Bearer Token' },
+    { key: 'whatsapp_from', value: '', category: 'integrations', description: 'WhatsApp Sender Phone / ID' },
+    { key: 'whatsapp_template_name', value: '', category: 'integrations', description: 'WhatsApp Approved Template Name' },
+    { key: 'smtp_host', value: '', category: 'integrations', description: 'SMTP Server Hostname' },
+    { key: 'smtp_port', value: '587', category: 'integrations', description: 'SMTP Server Port' },
+    { key: 'smtp_user', value: '', category: 'integrations', description: 'SMTP Username' },
+    { key: 'smtp_pass', value: '', category: 'integrations', description: 'SMTP Password' },
+    { key: 'smtp_from', value: 'reservations@bhutanfastratetours.bt', category: 'integrations', description: 'Outbound Email From Address' }
   ];
 
   const destinations = [
@@ -92,7 +164,7 @@ function getSeedData() {
       altitude_meters: 3000,
       region: 'Western/Central',
       description: 'A wide, road-free glacial valley protected as an ecological sanctuary. Each winter, endangered Tibetan Black-Necked Cranes circle Gangtey Monastery three times before settling in the wetlands.',
-      highlights_json: JSON.stringify(['Gangtey Gompa Monastery (17th C)', 'Black-Necked Crane Conservation Center', 'Gangtey Nature Nature Trail (Pine & Bamboo)', 'Traditional Farmhouse Homestays']),
+      highlights_json: JSON.stringify(['Gangtey Gompa Monastery (17th C)', 'Black-Necked Crane Conservation Center', 'Gangtey Nature Trail (Pine & Bamboo)', 'Traditional Farmhouse Homestays']),
       best_months: 'Oct - Mar (Cranes in Valley)',
       cover_image: 'assets/images/phobjikha-cranes.webp',
       sort_order: 4
@@ -137,6 +209,7 @@ function getSeedData() {
       difficulty: 'Easy to Moderate',
       price_usd: 1950,
       price_3star_usd: 1950,
+      price_4star_usd: 2550,
       price_5star_usd: 3850,
       valleys: 'Paro, Thimphu, Punakha',
       highlight_text: 'Includes Dochula 108 stupas pass, Punakha Dzong, and sacred pilgrimage to Tiger’s Nest.',
@@ -175,6 +248,7 @@ function getSeedData() {
       difficulty: 'Moderate',
       price_usd: 2480,
       price_3star_usd: 2480,
+      price_4star_usd: 3050,
       price_5star_usd: 4200,
       valleys: 'Paro, Jili Dzong, Jimilangtsho, Phajoding, Thimphu',
       highlight_text: 'Crystal-clear alpine lakes, rhododendron forests, and panoramic Himalayan peak views above 4,000m.',
@@ -213,6 +287,7 @@ function getSeedData() {
       difficulty: 'Easy',
       price_usd: 2280,
       price_3star_usd: 2280,
+      price_4star_usd: 2890,
       price_5star_usd: 4100,
       valleys: 'Thimphu, Punakha, Paro',
       highlight_text: 'Front-row VIP access to sacred Cham dances, Atsara clown blessings, and local festival attire immersion.',
@@ -250,6 +325,7 @@ function getSeedData() {
       difficulty: 'Strenuous',
       price_usd: 6800,
       price_3star_usd: 6800,
+      price_4star_usd: 7800,
       price_5star_usd: 9500,
       valleys: 'Paro, Lingshi, Laya, Lunana, Bumthang',
       highlight_text: 'Cross 11 mountain passes over 4,500m through the isolated glacial highlands of Lunana.',
@@ -284,6 +360,7 @@ function getSeedData() {
       difficulty: 'Easy',
       price_usd: 1520,
       price_3star_usd: 1520,
+      price_4star_usd: 2150,
       price_5star_usd: 3400,
       valleys: 'Paro, Thimphu, Punakha',
       highlight_text: 'Stay in luxury boutique river retreats, sample private farm tastings, and gentle river drift.',
@@ -316,6 +393,7 @@ function getSeedData() {
       difficulty: 'Easy to Moderate',
       price_usd: 2890,
       price_3star_usd: 2890,
+      price_4star_usd: 3650,
       price_5star_usd: 5100,
       valleys: 'Paro, Thimphu, Punakha, Phobjikha, Trongsa, Bumthang',
       highlight_text: 'Visit Bhutan’s oldest temples (659 AD), burning lake Mebar Tsho, and Trongsa ancestral fortress.',
@@ -349,6 +427,7 @@ function getSeedData() {
       difficulty: 'Moderate',
       price_usd: 980,
       price_3star_usd: 980,
+      price_4star_usd: 1320,
       price_5star_usd: 1950,
       valleys: 'Paro Valley',
       highlight_text: 'Ideal weekend break: Paro Rinpung Dzong, Tiger’s Nest pilgrimage, and herbal hot stone relaxation.',
@@ -379,6 +458,7 @@ function getSeedData() {
       difficulty: 'Moderate',
       price_usd: 3950,
       price_3star_usd: 3950,
+      price_4star_usd: 4950,
       price_5star_usd: 6800,
       valleys: 'Paro, Bumthang, Mongar, Trashigang, Trashiyangtse',
       highlight_text: 'Visit Radhi raw silk weavers, dramatic cliffs of Trashigang, and the remote nomadic realm of Merak-Sakteng.',
@@ -411,6 +491,7 @@ function getSeedData() {
       difficulty: 'Easy',
       price_usd: 1780,
       price_3star_usd: 1780,
+      price_4star_usd: 2380,
       price_5star_usd: 3600,
       valleys: 'Paro, Thimphu, Gangtey/Phobjikha, Punakha',
       highlight_text: 'Spot Tibetan Black-Necked Cranes in high alpine wetlands, attend the Crane Festival, and hike nature trails.',
@@ -444,6 +525,7 @@ function getSeedData() {
       difficulty: 'Easy',
       price_usd: 2350,
       price_3star_usd: 2350,
+      price_4star_usd: 2980,
       price_5star_usd: 4250,
       valleys: 'Paro, Thimphu, Punakha',
       highlight_text: 'Bhutan’s most popular spring festival: witness the massive 400-year-old Guru Thongdrel tapestry unfurled before dawn.',
@@ -470,6 +552,101 @@ function getSeedData() {
     }
   ];
 
+  const festivals = [
+    {
+      id: 'thimphu-tshechu',
+      name: 'Thimphu Tshechu',
+      slug: 'festival-thimphu-tshechu.html',
+      season: 'Autumn (September / October)',
+      dates_label: 'Sep 21 – 24, 2027',
+      venue: 'Tashichho Dzong, Thimphu',
+      valley: 'Thimphu',
+      duration_days: 3,
+      price_usd: 2280,
+      summary: 'Bhutan’s grandest religious festival celebrated in the capital courtyard with sacred mask dances by monks and laymen honoring Guru Padmasambhava.',
+      etiquette: 'Dress respectfully with long sleeves and covered shoulders. Traditional Kira or Gho is encouraged and can be arranged by our concierge. Photography inside inner temple sanctuaries is restricted.',
+      highlights_json: JSON.stringify([
+        'Reserved courtyard terrace seats for our guests',
+        'Dance of the Four Stags & 21 Black-Hat Sorcerers',
+        'Traditional Kira or Gho silk attire rental option'
+      ]),
+      related_tour_id: 'thimphu-tshechu-8d',
+      cover_image: 'assets/images/thimphu-festival.webp',
+      is_featured: 1,
+      is_active: 1,
+      sort_order: 1
+    },
+    {
+      id: 'paro-tshechu',
+      name: 'Paro Tshechu',
+      slug: 'festival-paro-tshechu.html',
+      season: 'Spring (March / April)',
+      dates_label: 'Mar 28 – Apr 1, 2027',
+      venue: 'Rinpung Dzong, Paro',
+      valley: 'Paro',
+      duration_days: 5,
+      price_usd: 2350,
+      summary: 'Famous for the pre-dawn unfurling of the colossal 400-year-old silk Guru Thongdrel tapestry, cleansing negative karma for thousands of pilgrims.',
+      etiquette: 'Arrive before 3:30 AM for the Thongdrel ceremony; keep voices low during monastic chants and follow guide guidance around ritual perimeter lines.',
+      highlights_json: JSON.stringify([
+        '3:30 AM pre-dawn private escorted Thongdrel entry',
+        'Butter lamp offerings at ancient Rinpung temple',
+        'Paired with Tiger’s Nest monastery pilgrimage hike'
+      ]),
+      related_tour_id: 'paro-spring-festival-8d',
+      cover_image: 'assets/images/tigers-nest.webp',
+      is_featured: 1,
+      is_active: 1,
+      sort_order: 2
+    },
+    {
+      id: 'punakha-drubchen',
+      name: 'Punakha Drubchen',
+      slug: 'festival-punakha-drubchen.html',
+      season: 'Late Winter (February / March)',
+      dates_label: 'Feb 22 – 26, 2027',
+      venue: 'Punakha Dzong, Punakha',
+      valley: 'Punakha',
+      duration_days: 5,
+      price_usd: 1520,
+      summary: 'Unique historic re-enactment of the 17th-century battle against Tibetan invaders with local militia (Pazaps) in traditional battle dress and river blessing rites.',
+      etiquette: 'Give way to marching Pazap militia regiments along the Mo Chhu bridge approach; wear light layers suitable for warm subtropical Punakha afternoons.',
+      highlights_json: JSON.stringify([
+        'Traditional Pazap warrior helmet & sword presentation',
+        'Pleasant warm early-spring climate in Punakha Valley',
+        'Intimate setting with fewer international crowds'
+      ]),
+      related_tour_id: 'punakha-luxury-escape-5d',
+      cover_image: 'assets/images/punakha-dzong.webp',
+      is_featured: 1,
+      is_active: 1,
+      sort_order: 3
+    },
+    {
+      id: 'jambay-lhakhang-drup',
+      name: 'Jambay Lhakhang Drup',
+      slug: 'festival-jambay-lhakhang.html',
+      season: 'Late Autumn (November)',
+      dates_label: 'Nov 14 – 17, 2027',
+      venue: 'Jambay Lhakhang, Bumthang',
+      valley: 'Bumthang',
+      duration_days: 4,
+      price_usd: 2890,
+      summary: 'Celebrated at one of Bhutan’s oldest 7th-century temples, renowned for the midnight fire blessing (Mewang) and sacred Tercham ceremonial dances.',
+      etiquette: 'Flash photography and video recording are strictly prohibited during nocturnal Tercham rituals; bring warm woolen outerwear for crisp Bumthang evenings.',
+      highlights_json: JSON.stringify([
+        'Midnight Mewang fire-gate purification ritual',
+        'Tour of 659 AD Jambay Lhakhang temple complex',
+        'Central Bhutan domestic return flight included'
+      ]),
+      related_tour_id: 'bumthang-spiritual-pilgrimage-10d',
+      cover_image: 'assets/images/dochula-pass.webp',
+      is_featured: 1,
+      is_active: 1,
+      sort_order: 4
+    }
+  ];
+
   const sampleBookings = [
     {
       id: 'BFR-2026-8841',
@@ -481,6 +658,7 @@ function getSeedData() {
       lead_phone: '+1 415 555 2671',
       lead_country: 'United States',
       lead_passport_no: 'A92817462',
+      lead_passport_expiry: '2029-08-15',
       travel_date_start: '2026-10-15',
       travel_date_end: '2026-10-21',
       total_nights: 6,
@@ -489,18 +667,27 @@ function getSeedData() {
       children_6_12: 0,
       children_under_6: 0,
       hotel_tier: '4-Star Premium',
-      base_price_usd: 3900,
+      base_price_usd: 5100,
       sdf_total_usd: 1200,
       visa_fee_usd: 80,
       extras_usd: 0,
-      total_price_usd: 5180,
-      deposit_paid_usd: 5180,
+      discount_usd: 0,
+      total_price_usd: 6380,
+      currency: 'USD',
+      nationality_type: 'international',
+      exchange_rate: 1,
+      payment_plan: 'full_100',
+      balance_due_date: '2026-09-15',
+      deposit_paid_usd: 6380,
       full_paid: 1,
+      flight_assistance: 1,
       booking_status: 'visa_approved',
       visa_status: 'clearance_letter_issued',
       visa_clearance_number: 'VCL-2026-8841-BFR',
       visa_submitted_date: '2026-08-10',
       visa_approved_date: '2026-08-14',
+      sdf_remitted_at: '2026-08-12 10:00:00',
+      sdf_remittance_ref: 'RMA-SDF-2026-8841',
       assigned_guide_id: 3,
       assigned_vehicle: 'BP-1-A8921 (Toyota Land Cruiser)',
       special_requests: 'Vegetarian meals preferred, celebration of 10th anniversary',
@@ -517,6 +704,7 @@ function getSeedData() {
       lead_phone: '+46 8 123 4567',
       lead_country: 'Sweden',
       lead_passport_no: 'SE7829104',
+      lead_passport_expiry: '2029-05-14',
       travel_date_start: '2026-11-02',
       travel_date_end: '2026-11-10',
       total_nights: 8,
@@ -529,9 +717,16 @@ function getSeedData() {
       sdf_total_usd: 800,
       visa_fee_usd: 40,
       extras_usd: 150,
+      discount_usd: 0,
       total_price_usd: 3470,
-      deposit_paid_usd: 1000,
+      currency: 'USD',
+      nationality_type: 'international',
+      exchange_rate: 1,
+      payment_plan: 'deposit_30',
+      balance_due_date: '2026-10-03',
+      deposit_paid_usd: 1050,
       full_paid: 0,
+      flight_assistance: 0,
       booking_status: 'documents_complete',
       visa_status: 'under_review',
       visa_submitted_date: '2026-09-01',
@@ -550,6 +745,7 @@ function getSeedData() {
       lead_phone: '+81 90 1234 5678',
       lead_country: 'Japan',
       lead_passport_no: 'TR9918231',
+      lead_passport_expiry: '2030-02-20',
       travel_date_start: '2026-10-01',
       travel_date_end: '2026-10-08',
       total_nights: 7,
@@ -562,18 +758,210 @@ function getSeedData() {
       sdf_total_usd: 2100,
       visa_fee_usd: 120,
       extras_usd: 500,
+      discount_usd: 0,
       total_price_usd: 15020,
+      currency: 'USD',
+      nationality_type: 'international',
+      exchange_rate: 1,
+      payment_plan: 'full_100',
+      balance_due_date: '2026-09-01',
       deposit_paid_usd: 15020,
       full_paid: 1,
+      flight_assistance: 1,
       booking_status: 'confirmed',
       visa_status: 'clearance_letter_issued',
       visa_clearance_number: 'VCL-2026-8862-BFR',
       visa_submitted_date: '2026-07-20',
       visa_approved_date: '2026-07-25',
-      assigned_guide_id: 3,
+      sdf_remitted_at: '2026-07-22 14:30:00',
+      sdf_remittance_ref: 'RMA-SDF-2026-8862',
+      assigned_guide_id: 4,
       assigned_vehicle: 'BP-1-A1010 (Toyota Coaster VIP)',
       special_requests: 'Japanese speaking translator guide requested',
       source: 'agent'
+    }
+  ];
+
+  const sampleTravelers = [
+    {
+      booking_id: 'BFR-2026-8841',
+      full_name: 'Dr. Evelyn Martinez',
+      passport_number: 'A92817462',
+      passport_expiry: '2029-08-15',
+      nationality: 'United States',
+      date_of_birth: '1984-06-12',
+      age_category: 'adult',
+      gender: 'Female',
+      dietary_needs: 'Vegetarian',
+      medical_notes: 'None',
+      emergency_contact_name: 'Carlos Martinez',
+      emergency_contact_phone: '+1 415 555 8810',
+      document_notes: 'Verified bio-page & travel insurance received',
+      sdf_rate_usd: 100,
+      visa_status: 'clearance_letter_issued'
+    },
+    {
+      booking_id: 'BFR-2026-8841',
+      full_name: 'Prof. Julian Martinez',
+      passport_number: 'A92817990',
+      passport_expiry: '2029-11-04',
+      nationality: 'United States',
+      date_of_birth: '1982-09-28',
+      age_category: 'adult',
+      gender: 'Male',
+      dietary_needs: 'Vegetarian',
+      medical_notes: 'Mild shellfish allergy',
+      emergency_contact_name: 'Carlos Martinez',
+      emergency_contact_phone: '+1 415 555 8810',
+      document_notes: 'Verified bio-page & travel insurance received',
+      sdf_rate_usd: 100,
+      visa_status: 'clearance_letter_issued'
+    },
+    {
+      booking_id: 'BFR-2026-8850',
+      full_name: 'Marcus Lindholm',
+      passport_number: 'SE7829104',
+      passport_expiry: '2029-05-14',
+      nationality: 'Sweden',
+      date_of_birth: '1988-03-22',
+      age_category: 'adult',
+      gender: 'Male',
+      dietary_needs: 'Standard',
+      medical_notes: 'None',
+      emergency_contact_name: 'Astrid Lindholm',
+      emergency_contact_phone: '+46 70 555 4412',
+      document_notes: 'Awaiting final balance wire before DoI submission',
+      sdf_rate_usd: 100,
+      visa_status: 'under_review'
+    },
+    {
+      booking_id: 'BFR-2026-8862',
+      full_name: 'Hiroshi Tanaka',
+      passport_number: 'TR9918231',
+      passport_expiry: '2030-02-20',
+      nationality: 'Japan',
+      date_of_birth: '1975-01-17',
+      age_category: 'adult',
+      gender: 'Male',
+      dietary_needs: 'No raw meat',
+      medical_notes: 'None',
+      emergency_contact_name: 'Yumi Tanaka',
+      emergency_contact_phone: '+81 90 4412 8801',
+      document_notes: 'All documents cleared',
+      sdf_rate_usd: 100,
+      visa_status: 'clearance_letter_issued'
+    },
+    {
+      booking_id: 'BFR-2026-8862',
+      full_name: 'Aiko Tanaka',
+      passport_number: 'TR9918232',
+      passport_expiry: '2030-02-20',
+      nationality: 'Japan',
+      date_of_birth: '1977-04-09',
+      age_category: 'adult',
+      gender: 'Female',
+      dietary_needs: 'Standard',
+      medical_notes: 'None',
+      emergency_contact_name: 'Yumi Tanaka',
+      emergency_contact_phone: '+81 90 4412 8801',
+      document_notes: 'All documents cleared',
+      sdf_rate_usd: 100,
+      visa_status: 'clearance_letter_issued'
+    },
+    {
+      booking_id: 'BFR-2026-8862',
+      full_name: 'Kenji Tanaka',
+      passport_number: 'TR9918233',
+      passport_expiry: '2029-12-01',
+      nationality: 'Japan',
+      date_of_birth: '2001-11-11',
+      age_category: 'adult',
+      gender: 'Male',
+      dietary_needs: 'Standard',
+      medical_notes: 'None',
+      emergency_contact_name: 'Yumi Tanaka',
+      emergency_contact_phone: '+81 90 4412 8801',
+      document_notes: 'All documents cleared',
+      sdf_rate_usd: 100,
+      visa_status: 'clearance_letter_issued'
+    }
+  ];
+
+  const samplePayments = [
+    {
+      booking_id: 'BFR-2026-8841',
+      amount_usd: 6380,
+      currency: 'USD',
+      amount_local: 6380,
+      payment_type: 'full_payment',
+      payment_method: 'bank_transfer',
+      transaction_ref: 'BOB-WIRE-884101',
+      status: 'verified',
+      verified_by: 5,
+      verified_at: '2026-08-09 11:20:00',
+      notes: 'Full wire cleared via Bank of Bhutan SWIFT'
+    },
+    {
+      booking_id: 'BFR-2026-8850',
+      amount_usd: 1050,
+      currency: 'USD',
+      amount_local: 1050,
+      payment_type: 'deposit',
+      payment_method: 'bank_transfer',
+      transaction_ref: 'BOB-WIRE-885001',
+      status: 'verified',
+      verified_by: 5,
+      verified_at: '2026-08-29 15:05:00',
+      notes: '30% deposit verified; balance due 30 days prior to departure'
+    },
+    {
+      booking_id: 'BFR-2026-8862',
+      amount_usd: 15020,
+      currency: 'USD',
+      amount_local: 15020,
+      payment_type: 'full_payment',
+      payment_method: 'bank_transfer',
+      transaction_ref: 'BOB-WIRE-886201',
+      status: 'verified',
+      verified_by: 5,
+      verified_at: '2026-07-18 09:40:00',
+      notes: 'Partner agency lump-sum remittance cleared'
+    }
+  ];
+
+  const sampleGuideAssignments = [
+    {
+      guide_id: 3,
+      booking_id: 'BFR-2026-8841',
+      start_date: '2026-10-15',
+      end_date: '2026-10-21',
+      vehicle_plate: 'BP-1-A8921 (Toyota Land Cruiser)',
+      driver_name: 'Karma Wangdi',
+      daily_rate_usd: 65,
+      status: 'scheduled',
+      guide_notes: 'VIP anniversary couple; Zhiwa Ling early check-in confirmed'
+    },
+    {
+      guide_id: 3,
+      booking_id: 'BFR-2026-8850',
+      start_date: '2026-11-02',
+      end_date: '2026-11-10',
+      vehicle_plate: 'BP-1-B3302 (Hyundai H-1 Van)',
+      driver_name: 'Tenzin Norbu',
+      daily_rate_usd: 75,
+      status: 'scheduled',
+      guide_notes: 'Druk Path trek pony & cook team confirmed at Shana/Ta Dzong'
+    },
+    {
+      guide_id: 4,
+      booking_id: 'BFR-2026-8862',
+      start_date: '2026-10-01',
+      end_date: '2026-10-08',
+      vehicle_plate: 'BP-1-A1010 (Toyota Coaster VIP)',
+      driver_name: 'Pema Gyeltshen',
+      daily_rate_usd: 70,
+      status: 'scheduled',
+      guide_notes: 'VIP Tashichho courtyard seating reserved for Tanaka party'
     }
   ];
 
@@ -646,7 +1034,113 @@ function getSeedData() {
     }
   ];
 
-  return { users, settings, destinations, tours, sampleBookings, sampleInquiries, sampleReviews };
+  const sampleNotifications = [
+    {
+      recipient_type: 'admin',
+      recipient_id: 'admin@bhutanfastratetours.bt',
+      channel: 'in_app',
+      category: 'payment_alert',
+      title: 'Deposit Wire Verified — BFR-2026-8850',
+      message: 'Marcus Lindholm wire deposit of $1,050 verified by Finance. Balance due 2026-10-03.',
+      action_url: 'admin/booking-detail.html?id=BFR-2026-8850',
+      whatsapp_url: null,
+      metadata_json: JSON.stringify({ booking_id: 'BFR-2026-8850', amount_usd: 1050 }),
+      is_read: 0,
+      is_sent: 1
+    },
+    {
+      recipient_type: 'client',
+      recipient_id: 'evelyn.m@example.com',
+      channel: 'whatsapp',
+      category: 'visa_update',
+      title: 'Bhutan Visa Clearance Letter Issued — BFR-2026-8841',
+      message: 'Kuzuzangpo La Dr. Evelyn Martinez! Your official Bhutan Visa Clearance Letter (VCL-2026-8841-BFR) is ready to download.',
+      action_url: 'client/dashboard.html?ref=BFR-2026-8841',
+      whatsapp_url: 'https://wa.me/14155552671?text=Kuzuzangpo%20La%20Dr.%20Evelyn%20Martinez%2C%20your%20Bhutan%20Visa%20Clearance%20VCL-2026-8841-BFR%20is%20ready.',
+      metadata_json: JSON.stringify({ booking_id: 'BFR-2026-8841', clearance: 'VCL-2026-8841-BFR' }),
+      is_read: 0,
+      is_sent: 1
+    },
+    {
+      recipient_type: 'guide',
+      recipient_id: 'kinley@bhutanfastratetours.bt',
+      channel: 'in_app',
+      category: 'guide_assignment',
+      title: 'Upcoming VIP Assignment — BFR-2026-8841',
+      message: 'Assigned to lead Essential Bhutan Heritage & Tiger’s Nest (Oct 15–21) for Dr. Evelyn Martinez (2 guests).',
+      action_url: 'guide/trip-detail.html?id=BFR-2026-8841',
+      whatsapp_url: null,
+      metadata_json: JSON.stringify({ booking_id: 'BFR-2026-8841', guide_id: 3 }),
+      is_read: 0,
+      is_sent: 1
+    }
+  ];
+
+  const sampleAuditLogs = [
+    {
+      user_id: 1,
+      user_name: 'Sonam Dorji (Managing Director)',
+      user_role: 'super_admin',
+      action: 'visa.status_change',
+      entity_type: 'booking',
+      entity_id: 'BFR-2026-8841',
+      old_value: 'submitted_to_doi',
+      new_value: 'clearance_letter_issued (VCL-2026-8841-BFR)'
+    },
+    {
+      user_id: 2,
+      user_name: 'Dechen Wangmo (Lead Concierge)',
+      user_role: 'concierge',
+      action: 'guide.assigned',
+      entity_type: 'booking',
+      entity_id: 'BFR-2026-8850',
+      old_value: null,
+      new_value: 'Assigned Kinley Tshering (BP-1-B3302)'
+    },
+    {
+      user_id: 5,
+      user_name: 'Pema Lhamo (Finance Controller)',
+      user_role: 'finance',
+      action: 'payment.verified',
+      entity_type: 'booking',
+      entity_id: 'BFR-2026-8841',
+      old_value: 'pending',
+      new_value: 'Verified $6,380 USD (BOB-WIRE-884101)'
+    }
+  ];
+
+  return {
+    users,
+    settings,
+    destinations,
+    tours,
+    festivals,
+    sampleBookings,
+    sampleTravelers,
+    samplePayments,
+    sampleGuideAssignments,
+    sampleInquiries,
+    sampleReviews,
+    sampleNotifications,
+    sampleAuditLogs
+  };
 }
 
-module.exports = { getSeedData };
+module.exports = { getSeedData, hashPasswordScrypt };
+
+if (require.main === module) {
+  const db = require('./db');
+  (async () => {
+    try {
+      const tours = await db.get('SELECT COUNT(*) as count FROM tours');
+      const festivals = await db.get('SELECT COUNT(*) as count FROM festivals');
+      const users = await db.get('SELECT COUNT(*) as count FROM users');
+      console.log(`[Seed] Verified DB (${db.getEngine()}): ${tours.count} tours, ${festivals.count} festivals, ${users.count} users.`);
+    } finally {
+      await db.closeDb();
+    }
+  })().catch((err) => {
+    console.error('[Seed] Failed:', err);
+    process.exit(1);
+  });
+}
