@@ -92,7 +92,8 @@ app.use((req, res, next) => {
   return next();
 });
 
-// Convenience portal directory redirects & clean extensionless routes
+// Convenience portal directory redirects & clean /services page route (before express.static directory redirect)
+app.get('/services', (req, res) => res.sendFile(path.join(__dirname, 'services.html')));
 app.get(['/admin', '/admin/'], (req, res) => res.redirect(302, '/admin/login.html'));
 app.get(['/client', '/client/'], (req, res) => res.redirect(302, '/client/login.html'));
 app.get(['/guide', '/guide/'], (req, res) => res.redirect(302, '/guide/login.html'));
@@ -118,10 +119,6 @@ app.use((req, res, next) => {
   }
   if (/^\/festival-[^/]+\.html$/i.test(reqPath)) {
     return res.sendFile(path.join(__dirname, 'festivals.html'));
-  }
-
-  if (parsed.normalized === '/services') {
-    return res.sendFile(path.join(__dirname, 'services.html'));
   }
 
   const extMatch = reqPath.match(/^\/([a-z0-9-]+)\/?$/i);
