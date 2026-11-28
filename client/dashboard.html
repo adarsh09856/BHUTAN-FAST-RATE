@@ -11,8 +11,8 @@
     body {
       margin: 0;
       font-family: 'Manrope', ui-sans-serif, system-ui, -apple-system, sans-serif;
-      background-color: #F8FAF9;
-      color: #1F2923;
+      background-color: #FFF8EC;
+      color: #101613;
       min-height: 100vh;
       display: flex;
       flex-direction: column;
@@ -23,9 +23,9 @@
     input, textarea, select {
       color-scheme: light !important;
       background-color: #ffffff !important;
-      color: #1F2923 !important;
-      -webkit-text-fill-color: #1F2923 !important;
-      caret-color: #E05A47 !important;
+      color: #101613 !important;
+      -webkit-text-fill-color: #101613 !important;
+      caret-color: #C9A24B !important;
       opacity: 1 !important;
     }
     input::placeholder, textarea::placeholder {
@@ -37,7 +37,7 @@
       position: sticky;
       top: 0;
       z-index: 40;
-      background-color: #14231E;
+      background-color: #0B2A22;
       color: #ffffff;
       border-bottom: 1px solid rgba(255, 255, 255, 0.12);
       box-shadow: 0 4px 16px rgba(0, 0, 0, 0.14);
@@ -54,10 +54,10 @@
       transition: color 0.15s, background-color 0.15s;
     }
     .portal-nav-link:hover { color: #ffffff; background-color: rgba(255,255,255,0.08); }
-    .portal-nav-link.active { color: #ffffff; background-color: rgba(224, 90, 71, 0.22); border: 1px solid rgba(224, 90, 71, 0.45); }
+    .portal-nav-link.active { color: #ffffff; background-color: rgba(201, 162, 75, 0.22); border: 1px solid rgba(201, 162, 75, 0.45); }
     .portal-card {
       background-color: #ffffff;
-      border: 1px solid #e2e8f0;
+      border: 1px solid #E7DCC4;
       border-radius: 16px;
       padding: 24px;
       box-shadow: 0 2px 10px rgba(20, 35, 30, 0.04);
@@ -77,7 +77,7 @@
     .badge-amber { background-color: #fef3c7; color: #92400e; border: 1px solid #fde68a; }
     .badge-red { background-color: #fee2e2; color: #991b1b; border: 1px solid #fecaca; }
     .badge-slate { background-color: #f1f5f9; color: #334155; border: 1px solid #cbd5e1; }
-    .badge-coral { background-color: #fff1ef; color: #b93826; border: 1px solid #fbd3cc; }
+    .badge-coral { background-color: #F7EDD8; color: #0B2A22; border: 1px solid #C9A24B; }
     .btn {
       display: inline-flex;
       align-items: center;
@@ -95,11 +95,11 @@
       transition: all 0.15s ease;
     }
     .btn:disabled { opacity: 0.55; cursor: not-allowed; }
-    .btn-coral { background-color: #E05A47; color: #ffffff; }
-    .btn-coral:hover:not(:disabled) { background-color: #c94937; }
-    .btn-forest { background-color: #14231E; color: #ffffff; }
-    .btn-forest:hover:not(:disabled) { background-color: #0E1915; }
-    .btn-outline { background-color: #ffffff; color: #14231E; border-color: #cbd5e1; }
+    .btn-coral { background-color: #C9A24B; color: #0B2A22; }
+    .btn-coral:hover:not(:disabled) { background-color: #E4C87E; }
+    .btn-forest { background-color: #0B2A22; color: #ffffff; }
+    .btn-forest:hover:not(:disabled) { background-color: #0B2A22; }
+    .btn-outline { background-color: #ffffff; color: #0B2A22; border-color: #cbd5e1; }
     .btn-outline:hover:not(:disabled) { background-color: #f8fafc; border-color: #94a3b8; }
     .btn-emerald { background-color: #059669; color: #ffffff; }
     .btn-emerald:hover:not(:disabled) { background-color: #047857; }
@@ -114,8 +114,8 @@
     }
     .portal-input:focus {
       outline: none;
-      border-color: #E05A47;
-      box-shadow: 0 0 0 3px rgba(224, 90, 71, 0.14);
+      border-color: #C9A24B;
+      box-shadow: 0 0 0 3px rgba(201, 162, 75, 0.14);
     }
     .stepper-grid {
       display: grid;
@@ -125,7 +125,7 @@
     .step-item {
       border-radius: 12px;
       padding: 12px;
-      border: 1px solid #e2e8f0;
+      border: 1px solid #E7DCC4;
       background-color: #f8fafc;
     }
     .step-item.done { background-color: #ecfdf5; border-color: #a7f3d0; }
@@ -156,7 +156,7 @@
       max-width: 540px;
       background-color: #ffffff;
       border-radius: 18px;
-      border: 1px solid #e2e8f0;
+      border: 1px solid #E7DCC4;
       box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.4);
       overflow: hidden;
     }
@@ -196,7 +196,7 @@
   <header class="portal-header">
     <div class="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-4">
       <a href="dashboard.html" class="flex items-center gap-3" style="text-decoration:none; color:#fff;">
-        <div class="w-9 h-9 rounded-lg flex items-center justify-center font-black text-sm" style="background-color:#E05A47; color:#fff;">B</div>
+        <div class="w-9 h-9 rounded-lg flex items-center justify-center font-black text-sm" style="background-color:#C9A24B; color:#0B2A22; border-radius:9999px; font-family:Fraunces,serif;">B</div>
         <div>
           <div class="font-extrabold text-sm uppercase tracking-wider leading-none">Traveler Portal</div>
           <div class="text-[10px] tracking-wider uppercase" style="color:#cbd5e1;" data-bfr-license>#TR/2018/9882</div>
@@ -214,19 +214,19 @@
 
   <main class="py-8 max-w-6xl mx-auto px-4 sm:px-6 flex-1 space-y-6 w-full" id="clientDashboardContent">
     <div class="portal-card py-16 text-center" style="color:#64748b;">
-      <div class="inline-block w-8 h-8 border-4 rounded-full mb-3" style="border-color:#E05A47; border-top-color:transparent; animation: spin 0.8s linear infinite;"></div>
+      <div class="inline-block w-8 h-8 border-4 rounded-full mb-3" style="border-color:#C9A24B; border-top-color:transparent; animation: spin 0.8s linear infinite;"></div>
       <div class="text-sm font-semibold">Loading Your Bhutan Reservation &amp; Visa Status...</div>
     </div>
   </main>
 
-  <footer class="py-6 text-center text-xs border-t" style="background-color:#0E1915; color:#94a3b8; border-color:rgba(255,255,255,0.1);">
+  <footer class="py-6 text-center text-xs border-t" style="background-color: #0B2A22; color:#94a3b8; border-color:rgba(255,255,255,0.1);">
     &copy; 2026 <span data-bfr-company>Bhutan Fast Rate Tours</span> (<span data-bfr-license>#TR/2018/9882</span>) • Client Self-Service Portal • Hotline: <span data-bfr-phone>+975 17 654 321</span>
   </footer>
 
   <!-- Upload Payment Receipt Modal -->
   <div id="receiptModal" class="modal-backdrop hidden" role="dialog" aria-modal="true" aria-labelledby="receiptModalTitle">
     <div class="modal-panel">
-      <div class="px-6 py-4 flex items-center justify-between border-b" style="background-color:#14231E; color:#fff;">
+      <div class="px-6 py-4 flex items-center justify-between border-b" style="background-color: #0B2A22; color:#fff;">
         <div>
           <h2 id="receiptModalTitle" class="text-lg font-bold m-0">Upload Payment Receipt</h2>
           <p class="text-[11px] m-0" style="color:#cbd5e1;">Submit bank wire, SWIFT, or UPI transfer proof for Finance verification</p>
@@ -423,7 +423,7 @@
             ${steps.map((st) => `
               <div class="step-item ${esc(st.state)}">
                 <div class="text-[11px] font-extrabold uppercase tracking-wider" style="color:#475569;">${esc(st.label)}</div>
-                <div class="text-xs font-bold mt-1" style="color:#14231E;">${esc(st.desc)}</div>
+                <div class="text-xs font-bold mt-1" style="color:#0B2A22;">${esc(st.desc)}</div>
               </div>
             `).join('')}
           </div>
@@ -469,7 +469,7 @@
                   <span class="badge ${getVisaBadgeClass(b.visa_status)}">Visa: ${esc(formatStageLabel(b.visa_status))}</span>
                   <span class="badge badge-slate font-mono">${esc(b.id)}</span>
                 </div>
-                <h1 class="text-2xl sm:text-3xl font-bold m-0" style="color:#14231E;">${esc(b.tour_title)}</h1>
+                <h1 class="text-2xl sm:text-3xl font-bold m-0" style="color:#0B2A22;">${esc(b.tour_title)}</h1>
                 <p class="text-xs m-0" style="color:#475569;">
                   Lead Traveler: <strong>${esc(b.lead_name)}</strong> (${esc(b.lead_country || 'International')}) •
                   Dates: <strong>${esc(b.travel_dates || `${b.travel_date_start} to ${b.travel_date_end}`)}</strong> •
@@ -479,7 +479,7 @@
               </div>
               <div class="text-left sm:text-right space-y-1">
                 <div class="text-[11px] font-bold uppercase tracking-wider" style="color:#64748b;">Total Trip Investment</div>
-                <div class="text-2xl font-black" style="color:#E05A47;">${esc(totalLocalFormatted)}</div>
+                <div class="text-2xl font-black" style="color:#C9A24B;">${esc(totalLocalFormatted)}</div>
                 <div class="text-xs font-bold" style="color:${isPaid ? '#059669' : '#b45309'};">
                   ${isPaid ? '✓ Fully Settled' : `Balance Due: ${esc(balanceLocalFormatted)}`}
                 </div>
@@ -521,12 +521,12 @@
             <!-- Visa Clearance Card -->
             <section class="portal-card space-y-4" style="${isApproved ? 'border-color:#86efac; background-color:#f0fdf4;' : ''}">
               <div class="flex items-center justify-between gap-2">
-                <span class="text-xs font-extrabold uppercase tracking-wider" style="color:${isApproved ? '#166534' : '#E05A47'};">Royal Bhutan Immigration Clearance</span>
+                <span class="text-xs font-extrabold uppercase tracking-wider" style="color:${isApproved ? '#166534' : '#C9A24B'};">Royal Bhutan Immigration Clearance</span>
                 <span class="badge ${isApproved ? 'badge-green' : (isRejected ? 'badge-red' : 'badge-amber')}">
                   ${isApproved ? 'Approved & Ready' : (isRejected ? 'Rejected' : 'Locked Until Approved')}
                 </span>
               </div>
-              <div class="text-sm font-bold" style="color:#14231E;">
+              <div class="text-sm font-bold" style="color:#0B2A22;">
                 Clearance Reference:
                 <span class="font-mono" style="color:${isApproved ? '#15803d' : '#64748b'};">
                   ${esc(b.visa_clearance_number || 'Pending DoI Clearance Issuance')}
@@ -554,12 +554,12 @@
             <!-- Assigned Guide & Vehicle Card -->
             <section class="portal-card space-y-4">
               <div class="flex items-center justify-between gap-2">
-                <span class="text-xs font-extrabold uppercase tracking-wider" style="color:#14231E;">Assigned Guide &amp; Transport</span>
+                <span class="text-xs font-extrabold uppercase tracking-wider" style="color:#0B2A22;">Assigned Guide &amp; Transport</span>
                 <span class="badge ${guide ? 'badge-green' : 'badge-amber'}">${guide ? 'Assigned' : 'In Progress'}</span>
               </div>
               ${guide ? `
                 <div class="space-y-2 text-xs" style="color:#334155;">
-                  <div class="text-base font-bold" style="color:#14231E;">${esc(guide.full_name || guide.name)}</div>
+                  <div class="text-base font-bold" style="color:#0B2A22;">${esc(guide.full_name || guide.name)}</div>
                   <div><strong>DoT License:</strong> ${esc(guide.license_no || 'Certified Guide')} ${guide.specialty ? `• ${esc(guide.specialty)}` : ''}</div>
                   ${guide.languages ? `<div><strong>Languages:</strong> ${esc(guide.languages)}</div>` : ''}
                   <div><strong>Private Vehicle:</strong> ${esc(guide.vehicle || 'Private Tour Vehicle')}${guide.driver_name ? ` (Driver: ${esc(guide.driver_name)})` : ''}</div>
@@ -570,8 +570,8 @@
                   </div>
                 </div>
               ` : `
-                <div class="p-4 rounded-xl border space-y-2" style="background-color:#F8FAF9; border-color:#e2e8f0;">
-                  <div class="font-bold text-sm" style="color:#14231E;">Guide assignment in progress</div>
+                <div class="p-4 rounded-xl border space-y-2" style="background-color: #FFF8EC; border-color:#e2e8f0;">
+                  <div class="font-bold text-sm" style="color:#0B2A22;">Guide assignment in progress</div>
                   <p class="text-xs m-0" style="color:#64748b; line-height:1.5;">
                     Our Thimphu Operations Desk is matching a Department of Tourism certified guide and private vehicle to your itinerary dates and language preferences.
                   </p>
@@ -584,7 +584,7 @@
           <section class="portal-card space-y-5">
             <div class="flex flex-wrap items-center justify-between gap-3">
               <div>
-                <h2 class="text-xl font-bold m-0" style="color:#14231E;">Payment Ledger &amp; Bank Wire</h2>
+                <h2 class="text-xl font-bold m-0" style="color:#0B2A22;">Payment Ledger &amp; Bank Wire</h2>
                 <p class="text-xs m-0 mt-1" style="color:#64748b;">
                   Plan: <strong>${esc(summary.payment_plan === 'full_100' ? '100% Full Advance' : '30% Deposit + Balance')}</strong>
                   ${summary.balance_due_date ? ` • Balance Due Date: <strong>${esc(fmtDate(summary.balance_due_date))}</strong>` : ''}
@@ -596,9 +596,9 @@
             </div>
 
             <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
-              <div class="p-3.5 rounded-xl border" style="background-color:#F8FAF9; border-color:#e2e8f0;">
+              <div class="p-3.5 rounded-xl border" style="background-color: #FFF8EC; border-color:#e2e8f0;">
                 <div class="text-[11px] font-bold uppercase" style="color:#64748b;">Total Package</div>
-                <div class="text-lg font-black mt-0.5" style="color:#14231E;">${esc(totalLocalFormatted)}</div>
+                <div class="text-lg font-black mt-0.5" style="color:#0B2A22;">${esc(totalLocalFormatted)}</div>
               </div>
               <div class="p-3.5 rounded-xl border" style="background-color:#ecfdf5; border-color:#bbf7d0;">
                 <div class="text-[11px] font-bold uppercase" style="color:#166534;">Verified Paid</div>
@@ -635,11 +635,11 @@
                         <tr>
                           <td class="text-xs" style="color:#475569;">${esc(fmtDate(p.created_at || p.verified_at || 'Pending'))}</td>
                           <td>
-                            <div class="font-bold text-xs" style="color:#14231E;">${esc(formatStageLabel(p.payment_type || 'payment'))}</div>
+                            <div class="font-bold text-xs" style="color:#0B2A22;">${esc(formatStageLabel(p.payment_type || 'payment'))}</div>
                             <div class="text-[11px] font-mono" style="color:#64748b;">${esc(p.transaction_ref || p.payment_method || 'Wire')}</div>
                             ${p.notes ? `<div class="text-[11px] mt-0.5" style="color:#64748b;">${esc(p.notes)}</div>` : ''}
                           </td>
-                          <td class="font-bold text-xs" style="color:#14231E;">${esc(window.ApiClient.formatCurrency(pAmt, pCurr, { withCode: true }))}</td>
+                          <td class="font-bold text-xs" style="color:#0B2A22;">${esc(window.ApiClient.formatCurrency(pAmt, pCurr, { withCode: true }))}</td>
                           <td><span class="badge ${getPaymentBadgeClass(p.status)}">${esc(formatStageLabel(p.status || 'pending'))}</span></td>
                         </tr>
                       `;
@@ -648,8 +648,8 @@
                 </table>
               </div>
 
-              <div class="p-4 rounded-xl border space-y-2 text-xs" style="background-color:#F8FAF9; border-color:#e2e8f0; color:#334155;">
-                <div class="font-extrabold uppercase tracking-wider" style="color:#14231E;">Official Bank Wire Instructions</div>
+              <div class="p-4 rounded-xl border space-y-2 text-xs" style="background-color: #FFF8EC; border-color:#e2e8f0; color:#334155;">
+                <div class="font-extrabold uppercase tracking-wider" style="color:#0B2A22;">Official Bank Wire Instructions</div>
                 <div><strong>Beneficiary:</strong> ${esc(bank.bank_beneficiary || 'Bhutan Fast Rate Tours Ltd.')}</div>
                 <div><strong>Bank:</strong> ${esc(bank.bank_name || 'Bank of Bhutan Ltd.')}</div>
                 <div><strong>SWIFT / BIC:</strong> <span class="font-mono font-bold">${esc(bank.bank_swift || 'BOBTBT22XXX')}</span></div>
@@ -665,7 +665,7 @@
           <section class="portal-card space-y-4">
             <div class="flex flex-wrap items-center justify-between gap-2">
               <div class="flex items-center gap-2">
-                <h2 class="text-xl font-bold m-0" style="color:#14231E;">Trip Updates &amp; Notifications</h2>
+                <h2 class="text-xl font-bold m-0" style="color:#0B2A22;">Trip Updates &amp; Notifications</h2>
                 <span class="badge ${state.unreadCount > 0 ? 'badge-coral' : 'badge-slate'}">${esc(state.unreadCount)} Unread</span>
               </div>
               ${isSafeWhatsAppUrl(operatorWa) ? `
@@ -674,7 +674,7 @@
             </div>
 
             ${state.notifications.length === 0 ? `
-              <div class="p-5 rounded-xl border text-center text-xs" style="background-color:#F8FAF9; border-color:#e2e8f0; color:#64748b;">
+              <div class="p-5 rounded-xl border text-center text-xs" style="background-color: #FFF8EC; border-color:#e2e8f0; color:#64748b;">
                 No notifications yet. Visa updates, payment confirmations, and guide assignments appear here automatically.
               </div>
             ` : `
@@ -687,7 +687,7 @@
                       <div class="space-y-1 flex-1" style="min-width:220px;">
                         <div class="flex flex-wrap items-center gap-2">
                           <span class="badge ${isUnread ? 'badge-coral' : 'badge-slate'}">${isUnread ? 'New' : 'Read'}</span>
-                          <strong class="text-sm" style="color:#14231E;">${esc(n.title || n.category || 'Reservation Update')}</strong>
+                          <strong class="text-sm" style="color:#0B2A22;">${esc(n.title || n.category || 'Reservation Update')}</strong>
                         </div>
                         <p class="text-xs m-0" style="color:#475569; line-height:1.5;">${esc(n.message)}</p>
                         <div class="text-[11px]" style="color:#64748b;">
@@ -710,7 +710,7 @@
             <section class="portal-card space-y-4" style="border-color:#a7f3d0;">
               <div>
                 <span class="badge badge-green">Trip Completed</span>
-                <h2 class="text-xl font-bold m-0 mt-2" style="color:#14231E;">Rate Your Bhutan Trip</h2>
+                <h2 class="text-xl font-bold m-0 mt-2" style="color:#0B2A22;">Rate Your Bhutan Trip</h2>
                 <p class="text-xs m-0 mt-1" style="color:#64748b;">Share feedback on your guide, lodges, and itinerary with future travelers.</p>
               </div>
               <div id="reviewAlert" class="${state.reviewSubmitted ? 'alert-box alert-success' : 'hidden alert-box'}">

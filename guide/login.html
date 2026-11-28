@@ -11,8 +11,8 @@
     body {
       margin: 0;
       font-family: 'Manrope', ui-sans-serif, system-ui, -apple-system, sans-serif;
-      background-color: #14231E;
-      color: #1F2923;
+      background-color: #0B2A22;
+      color: #101613;
       min-height: 100vh;
       display: flex;
       flex-direction: column;
@@ -23,9 +23,9 @@
     input, textarea, select {
       color-scheme: light !important;
       background-color: #ffffff !important;
-      color: #1F2923 !important;
-      -webkit-text-fill-color: #1F2923 !important;
-      caret-color: #E05A47 !important;
+      color: #101613 !important;
+      -webkit-text-fill-color: #101613 !important;
+      caret-color: #C9A24B !important;
       opacity: 1 !important;
     }
     input::placeholder {
@@ -39,32 +39,29 @@
       align-items: center;
       justify-content: center;
       padding: 24px 16px;
-      background: radial-gradient(circle at top right, rgba(224, 90, 71, 0.16), transparent 45%),
+      background: radial-gradient(circle at top right, rgba(201, 162, 75, 0.16), transparent 45%),
                   radial-gradient(circle at bottom left, rgba(16, 185, 129, 0.12), transparent 45%),
-                  #14231E;
+                  #0B2A22;
     }
     .login-card {
       width: 100%;
       max-width: 440px;
       background-color: #ffffff;
-      border: 1px solid #e2e8f0;
+      border: 1px solid #E7DCC4;
       border-radius: 18px;
       padding: 32px;
       box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.45);
     }
-    .brand-mark {
-      width: 48px;
+    .brand-mark { width: 48px;
       height: 48px;
-      border-radius: 12px;
-      background-color: #E05A47;
-      color: #ffffff;
+      border-radius: 9999px; background-color: #0B2A22; color: #C9A24B; font-family: "Fraunces", serif;
       font-weight: 800;
       font-size: 20px;
       display: flex;
       align-items: center;
       justify-content: center;
       margin: 0 auto 14px;
-      box-shadow: 0 8px 18px rgba(224, 90, 71, 0.3);
+      box-shadow: 0 8px 18px rgba(201, 162, 75, 0.3);
     }
     .portal-input {
       width: 100%;
@@ -77,25 +74,23 @@
     }
     .portal-input:focus {
       outline: none;
-      border-color: #E05A47;
-      box-shadow: 0 0 0 3px rgba(224, 90, 71, 0.16);
+      border-color: #C9A24B;
+      box-shadow: 0 0 0 3px rgba(201, 162, 75, 0.16);
     }
-    .btn-primary {
-      width: 100%;
+    .btn-primary { width: 100%;
       padding: 13px 18px;
       border-radius: 10px;
-      background-color: #E05A47;
-      color: #ffffff;
+      background-color: #0B2A22; color: #FFFFFF;
       font-weight: 800;
       font-size: 12px;
       letter-spacing: 0.08em;
       text-transform: uppercase;
       border: none;
       cursor: pointer;
-      box-shadow: 0 8px 18px rgba(224, 90, 71, 0.25);
+      box-shadow: 0 8px 18px rgba(201, 162, 75, 0.25);
       transition: background-color 0.2s;
     }
-    .btn-primary:hover:not(:disabled) { background-color: #c94937; }
+    .btn-primary:hover:not(:disabled) { background-color: #123A30; }
     .btn-primary:disabled { opacity: 0.65; cursor: not-allowed; }
     .alert-error {
       background-color: #fef2f2;
@@ -108,8 +103,8 @@
       line-height: 1.45;
     }
     .info-box {
-      background-color: #F8FAF9;
-      border: 1px solid #e2e8f0;
+      background-color: #FFF8EC;
+      border: 1px solid #E7DCC4;
       border-radius: 12px;
       padding: 14px;
       font-size: 12px;
@@ -122,10 +117,10 @@
     <div class="login-card space-y-6">
       <div class="text-center">
         <div class="brand-mark">B</div>
-        <div class="text-[11px] font-extrabold uppercase tracking-widest" style="color:#E05A47;">
+        <div class="text-[11px] font-extrabold uppercase tracking-widest" style="color:#C9A24B;">
           <span data-bfr-company>Bhutan Fast Rate Tours</span>
         </div>
-        <h1 class="text-2xl font-bold mt-1" style="color:#14231E;">Certified Guide Field Portal</h1>
+        <h1 class="text-2xl font-bold mt-1" style="color:#0B2A22;">Certified Guide Field Portal</h1>
         <p class="text-xs mt-2" style="color:#64748b; line-height:1.5;">
           Sign in with your Department of Tourism guide email and password to view trip rosters, guest dietary/medical notes, and submit live field check-ins.
         </p>
@@ -164,13 +159,13 @@
       </form>
 
       <div class="info-box space-y-2">
-        <div class="font-bold" style="color:#14231E;">Authorized Licensed Guides Only</div>
+        <div class="font-bold" style="color:#0B2A22;">Authorized Licensed Guides Only</div>
         <p style="margin:0; line-height:1.5;">
           Contact Thimphu Operations Desk (<span data-bfr-phone>+975 17 654 321</span>) if you need a password reset or assignment update.
         </p>
         <div class="flex items-center justify-between pt-1 text-[11px] font-bold">
-          <a href="../admin/login.html" style="color:#14231E; text-decoration:underline;">Operations Admin</a>
-          <a href="../index.html" style="color:#E05A47;">← Main Website</a>
+          <a href="../admin/login.html" style="color:#0B2A22; text-decoration:underline;">Operations Admin</a>
+          <a href="../index.html" style="color:#C9A24B;">← Main Website</a>
         </div>
       </div>
     </div>

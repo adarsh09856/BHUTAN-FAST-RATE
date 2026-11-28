@@ -11,8 +11,8 @@
     body {
       margin: 0;
       font-family: 'Manrope', ui-sans-serif, system-ui, -apple-system, sans-serif;
-      background-color: #F8FAF9;
-      color: #1F2923;
+      background-color: #FFF8EC;
+      color: #101613;
       min-height: 100vh;
       display: flex;
       flex-direction: column;
@@ -23,14 +23,14 @@
     input, textarea, select {
       color-scheme: light !important;
       background-color: #ffffff !important;
-      color: #1F2923 !important;
-      -webkit-text-fill-color: #1F2923 !important;
+      color: #101613 !important;
+      -webkit-text-fill-color: #101613 !important;
     }
     .portal-header {
       position: sticky;
       top: 0;
       z-index: 40;
-      background-color: #14231E;
+      background-color: #0B2A22;
       color: #ffffff;
       border-bottom: 1px solid rgba(255, 255, 255, 0.12);
       box-shadow: 0 4px 16px rgba(0, 0, 0, 0.14);
@@ -47,10 +47,10 @@
       transition: color 0.15s, background-color 0.15s;
     }
     .portal-nav-link:hover { color: #ffffff; background-color: rgba(255,255,255,0.08); }
-    .portal-nav-link.active { color: #ffffff; background-color: rgba(224, 90, 71, 0.22); border: 1px solid rgba(224, 90, 71, 0.45); }
+    .portal-nav-link.active { color: #ffffff; background-color: rgba(201, 162, 75, 0.22); border: 1px solid rgba(201, 162, 75, 0.45); }
     .portal-card {
       background-color: #ffffff;
-      border: 1px solid #e2e8f0;
+      border: 1px solid #E7DCC4;
       border-radius: 16px;
       padding: 24px;
       box-shadow: 0 2px 10px rgba(20, 35, 30, 0.04);
@@ -69,7 +69,7 @@
     .badge-green { background-color: #dcfce7; color: #166534; border: 1px solid #bbf7d0; }
     .badge-amber { background-color: #fef3c7; color: #92400e; border: 1px solid #fde68a; }
     .badge-slate { background-color: #f1f5f9; color: #334155; border: 1px solid #cbd5e1; }
-    .badge-coral { background-color: #fff1ef; color: #b93826; border: 1px solid #fbd3cc; }
+    .badge-coral { background-color: #F7EDD8; color: #0B2A22; border: 1px solid #C9A24B; }
     .btn {
       display: inline-flex;
       align-items: center;
@@ -86,17 +86,17 @@
       text-decoration: none;
       transition: all 0.15s ease;
     }
-    .btn-coral { background-color: #E05A47; color: #ffffff; }
-    .btn-coral:hover { background-color: #c94937; }
-    .btn-forest { background-color: #14231E; color: #ffffff; }
-    .btn-forest:hover { background-color: #0E1915; }
-    .btn-outline { background-color: #ffffff; color: #14231E; border-color: #cbd5e1; }
+    .btn-coral { background-color: #C9A24B; color: #0B2A22; }
+    .btn-coral:hover { background-color: #E4C87E; }
+    .btn-forest { background-color: #0B2A22; color: #ffffff; }
+    .btn-forest:hover { background-color: #0B2A22; }
+    .btn-outline { background-color: #ffffff; color: #0B2A22; border-color: #cbd5e1; }
     .btn-outline:hover { background-color: #f8fafc; }
     .btn-sm { padding: 7px 12px; font-size: 11px; border-radius: 8px; }
     .day-card {
-      background-color: #F8FAF9;
-      border: 1px solid #e2e8f0;
-      border-left: 4px solid #E05A47;
+      background-color: #FFF8EC;
+      border: 1px solid #E7DCC4;
+      border-left: 4px solid #C9A24B;
       border-radius: 12px;
       padding: 16px 18px;
       break-inside: avoid;
@@ -133,7 +133,7 @@
         display: flex !important;
         justify-content: space-between;
         align-items: center;
-        border-bottom: 2px solid #14231E;
+        border-bottom: 2px solid #0B2A22;
         padding-bottom: 12px;
         margin-bottom: 16px;
       }
@@ -157,7 +157,7 @@
   <header class="portal-header no-print">
     <div class="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-4">
       <a href="dashboard.html" class="flex items-center gap-3" style="text-decoration:none; color:#fff;">
-        <div class="w-9 h-9 rounded-lg flex items-center justify-center font-black text-sm" style="background-color:#E05A47; color:#fff;">B</div>
+        <div class="w-9 h-9 rounded-lg flex items-center justify-center font-black text-sm" style="background-color:#C9A24B; color:#0B2A22; border-radius:9999px; font-family:Fraunces,serif;">B</div>
         <div>
           <div class="font-extrabold text-sm uppercase tracking-wider leading-none">Traveler Portal</div>
           <div class="text-[10px] tracking-wider uppercase" style="color:#cbd5e1;" data-bfr-license>#TR/2018/9882</div>
@@ -175,12 +175,12 @@
 
   <main class="py-8 max-w-6xl mx-auto px-4 sm:px-6 flex-1 space-y-6 w-full" id="itineraryContent">
     <div class="portal-card py-16 text-center" style="color:#64748b;">
-      <div class="inline-block w-8 h-8 border-4 rounded-full mb-3" style="border-color:#E05A47; border-top-color:transparent; animation: spin 0.8s linear infinite;"></div>
+      <div class="inline-block w-8 h-8 border-4 rounded-full mb-3" style="border-color:#C9A24B; border-top-color:transparent; animation: spin 0.8s linear infinite;"></div>
       <div class="text-sm font-semibold">Loading Confirmed Bhutan Itinerary...</div>
     </div>
   </main>
 
-  <footer class="portal-footer py-6 text-center text-xs border-t" style="background-color:#0E1915; color:#94a3b8; border-color:rgba(255,255,255,0.1);">
+  <footer class="portal-footer py-6 text-center text-xs border-t" style="background-color: #0B2A22; color:#94a3b8; border-color:rgba(255,255,255,0.1);">
     &copy; 2026 <span data-bfr-company>Bhutan Fast Rate Tours</span> (<span data-bfr-license>#TR/2018/9882</span>) • Client Self-Service Portal • Hotline: <span data-bfr-phone>+975 17 654 321</span>
   </footer>
 
@@ -219,7 +219,7 @@
         if (typeof item === 'string') {
           return `
             <div class="day-card space-y-1">
-              <div class="text-xs font-extrabold uppercase tracking-wider" style="color:#E05A47;">Day ${index + 1}</div>
+              <div class="text-xs font-extrabold uppercase tracking-wider" style="color:#C9A24B;">Day ${index + 1}</div>
               <p class="text-sm m-0" style="color:#334155; line-height:1.6;">${esc(item)}</p>
             </div>
           `;
@@ -239,14 +239,14 @@
         return `
           <div class="day-card space-y-2">
             <div class="flex flex-wrap items-center justify-between gap-2">
-              <span class="text-xs font-extrabold uppercase tracking-wider" style="color:#E05A47;">${esc(dayLabel)}</span>
+              <span class="text-xs font-extrabold uppercase tracking-wider" style="color:#C9A24B;">${esc(dayLabel)}</span>
               <div class="flex flex-wrap gap-1.5">
                 ${altitude ? `<span class="badge badge-slate">Altitude: ${esc(altitude)}</span>` : ''}
                 ${meals ? `<span class="badge badge-green">Meals: ${esc(meals)}</span>` : ''}
                 ${lodging ? `<span class="badge badge-coral">Stay: ${esc(lodging)}</span>` : ''}
               </div>
             </div>
-            <h3 class="text-base font-bold m-0" style="color:#14231E;">${esc(title)}</h3>
+            <h3 class="text-base font-bold m-0" style="color:#0B2A22;">${esc(title)}</h3>
             ${route ? `<div class="text-xs font-semibold" style="color:#475569;">Route: ${esc(route)}</div>` : ''}
             ${description ? `<p class="text-xs m-0" style="color:#334155; line-height:1.65;">${esc(description)}</p>` : ''}
           </div>
@@ -271,7 +271,7 @@
         container.innerHTML = `
           <div class="print-only-header">
             <div>
-              <div style="font-weight:800; font-size:18px; color:#14231E;">${esc(emergency.company_name || 'Bhutan Fast Rate Tours')}</div>
+              <div style="font-weight:800; font-size:18px; color:#0B2A22;">${esc(emergency.company_name || 'Bhutan Fast Rate Tours')}</div>
               <div style="font-size:11px; color:#475569;">Department of Tourism License ${esc(licenseStr)} • Confirmed Itinerary</div>
             </div>
             <div style="text-align:right; font-size:11px; color:#334155;">
@@ -288,7 +288,7 @@
                   <span class="badge badge-green">${esc(data.total_nights)} Nights / ${esc(Number(data.total_nights || 0) + 1)} Days</span>
                   ${data.hotel_tier ? `<span class="badge badge-coral">${esc(data.hotel_tier)}</span>` : ''}
                 </div>
-                <h1 class="text-2xl sm:text-3xl font-bold m-0" style="color:#14231E;">${esc(data.tour_title || 'Confirmed Bhutan Itinerary')}</h1>
+                <h1 class="text-2xl sm:text-3xl font-bold m-0" style="color:#0B2A22;">${esc(data.tour_title || 'Confirmed Bhutan Itinerary')}</h1>
                 <p class="text-xs m-0" style="color:#475569;">
                   Dates: <strong>${esc(data.travel_date_start)} to ${esc(data.travel_date_end)}</strong>
                   ${data.valleys ? ` • Valleys: <strong>${esc(data.valleys)}</strong>` : ''}
@@ -303,7 +303,7 @@
             <div class="space-y-3">
               <div class="text-xs font-extrabold uppercase tracking-wider" style="color:#475569;">Day-by-Day Route &amp; Program</div>
               ${itinerary.length === 0 ? `
-                <div class="p-6 rounded-xl border text-center text-xs" style="background-color:#F8FAF9; border-color:#e2e8f0; color:#64748b;">
+                <div class="p-6 rounded-xl border text-center text-xs" style="background-color: #FFF8EC; border-color:#e2e8f0; color:#64748b;">
                   Your custom day-by-day itinerary is being finalized by our Thimphu concierge desk.
                 </div>
               ` : itinerary.map((item, idx) => renderDayItem(item, idx)).join('')}
@@ -313,7 +313,7 @@
           <!-- Inclusions & Exclusions -->
           <div class="portal-grid-2">
             <section class="portal-card space-y-3">
-              <h2 class="text-lg font-bold m-0" style="color:#14231E;">What Is Included</h2>
+              <h2 class="text-lg font-bold m-0" style="color:#0B2A22;">What Is Included</h2>
               ${inclusions.length === 0 ? `
                 <p class="text-xs m-0" style="color:#64748b;">Standard SDF, licensed guide, private transport, and accommodations per confirmed booking.</p>
               ` : `
@@ -324,7 +324,7 @@
             </section>
 
             <section class="portal-card space-y-3">
-              <h2 class="text-lg font-bold m-0" style="color:#14231E;">Exclusions &amp; Notes</h2>
+              <h2 class="text-lg font-bold m-0" style="color:#0B2A22;">Exclusions &amp; Notes</h2>
               ${exclusions.length === 0 ? `
                 <ul class="m-0 pl-4 space-y-1.5 text-xs" style="color:#334155;">
                   <li>International flights into Paro (PBH) unless arranged separately</li>
@@ -343,12 +343,12 @@
           <div class="portal-grid-2">
             <section class="portal-card space-y-3">
               <div class="flex items-center justify-between gap-2">
-                <h2 class="text-lg font-bold m-0" style="color:#14231E;">Assigned Field Guide</h2>
+                <h2 class="text-lg font-bold m-0" style="color:#0B2A22;">Assigned Field Guide</h2>
                 <span class="badge ${guide ? 'badge-green' : 'badge-amber'}">${guide ? 'Confirmed' : 'In Progress'}</span>
               </div>
               ${guide ? `
                 <div class="text-xs space-y-1.5" style="color:#334155;">
-                  <div class="text-sm font-bold" style="color:#14231E;">${esc(guide.full_name || guide.name)}</div>
+                  <div class="text-sm font-bold" style="color:#0B2A22;">${esc(guide.full_name || guide.name)}</div>
                   <div><strong>DoT License:</strong> ${esc(guide.license_no || 'Certified Guide')}</div>
                   ${guide.languages ? `<div><strong>Languages:</strong> ${esc(guide.languages)}</div>` : ''}
                   <div><strong>Vehicle:</strong> ${esc(guide.vehicle || 'Private Tour Vehicle')}${guide.driver_name ? ` • Driver: ${esc(guide.driver_name)}` : ''}</div>
@@ -367,11 +367,11 @@
 
             <section class="portal-card space-y-3">
               <div class="flex items-center justify-between gap-2">
-                <h2 class="text-lg font-bold m-0" style="color:#14231E;">24/7 Emergency Operator Desk</h2>
+                <h2 class="text-lg font-bold m-0" style="color:#0B2A22;">24/7 Emergency Operator Desk</h2>
                 <span class="badge badge-coral">${esc(licenseStr)}</span>
               </div>
               <div class="text-xs space-y-1.5" style="color:#334155;">
-                <div class="text-sm font-bold" style="color:#14231E;">${esc(emergency.company_name || 'Bhutan Fast Rate Tours')}</div>
+                <div class="text-sm font-bold" style="color:#0B2A22;">${esc(emergency.company_name || 'Bhutan Fast Rate Tours')}</div>
                 <div><strong>Emergency Hotline:</strong> ${esc(emergency.company_phone || '+975 17 654 321')}</div>
                 <div><strong>Email:</strong> ${esc(emergency.company_email || 'reservations@bhutanfastratetours.bt')}</div>
                 <div><strong>Tourism License:</strong> ${esc(licenseStr)} (Department of Tourism, Bhutan)</div>

@@ -11,8 +11,8 @@
     body {
       margin: 0;
       font-family: 'Manrope', ui-sans-serif, system-ui, -apple-system, sans-serif;
-      background-color: #F8FAF9;
-      color: #1F2923;
+      background-color: #FFF8EC;
+      color: #101613;
       min-height: 100vh;
       display: flex;
       flex-direction: column;
@@ -23,9 +23,9 @@
     input, textarea, select {
       color-scheme: light !important;
       background-color: #ffffff !important;
-      color: #1F2923 !important;
-      -webkit-text-fill-color: #1F2923 !important;
-      caret-color: #E05A47 !important;
+      color: #101613 !important;
+      -webkit-text-fill-color: #101613 !important;
+      caret-color: #C9A24B !important;
       opacity: 1 !important;
     }
     input::placeholder, textarea::placeholder {
@@ -37,14 +37,14 @@
       position: sticky;
       top: 0;
       z-index: 40;
-      background-color: #14231E;
+      background-color: #0B2A22;
       color: #ffffff;
       border-bottom: 1px solid rgba(255, 255, 255, 0.12);
       box-shadow: 0 4px 16px rgba(0, 0, 0, 0.14);
     }
     .portal-card {
       background-color: #ffffff;
-      border: 1px solid #e2e8f0;
+      border: 1px solid #E7DCC4;
       border-radius: 16px;
       padding: 24px;
       box-shadow: 0 2px 10px rgba(20, 35, 30, 0.04);
@@ -64,7 +64,7 @@
     .badge-amber { background-color: #fef3c7; color: #92400e; border: 1px solid #fde68a; }
     .badge-red { background-color: #fee2e2; color: #991b1b; border: 1px solid #fecaca; }
     .badge-slate { background-color: #f1f5f9; color: #334155; border: 1px solid #cbd5e1; }
-    .badge-coral { background-color: #fff1ef; color: #b93826; border: 1px solid #fbd3cc; }
+    .badge-coral { background-color: #F7EDD8; color: #0B2A22; border: 1px solid #C9A24B; }
     .btn {
       display: inline-flex;
       align-items: center;
@@ -82,11 +82,11 @@
       transition: all 0.15s ease;
     }
     .btn:disabled { opacity: 0.55; cursor: not-allowed; }
-    .btn-coral { background-color: #E05A47; color: #ffffff; }
-    .btn-coral:hover:not(:disabled) { background-color: #c94937; }
-    .btn-forest { background-color: #14231E; color: #ffffff; }
-    .btn-forest:hover:not(:disabled) { background-color: #0E1915; }
-    .btn-outline { background-color: #ffffff; color: #14231E; border-color: #cbd5e1; }
+    .btn-coral { background-color: #C9A24B; color: #0B2A22; }
+    .btn-coral:hover:not(:disabled) { background-color: #E4C87E; }
+    .btn-forest { background-color: #0B2A22; color: #ffffff; }
+    .btn-forest:hover:not(:disabled) { background-color: #0B2A22; }
+    .btn-outline { background-color: #ffffff; color: #0B2A22; border-color: #cbd5e1; }
     .btn-outline:hover:not(:disabled) { background-color: #f8fafc; border-color: #94a3b8; }
     .btn-sm { padding: 7px 12px; font-size: 11px; border-radius: 8px; }
     .portal-input {
@@ -99,13 +99,13 @@
     }
     .portal-input:focus {
       outline: none;
-      border-color: #E05A47;
-      box-shadow: 0 0 0 3px rgba(224, 90, 71, 0.14);
+      border-color: #C9A24B;
+      box-shadow: 0 0 0 3px rgba(201, 162, 75, 0.14);
     }
     .day-card {
-      background-color: #F8FAF9;
-      border: 1px solid #e2e8f0;
-      border-left: 4px solid #E05A47;
+      background-color: #FFF8EC;
+      border: 1px solid #E7DCC4;
+      border-left: 4px solid #C9A24B;
       border-radius: 12px;
       padding: 14px 16px;
     }
@@ -132,7 +132,7 @@
   <header class="portal-header">
     <div class="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-4">
       <div class="flex items-center gap-4">
-        <a href="dashboard.html" class="text-xs font-extrabold uppercase tracking-wider" style="color:#E05A47; text-decoration:none;">← Back to Dashboard</a>
+        <a href="dashboard.html" class="text-xs font-extrabold uppercase tracking-wider" style="color:#C9A24B; text-decoration:none;">← Back to Dashboard</a>
         <span id="headerTripRef" class="text-xs font-mono font-bold" style="color:#cbd5e1;"></span>
       </div>
       <div class="flex items-center gap-3">
@@ -144,12 +144,12 @@
 
   <main class="py-8 max-w-6xl mx-auto px-4 sm:px-6 flex-1 space-y-6 w-full" id="tripDetailContent">
     <div class="portal-card py-16 text-center" style="color:#64748b;">
-      <div class="inline-block w-8 h-8 border-4 rounded-full mb-3" style="border-color:#E05A47; border-top-color:transparent; animation: spin 0.8s linear infinite;"></div>
+      <div class="inline-block w-8 h-8 border-4 rounded-full mb-3" style="border-color:#C9A24B; border-top-color:transparent; animation: spin 0.8s linear infinite;"></div>
       <div class="text-sm font-semibold">Loading Trip Roster, Itinerary &amp; Check-Ins...</div>
     </div>
   </main>
 
-  <footer class="py-6 text-center text-xs border-t" style="background-color:#0E1915; color:#94a3b8; border-color:rgba(255,255,255,0.1);">
+  <footer class="py-6 text-center text-xs border-t" style="background-color: #0B2A22; color:#94a3b8; border-color:rgba(255,255,255,0.1);">
     &copy; 2026 <span data-bfr-company>Bhutan Fast Rate Tours</span> (<span data-bfr-license>#TR/2018/9882</span>) • Guide Field Portal • Ops Desk: <span data-bfr-phone>+975 17 654 321</span>
   </footer>
 
@@ -210,7 +210,7 @@
         if (typeof item === 'string') {
           return `
             <div class="day-card space-y-1">
-              <div class="text-xs font-extrabold uppercase tracking-wider" style="color:#E05A47;">Day ${idx + 1}</div>
+              <div class="text-xs font-extrabold uppercase tracking-wider" style="color:#C9A24B;">Day ${idx + 1}</div>
               <p class="text-xs m-0" style="color:#334155; line-height:1.6;">${esc(item)}</p>
             </div>
           `;
@@ -226,14 +226,14 @@
         return `
           <div class="day-card space-y-1.5">
             <div class="flex flex-wrap items-center justify-between gap-2">
-              <span class="text-xs font-extrabold uppercase tracking-wider" style="color:#E05A47;">${esc(dayLabel)}</span>
+              <span class="text-xs font-extrabold uppercase tracking-wider" style="color:#C9A24B;">${esc(dayLabel)}</span>
               <div class="flex flex-wrap gap-1.5">
                 ${altitude ? `<span class="badge badge-slate">${esc(altitude)}</span>` : ''}
                 ${meals ? `<span class="badge badge-green">${esc(meals)}</span>` : ''}
                 ${lodging ? `<span class="badge badge-coral">${esc(lodging)}</span>` : ''}
               </div>
             </div>
-            <div class="text-sm font-bold" style="color:#14231E;">${esc(obj.title || obj.route || 'Tour Activity')}</div>
+            <div class="text-sm font-bold" style="color:#0B2A22;">${esc(obj.title || obj.route || 'Tour Activity')}</div>
             ${obj.description ? `<p class="text-xs m-0" style="color:#334155; line-height:1.6;">${esc(obj.description)}</p>` : ''}
           </div>
         `;
@@ -262,7 +262,7 @@
                   <span class="badge badge-coral">Visa: ${esc(String(t.visa_status || 'pending').replace(/_/g, ' '))}</span>
                   <span class="badge badge-slate font-mono">${esc(t.id)}</span>
                 </div>
-                <h1 class="text-2xl sm:text-3xl font-bold m-0" style="color:#14231E;">${esc(t.tour_title)}</h1>
+                <h1 class="text-2xl sm:text-3xl font-bold m-0" style="color:#0B2A22;">${esc(t.tour_title)}</h1>
                 <p class="text-xs m-0" style="color:#475569;">
                   Dates: <strong>${esc(t.travel_date_start)} to ${esc(t.travel_date_end)}</strong> (${esc(t.total_nights)} Nights) •
                   Party: <strong>${esc(t.total_travelers)} Guest(s)</strong>
@@ -277,19 +277,19 @@
             </div>
 
             <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
-              <div class="p-3.5 rounded-xl border" style="background-color:#F8FAF9; border-color:#e2e8f0;">
+              <div class="p-3.5 rounded-xl border" style="background-color: #FFF8EC; border-color:#e2e8f0;">
                 <div class="font-extrabold uppercase text-[10px]" style="color:#64748b;">Lead Traveler</div>
-                <div class="font-bold text-sm mt-1" style="color:#14231E;">${esc(t.lead_name)}</div>
+                <div class="font-bold text-sm mt-1" style="color:#0B2A22;">${esc(t.lead_name)}</div>
                 <div style="color:#475569;">${esc(t.lead_country || 'International')} • ${esc(t.lead_phone || 'No phone')}</div>
               </div>
-              <div class="p-3.5 rounded-xl border" style="background-color:#F8FAF9; border-color:#e2e8f0;">
+              <div class="p-3.5 rounded-xl border" style="background-color: #FFF8EC; border-color:#e2e8f0;">
                 <div class="font-extrabold uppercase text-[10px]" style="color:#64748b;">Vehicle &amp; Chauffeur</div>
-                <div class="font-bold text-sm mt-1" style="color:#14231E;">${esc(a.vehicle_plate || t.assigned_vehicle || 'To be assigned')}</div>
+                <div class="font-bold text-sm mt-1" style="color:#0B2A22;">${esc(a.vehicle_plate || t.assigned_vehicle || 'To be assigned')}</div>
                 <div style="color:#475569;">Driver: ${esc(a.driver_name || 'Ops Dispatch')}</div>
               </div>
-              <div class="p-3.5 rounded-xl border" style="background-color:#F8FAF9; border-color:#e2e8f0;">
+              <div class="p-3.5 rounded-xl border" style="background-color: #FFF8EC; border-color:#e2e8f0;">
                 <div class="font-extrabold uppercase text-[10px]" style="color:#64748b;">Valleys &amp; Route</div>
-                <div class="font-bold text-sm mt-1" style="color:#14231E;">${esc(t.valleys || 'Western & Central Valleys')}</div>
+                <div class="font-bold text-sm mt-1" style="color:#0B2A22;">${esc(t.valleys || 'Western & Central Valleys')}</div>
                 <div style="color:#475569;">Assignment Status: ${esc(String(a.status || 'scheduled').toUpperCase())}</div>
               </div>
             </div>
@@ -313,12 +313,12 @@
           <!-- Live Traveler Roster -->
           <section class="portal-card space-y-4">
             <div class="flex items-center justify-between">
-              <h2 class="text-xl font-bold m-0" style="color:#14231E;">Live Traveler Roster &amp; Medical / Dietary Notes</h2>
+              <h2 class="text-xl font-bold m-0" style="color:#0B2A22;">Live Traveler Roster &amp; Medical / Dietary Notes</h2>
               <span class="badge badge-slate">${esc(travelers.length)} Traveler(s)</span>
             </div>
 
             ${travelers.length === 0 ? `
-              <div class="p-5 rounded-xl border text-center text-xs" style="background-color:#F8FAF9; border-color:#e2e8f0; color:#64748b;">
+              <div class="p-5 rounded-xl border text-center text-xs" style="background-color: #FFF8EC; border-color:#e2e8f0; color:#64748b;">
                 No individual traveler profiles recorded yet.
               </div>
             ` : `
@@ -328,11 +328,11 @@
                   const emergWa = buildSafeWaHref(tr.emergency_contact_phone, `Urgent field contact regarding ${tr.full_name} (${t.id}).`);
                   const hasMedAlert = tr.medical_notes && !/^(none|n\/a|-)$/i.test(String(tr.medical_notes).trim());
                   return `
-                    <article class="p-4 rounded-xl border space-y-2.5" style="background-color:#F8FAF9; border-color:${hasMedAlert ? '#fca5a5' : '#e2e8f0'};">
+                    <article class="p-4 rounded-xl border space-y-2.5" style="background-color: #FFF8EC; border-color:${hasMedAlert ? '#fca5a5' : '#e2e8f0'};">
                       <div class="flex flex-wrap items-center justify-between gap-2">
                         <div>
                           <span class="text-[11px] font-bold uppercase" style="color:#64748b;">Guest #${idx + 1} • ${esc(tr.age_category || 'adult')}</span>
-                          <h3 class="text-base font-bold m-0" style="color:#14231E;">${esc(tr.full_name)}</h3>
+                          <h3 class="text-base font-bold m-0" style="color:#0B2A22;">${esc(tr.full_name)}</h3>
                         </div>
                         <span class="badge ${tr.visa_status === 'approved' || tr.visa_status === 'clearance_letter_issued' ? 'badge-green' : 'badge-amber'}">
                           ${esc(String(tr.visa_status || 'pending').replace(/_/g, ' '))}
@@ -368,7 +368,7 @@
           <div class="portal-grid-2">
             <section class="portal-card space-y-4">
               <div>
-                <h2 class="text-xl font-bold m-0" style="color:#14231E;">Submit Field Check-In</h2>
+                <h2 class="text-xl font-bold m-0" style="color:#0B2A22;">Submit Field Check-In</h2>
                 <p class="text-xs m-0 mt-1" style="color:#64748b;">Log real-time pass crossing, hotel arrival, weather &amp; guest wellness for Thimphu Operations.</p>
               </div>
 
@@ -408,19 +408,19 @@
 
             <section class="portal-card space-y-4">
               <div class="flex items-center justify-between">
-                <h2 class="text-xl font-bold m-0" style="color:#14231E;">Field Check-In Timeline</h2>
+                <h2 class="text-xl font-bold m-0" style="color:#0B2A22;">Field Check-In Timeline</h2>
                 <span class="badge badge-slate">${esc(checkins.length)} Log(s)</span>
               </div>
               ${checkins.length === 0 ? `
-                <div class="p-5 rounded-xl border text-center text-xs" style="background-color:#F8FAF9; border-color:#e2e8f0; color:#64748b;">
+                <div class="p-5 rounded-xl border text-center text-xs" style="background-color: #FFF8EC; border-color:#e2e8f0; color:#64748b;">
                   No field check-ins logged for this trip yet. Submit your first checkpoint on the left.
                 </div>
               ` : `
                 <div class="space-y-3" style="max-height:360px; overflow-y:auto;">
                   ${checkins.map((c) => `
-                    <div class="p-3.5 rounded-xl border space-y-1" style="background-color:#F8FAF9; border-color:#e2e8f0;">
+                    <div class="p-3.5 rounded-xl border space-y-1" style="background-color: #FFF8EC; border-color:#e2e8f0;">
                       <div class="flex flex-wrap items-center justify-between gap-2">
-                        <strong class="text-xs" style="color:#14231E;">${esc(c.location)}</strong>
+                        <strong class="text-xs" style="color:#0B2A22;">${esc(c.location)}</strong>
                         <span class="badge ${c.guest_status === 'Medical Attention Needed' ? 'badge-red' : 'badge-green'}">${esc(c.guest_status || 'All Well')}</span>
                       </div>
                       <div class="text-[11px]" style="color:#64748b;">
@@ -437,11 +437,11 @@
           <!-- Full Daily Itinerary -->
           <section class="portal-card space-y-4">
             <div class="flex items-center justify-between">
-              <h2 class="text-xl font-bold m-0" style="color:#14231E;">Daily Expedition Itinerary</h2>
+              <h2 class="text-xl font-bold m-0" style="color:#0B2A22;">Daily Expedition Itinerary</h2>
               <span class="badge badge-slate">${esc(itinerary.length)} Day(s)</span>
             </div>
             ${itinerary.length === 0 ? `
-              <div class="p-5 rounded-xl border text-center text-xs" style="background-color:#F8FAF9; border-color:#e2e8f0; color:#64748b;">
+              <div class="p-5 rounded-xl border text-center text-xs" style="background-color: #FFF8EC; border-color:#e2e8f0; color:#64748b;">
                 No structured itinerary attached to this booking.
               </div>
             ` : `

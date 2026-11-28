@@ -3,14 +3,14 @@
    ============================================================ */
 
 :root {
-  --admin-bg: #0F172A;
-  --admin-card: #1E293B;
-  --admin-sidebar: #0B1120;
-  --admin-border: #334155;
-  --admin-text: #F8FAFC;
-  --admin-muted: #94A3B8;
-  --primary: #E05A47;
-  --primary-hover: #C94937;
+  --admin-bg: #071A15;
+  --admin-card: #0D2921;
+  --admin-sidebar: #05130F;
+  --admin-border: #1C4539;
+  --admin-text: #FFF8EC;
+  --admin-muted: #9DB5AD;
+  --primary: #C9A24B;
+  --primary-hover: #E4C87E;
   --accent-emerald: #10B981;
   --accent-amber: #F59E0B;
   --accent-blue: #3B82F6;
@@ -94,8 +94,8 @@ input::placeholder, textarea::placeholder {
 }
 
 .sidebar-link:hover, .sidebar-link.active {
-  background-color: rgba(224, 90, 71, 0.15);
-  color: #FFFFFF;
+  background-color: rgba(201, 162, 75, 0.16);
+  color: #FFF8EC;
   border-left: 3px solid var(--primary);
 }
 
@@ -319,7 +319,8 @@ input::placeholder, textarea::placeholder {
 }
 .admin-btn-primary {
   background-color: var(--primary);
-  color: #FFFFFF;
+  color: #0B2A22;
+  font-weight: 800;
 }
 .admin-btn-primary:hover:not(:disabled) {
   background-color: var(--primary-hover);

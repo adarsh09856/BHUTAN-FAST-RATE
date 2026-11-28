@@ -269,7 +269,7 @@
                     <h3 class="font-extrabold text-white text-sm">${AdminApp.esc(g.full_name)}</h3>
                     <span class="badge ${avail.badgeClass}">${AdminApp.esc(avail.label)}</span>
                   </div>
-                  <div class="text-xs text-[#E05A47] font-bold mt-0.5">
+                  <div class="text-xs text-[#C9A24B] font-bold mt-0.5">
                     ${AdminApp.esc(g.specialty || 'Certified Cultural &amp; Trekking Guide')}
                     ${g.license_no ? ` · <span class="font-mono text-zinc-300">${AdminApp.esc(g.license_no)}</span>` : ''}
                   </div>
@@ -291,7 +291,7 @@
                   <div class="text-[10px] font-bold uppercase tracking-wider text-zinc-400">Upcoming / Active Schedule</div>
                   ${nextTripsPreview.map((t) => `
                     <div class="flex items-center justify-between gap-2">
-                      <a href="booking-detail.html?id=${encodeURIComponent(t.id)}" class="font-mono font-bold text-[#E05A47] hover:underline">${AdminApp.esc(t.id)}</a>
+                      <a href="booking-detail.html?id=${encodeURIComponent(t.id)}" class="font-mono font-bold text-[#C9A24B] hover:underline">${AdminApp.esc(t.id)}</a>
                       <span class="text-zinc-300 truncate">${AdminApp.esc(t.tour_title)}</span>
                       <span class="text-zinc-400 shrink-0">${AdminApp.esc(t.travel_date_start)}</span>
                     </div>
@@ -377,7 +377,7 @@
           <div class="admin-panel-sub flex flex-wrap items-center justify-between gap-3">
             <div class="space-y-1">
               <div class="flex items-center gap-2">
-                <a href="booking-detail.html?id=${encodeURIComponent(t.id)}" class="font-mono font-bold text-[#E05A47] hover:underline">${AdminApp.esc(t.id)}</a>
+                <a href="booking-detail.html?id=${encodeURIComponent(t.id)}" class="font-mono font-bold text-[#C9A24B] hover:underline">${AdminApp.esc(t.id)}</a>
                 ${AdminApp.bookingStatusBadge(t.booking_status)}
               </div>
               <div class="font-bold text-white">${AdminApp.esc(t.tour_title)}</div>

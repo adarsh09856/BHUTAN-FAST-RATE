@@ -573,8 +573,8 @@ async function runTests() {
       tourSlug: 'druk-path-trek'
     });
 
-    assert.ok(container.innerHTML.includes('#14231E'));
-    assert.ok(container.innerHTML.includes('#E05A47'));
+    assert.ok(container.innerHTML.includes('#0B2A22'));
+    assert.ok(container.innerHTML.includes('#C9A24B'));
     assert.ok(container.innerHTML.includes('color-scheme: light !important'));
     assert.ok(lastCalcPayload && lastCalcPayload.tour_slug === 'druk-path-trek');
     const url = widget.getBookUrl();

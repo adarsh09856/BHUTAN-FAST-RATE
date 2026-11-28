@@ -11,8 +11,8 @@
     body {
       margin: 0;
       font-family: 'Manrope', ui-sans-serif, system-ui, -apple-system, sans-serif;
-      background-color: #F8FAF9;
-      color: #1F2923;
+      background-color: #FFF8EC;
+      color: #101613;
       min-height: 100vh;
       display: flex;
       flex-direction: column;
@@ -23,9 +23,9 @@
     input, textarea, select {
       color-scheme: light !important;
       background-color: #ffffff !important;
-      color: #1F2923 !important;
-      -webkit-text-fill-color: #1F2923 !important;
-      caret-color: #E05A47 !important;
+      color: #101613 !important;
+      -webkit-text-fill-color: #101613 !important;
+      caret-color: #C9A24B !important;
       opacity: 1 !important;
     }
     input::placeholder, textarea::placeholder {
@@ -37,7 +37,7 @@
       position: sticky;
       top: 0;
       z-index: 40;
-      background-color: #14231E;
+      background-color: #0B2A22;
       color: #ffffff;
       border-bottom: 1px solid rgba(255, 255, 255, 0.12);
       box-shadow: 0 4px 16px rgba(0, 0, 0, 0.14);
@@ -54,10 +54,10 @@
       transition: color 0.15s, background-color 0.15s;
     }
     .portal-nav-link:hover { color: #ffffff; background-color: rgba(255,255,255,0.08); }
-    .portal-nav-link.active { color: #ffffff; background-color: rgba(224, 90, 71, 0.22); border: 1px solid rgba(224, 90, 71, 0.45); }
+    .portal-nav-link.active { color: #ffffff; background-color: rgba(201, 162, 75, 0.22); border: 1px solid rgba(201, 162, 75, 0.45); }
     .portal-card {
       background-color: #ffffff;
-      border: 1px solid #e2e8f0;
+      border: 1px solid #E7DCC4;
       border-radius: 16px;
       padding: 24px;
       box-shadow: 0 2px 10px rgba(20, 35, 30, 0.04);
@@ -94,11 +94,11 @@
       transition: all 0.15s ease;
     }
     .btn:disabled { opacity: 0.55; cursor: not-allowed; }
-    .btn-coral { background-color: #E05A47; color: #ffffff; }
-    .btn-coral:hover:not(:disabled) { background-color: #c94937; }
-    .btn-forest { background-color: #14231E; color: #ffffff; }
-    .btn-forest:hover:not(:disabled) { background-color: #0E1915; }
-    .btn-outline { background-color: #ffffff; color: #14231E; border-color: #cbd5e1; }
+    .btn-coral { background-color: #C9A24B; color: #0B2A22; }
+    .btn-coral:hover:not(:disabled) { background-color: #E4C87E; }
+    .btn-forest { background-color: #0B2A22; color: #ffffff; }
+    .btn-forest:hover:not(:disabled) { background-color: #0B2A22; }
+    .btn-outline { background-color: #ffffff; color: #0B2A22; border-color: #cbd5e1; }
     .btn-outline:hover:not(:disabled) { background-color: #f8fafc; border-color: #94a3b8; }
     .btn-sm { padding: 7px 12px; font-size: 11px; border-radius: 8px; }
     .portal-input {
@@ -111,8 +111,8 @@
     }
     .portal-input:focus {
       outline: none;
-      border-color: #E05A47;
-      box-shadow: 0 0 0 3px rgba(224, 90, 71, 0.14);
+      border-color: #C9A24B;
+      box-shadow: 0 0 0 3px rgba(201, 162, 75, 0.14);
     }
     .progress-track {
       width: 100%;
@@ -123,7 +123,7 @@
     }
     .progress-fill {
       height: 100%;
-      background: linear-gradient(90deg, #14231E, #059669);
+      background: linear-gradient(90deg, #0B2A22, #059669);
       border-radius: 9999px;
       transition: width 0.3s ease;
     }
@@ -137,7 +137,7 @@
     .alert-warn { background-color: #fffbeb; border: 1px solid #fde68a; color: #92400e; }
     .alert-success { background-color: #ecfdf5; border: 1px solid #a7f3d0; color: #065f46; }
     .doc-upload-box {
-      background-color: #F8FAF9;
+      background-color: #FFF8EC;
       border: 1px dashed #94a3b8;
       border-radius: 12px;
       padding: 12px;
@@ -159,7 +159,7 @@
       max-width: 720px;
       background-color: #ffffff;
       border-radius: 18px;
-      border: 1px solid #e2e8f0;
+      border: 1px solid #E7DCC4;
       box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.4);
       overflow: hidden;
     }
@@ -178,7 +178,7 @@
   <header class="portal-header">
     <div class="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-4">
       <a href="dashboard.html" class="flex items-center gap-3" style="text-decoration:none; color:#fff;">
-        <div class="w-9 h-9 rounded-lg flex items-center justify-center font-black text-sm" style="background-color:#E05A47; color:#fff;">B</div>
+        <div class="w-9 h-9 rounded-lg flex items-center justify-center font-black text-sm" style="background-color:#C9A24B; color:#0B2A22; border-radius:9999px; font-family:Fraunces,serif;">B</div>
         <div>
           <div class="font-extrabold text-sm uppercase tracking-wider leading-none">Traveler Portal</div>
           <div class="text-[10px] tracking-wider uppercase" style="color:#cbd5e1;" data-bfr-license>#TR/2018/9882</div>
@@ -196,19 +196,19 @@
 
   <main class="py-8 max-w-6xl mx-auto px-4 sm:px-6 flex-1 space-y-6 w-full" id="documentsContent">
     <div class="portal-card py-16 text-center" style="color:#64748b;">
-      <div class="inline-block w-8 h-8 border-4 rounded-full mb-3" style="border-color:#E05A47; border-top-color:transparent; animation: spin 0.8s linear infinite;"></div>
+      <div class="inline-block w-8 h-8 border-4 rounded-full mb-3" style="border-color:#C9A24B; border-top-color:transparent; animation: spin 0.8s linear infinite;"></div>
       <div class="text-sm font-semibold">Loading Traveler Roster &amp; Document Readiness...</div>
     </div>
   </main>
 
-  <footer class="py-6 text-center text-xs border-t" style="background-color:#0E1915; color:#94a3b8; border-color:rgba(255,255,255,0.1);">
+  <footer class="py-6 text-center text-xs border-t" style="background-color: #0B2A22; color:#94a3b8; border-color:rgba(255,255,255,0.1);">
     &copy; 2026 <span data-bfr-company>Bhutan Fast Rate Tours</span> (<span data-bfr-license>#TR/2018/9882</span>) • Client Self-Service Portal • Hotline: <span data-bfr-phone>+975 17 654 321</span>
   </footer>
 
   <!-- Private Document Preview Modal -->
   <div id="docPreviewModal" class="modal-backdrop hidden" role="dialog" aria-modal="true" aria-labelledby="docPreviewTitle">
     <div class="modal-panel">
-      <div class="px-6 py-4 flex items-center justify-between border-b" style="background-color:#14231E; color:#fff;">
+      <div class="px-6 py-4 flex items-center justify-between border-b" style="background-color: #0B2A22; color:#fff;">
         <div>
           <h2 id="docPreviewTitle" class="text-base font-bold m-0">Document Preview</h2>
           <p id="docPreviewSub" class="text-[11px] m-0" style="color:#cbd5e1;">Authenticated private upload</p>
@@ -231,7 +231,7 @@
   <!-- Add Companion / Request Add-On Guest Modal -->
   <div id="addGuestModal" class="modal-backdrop hidden" role="dialog" aria-modal="true" aria-labelledby="addGuestTitle">
     <div class="modal-panel" style="max-width:580px;">
-      <div class="px-6 py-4 flex items-center justify-between border-b" style="background-color:#14231E; color:#fff;">
+      <div class="px-6 py-4 flex items-center justify-between border-b" style="background-color: #0B2A22; color:#fff;">
         <div>
           <h2 id="addGuestTitle" class="text-lg font-bold m-0">Add Companion / Request Add-On Guest</h2>
           <p id="addGuestSubtitle" class="text-[11px] m-0" style="color:#cbd5e1;">Add traveler details to your reservation party</p>
@@ -414,7 +414,7 @@
               data-doc-path="${esc(tr[field])}"
               class="btn btn-outline btn-sm"
             >Preview</button>
-            <a href="${esc(secureUrl)}" target="_blank" rel="noopener" class="text-xs font-bold" style="color:#E05A47; text-decoration:underline;">Open ↗</a>
+            <a href="${esc(secureUrl)}" target="_blank" rel="noopener" class="text-xs font-bold" style="color:#C9A24B; text-decoration:underline;">Open ↗</a>
           </div>
         `;
       }
@@ -446,7 +446,7 @@
                     ${readiness.ready ? '✓ DoI Ready' : (errors.length ? '⚠ Compliance Issue' : 'Pending Documents')}
                   </span>
                 </div>
-                <h2 class="text-xl font-bold m-0 mt-2" style="color:#14231E;">${esc(tr.full_name || `Guest ${index + 1}`)}</h2>
+                <h2 class="text-xl font-bold m-0 mt-2" style="color:#0B2A22;">${esc(tr.full_name || `Guest ${index + 1}`)}</h2>
                 <div class="text-xs mt-0.5" style="color:#64748b;">
                   Nationality: <strong>${esc(tr.nationality || 'Not set')}</strong> •
                   Visa Stage: <strong>${esc(String(tr.visa_status || 'pending').replace(/_/g, ' ').toUpperCase())}</strong>
@@ -534,21 +534,21 @@
               <!-- Multipart File Uploads -->
               <div class="form-grid-3">
                 <div class="doc-upload-box space-y-2">
-                  <div class="text-xs font-extrabold" style="color:#14231E;">Passport Bio-Page / ID Scan *</div>
+                  <div class="text-xs font-extrabold" style="color:#0B2A22;">Passport Bio-Page / ID Scan *</div>
                   <div class="text-[11px]" style="color:#64748b;">Clear color JPG, PNG, or PDF (max 5MB)</div>
                   ${renderDocStatusChip(tr, 'passport_scan', 'Passport Scan')}
                   <input type="file" name="passport_scan" accept=".jpg,.jpeg,.png,.pdf" class="portal-input" style="padding:6px; font-size:12px;">
                 </div>
 
                 <div class="doc-upload-box space-y-2">
-                  <div class="text-xs font-extrabold" style="color:#14231E;">Passport-Size Photograph *</div>
+                  <div class="text-xs font-extrabold" style="color:#0B2A22;">Passport-Size Photograph *</div>
                   <div class="text-[11px]" style="color:#64748b;">Recent photo on plain light background</div>
                   ${renderDocStatusChip(tr, 'photo_url', 'Passport Photo')}
                   <input type="file" name="photo_url" accept=".jpg,.jpeg,.png,.pdf" class="portal-input" style="padding:6px; font-size:12px;">
                 </div>
 
                 <div class="doc-upload-box space-y-2">
-                  <div class="text-xs font-extrabold" style="color:#14231E;">Travel Insurance Policy</div>
+                  <div class="text-xs font-extrabold" style="color:#0B2A22;">Travel Insurance Policy</div>
                   <div class="text-[11px]" style="color:#64748b;">Medical &amp; emergency evacuation coverage</div>
                   ${renderDocStatusChip(tr, 'insurance_doc', 'Travel Insurance')}
                   <input type="file" name="insurance_doc" accept=".jpg,.jpeg,.png,.pdf" class="portal-input" style="padding:6px; font-size:12px;">
@@ -591,7 +591,7 @@
                     ${docReadiness.all_ready ? 'All Travelers DoI Ready' : `${esc(docReadiness.ready_count)}/${esc(docReadiness.total)} Ready`}
                   </span>
                 </div>
-                <h1 class="text-2xl sm:text-3xl font-bold m-0 mt-2" style="color:#14231E;">Traveler Passports &amp; Visa Documents</h1>
+                <h1 class="text-2xl sm:text-3xl font-bold m-0 mt-2" style="color:#0B2A22;">Traveler Passports &amp; Visa Documents</h1>
                 <p class="text-xs m-0 mt-1" style="color:#475569;">
                   Trip: <strong>${esc(b.tour_title)}</strong> • Travel End Date: <strong>${esc(b.travel_date_end)}</strong> •
                   Visa Status: <strong>${esc(String(b.visa_status || 'pending_docs').replace(/_/g, ' ').toUpperCase())}</strong>
@@ -608,7 +608,7 @@
             <div class="space-y-2">
               <div class="flex items-center justify-between text-xs font-bold">
                 <span style="color:#334155;">Document Readiness Progress</span>
-                <span style="color:#14231E;">${esc(docReadiness.ready_count)} of ${esc(docReadiness.total)} Traveler(s) Ready (${pct}%)</span>
+                <span style="color:#0B2A22;">${esc(docReadiness.ready_count)} of ${esc(docReadiness.total)} Traveler(s) Ready (${pct}%)</span>
               </div>
               <div class="progress-track">
                 <div class="progress-fill" style="width:${pct}%;"></div>
@@ -635,7 +635,7 @@
           <div class="space-y-5">
             ${travelers.length === 0 ? `
               <div class="portal-card text-center space-y-3">
-                <div class="text-sm font-bold" style="color:#14231E;">No traveler profiles added yet.</div>
+                <div class="text-sm font-bold" style="color:#0B2A22;">No traveler profiles added yet.</div>
                 <button type="button" data-action="open-add-guest" class="btn btn-coral btn-sm">+ Add First Traveler</button>
               </div>
             ` : travelers.map((tr, idx) => renderTravelerCard(tr, idx, b)).join('')}

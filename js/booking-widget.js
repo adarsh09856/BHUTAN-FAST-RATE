@@ -229,18 +229,18 @@
       const tierLabel = (label, price) => (price > 0 ? `${label} (${fmtCurrency(price, 'USD')}/adult)` : label);
 
       this.container.innerHTML = `
-        <div class="bg-white p-6 sm:p-7 rounded-2xl border border-zinc-200 shadow-lg space-y-5" style="color-scheme: light !important;">
+        <div class="bg-white p-6 sm:p-7 rounded-[24px] border border-[#E7DCC4] shadow-xl space-y-5 text-[#101613]" style="color-scheme: light !important;">
           <style>
             .bfr-bw-input {
               color-scheme: light !important;
-              background-color: #ffffff !important;
-              color: #14231E !important;
+              background-color: #FFF8EC !important;
+              color: #0B2A22 !important;
             }
           </style>
           <div>
-            <span class="text-[11px] font-bold uppercase tracking-wider text-[#E05A47]">ROYAL GOVT LICENSED BOOKING DESK</span>
-            <h3 class="text-xl font-extrabold text-[#14231E] mt-1">Configure &amp; Book This Trip</h3>
-            <p class="text-xs text-zinc-500 mt-1">Live Department of Tourism SDF &amp; multi-tier package pricing.</p>
+            <span class="text-[11px] font-extrabold uppercase tracking-[0.2em] text-[#C9A24B]">ROYAL GOVT LICENSED BOOKING DESK</span>
+            <h3 class="font-serif text-2xl font-bold text-[#0B2A22] mt-1">Configure &amp; Book This Trip</h3>
+            <p class="text-xs text-[#66706A] mt-1">Live Department of Tourism SDF &amp; multi-tier package pricing.</p>
           </div>
 
           <div id="bwError" class="hidden p-3 rounded-xl bg-red-50 border border-red-200 text-xs font-semibold text-red-700"></div>
@@ -248,21 +248,21 @@
           <form id="bwForm" class="space-y-4">
             <div class="grid grid-cols-2 gap-3">
               <div>
-                <label for="bwDate" class="block text-xs font-bold text-[#14231E] mb-1">Departure Date</label>
+                <label for="bwDate" class="block text-xs font-bold text-[#0B2A22] mb-1">Departure Date</label>
                 <input type="date" id="bwDate" value="${esc(this.state.date)}" required
-                  class="bfr-bw-input w-full px-3 py-2 rounded-lg border border-zinc-300 text-xs font-semibold">
+                  class="bfr-bw-input w-full px-3 py-2 rounded-xl border border-[#E7DCC4] text-xs font-semibold">
               </div>
               <div>
-                <label for="bwNights" class="block text-xs font-bold text-[#14231E] mb-1">Nights</label>
+                <label for="bwNights" class="block text-xs font-bold text-[#0B2A22] mb-1">Nights</label>
                 <input type="number" id="bwNights" value="${esc(this.state.nights)}" min="1" max="60"
                   ${this.allowNightsEdit ? '' : 'readonly'}
-                  class="bfr-bw-input w-full px-3 py-2 rounded-lg border border-zinc-300 text-xs font-semibold">
+                  class="bfr-bw-input w-full px-3 py-2 rounded-xl border border-[#E7DCC4] text-xs font-semibold">
               </div>
             </div>
 
             <div>
-              <label for="bwTier" class="block text-xs font-bold text-[#14231E] mb-1">Accommodation Tier</label>
-              <select id="bwTier" class="bfr-bw-input w-full px-3 py-2.5 rounded-lg border border-zinc-300 text-xs font-semibold">
+              <label for="bwTier" class="block text-xs font-bold text-[#0B2A22] mb-1">Accommodation Tier</label>
+              <select id="bwTier" class="bfr-bw-input w-full px-3 py-2.5 rounded-xl border border-[#E7DCC4] text-xs font-semibold">
                 <option value="3-star" ${this.state.tier === '3-star' ? 'selected' : ''}>${esc(tierLabel('3-Star Heritage Lodges', p3))}</option>
                 <option value="4-star" ${this.state.tier === '4-star' ? 'selected' : ''}>${esc(tierLabel('4-Star Premium Boutique', p4))}</option>
                 <option value="5-star" ${this.state.tier === '5-star' ? 'selected' : ''}>${esc(tierLabel('5-Star Luxury Resorts', p5))}</option>
@@ -270,8 +270,8 @@
             </div>
 
             <div>
-              <label for="bwNationality" class="block text-xs font-bold text-[#14231E] mb-1">Guest Nationality / Currency</label>
-              <select id="bwNationality" class="bfr-bw-input w-full px-3 py-2.5 rounded-lg border border-zinc-300 text-xs font-semibold">
+              <label for="bwNationality" class="block text-xs font-bold text-[#0B2A22] mb-1">Guest Nationality / Currency</label>
+              <select id="bwNationality" class="bfr-bw-input w-full px-3 py-2.5 rounded-xl border border-[#E7DCC4] text-xs font-semibold">
                 <option value="international" ${this.state.nationality === 'international' ? 'selected' : ''}>International Guest (USD $100/night SDF)</option>
                 <option value="india" ${this.state.nationality === 'india' ? 'selected' : ''}>Indian National (INR ₹1,200/night SDF)</option>
               </select>
@@ -279,65 +279,65 @@
 
             <div class="grid grid-cols-3 gap-2">
               <div>
-                <label for="bwAdults" class="block text-[11px] font-bold text-[#14231E] mb-1">Adults (13+)</label>
+                <label for="bwAdults" class="block text-[11px] font-bold text-[#0B2A22] mb-1">Adults (13+)</label>
                 <input type="number" id="bwAdults" value="${esc(this.state.adults)}" min="1" max="30"
-                  class="bfr-bw-input w-full px-2.5 py-2 rounded-lg border border-zinc-300 text-xs font-bold">
+                  class="bfr-bw-input w-full px-2.5 py-2 rounded-xl border border-[#E7DCC4] text-xs font-bold">
               </div>
               <div>
-                <label for="bwChildren612" class="block text-[11px] font-bold text-[#14231E] mb-1">Child (6–12)</label>
+                <label for="bwChildren612" class="block text-[11px] font-bold text-[#0B2A22] mb-1">Child (6–12)</label>
                 <input type="number" id="bwChildren612" value="${esc(this.state.children_6_12)}" min="0" max="20"
-                  class="bfr-bw-input w-full px-2.5 py-2 rounded-lg border border-zinc-300 text-xs font-bold">
+                  class="bfr-bw-input w-full px-2.5 py-2 rounded-xl border border-[#E7DCC4] text-xs font-bold">
               </div>
               <div>
-                <label for="bwChildrenUnder6" class="block text-[11px] font-bold text-[#14231E] mb-1">Under 6</label>
+                <label for="bwChildrenUnder6" class="block text-[11px] font-bold text-[#0B2A22] mb-1">Under 6</label>
                 <input type="number" id="bwChildrenUnder6" value="${esc(this.state.children_under_6)}" min="0" max="15"
-                  class="bfr-bw-input w-full px-2.5 py-2 rounded-lg border border-zinc-300 text-xs font-bold">
+                  class="bfr-bw-input w-full px-2.5 py-2 rounded-xl border border-[#E7DCC4] text-xs font-bold">
               </div>
             </div>
 
-            <div class="p-4 rounded-xl bg-[#F8FAF9] border border-zinc-200 space-y-2 text-xs">
+            <div class="p-4 rounded-2xl bg-[#FFF8EC] border border-[#E7DCC4] space-y-2 text-xs">
               <div class="flex justify-between">
-                <span class="text-zinc-600">Tour Package (<span id="bwCurrencyLabel">${this.state.nationality === 'india' ? 'INR' : 'USD'}</span>):</span>
-                <span id="bwPackageTotal" class="font-bold text-[#14231E]">—</span>
+                <span class="text-[#66706A]">Tour Package (<span id="bwCurrencyLabel">${this.state.nationality === 'india' ? 'INR' : 'USD'}</span>):</span>
+                <span id="bwPackageTotal" class="font-bold text-[#0B2A22]">—</span>
               </div>
               <div class="flex justify-between">
-                <span class="text-zinc-600">Royal Gov SDF Tax:</span>
-                <span id="bwSdfTotal" class="font-bold text-[#14231E]">—</span>
+                <span class="text-[#66706A]">Royal Gov SDF Tax:</span>
+                <span id="bwSdfTotal" class="font-bold text-[#0B2A22]">—</span>
               </div>
               <div class="flex justify-between">
-                <span class="text-zinc-600">Tourist Visa Fee (24–48h):</span>
-                <span id="bwVisaTotal" class="font-bold text-[#14231E]">—</span>
+                <span class="text-[#66706A]">Tourist Visa Fee (24–48h):</span>
+                <span id="bwVisaTotal" class="font-bold text-[#0B2A22]">—</span>
               </div>
-              <div class="flex justify-between pt-2 border-t border-zinc-200 text-sm font-black text-[#E05A47]">
+              <div class="flex justify-between pt-2 border-t border-[#E7DCC4] text-sm font-extrabold text-[#0B2A22]">
                 <span>Estimated Total:</span>
-                <span id="bwGrandTotal">—</span>
+                <span id="bwGrandTotal" class="font-serif text-lg text-[#0B2A22]">—</span>
               </div>
-              <div class="flex justify-between text-[11px] text-zinc-500">
+              <div class="flex justify-between text-[11px] text-[#66706A]">
                 <span>Reservation Deposit (<span id="bwDepositPct">30%</span>):</span>
-                <span id="bwDepositTotal" class="font-bold text-[#14231E]">—</span>
+                <span id="bwDepositTotal" class="font-bold text-[#0B2A22]">—</span>
               </div>
             </div>
 
             <a id="bwReserveBtn" href="${esc(this.getBookUrl())}"
-              class="block w-full text-center py-3.5 rounded-xl bg-[#E05A47] hover:bg-[#c94937] text-white font-black text-xs uppercase tracking-wider shadow transition-colors">
-              Book Now &amp; Continue Checkout
+              class="block w-full text-center py-3.5 rounded-full bg-[#0B2A22] hover:bg-[#123A30] text-white font-bold text-xs uppercase tracking-wider shadow transition-colors">
+              Book Now &amp; Continue Checkout →
             </a>
 
             <div class="grid grid-cols-2 gap-2">
               <a id="bwWhatsappBtn" href="${esc(this.getWhatsAppUrl())}" target="_blank" rel="noopener"
-                class="block text-center py-2.5 px-2 rounded-xl border border-zinc-300 text-[#14231E] font-bold text-[11px] uppercase tracking-wide hover:bg-[#F8FAF9] transition-colors">
+                class="block text-center py-2.5 px-2 rounded-full border border-[#E7DCC4] bg-[#F7EDD8] hover:bg-[#EADFC8] text-[#0B2A22] font-bold text-[11px] uppercase tracking-wide transition-colors">
                 WhatsApp Quote
               </a>
               <a id="bwContactBtn" href="${esc(this.getContactUrl())}"
-                class="block text-center py-2.5 px-2 rounded-xl border border-zinc-300 text-[#14231E] font-bold text-[11px] uppercase tracking-wide hover:bg-[#F8FAF9] transition-colors">
+                class="block text-center py-2.5 px-2 rounded-full border border-[#E7DCC4] bg-white hover:bg-[#FFF8EC] text-[#0B2A22] font-bold text-[11px] uppercase tracking-wide transition-colors">
                 Custom Inquiry
               </a>
             </div>
           </form>
 
-          <div class="text-[11px] text-zinc-500 text-center space-y-1 pt-1 border-t border-zinc-100">
+          <div class="text-[11px] text-[#66706A] text-center space-y-1 pt-2 border-t border-[#E7DCC4]">
             <p>✓ 100% Refundable up to 30 days before departure.</p>
-            <p>✓ Direct booking guarantee · License <span id="bwLicenseText">${esc(this.licenseText)}</span>.</p>
+            <p>✓ Direct booking guarantee · License <span id="bwLicenseText" class="font-bold text-[#0B2A22]">${esc(this.licenseText)}</span>.</p>
           </div>
         </div>
       `;

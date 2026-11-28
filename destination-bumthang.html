@@ -16,9 +16,9 @@
       color-scheme: light !important;
       background-color: #ffffff !important;
       background: #ffffff !important;
-      color: #1f2923 !important;
-      -webkit-text-fill-color: #1f2923 !important;
-      caret-color: #e05a47 !important;
+      color: #101613 !important;
+      -webkit-text-fill-color: #101613 !important;
+      caret-color: #C9A24B !important;
       opacity: 1 !important;
     }
     input::placeholder, textarea::placeholder {
@@ -28,112 +28,108 @@
     }
     input:focus, textarea:focus {
       background-color: #ffffff !important;
-      color: #1f2923 !important;
-      -webkit-text-fill-color: #1f2923 !important;
+      color: #101613 !important;
+      -webkit-text-fill-color: #101613 !important;
       outline: none !important;
     }
   </style>
 </head>
-<body class="bg-[#FBF9F5] text-[#1F2923] min-h-screen flex flex-col font-sans antialiased">
+<body class="bg-[#FFF8EC] text-[#101613] min-h-screen flex flex-col font-sans antialiased">
 
-  <!-- Top Official Royal Bar -->
-  <aside aria-label="Official Licensing" class="bg-[#0E1915] text-white text-[11px] py-2 px-4 border-b border-white/10">
-    <div class="max-w-7xl mx-auto flex flex-wrap justify-between items-center gap-2">
-      <div class="flex items-center gap-2">
-        <span class="px-2 py-0.5 rounded bg-[#E05A47] text-white font-extrabold text-[10px] uppercase tracking-wider">ROYAL GOVT LICENSED <span data-bfr-license>#TR/2018/9882</span></span>
-        <span class="text-zinc-300">Department of Tourism Certified • Fast-Track 24-48h SDF Tourist Visa Guarantee</span>
-      </div>
-      <div class="flex items-center gap-4 text-zinc-300 text-xs">
-        <a href="tel:+97517654321" class="hover:text-[#E05A47] flex items-center gap-1">
-          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
-          <span data-bfr-phone>+975 17 654 321</span>
-        </a>
+    <!-- Top Announcement Bar -->
+  <div class="bg-[#0B2A22] text-white text-[12px] sm:text-[13px] border-b border-[#123A30]">
+    <div class="max-w-[1360px] mx-auto px-4 sm:px-6 py-2.5 flex flex-wrap gap-x-6 gap-y-1 justify-between items-center">
+      <span class="font-semibold flex items-center gap-1.5 whitespace-nowrap">
+        <span class="text-[#E4C87E]">✓</span> SDF fee included · Licensed Bhutan operator <span data-bfr-license>#TR/2018/9882</span>
+      </span>
+      <span class="hidden md:flex items-center gap-4 text-white/80 whitespace-nowrap">
+        <span>USD &amp; INR Accepted</span>
         <span>•</span>
-        <a href="track-visa.html" class="hover:text-[#E05A47] font-bold text-emerald-400">Track Visa Status</a>
+        <span>Direct Drukair &amp; Bhutan Airlines Booking</span>
         <span>•</span>
-        <a href="admin/login.html" class="hover:text-white text-zinc-400">Staff Portal</a>
-      </div>
+        <span>Live Support 9am–8pm Bhutan Time</span>
+      </span>
+      <span class="text-[#E4C87E] font-bold flex items-center gap-1 whitespace-nowrap">
+        <span>★ 4.9</span>
+        <span class="text-white/70 font-normal">(2,400+ travellers)</span>
+      </span>
     </div>
-  </aside>
+  </div>
 
   <!-- Sticky Luxury Header -->
-  <header class="sticky top-0 z-50 bg-[#14231E]/95 backdrop-blur-md border-b border-white/10 text-white shadow-lg">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="flex items-center justify-between h-20">
-        <a href="index.html" class="flex items-center gap-3 shrink-0 whitespace-nowrap">
-          <div class="w-11 h-11 rounded-xl bg-[#E05A47] flex items-center justify-center font-black text-white text-xl shadow-md">
-            B
-          </div>
-          <div>
-            <div class="font-black text-base sm:text-lg tracking-wider uppercase leading-none">
-              BHUTAN FAST RATE TOURS
-            </div>
-            <div class="text-[9px] font-bold text-[#E05A47] tracking-widest uppercase mt-0.5">
-              OFFICIAL ROYAL KINGDOM TOUR OPERATOR
-            </div>
-          </div>
+  <header class="sticky top-0 z-40 bg-[#FFF8EC]/95 backdrop-blur-md border-b border-[#E7DCC4] transition-all" style="background-color:rgba(255,248,236,0.97);">
+    <div class="max-w-[1360px] mx-auto px-4 sm:px-6 h-[72px] flex items-center justify-between gap-3">
+      <button id="tourMobileBtn" type="button" aria-label="Toggle Menu" class="lg:hidden p-2 rounded-xl text-[#0B2A22] hover:bg-[#F7EDD8] shrink-0">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+      </button>
+
+      <a href="index.html" class="flex items-center gap-2.5 shrink-0 whitespace-nowrap">
+        <span class="w-10 h-10 rounded-full bg-[#0B2A22] text-[#C9A24B] grid place-items-center font-serif text-xl font-bold shadow-sm shrink-0">B</span>
+        <span class="leading-none">
+          <span class="block font-serif text-[18px] sm:text-[21px] font-bold tracking-tight text-[#0B2A22] whitespace-nowrap" data-bfr-company>BHUTAN FAST RATE</span>
+          <span class="block text-[10px] tracking-[0.22em] text-[#C9A24B] font-extrabold whitespace-nowrap">TOURS · EST. PARO</span>
+        </span>
+      </a>
+
+      <nav class="hidden lg:flex items-center gap-0.5 xl:gap-1 text-[14px] xl:text-[15px] font-semibold text-[#101613] whitespace-nowrap">
+        <a href="index.html" class="px-3 py-2 rounded-full hover:bg-[#F7EDD8] text-[#101613] transition-colors whitespace-nowrap shrink-0">Home</a>
+        <a href="tours.html" class="px-3 py-2 rounded-full hover:bg-[#F7EDD8] text-[#101613] transition-colors whitespace-nowrap shrink-0">Tours</a>
+        <a href="destinations.html" class="px-3 py-2 rounded-full bg-[#0B2A22] text-white shadow-sm transition-colors whitespace-nowrap shrink-0">Destinations</a>
+        <a href="festivals.html" class="px-3 py-2 rounded-full hover:bg-[#F7EDD8] text-[#101613] transition-colors whitespace-nowrap shrink-0">Festivals</a>
+        <a href="services.html" class="px-3 py-2 rounded-full hover:bg-[#F7EDD8] text-[#101613] transition-colors whitespace-nowrap shrink-0">Visa &amp; SDF</a>
+        <a href="about.html" class="px-3 py-2 rounded-full hover:bg-[#F7EDD8] text-[#101613] transition-colors whitespace-nowrap shrink-0">About Us</a>
+        <a href="contact.html" class="px-3 py-2 rounded-full hover:bg-[#F7EDD8] text-[#101613] transition-colors whitespace-nowrap shrink-0">Contact</a>
+      </nav>
+
+      <div class="flex items-center gap-2 shrink-0">
+        <a href="sdf-calculator.html" class="hidden xl:inline-flex items-center gap-1.5 text-xs font-bold text-[#0B2A22] bg-[#F7EDD8] hover:bg-[#EADFC8] px-3.5 py-2 rounded-full border border-[#E7DCC4] whitespace-nowrap shrink-0 transition">
+          SDF Calculator
         </a>
-
-        <!-- Desktop Navigation Menu -->
-        <nav class="hidden lg:flex items-center gap-6 text-xs font-bold uppercase tracking-wider text-zinc-200 whitespace-nowrap">
-          <a href="index.html" class="hover:text-[#E05A47] transition-colors py-2">Home</a>
-          <a href="tours.html" class="hover:text-[#E05A47] transition-colors py-2">Tour Packages</a>
-          <a href="destinations.html" class="text-[#E05A47] border-b-2 border-[#E05A47] transition-colors py-2">Destinations</a>
-          <a href="festivals.html" class="hover:text-[#E05A47] transition-colors py-2">Festivals</a>
-          <a href="services.html" class="hover:text-[#E05A47] transition-colors py-2">SDF &amp; Services</a>
-          <a href="sdf-calculator.html" class="hover:text-[#E05A47] transition-colors py-2 text-emerald-400">SDF Calculator</a>
-          <a href="about.html" class="hover:text-[#E05A47] transition-colors py-2">About Us</a>
-          <a href="contact.html" class="hover:text-[#E05A47] transition-colors py-2">Contact</a>
-        </nav>
-
-        <!-- Right Quick Actions -->
-        <div class="flex items-center gap-3">
-          <a href="contact.html" class="hidden sm:inline-flex items-center justify-center px-5 py-2.5 rounded-lg text-xs font-black uppercase tracking-wider text-white bg-[#E05A47] hover:bg-[#c94937] shadow-sm transition-all">
-            Plan My Trip
-          </a>
-          <button id="tourMobileBtn" aria-label="Toggle Navigation" class="lg:hidden p-2 rounded-lg text-white hover:bg-white/10 border border-white/20">
-            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"/></svg>
-          </button>
-        </div>
+        <a href="track-visa.html" class="hidden 2xl:inline-flex items-center gap-1.5 text-xs font-bold text-[#0B2A22] bg-white hover:bg-[#F7EDD8] px-3.5 py-2 rounded-full border border-[#E7DCC4] whitespace-nowrap shrink-0 transition">
+          Track Visa
+        </a>
+        <a href="book.html" class="hidden sm:inline-flex items-center gap-1.5 text-xs sm:text-sm font-bold bg-[#C9A24B] hover:bg-[#E4C87E] text-[#0B2A22] px-4 sm:px-5 py-2.5 rounded-full shadow-sm whitespace-nowrap shrink-0 transition">
+          Book Now →
+        </a>
       </div>
     </div>
 
     <!-- Mobile Drawer Menu -->
-    <div id="tourMobileMenu" class="hidden lg:hidden bg-[#0e1915] border-b border-white/10 px-4 pt-3 pb-6">
-      <div class="flex flex-col gap-2 text-sm font-bold text-zinc-200">
-        <a href="index.html" class="px-3 py-2 rounded hover:bg-white/5">Home</a>
-        <a href="tours.html" class="px-3 py-2 rounded hover:bg-white/5">All Tour Packages</a>
-        <a href="destinations.html" class="px-3 py-2 rounded hover:bg-white/5">Valley Destinations</a>
-        <a href="festivals.html" class="px-3 py-2 rounded hover:bg-white/5">Sacred Festivals</a>
-        <a href="services.html" class="px-3 py-2 rounded hover:bg-white/5">SDF Tax &amp; Travel Services</a>
-        <a href="sdf-calculator.html" class="px-3 py-2 rounded text-emerald-400 hover:bg-white/5">SDF Cost Calculator</a>
-        <a href="track-visa.html" class="px-3 py-2 rounded text-emerald-400 hover:bg-white/5">Live Visa Tracker</a>
-        <a href="visa-guide.html" class="px-3 py-2 rounded hover:bg-white/5">Visa Requirements Guide</a>
-        <a href="about.html" class="px-3 py-2 rounded hover:bg-white/5">About Operator</a>
-        <a href="contact.html" class="px-3 py-2 rounded hover:bg-white/5">Contact Booking Desk</a>
-        <a href="contact.html" class="mt-2 text-center py-3 rounded-lg text-white bg-[#E05A47] hover:bg-[#c94937] font-black uppercase text-xs tracking-wider">
-          Plan My Trip
+    <div id="tourMobileMenu" class="hidden lg:hidden bg-[#FFF8EC] border-t border-[#E7DCC4] px-4 pt-3 pb-6 shadow-xl">
+      <div class="flex flex-col gap-1.5 text-sm font-semibold text-[#101613]">
+        <a href="index.html" class="px-3.5 py-2.5 rounded-xl hover:bg-[#F7EDD8]">Home</a>
+        <a href="tours.html" class="px-3.5 py-2.5 rounded-xl hover:bg-[#F7EDD8]">Tours &amp; Packages</a>
+        <a href="destinations.html" class="px-3.5 py-2.5 rounded-xl hover:bg-[#F7EDD8]">Destinations</a>
+        <a href="festivals.html" class="px-3.5 py-2.5 rounded-xl hover:bg-[#F7EDD8]">Festival Calendar</a>
+        <a href="services.html" class="px-3.5 py-2.5 rounded-xl hover:bg-[#F7EDD8]">Visa &amp; SDF</a>
+        <a href="sdf-calculator.html" class="px-3.5 py-2.5 rounded-xl hover:bg-[#F7EDD8] text-[#0B2A22] font-bold">SDF Cost Calculator</a>
+        <a href="track-visa.html" class="px-3.5 py-2.5 rounded-xl hover:bg-[#F7EDD8] text-[#0B2A22] font-bold">Track Visa Status</a>
+        <a href="client/login.html" class="px-3.5 py-2.5 rounded-xl hover:bg-[#F7EDD8]">Client Portal</a>
+        <a href="about.html" class="px-3.5 py-2.5 rounded-xl hover:bg-[#F7EDD8]">About Us</a>
+        <a href="contact.html" class="px-3.5 py-2.5 rounded-xl hover:bg-[#F7EDD8]">Contact Booking Desk</a>
+        <a href="book.html" class="mt-2 text-center py-3 rounded-full bg-[#C9A24B] hover:bg-[#E4C87E] text-[#0B2A22] font-extrabold text-xs uppercase tracking-wider">
+          Book Now →
         </a>
       </div>
     </div>
   </header>
 
 
-  <section class="bg-[#14231E] text-white py-14 border-b border-white/10">
+  <section class="bg-[#0B2A22] text-white py-14 border-b border-white/10">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="flex items-center gap-2 mb-3">
-        <a href="destinations.html" class="text-xs font-bold text-[#E05A47] hover:underline">← All Valley Destinations</a>
+        <a href="destinations.html" class="text-xs font-bold text-[#C9A24B] hover:underline">← All Valley Destinations</a>
         <span class="text-xs text-zinc-400">•</span>
         <span class="text-xs text-zinc-300">Altitude: 2,600m / 8,530ft</span>
       </div>
       <div class="flex flex-wrap items-center justify-between gap-4">
         <div>
-          <span class="px-2.5 py-0.5 rounded bg-[#E05A47] text-white font-black text-[10px] uppercase">BHUTAN VALLEY GUIDE</span>
-          <h1 class="text-3xl sm:text-4xl font-extrabold mt-3 leading-tight">Bumthang Valley</h1>
+          <span class="px-2.5 py-0.5 rounded bg-[#C9A24B] text-[#0B2A22] font-black text-[10px] uppercase">BHUTAN VALLEY GUIDE</span>
+          <h1 class="font-serif text-3xl sm:text-4xl font-extrabold mt-3 leading-tight">Bumthang Valley</h1>
           <p class="text-xs text-zinc-300 mt-2">Spiritual Cradle & Temple Heart of Bhutan</p>
         </div>
         <div>
-          <a href="contact.html?tour=Custom-Bumthang Valley" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-[#E05A47] hover:bg-[#c94937] text-white font-bold text-xs uppercase tracking-wider shadow">
+          <a href="contact.html?tour=Custom-Bumthang Valley" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-[#C9A24B] hover:bg-[#E4C87E] text-[#0B2A22] font-bold text-xs uppercase tracking-wider shadow">
             Plan Custom Bumthang Valley Trip
           </a>
         </div>
@@ -144,36 +140,36 @@
   <main class="py-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex-1">
     <div class="grid lg:grid-cols-12 gap-12">
       <div class="lg:col-span-8 space-y-10">
-        <div class="h-96 rounded-2xl overflow-hidden border border-zinc-200 shadow-md">
+        <div class="h-96 rounded-2xl overflow-hidden border border-[#E7DCC4] shadow-md">
           <img src="assets/images/dochula-pass.webp" alt="Bumthang Valley" class="w-full h-full object-cover">
         </div>
 
-        <div class="bg-white p-8 rounded-2xl border border-zinc-200 shadow-sm space-y-4">
-          <h2 class="text-2xl font-bold text-[#14231E]">Overview &amp; Cultural Heritage</h2>
+        <div class="bg-white p-8 rounded-2xl border border-[#E7DCC4] shadow-sm space-y-4">
+          <h2 class="font-serif text-2xl font-bold text-[#0B2A22]">Overview &amp; Cultural Heritage</h2>
           <p class="text-base text-zinc-700 leading-relaxed">Consisting of four high valleys (Choekhor, Tang, Ura, and Chhume), Bumthang contains Bhutan’s oldest Buddhist shrines, Guru Rinpoche meditation caves, and alpine Swiss cheese farms.</p>
         </div>
 
-        <div class="bg-white p-8 rounded-2xl border border-zinc-200 shadow-sm">
-          <h3 class="text-lg font-bold text-[#14231E] mb-4">Top Sights &amp; Sacred Landmarks</h3>
+        <div class="bg-white p-8 rounded-2xl border border-[#E7DCC4] shadow-sm">
+          <h3 class="text-lg font-bold text-[#0B2A22] mb-4">Top Sights &amp; Sacred Landmarks</h3>
           <ul class="space-y-3">
             
               <li class="flex items-start gap-3 text-sm text-zinc-700">
-                <span class="w-5 h-5 rounded-full bg-orange-100 text-[#E05A47] flex items-center justify-center font-bold text-xs shrink-0 mt-0.5">✓</span>
+                <span class="w-5 h-5 rounded-full bg-[#F7EDD8] text-[#C9A24B] flex items-center justify-center font-bold text-xs shrink-0 mt-0.5">✓</span>
                 <span>Jambay Lhakhang (Built in 659 AD)</span>
               </li>
             
               <li class="flex items-start gap-3 text-sm text-zinc-700">
-                <span class="w-5 h-5 rounded-full bg-orange-100 text-[#E05A47] flex items-center justify-center font-bold text-xs shrink-0 mt-0.5">✓</span>
+                <span class="w-5 h-5 rounded-full bg-[#F7EDD8] text-[#C9A24B] flex items-center justify-center font-bold text-xs shrink-0 mt-0.5">✓</span>
                 <span>Kurjey Lhakhang (Guru Body Imprint)</span>
               </li>
             
               <li class="flex items-start gap-3 text-sm text-zinc-700">
-                <span class="w-5 h-5 rounded-full bg-orange-100 text-[#E05A47] flex items-center justify-center font-bold text-xs shrink-0 mt-0.5">✓</span>
+                <span class="w-5 h-5 rounded-full bg-[#F7EDD8] text-[#C9A24B] flex items-center justify-center font-bold text-xs shrink-0 mt-0.5">✓</span>
                 <span>Mebar Tsho (Burning Lake of Terton Pema Lingpa)</span>
               </li>
             
               <li class="flex items-start gap-3 text-sm text-zinc-700">
-                <span class="w-5 h-5 rounded-full bg-orange-100 text-[#E05A47] flex items-center justify-center font-bold text-xs shrink-0 mt-0.5">✓</span>
+                <span class="w-5 h-5 rounded-full bg-[#F7EDD8] text-[#C9A24B] flex items-center justify-center font-bold text-xs shrink-0 mt-0.5">✓</span>
                 <span>Swiss Farm Gouda Cheese & Red Panda Brewery</span>
               </li>
             
@@ -182,23 +178,23 @@
       </div>
 
       <div class="lg:col-span-4 space-y-6">
-        <div class="sticky top-28 bg-white p-6 rounded-2xl border border-zinc-200 shadow-sm space-y-5">
-          <span class="text-xs font-bold uppercase text-[#E05A47]">FEATURED TOURS IN BUMTHANG VALLEY</span>
-          <h3 class="text-xl font-bold text-[#14231E]">Explore This Valley</h3>
+        <div class="sticky top-28 bg-white p-6 rounded-2xl border border-[#E7DCC4] shadow-sm space-y-5">
+          <span class="text-xs font-bold uppercase text-[#C9A24B]">FEATURED TOURS IN BUMTHANG VALLEY</span>
+          <h3 class="text-xl font-bold text-[#0B2A22]">Explore This Valley</h3>
           <div class="space-y-3">
             
-              <a href="tour-bumthang-pilgrimage.html" class="block p-4 rounded-xl border border-zinc-200 hover:border-[#E05A47] hover:bg-orange-50/40 transition-all">
-                <div class="font-bold text-sm text-[#14231E]">Bumthang Pilgrimage (10 Days)</div>
-                <div class="text-xs text-[#E05A47] font-black mt-1">From $2,890 / person</div>
+              <a href="tour-bumthang-pilgrimage.html" class="block p-4 rounded-xl border border-[#E7DCC4] hover:border-[#C9A24B] hover:bg-[#FFF8EC] transition-all">
+                <div class="font-bold text-sm text-[#0B2A22]">Bumthang Pilgrimage (10 Days)</div>
+                <div class="text-xs text-[#C9A24B] font-black mt-1">From $2,890 / person</div>
               </a>
             
-              <a href="tour-snowman-trek.html" class="block p-4 rounded-xl border border-zinc-200 hover:border-[#E05A47] hover:bg-orange-50/40 transition-all">
-                <div class="font-bold text-sm text-[#14231E]">The Snowman Trek (25 Days)</div>
-                <div class="text-xs text-[#E05A47] font-black mt-1">From $6,800 / person</div>
+              <a href="tour-snowman-trek.html" class="block p-4 rounded-xl border border-[#E7DCC4] hover:border-[#C9A24B] hover:bg-[#FFF8EC] transition-all">
+                <div class="font-bold text-sm text-[#0B2A22]">The Snowman Trek (25 Days)</div>
+                <div class="text-xs text-[#C9A24B] font-black mt-1">From $6,800 / person</div>
               </a>
             
           </div>
-          <a href="contact.html?tour=Custom-Bumthang Valley" class="block text-center py-3 rounded-lg bg-[#E05A47] text-white font-bold text-xs uppercase tracking-wider hover:bg-[#c94937]">
+          <a href="contact.html?tour=Custom-Bumthang Valley" class="block text-center py-3 rounded-lg bg-[#C9A24B] text-[#0B2A22] font-bold text-xs uppercase tracking-wider hover:bg-[#E4C87E]">
             Customize Bumthang Valley Itinerary
           </a>
         </div>
@@ -207,17 +203,17 @@
   </main>
   
 
-  <footer class="bg-[#0E1915] text-white pt-16 pb-8 border-t border-white/10 mt-auto">
+  <footer class="bg-[#0B2A22] text-white pt-16 pb-8 border-t border-white/10 mt-auto">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10 pb-12 border-b border-white/10">
         
         <!-- Company Info -->
         <div class="lg:col-span-2">
           <div class="flex items-center gap-3">
-            <div class="w-10 h-10 rounded-xl bg-[#E05A47] flex items-center justify-center font-black text-white text-lg">B</div>
+            <span class="w-10 h-10 rounded-full bg-[#123A30] border border-[#C9A24B]/40 text-[#C9A24B] grid place-items-center font-serif text-xl font-bold shrink-0">B</span>
             <div>
               <div class="font-black text-base uppercase leading-tight">BHUTAN FAST RATE TOURS</div>
-              <div class="text-[9px] text-[#E05A47] tracking-widest font-bold">ROYAL GOVERNMENT LICENSED <span data-bfr-license>#TR/2018/9882</span></div>
+              <div class="text-[9px] text-[#C9A24B] tracking-widest font-bold">ROYAL GOVERNMENT LICENSED <span data-bfr-license>#TR/2018/9882</span></div>
             </div>
           </div>
           <p class="mt-4 text-xs text-zinc-400 leading-relaxed max-w-sm">
@@ -232,7 +228,7 @@
 
         <!-- Featured Tours -->
         <div>
-          <h4 class="text-xs font-black uppercase tracking-wider text-[#E05A47] mb-4">Top Tour Packages</h4>
+          <h4 class="text-xs font-black uppercase tracking-wider text-[#C9A24B] mb-4">Top Tour Packages</h4>
           <ul class="space-y-2 text-xs text-zinc-300">
             <li><a href="tour-essential-bhutan-7d.html" class="hover:text-white">Essential Bhutan (7 Days)</a></li>
             <li><a href="tour-druk-path-trek.html" class="hover:text-white">Druk Path Alpine Trek (9 Days)</a></li>
@@ -246,7 +242,7 @@
 
         <!-- Valley Destinations -->
         <div>
-          <h4 class="text-xs font-black uppercase tracking-wider text-[#E05A47] mb-4">Valley Guides</h4>
+          <h4 class="text-xs font-black uppercase tracking-wider text-[#C9A24B] mb-4">Valley Guides</h4>
           <ul class="space-y-2 text-xs text-zinc-300">
             <li><a href="destination-paro.html" class="hover:text-white">Paro Valley (Tiger’s Nest)</a></li>
             <li><a href="destination-thimphu.html" class="hover:text-white">Thimphu Capital</a></li>
@@ -259,7 +255,7 @@
 
         <!-- Travel Tools & Legal -->
         <div>
-          <h4 class="text-xs font-black uppercase tracking-wider text-[#E05A47] mb-4">Travel Tools &amp; Legal</h4>
+          <h4 class="text-xs font-black uppercase tracking-wider text-[#C9A24B] mb-4">Travel Tools &amp; Legal</h4>
           <ul class="space-y-2 text-xs text-zinc-300">
             <li><a href="sdf-calculator.html" class="text-emerald-400 hover:text-emerald-300 font-bold">Interactive SDF Calculator</a></li>
             <li><a href="track-visa.html" class="text-emerald-400 hover:text-emerald-300 font-bold">Live Visa Tracker</a></li>
@@ -310,11 +306,11 @@
           const tourList = document.querySelector('main .lg\\:col-span-4 .space-y-3');
           if (tourList && Array.isArray(d.related_tours) && d.related_tours.length > 0) {
             tourList.innerHTML = d.related_tours.map((t) => `
-              <div class="p-4 rounded-xl border border-zinc-200 hover:border-[#E05A47] transition-all space-y-2">
-                <a href="${esc((t.slug && /\.html$/i.test(t.slug)) ? t.slug : ('tour-' + encodeURIComponent(t.slug || t.id) + '.html'))}" class="block font-bold text-sm text-[#14231E] hover:text-[#E05A47]">${esc(t.title)}</a>
+              <div class="p-4 rounded-xl border border-[#E7DCC4] hover:border-[#C9A24B] transition-all space-y-2">
+                <a href="${esc((t.slug && /\.html$/i.test(t.slug)) ? t.slug : ('tour-' + encodeURIComponent(t.slug || t.id) + '.html'))}" class="block font-bold text-sm text-[#0B2A22] hover:text-[#C9A24B]">${esc(t.title)}</a>
                 <div class="flex items-center justify-between text-xs">
-                  <span class="text-[#E05A47] font-black">From $${Number(t.price_3star_usd || t.price_usd || 0).toLocaleString('en-US')} / adult</span>
-                  <a href="book.html?tour=${encodeURIComponent(t.id)}" class="px-3 py-1 rounded-full bg-[#14231E] text-white font-bold">Book →</a>
+                  <span class="text-[#C9A24B] font-black">From $${Number(t.price_3star_usd || t.price_usd || 0).toLocaleString('en-US')} / adult</span>
+                  <a href="book.html?tour=${encodeURIComponent(t.id)}" class="px-3 py-1 rounded-full bg-[#0B2A22] text-white font-bold">Book →</a>
                 </div>
               </div>
             `).join('');

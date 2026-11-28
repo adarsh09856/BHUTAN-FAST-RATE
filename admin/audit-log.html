@@ -184,7 +184,7 @@
 
       tbody.innerHTML = rows.map((row) => {
         const entityCell = row.entity_type === 'booking' && row.entity_id
-          ? `<a href="booking-detail.html?id=${encodeURIComponent(row.entity_id)}" class="font-mono font-bold text-[#E05A47] hover:underline">${AdminApp.esc(row.entity_id)}</a>`
+          ? `<a href="booking-detail.html?id=${encodeURIComponent(row.entity_id)}" class="font-mono font-bold text-[#C9A24B] hover:underline">${AdminApp.esc(row.entity_id)}</a>`
           : `<span class="font-mono text-zinc-200">${AdminApp.esc(row.entity_id || '—')}</span>`;
 
         const changeHtml = row.old_value && row.new_value

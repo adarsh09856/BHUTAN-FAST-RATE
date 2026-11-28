@@ -462,42 +462,42 @@
       </div>
 
       <header id="siteHeader" class="sticky top-0 z-40 bg-[#FFF8EC]/95 backdrop-blur border-b border-[#E7DCC4]" style="top:0;background-color:rgba(255,248,236,0.97);">
-        <div class="max-w-[1360px] mx-auto px-4 sm:px-6 h-[72px] flex items-center gap-3">
+        <div class="max-w-[1360px] mx-auto px-4 sm:px-6 h-[72px] flex items-center gap-2">
           <button type="button" id="homeMobileOpenBtn" class="lg:hidden p-2 rounded-xl text-[#0B2A22] hover:bg-[#F7EDD8] shrink-0" aria-label="Open menu">
             ${svgIcon('menu', 22)}
           </button>
 
-          <a href="#top" class="flex items-center gap-2.5 shrink-0 whitespace-nowrap">
-            <span class="w-10 h-10 rounded-full bg-[#0B2A22] text-[#C9A24B] grid place-items-center font-serif text-xl font-bold shrink-0">B</span>
+          <a href="#top" class="flex items-center gap-2 shrink-0 whitespace-nowrap">
+            <span class="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-[#0B2A22] text-[#C9A24B] grid place-items-center font-serif text-lg sm:text-xl font-bold shrink-0">B</span>
             <span class="leading-none">
-              <span class="block font-serif text-[18px] sm:text-[21px] font-bold tracking-tight text-[#0B2A22] whitespace-nowrap" data-bfr-company>BHUTAN FAST RATE</span>
-              <span class="block text-[10px] tracking-[0.22em] text-[#C9A24B] font-extrabold whitespace-nowrap">TOURS · EST. PARO</span>
+              <span class="block font-serif text-[17px] sm:text-[20px] font-bold tracking-tight text-[#0B2A22] whitespace-nowrap" data-bfr-company>BHUTAN FAST RATE</span>
+              <span class="block text-[9px] sm:text-[10px] tracking-[0.22em] text-[#C9A24B] font-extrabold whitespace-nowrap">TOURS · EST. PARO</span>
             </span>
           </a>
 
-          <nav class="hidden lg:flex items-center ml-4 xl:ml-6 gap-0.5 xl:gap-1 text-[14px] xl:text-[15px] font-semibold text-[#101613] whitespace-nowrap">
+          <nav class="hidden lg:flex items-center ml-2 xl:ml-4 gap-0.5 text-[14px] font-semibold text-[#101613] whitespace-nowrap">
             <a href="index.html" class="px-3 py-2 rounded-full bg-[#0B2A22] text-white font-bold whitespace-nowrap shrink-0">Home</a>
-            <a href="tours.html" data-mega="Tours" class="px-2.5 xl:px-3 py-2 rounded-full text-[#101613] hover:bg-[#F7EDD8] transition-colors whitespace-nowrap shrink-0">Tours</a>
-            <a href="destinations.html" data-mega="Destinations" class="px-2.5 xl:px-3 py-2 rounded-full text-[#101613] hover:bg-[#F7EDD8] transition-colors whitespace-nowrap shrink-0">Destinations</a>
-            <a href="festivals.html" data-mega="Festivals" class="px-2.5 xl:px-3 py-2 rounded-full text-[#101613] hover:bg-[#F7EDD8] transition-colors whitespace-nowrap shrink-0">Festivals</a>
-            <a href="services.html" data-mega="Services" class="px-2.5 xl:px-3 py-2 rounded-full text-[#101613] hover:bg-[#F7EDD8] transition-colors whitespace-nowrap shrink-0">Visa &amp; SDF</a>
-            <a href="about.html" class="px-2.5 xl:px-3 py-2 rounded-full text-[#101613] hover:bg-[#F7EDD8] transition-colors whitespace-nowrap shrink-0">About Us</a>
-            <a href="contact.html" class="px-2.5 xl:px-3 py-2 rounded-full text-[#101613] hover:bg-[#F7EDD8] transition-colors whitespace-nowrap shrink-0">Contact</a>
+            <a href="tours.html" data-mega="Tours" class="px-2.5 py-2 rounded-full text-[#101613] hover:bg-[#F7EDD8] transition-colors whitespace-nowrap shrink-0">Tours</a>
+            <a href="destinations.html" data-mega="Destinations" class="px-2.5 py-2 rounded-full text-[#101613] hover:bg-[#F7EDD8] transition-colors whitespace-nowrap shrink-0">Destinations</a>
+            <a href="festivals.html" data-mega="Festivals" class="px-2.5 py-2 rounded-full text-[#101613] hover:bg-[#F7EDD8] transition-colors whitespace-nowrap shrink-0">Festivals</a>
+            <a href="services.html" data-mega="Services" class="px-2.5 py-2 rounded-full text-[#101613] hover:bg-[#F7EDD8] transition-colors whitespace-nowrap shrink-0">Visa &amp; SDF</a>
+            <a href="about.html" class="px-2.5 py-2 rounded-full text-[#101613] hover:bg-[#F7EDD8] transition-colors whitespace-nowrap shrink-0">About Us</a>
+            <a href="contact.html" class="px-2.5 py-2 rounded-full text-[#101613] hover:bg-[#F7EDD8] transition-colors whitespace-nowrap shrink-0">Contact</a>
           </nav>
 
-          <div class="ml-auto flex items-center gap-2 shrink-0" data-bfr-portal-links data-bfr-skip-portal-inject="1">
+          <div class="ml-auto flex items-center gap-1.5 shrink-0" data-bfr-portal-links data-bfr-skip-portal-inject="1">
             <a href="track-visa.html" class="hidden 2xl:inline-flex items-center gap-1.5 border border-[#E7DCC4] bg-white hover:bg-[#F7EDD8] px-3 py-2 rounded-full text-xs font-bold text-[#0B2A22] whitespace-nowrap shrink-0 transition">
               Track Visa
             </a>
             <a href="client/login.html" class="hidden xl:inline-flex items-center gap-1.5 border border-[#E7DCC4] bg-white hover:bg-[#F7EDD8] px-3 py-2 rounded-full text-xs font-bold text-[#0B2A22] whitespace-nowrap shrink-0 transition">
               Client Portal
             </a>
-            <a href="book.html" class="inline-flex items-center gap-1.5 bg-[#0B2A22] hover:bg-[#123A30] text-white px-4 py-2.5 rounded-full text-sm font-bold shadow-sm whitespace-nowrap shrink-0 transition">
+            <a href="book.html" class="inline-flex items-center gap-1.5 bg-[#0B2A22] hover:bg-[#123A30] text-white px-3.5 sm:px-4 py-2 rounded-full text-xs sm:text-sm font-bold shadow-sm whitespace-nowrap shrink-0 transition">
               <span>Book Now</span>
               ${svgIcon('arrowRight', 15)}
             </a>
-            <button type="button" id="homeAiHeaderBtn" class="hidden md:inline-flex items-center gap-1.5 border border-[#E7DCC4] px-3 py-2.5 rounded-full text-sm font-bold bg-white text-[#0B2A22] hover:bg-[#F7EDD8] whitespace-nowrap shrink-0 transition">
-              ${svgIcon('sparkles', 16, 'text-[#C9A24B]')} AI Help
+            <button type="button" id="homeAiHeaderBtn" class="hidden md:inline-flex items-center gap-1.5 border border-[#E7DCC4] px-3 py-2 rounded-full text-xs sm:text-sm font-bold bg-white text-[#0B2A22] hover:bg-[#F7EDD8] whitespace-nowrap shrink-0 transition">
+              ${svgIcon('sparkles', 15, 'text-[#C9A24B]')} AI Help
             </button>
           </div>
         </div>

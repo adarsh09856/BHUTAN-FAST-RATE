@@ -11,8 +11,8 @@
     body {
       margin: 0;
       font-family: 'Manrope', ui-sans-serif, system-ui, -apple-system, sans-serif;
-      background-color: #F8FAF9;
-      color: #1F2923;
+      background-color: #FFF8EC;
+      color: #101613;
       min-height: 100vh;
       display: flex;
       flex-direction: column;
@@ -23,9 +23,9 @@
     input, textarea, select {
       color-scheme: light !important;
       background-color: #ffffff !important;
-      color: #1F2923 !important;
-      -webkit-text-fill-color: #1F2923 !important;
-      caret-color: #E05A47 !important;
+      color: #101613 !important;
+      -webkit-text-fill-color: #101613 !important;
+      caret-color: #C9A24B !important;
       opacity: 1 !important;
     }
     input::placeholder, textarea::placeholder {
@@ -37,14 +37,14 @@
       position: sticky;
       top: 0;
       z-index: 40;
-      background-color: #14231E;
+      background-color: #0B2A22;
       color: #ffffff;
       border-bottom: 1px solid rgba(255, 255, 255, 0.12);
       box-shadow: 0 4px 16px rgba(0, 0, 0, 0.14);
     }
     .portal-card {
       background-color: #ffffff;
-      border: 1px solid #e2e8f0;
+      border: 1px solid #E7DCC4;
       border-radius: 16px;
       padding: 24px;
       box-shadow: 0 2px 10px rgba(20, 35, 30, 0.04);
@@ -64,7 +64,7 @@
     .badge-amber { background-color: #fef3c7; color: #92400e; border: 1px solid #fde68a; }
     .badge-red { background-color: #fee2e2; color: #991b1b; border: 1px solid #fecaca; }
     .badge-slate { background-color: #f1f5f9; color: #334155; border: 1px solid #cbd5e1; }
-    .badge-coral { background-color: #fff1ef; color: #b93826; border: 1px solid #fbd3cc; }
+    .badge-coral { background-color: #F7EDD8; color: #0B2A22; border: 1px solid #C9A24B; }
     .btn {
       display: inline-flex;
       align-items: center;
@@ -82,11 +82,11 @@
       transition: all 0.15s ease;
     }
     .btn:disabled { opacity: 0.55; cursor: not-allowed; }
-    .btn-coral { background-color: #E05A47; color: #ffffff; }
-    .btn-coral:hover:not(:disabled) { background-color: #c94937; }
-    .btn-forest { background-color: #14231E; color: #ffffff; }
-    .btn-forest:hover:not(:disabled) { background-color: #0E1915; }
-    .btn-outline { background-color: #ffffff; color: #14231E; border-color: #cbd5e1; }
+    .btn-coral { background-color: #C9A24B; color: #0B2A22; }
+    .btn-coral:hover:not(:disabled) { background-color: #E4C87E; }
+    .btn-forest { background-color: #0B2A22; color: #ffffff; }
+    .btn-forest:hover:not(:disabled) { background-color: #0B2A22; }
+    .btn-outline { background-color: #ffffff; color: #0B2A22; border-color: #cbd5e1; }
     .btn-outline:hover:not(:disabled) { background-color: #f8fafc; border-color: #94a3b8; }
     .btn-sm { padding: 7px 12px; font-size: 11px; border-radius: 8px; }
     .portal-input {
@@ -99,8 +99,8 @@
     }
     .portal-input:focus {
       outline: none;
-      border-color: #E05A47;
-      box-shadow: 0 0 0 3px rgba(224, 90, 71, 0.14);
+      border-color: #C9A24B;
+      box-shadow: 0 0 0 3px rgba(201, 162, 75, 0.14);
     }
     .kpi-grid {
       display: grid;
@@ -127,7 +127,7 @@
       max-width: 540px;
       background-color: #ffffff;
       border-radius: 18px;
-      border: 1px solid #e2e8f0;
+      border: 1px solid #E7DCC4;
       box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.4);
       overflow: hidden;
     }
@@ -146,7 +146,7 @@
   <header class="portal-header">
     <div class="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-4">
       <a href="dashboard.html" class="flex items-center gap-3" style="text-decoration:none; color:#fff;">
-        <div class="w-9 h-9 rounded-lg flex items-center justify-center font-black text-sm" style="background-color:#E05A47; color:#fff;">B</div>
+        <div class="w-9 h-9 rounded-lg flex items-center justify-center font-black text-sm" style="background-color:#C9A24B; color:#0B2A22; border-radius:9999px; font-family:Fraunces,serif;">B</div>
         <div>
           <div class="font-extrabold text-sm uppercase tracking-wider leading-none">Guide Field Operations</div>
           <div class="text-[10px] tracking-wider uppercase" style="color:#cbd5e1;" data-bfr-license>#TR/2018/9882</div>
@@ -161,19 +161,19 @@
 
   <main class="py-8 max-w-6xl mx-auto px-4 sm:px-6 flex-1 space-y-6 w-full" id="guideDashboardContent">
     <div class="portal-card py-16 text-center" style="color:#64748b;">
-      <div class="inline-block w-8 h-8 border-4 rounded-full mb-3" style="border-color:#E05A47; border-top-color:transparent; animation: spin 0.8s linear infinite;"></div>
+      <div class="inline-block w-8 h-8 border-4 rounded-full mb-3" style="border-color:#C9A24B; border-top-color:transparent; animation: spin 0.8s linear infinite;"></div>
       <div class="text-sm font-semibold">Loading Field Assignments &amp; Dispatch Alerts...</div>
     </div>
   </main>
 
-  <footer class="py-6 text-center text-xs border-t" style="background-color:#0E1915; color:#94a3b8; border-color:rgba(255,255,255,0.1);">
+  <footer class="py-6 text-center text-xs border-t" style="background-color: #0B2A22; color:#94a3b8; border-color:rgba(255,255,255,0.1);">
     &copy; 2026 <span data-bfr-company>Bhutan Fast Rate Tours</span> (<span data-bfr-license>#TR/2018/9882</span>) • Guide Field Portal • Ops Desk: <span data-bfr-phone>+975 17 654 321</span>
   </footer>
 
   <!-- Field Check-In Modal -->
   <div id="checkinModal" class="modal-backdrop hidden" role="dialog" aria-modal="true" aria-labelledby="checkinModalTitle">
     <div class="modal-panel">
-      <div class="px-6 py-4 flex items-center justify-between border-b" style="background-color:#14231E; color:#fff;">
+      <div class="px-6 py-4 flex items-center justify-between border-b" style="background-color: #0B2A22; color:#fff;">
         <div>
           <h2 id="checkinModalTitle" class="text-lg font-bold m-0">Submit Daily Field Check-In</h2>
           <p id="checkinModalSub" class="text-[11px] m-0" style="color:#cbd5e1;">Live location &amp; guest status report to Thimphu Ops</p>
@@ -300,7 +300,7 @@
             </div>
 
             <div>
-              <h3 class="text-lg font-bold m-0" style="color:#14231E;">${esc(a.tour_title || a.booking_id)}</h3>
+              <h3 class="text-lg font-bold m-0" style="color:#0B2A22;">${esc(a.tour_title || a.booking_id)}</h3>
               <p class="text-xs m-0 mt-1" style="color:#334155;">
                 Lead Guest: <strong>${esc(a.lead_name)}</strong> (${esc(a.lead_country || 'International')}) •
                 Party: <strong>${esc(a.total_travelers)} Guest(s)</strong> •
@@ -312,7 +312,7 @@
                 • Check-ins Logged: <strong>${esc(a.checkins_count || 0)}</strong>
               </p>
               ${a.guide_notes ? `
-                <div class="mt-2 p-2.5 rounded-lg border text-xs" style="background-color:#F8FAF9; border-color:#e2e8f0; color:#334155;">
+                <div class="mt-2 p-2.5 rounded-lg border text-xs" style="background-color: #FFF8EC; border-color:#e2e8f0; color:#334155;">
                   <strong>Ops Dispatch Note:</strong> ${esc(a.guide_notes)}
                 </div>
               ` : ''}
@@ -347,8 +347,8 @@
           <section class="portal-card space-y-5">
             <div class="flex flex-wrap items-center justify-between gap-4">
               <div>
-                <div class="text-[11px] font-extrabold uppercase tracking-widest" style="color:#E05A47;">Field Operations Dashboard</div>
-                <h1 class="text-2xl sm:text-3xl font-bold m-0 mt-1" style="color:#14231E;">Kuzuzangpo La, ${esc(g.full_name || g.name || 'Guide')}</h1>
+                <div class="text-[11px] font-extrabold uppercase tracking-widest" style="color:#C9A24B;">Field Operations Dashboard</div>
+                <h1 class="text-2xl sm:text-3xl font-bold m-0 mt-1" style="color:#0B2A22;">Kuzuzangpo La, ${esc(g.full_name || g.name || 'Guide')}</h1>
                 <p class="text-xs m-0 mt-1" style="color:#64748b;">
                   ${g.specialty ? `${esc(g.specialty)} • ` : ''}${g.languages ? `Languages: ${esc(g.languages)}` : 'Certified Department of Tourism Guide'}
                 </p>
@@ -372,19 +372,19 @@
             <div class="kpi-grid">
               <div class="p-4 rounded-xl border" style="background-color:#f0fdf4; border-color:#bbf7d0;">
                 <div class="text-[11px] font-bold uppercase" style="color:#166534;">Today's Active</div>
-                <div class="text-2xl font-black mt-1" style="color:#14231E;">${esc(active.length)}</div>
+                <div class="text-2xl font-black mt-1" style="color:#0B2A22;">${esc(active.length)}</div>
               </div>
               <div class="p-4 rounded-xl border" style="background-color:#fffbeb; border-color:#fde68a;">
                 <div class="text-[11px] font-bold uppercase" style="color:#92400e;">Upcoming Trips</div>
-                <div class="text-2xl font-black mt-1" style="color:#14231E;">${esc(upcoming.length)}</div>
+                <div class="text-2xl font-black mt-1" style="color:#0B2A22;">${esc(upcoming.length)}</div>
               </div>
-              <div class="p-4 rounded-xl border" style="background-color:#F8FAF9; border-color:#e2e8f0;">
+              <div class="p-4 rounded-xl border" style="background-color: #FFF8EC; border-color:#e2e8f0;">
                 <div class="text-[11px] font-bold uppercase" style="color:#475569;">Past Completed</div>
-                <div class="text-2xl font-black mt-1" style="color:#14231E;">${esc(past.length)}</div>
+                <div class="text-2xl font-black mt-1" style="color:#0B2A22;">${esc(past.length)}</div>
               </div>
               <div class="p-4 rounded-xl border" style="background-color:#fff1ef; border-color:#fbd3cc;">
                 <div class="text-[11px] font-bold uppercase" style="color:#b93826;">Unread Alerts</div>
-                <div class="text-2xl font-black mt-1" style="color:#14231E;">${esc(state.unreadCount)}</div>
+                <div class="text-2xl font-black mt-1" style="color:#0B2A22;">${esc(state.unreadCount)}</div>
               </div>
             </div>
           </section>
@@ -392,11 +392,11 @@
           <!-- Today's Active Expedition -->
           <section class="portal-card space-y-4">
             <div class="flex items-center justify-between">
-              <h2 class="text-xl font-bold m-0" style="color:#14231E;">Today's Active Expedition</h2>
+              <h2 class="text-xl font-bold m-0" style="color:#0B2A22;">Today's Active Expedition</h2>
               <span class="badge ${active.length ? 'badge-green' : 'badge-slate'}">${esc(active.length)} Active</span>
             </div>
             ${active.length === 0 ? `
-              <div class="p-5 rounded-xl border text-center text-xs" style="background-color:#F8FAF9; border-color:#e2e8f0; color:#64748b;">
+              <div class="p-5 rounded-xl border text-center text-xs" style="background-color: #FFF8EC; border-color:#e2e8f0; color:#64748b;">
                 No expedition is currently active today. Review your upcoming schedule below.
               </div>
             ` : `
@@ -409,11 +409,11 @@
           <!-- Upcoming Schedule -->
           <section class="portal-card space-y-4">
             <div class="flex items-center justify-between">
-              <h2 class="text-xl font-bold m-0" style="color:#14231E;">Upcoming Schedule</h2>
+              <h2 class="text-xl font-bold m-0" style="color:#0B2A22;">Upcoming Schedule</h2>
               <span class="badge badge-amber">${esc(upcoming.length)} Scheduled</span>
             </div>
             ${upcoming.length === 0 ? `
-              <div class="p-5 rounded-xl border text-center text-xs" style="background-color:#F8FAF9; border-color:#e2e8f0; color:#64748b;">
+              <div class="p-5 rounded-xl border text-center text-xs" style="background-color: #FFF8EC; border-color:#e2e8f0; color:#64748b;">
                 No upcoming trips assigned yet.
               </div>
             ` : `
@@ -426,11 +426,11 @@
           <!-- Live Guide Notifications -->
           <section class="portal-card space-y-4">
             <div class="flex items-center justify-between">
-              <h2 class="text-xl font-bold m-0" style="color:#14231E;">Dispatch Notifications</h2>
+              <h2 class="text-xl font-bold m-0" style="color:#0B2A22;">Dispatch Notifications</h2>
               <span class="badge ${state.unreadCount > 0 ? 'badge-coral' : 'badge-slate'}">${esc(state.unreadCount)} Unread</span>
             </div>
             ${state.notifications.length === 0 ? `
-              <div class="p-5 rounded-xl border text-center text-xs" style="background-color:#F8FAF9; border-color:#e2e8f0; color:#64748b;">
+              <div class="p-5 rounded-xl border text-center text-xs" style="background-color: #FFF8EC; border-color:#e2e8f0; color:#64748b;">
                 No notifications from Operations Desk.
               </div>
             ` : `
@@ -442,7 +442,7 @@
                       <div class="space-y-1 flex-1" style="min-width:220px;">
                         <div class="flex flex-wrap items-center gap-2">
                           <span class="badge ${isUnread ? 'badge-coral' : 'badge-slate'}">${isUnread ? 'New' : 'Read'}</span>
-                          <strong class="text-sm" style="color:#14231E;">${esc(n.title || n.category || 'Dispatch Alert')}</strong>
+                          <strong class="text-sm" style="color:#0B2A22;">${esc(n.title || n.category || 'Dispatch Alert')}</strong>
                         </div>
                         <p class="text-xs m-0" style="color:#475569;">${esc(n.message)}</p>
                         <div class="text-[11px]" style="color:#64748b;">${esc(fmtDate(n.created_at))}</div>
@@ -460,11 +460,11 @@
           <!-- Past Completed Trips -->
           <section class="portal-card space-y-4">
             <div class="flex items-center justify-between">
-              <h2 class="text-xl font-bold m-0" style="color:#14231E;">Past Completed Trips</h2>
+              <h2 class="text-xl font-bold m-0" style="color:#0B2A22;">Past Completed Trips</h2>
               <span class="badge badge-slate">${esc(past.length)} Completed</span>
             </div>
             ${past.length === 0 ? `
-              <div class="p-5 rounded-xl border text-center text-xs" style="background-color:#F8FAF9; border-color:#e2e8f0; color:#64748b;">
+              <div class="p-5 rounded-xl border text-center text-xs" style="background-color: #FFF8EC; border-color:#e2e8f0; color:#64748b;">
                 No completed trips recorded yet.
               </div>
             ` : `

@@ -87,31 +87,31 @@
         const dayLabel = hasPrefix ? item.slice(0, splitIdx).trim() : `Day ${idx + 1}`;
         const bodyText = hasPrefix ? item.slice(splitIdx + 1).trim() : item.trim();
         return `
-          <div class="flex items-start gap-4 pb-6 border-b border-zinc-100 last:border-b-0 last:pb-0">
-            <span class="px-3 py-1.5 rounded-lg bg-[#14231E] text-white font-extrabold text-xs shrink-0">${esc(dayLabel)}</span>
-            <p class="text-sm text-zinc-700 leading-relaxed">${esc(bodyText)}</p>
+          <div class="flex items-start gap-4 pb-6 border-b border-[#E7DCC4] last:border-b-0 last:pb-0">
+            <span class="px-3 py-1.5 rounded-full bg-[#0B2A22] text-[#C9A24B] font-extrabold text-xs shrink-0">${esc(dayLabel)}</span>
+            <p class="text-sm text-[#101613] leading-relaxed">${esc(bodyText)}</p>
           </div>
         `;
       }
 
       const dayNum = item.day || (idx + 1);
       const dayLabel = String(dayNum).toLowerCase().startsWith('day') ? String(dayNum) : `Day ${dayNum}`;
-      const title = item.title ? `<div class="font-bold text-[#14231E] text-sm mb-1">${esc(item.title)}</div>` : '';
+      const title = item.title ? `<div class="font-serif font-bold text-[#0B2A22] text-base mb-1">${esc(item.title)}</div>` : '';
       const desc = item.description || item.summary || item.details || '';
       const metaParts = [];
       if (item.location) metaParts.push(item.location);
       if (item.elevation) metaParts.push(item.elevation);
       if (item.meals) metaParts.push(`Meals: ${item.meals}`);
       const metaHtml = metaParts.length > 0
-        ? `<div class="text-[11px] text-zinc-500 mt-1.5 font-medium">${esc(metaParts.join(' • '))}</div>`
+        ? `<div class="text-[11px] text-[#66706A] mt-1.5 font-semibold">${esc(metaParts.join(' • '))}</div>`
         : '';
 
       return `
-        <div class="flex items-start gap-4 pb-6 border-b border-zinc-100 last:border-b-0 last:pb-0">
-          <span class="px-3 py-1.5 rounded-lg bg-[#14231E] text-white font-extrabold text-xs shrink-0">${esc(dayLabel)}</span>
+        <div class="flex items-start gap-4 pb-6 border-b border-[#E7DCC4] last:border-b-0 last:pb-0">
+          <span class="px-3 py-1.5 rounded-full bg-[#0B2A22] text-[#C9A24B] font-extrabold text-xs shrink-0">${esc(dayLabel)}</span>
           <div>
             ${title}
-            <p class="text-sm text-zinc-700 leading-relaxed">${esc(desc)}</p>
+            <p class="text-sm text-[#101613] leading-relaxed">${esc(desc)}</p>
             ${metaHtml}
           </div>
         </div>
@@ -122,8 +122,8 @@
   function renderChecklistHtml(items, prefixChar = '✓') {
     if (!Array.isArray(items) || items.length === 0) return '';
     return items.map((entry) => `
-      <div class="flex items-start gap-2">
-        <span class="font-bold text-[#E05A47] shrink-0">${esc(prefixChar)}</span>
+      <div class="flex items-start gap-2 text-[#101613]">
+        <span class="font-bold text-[#C9A24B] shrink-0">${esc(prefixChar)}</span>
         <span>${esc(typeof entry === 'string' ? entry : (entry.label || entry.text || ''))}</span>
       </div>
     `).join('');
@@ -136,20 +136,20 @@
 
     return `
       <div class="grid sm:grid-cols-3 gap-3">
-        <div class="p-4 rounded-xl bg-[#F8FAF9] border border-zinc-200">
-          <div class="text-[11px] font-bold uppercase text-zinc-500">3-Star Heritage</div>
-          <div class="text-lg font-extrabold text-[#14231E] mt-1">${fmtCurrency(p3, 'USD')}</div>
-          <div class="text-[11px] text-zinc-500">per adult · SDF included</div>
+        <div class="p-4 rounded-2xl bg-[#FFF8EC] border border-[#E7DCC4]">
+          <div class="text-[11px] font-extrabold uppercase tracking-wider text-[#66706A]">3-Star Heritage</div>
+          <div class="font-serif text-xl font-bold text-[#0B2A22] mt-1">${fmtCurrency(p3, 'USD')}</div>
+          <div class="text-[11px] text-[#66706A]">per adult · SDF included</div>
         </div>
-        <div class="p-4 rounded-xl bg-orange-50/60 border border-[#E05A47]/40">
-          <div class="text-[11px] font-bold uppercase text-[#E05A47]">4-Star Premium</div>
-          <div class="text-lg font-extrabold text-[#14231E] mt-1">${fmtCurrency(p4, 'USD')}</div>
-          <div class="text-[11px] text-zinc-500">per adult · SDF included</div>
+        <div class="p-4 rounded-2xl bg-[#F7EDD8] border-2 border-[#C9A24B]">
+          <div class="text-[11px] font-extrabold uppercase tracking-wider text-[#0B2A22]">4-Star Premium ★</div>
+          <div class="font-serif text-xl font-bold text-[#0B2A22] mt-1">${fmtCurrency(p4, 'USD')}</div>
+          <div class="text-[11px] text-[#66706A]">per adult · SDF included</div>
         </div>
-        <div class="p-4 rounded-xl bg-[#F8FAF9] border border-zinc-200">
-          <div class="text-[11px] font-bold uppercase text-zinc-500">5-Star Luxury</div>
-          <div class="text-lg font-extrabold text-[#14231E] mt-1">${fmtCurrency(p5, 'USD')}</div>
-          <div class="text-[11px] text-zinc-500">per adult · SDF included</div>
+        <div class="p-4 rounded-2xl bg-[#FFF8EC] border border-[#E7DCC4]">
+          <div class="text-[11px] font-extrabold uppercase tracking-wider text-[#66706A]">5-Star Luxury</div>
+          <div class="font-serif text-xl font-bold text-[#0B2A22] mt-1">${fmtCurrency(p5, 'USD')}</div>
+          <div class="text-[11px] text-[#66706A]">per adult · SDF included</div>
         </div>
       </div>
     `;

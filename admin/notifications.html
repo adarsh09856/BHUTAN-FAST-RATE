@@ -36,7 +36,7 @@
       <div class="admin-grid-3">
         <div class="stat-card p-4">
           <div class="text-[10px] font-bold uppercase tracking-wider text-zinc-400">Unread Alerts</div>
-          <div id="statNotifUnread" class="text-2xl font-black text-[#E05A47] mt-1">—</div>
+          <div id="statNotifUnread" class="text-2xl font-black text-[#C9A24B] mt-1">—</div>
         </div>
         <div class="stat-card p-4">
           <div class="text-[10px] font-bold uppercase tracking-wider text-zinc-400">WhatsApp Pending Queue</div>
@@ -290,7 +290,7 @@
         const actionHref = safeActionHref(n.action_url);
 
         return `
-          <div class="admin-panel-sub flex flex-col sm:flex-row sm:items-start justify-between gap-3 ${isUnread ? 'border-l-4' : ''}" ${isUnread ? 'style="border-left-color:#E05A47;"' : ''}>
+          <div class="admin-panel-sub flex flex-col sm:flex-row sm:items-start justify-between gap-3 ${isUnread ? 'border-l-4' : ''}" ${isUnread ? 'style="border-left-color:#C9A24B;"' : ''}>
             <div class="space-y-1 min-w-0 flex-1">
               <div class="flex flex-wrap items-center gap-2">
                 ${isUnread ? '<span class="badge badge-red">Unread</span>' : '<span class="badge badge-zinc">Read</span>'}

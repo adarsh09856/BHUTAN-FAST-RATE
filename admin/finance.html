@@ -413,7 +413,7 @@
           <tr>
             <td class="font-mono font-bold text-white">#${Number(p.id)}</td>
             <td>
-              <a href="booking-detail.html?id=${encodeURIComponent(p.booking_id)}" class="font-mono font-bold text-[#E05A47] hover:underline">${AdminApp.esc(p.booking_id)}</a>
+              <a href="booking-detail.html?id=${encodeURIComponent(p.booking_id)}" class="font-mono font-bold text-[#C9A24B] hover:underline">${AdminApp.esc(p.booking_id)}</a>
               <div class="text-xs font-semibold text-white">${AdminApp.esc(p.lead_name)}</div>
               <div class="text-[11px] text-zinc-400 max-w-[200px] truncate">${AdminApp.esc(p.tour_title)}</div>
             </td>
@@ -467,7 +467,7 @@
         return `
           <tr>
             <td>
-              <a href="booking-detail.html?id=${encodeURIComponent(b.id)}" class="font-mono font-bold text-[#E05A47] hover:underline">${AdminApp.esc(b.id)}</a>
+              <a href="booking-detail.html?id=${encodeURIComponent(b.id)}" class="font-mono font-bold text-[#C9A24B] hover:underline">${AdminApp.esc(b.id)}</a>
               <div class="text-[11px] text-zinc-300">${AdminApp.esc(b.lead_name)}</div>
             </td>
             <td class="font-bold text-white">${AdminApp.formatMoney(b.sdf_total_usd, 'USD')}</td>
@@ -519,7 +519,7 @@
       tbody.innerHTML = dueBookings.map((b) => `
         <tr>
           <td>
-            <a href="booking-detail.html?id=${encodeURIComponent(b.id)}" class="font-mono font-bold text-[#E05A47] hover:underline">${AdminApp.esc(b.id)}</a>
+            <a href="booking-detail.html?id=${encodeURIComponent(b.id)}" class="font-mono font-bold text-[#C9A24B] hover:underline">${AdminApp.esc(b.id)}</a>
             <div class="text-[11px] text-zinc-300">${AdminApp.esc(b.lead_name)}</div>
           </td>
           <td>
@@ -575,7 +575,7 @@
           <tr>
             <td class="font-mono text-zinc-400">#${Number(p.id)}</td>
             <td>
-              <a href="booking-detail.html?id=${encodeURIComponent(p.booking_id)}" class="font-mono font-bold text-[#E05A47] hover:underline">${AdminApp.esc(p.booking_id)}</a>
+              <a href="booking-detail.html?id=${encodeURIComponent(p.booking_id)}" class="font-mono font-bold text-[#C9A24B] hover:underline">${AdminApp.esc(p.booking_id)}</a>
               <div class="text-[11px] text-zinc-300">${AdminApp.esc(p.lead_name)}</div>
             </td>
             <td>

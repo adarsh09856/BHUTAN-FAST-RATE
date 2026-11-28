@@ -69,8 +69,8 @@
         </div>
         <div class="stat-card space-y-1.5">
           <span class="text-xs font-bold text-zinc-400 uppercase tracking-wider">New Client Leads</span>
-          <div id="statInq" class="text-3xl font-black text-[#E05A47]">—</div>
-          <div class="text-[11px] text-zinc-400"><a href="inquiries.html" class="text-[#E05A47] hover:underline">Review inquiry leads →</a></div>
+          <div id="statInq" class="text-3xl font-black text-[#C9A24B]">—</div>
+          <div class="text-[11px] text-zinc-400"><a href="inquiries.html" class="text-[#C9A24B] hover:underline">Review inquiry leads →</a></div>
         </div>
       </div>
 
@@ -143,7 +143,7 @@
             <h2 class="text-base font-extrabold text-white">Live Booking Pipeline by Stage</h2>
             <p class="text-[11px] text-zinc-400">Real-time database counts across reservation lifecycle stages</p>
           </div>
-          <a href="bookings.html" class="text-xs font-bold text-[#E05A47] hover:underline">View Pipeline Table →</a>
+          <a href="bookings.html" class="text-xs font-bold text-[#C9A24B] hover:underline">View Pipeline Table →</a>
         </div>
         <div id="pipelineGrid" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 text-xs">
           <div class="admin-panel-sub text-zinc-400">Loading pipeline stages...</div>
@@ -171,7 +171,7 @@
               <h2 class="text-base font-extrabold text-white">Recent Operational Actions</h2>
               <p class="text-[11px] text-zinc-400">Live immutable audit trail across staff, client, and guide portals</p>
             </div>
-            <a href="audit-log.html" class="text-xs font-bold text-[#E05A47] hover:underline">Full Audit Trail →</a>
+            <a href="audit-log.html" class="text-xs font-bold text-[#C9A24B] hover:underline">Full Audit Trail →</a>
           </div>
           <div id="activityFeed" class="space-y-2 text-xs">
             <div class="text-zinc-400">Loading recent operational audit events...</div>
@@ -299,7 +299,7 @@
               <span class="text-zinc-300 font-semibold">${AdminApp.formatMoney(rev, 'USD')} <span class="text-emerald-400 text-[11px]">(${AdminApp.formatMoney(coll, 'USD')} paid)</span></span>
             </div>
             <div class="pipeline-bar-track">
-              <div class="pipeline-bar-fill" style="width:${barPct}%; background:#E05A47;"></div>
+              <div class="pipeline-bar-fill" style="width:${barPct}%; background:#C9A24B;"></div>
             </div>
           </div>
         `;
@@ -315,7 +315,7 @@
         const count = counts.get(stage.key) || 0;
         const pct = Math.round((count / total) * 100);
         return `
-          <a href="bookings.html?status=${encodeURIComponent(stage.key)}" class="admin-panel-sub block hover:border-[#E05A47] transition space-y-2" style="text-decoration:none;">
+          <a href="bookings.html?status=${encodeURIComponent(stage.key)}" class="admin-panel-sub block hover:border-[#C9A24B] transition space-y-2" style="text-decoration:none;">
             <div class="flex items-center justify-between">
               <span class="text-zinc-400 font-semibold">${AdminApp.esc(stage.label)}</span>
               <span class="text-[10px] text-zinc-500">${pct}%</span>
@@ -348,7 +348,7 @@
         <div class="admin-panel-sub space-y-1">
           <div class="flex items-center justify-between gap-2">
             <strong class="text-white">${AdminApp.esc(c.guide_name || `Guide #${c.guide_id}`)}</strong>
-            <a href="booking-detail.html?id=${encodeURIComponent(c.booking_id)}" class="font-mono font-bold text-[#E05A47] hover:underline">${AdminApp.esc(c.booking_id)}</a>
+            <a href="booking-detail.html?id=${encodeURIComponent(c.booking_id)}" class="font-mono font-bold text-[#C9A24B] hover:underline">${AdminApp.esc(c.booking_id)}</a>
           </div>
           <div class="text-zinc-300">📍 ${AdminApp.esc(c.location)} ${c.weather ? `· 🌤 ${AdminApp.esc(c.weather)}` : ''}</div>
           <div class="flex items-center justify-between text-[11px] text-zinc-400">
@@ -368,7 +368,7 @@
 
       feed.innerHTML = logs.map((log) => {
         const entityLink = log.entity_type === 'booking' && log.entity_id
-          ? `<a href="booking-detail.html?id=${encodeURIComponent(log.entity_id)}" class="font-mono font-bold text-[#E05A47] hover:underline">${AdminApp.esc(log.entity_id)}</a>`
+          ? `<a href="booking-detail.html?id=${encodeURIComponent(log.entity_id)}" class="font-mono font-bold text-[#C9A24B] hover:underline">${AdminApp.esc(log.entity_id)}</a>`
           : `<span class="font-mono text-zinc-300">${AdminApp.esc(log.entity_id || log.entity_type || '')}</span>`;
 
         return `

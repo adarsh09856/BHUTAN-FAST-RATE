@@ -423,7 +423,7 @@
             <td>
               <div class="font-bold text-white text-xs">${AdminApp.esc(d.name)}</div>
               <div class="text-[11px] text-zinc-400 max-w-[260px] truncate">${AdminApp.esc(d.tagline || '')}</div>
-              <div class="text-[10px] font-mono text-zinc-500">${AdminApp.esc(d.id)} · <a href="${AdminApp.esc(pubHref)}" target="_blank" rel="noopener" class="text-[#E05A47] hover:underline font-sans font-bold">View Page ↗</a></div>
+              <div class="text-[10px] font-mono text-zinc-500">${AdminApp.esc(d.id)} · <a href="${AdminApp.esc(pubHref)}" target="_blank" rel="noopener" class="text-[#C9A24B] hover:underline font-sans font-bold">View Page ↗</a></div>
             </td>
             <td>
               <div class="text-xs font-bold text-white">${d.altitude_meters ? `${Number(d.altitude_meters).toLocaleString()}m` : '—'}</div>
@@ -572,7 +572,7 @@
             <td>
               <div class="font-bold text-white text-xs">${AdminApp.esc(f.name)}</div>
               <div class="text-[10px] font-mono text-zinc-400">
-                ${AdminApp.esc(f.id)} · <a href="${AdminApp.esc(pubHref)}" target="_blank" rel="noopener" class="text-[#E05A47] hover:underline font-sans font-bold">Live Page ↗</a>
+                ${AdminApp.esc(f.id)} · <a href="${AdminApp.esc(pubHref)}" target="_blank" rel="noopener" class="text-[#C9A24B] hover:underline font-sans font-bold">Live Page ↗</a>
               </div>
             </td>
             <td>
@@ -773,7 +773,7 @@
                 </div>
                 <div class="text-[11px] text-zinc-400">
                   Tour: <span class="text-zinc-200 font-semibold">${AdminApp.esc(r.tour_taken || 'Bhutan Expedition')}</span>
-                  ${r.booking_id ? ` · Ref: <a href="booking-detail.html?id=${encodeURIComponent(r.booking_id)}" class="font-mono text-[#E05A47] hover:underline">${AdminApp.esc(r.booking_id)}</a>` : ''}
+                  ${r.booking_id ? ` · Ref: <a href="booking-detail.html?id=${encodeURIComponent(r.booking_id)}" class="font-mono text-[#C9A24B] hover:underline">${AdminApp.esc(r.booking_id)}</a>` : ''}
                   ${r.travel_date ? ` · ${AdminApp.esc(r.travel_date)}` : ''}
                 </div>
               </div>
