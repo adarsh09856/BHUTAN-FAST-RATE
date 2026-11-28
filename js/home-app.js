@@ -378,13 +378,13 @@
             : '';
 
       return `
-        <div class="absolute inset-0 transition-opacity duration-700 ${isActive ? 'opacity-100 z-10' : 'opacity-0 pointer-events-none z-0'}" data-hero-slide="${idx}">
-          <img src="${esc(s.img)}" alt="${esc(s.title)}" class="w-full h-full object-cover ${isActive ? 'kenburns' : ''}">
-          <div class="absolute inset-0 bg-gradient-to-t from-[#0B2A22]/85 via-[#0B2A22]/35 to-black/25"></div>
-          <div class="relative h-full max-w-[1360px] mx-auto px-4 sm:px-6 flex items-center ${wrapJustify}">
+        <div class="absolute inset-0 transition-opacity duration-500 ${isActive ? 'opacity-100 z-10' : 'opacity-0 pointer-events-none z-0'}" data-hero-slide="${idx}">
+          <img src="${esc(s.img)}" alt="${esc(s.title)}" loading="eager" decoding="async" class="absolute inset-0 w-full h-full object-cover ${isActive ? 'kenburns' : ''}">
+          <div class="absolute inset-0 bg-gradient-to-r from-black/75 via-black/40 to-transparent pointer-events-none"></div>
+          <div class="relative z-10 h-full max-w-[1360px] mx-auto px-4 sm:px-6 flex items-center ${wrapJustify}">
             <div class="splash-in max-w-[680px] text-white ${boxCls}">
               <span class="inline-block bg-[#C9A24B] text-[#0B2A22] px-3 py-1 rounded-full text-xs font-extrabold tracking-[0.18em]">${esc(s.kicker)}</span>
-              <h1 class="font-serif text-[38px] sm:text-[56px] lg:text-[64px] leading-[1.03] mt-3">${esc(s.title)}</h1>
+              <h1 class="font-serif text-[38px] sm:text-[56px] lg:text-[64px] leading-[1.03] mt-3 drop-shadow">${esc(s.title)}</h1>
               <p class="mt-3 text-white/90 text-base sm:text-lg max-w-[560px]">${esc(s.sub)}</p>
               <div class="mt-6 flex flex-wrap items-center gap-3">
                 <a href="${esc(tourHref)}" class="bg-[#C9A24B] hover:bg-[#E4C87E] text-[#0B2A22] px-6 py-3.5 rounded-full font-extrabold text-sm transition inline-flex items-center gap-2">
@@ -404,7 +404,7 @@
     const dotsHtml = HERO_SLIDES.map((s, idx) => `
       <button type="button" data-action="hero-dot" data-idx="${idx}" aria-label="Go to slide ${idx + 1}" class="flex-1 text-left">
         <span class="text-white text-xs font-bold block mb-2 drop-shadow">${String(idx + 1).padStart(2, '0')} · ${esc(s.kicker)}</span>
-        <span class="block h-[4px] bg-white/30 rounded-full overflow-hidden">
+        <span class="block h-[4px] bg-white/30 rounded-full overflow-hidden" data-hero-dot-bar="${idx}">
           ${idx === state.heroIdx ? '<span class="block h-full bg-[#C9A24B] progress-run"></span>' : idx < state.heroIdx ? '<span class="block h-full bg-white w-full"></span>' : ''}
         </span>
       </button>
@@ -424,59 +424,60 @@
     `;
   }
 
+  function renderMegaMenuHtml() {
+    if (!state.megaMenu || !MEGA_CONFIG[state.megaMenu]) return '';
+    return `
+      <div class="hidden lg:block absolute left-0 right-0 top-full bg-white text-[#101613] shadow-2xl border-t border-[#E7DCC4] z-40" id="homeMegaPanel">
+        <div class="max-w-[1360px] mx-auto px-6 py-7 grid grid-cols-4 gap-7">
+          <div>
+            <p class="text-xs tracking-[0.2em] text-[#C9A24B] font-extrabold">EXPLORE ${esc(state.megaMenu.toUpperCase())}</p>
+            <div class="flex items-baseline justify-between mt-2 gap-2">
+              <h3 class="font-serif text-3xl text-[#0B2A22]">${esc(MEGA_CONFIG[state.megaMenu].title)} in Bhutan</h3>
+              <a href="${esc(MEGA_CONFIG[state.megaMenu].href)}" class="text-xs font-bold text-[#C9A24B] hover:underline whitespace-nowrap">View Page →</a>
+            </div>
+            <p class="text-sm text-[#66706A] mt-2">Hand-checked routes, licensed guides and SDF included.</p>
+            <div class="flex flex-wrap gap-2 mt-4">
+              ${['bhutan tour packages', 'best time to visit', 'tigers nest'].map((tag) => `
+                <button type="button" data-action="quick-tag" data-tag="${esc(tag)}" class="text-xs bg-[#FFF8EC] text-[#0B2A22] border border-[#E7DCC4] px-3 py-1.5 rounded-full font-bold">${esc(tag)}</button>
+              `).join('')}
+            </div>
+          </div>
+          <div class="space-y-1">
+            ${MEGA_CONFIG[state.megaMenu].links.map((lk) => `
+              <a href="${esc(lk.href)}" class="w-full text-left px-3 py-2.5 rounded-xl hover:bg-[#FFF8EC] font-semibold flex justify-between items-center text-[#101613]">
+                <span>${esc(lk.label)}</span>
+                <span class="text-[#C9A24B]">→</span>
+              </a>
+            `).join('')}
+          </div>
+          <div class="bg-[#FFF8EC] text-[#101613] rounded-2xl p-4 flex flex-col justify-between border border-[#E7DCC4]">
+            <div>
+              <p class="text-xs font-extrabold text-[#C9A24B] tracking-widest">DIRECT CONCIERGE</p>
+              <p class="font-serif text-xl mt-1 text-[#0B2A22]">Need tailor-made dates or Regional INR pricing?</p>
+              <p class="text-sm text-[#66706A] mt-2">Use our instant SDF calculator or speak directly with our Paro booking desk.</p>
+            </div>
+            <a href="book.html" class="mt-4 inline-flex items-center gap-2 bg-[#0B2A22] text-white px-4 py-2.5 rounded-full text-sm font-bold w-fit whitespace-nowrap">
+              Start Booking ${svgIcon('arrowRight', 15)}
+            </a>
+          </div>
+          <div class="relative rounded-2xl overflow-hidden bg-[#0B2A22]" style="height:210px;min-height:200px;">
+            <img src="${esc(MEGA_CONFIG[state.megaMenu].img)}" alt="${esc(MEGA_CONFIG[state.megaMenu].feature)}" class="absolute inset-0 w-full h-full object-cover" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;">
+            <div class="absolute inset-0 bg-gradient-to-t from-black/75 via-black/20 to-transparent pointer-events-none"></div>
+            <div class="absolute bottom-3 left-3 right-3 text-white z-10">
+              <span class="text-[11px] font-bold text-[#E4C87E] uppercase">HIGHLIGHT</span>
+              <p class="font-serif text-lg drop-shadow">${esc(MEGA_CONFIG[state.megaMenu].feature)}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
   function renderHeaderSection() {
     const lic = state.settings.company_license || 'TR/2018/9882';
     const cleanLic = String(lic).replace(/^#/, '');
     const avg = Number(state.avgRating || 4.9).toFixed(1);
     const totalReviews = state.reviewsCount > 0 ? `${state.reviewsCount} verified reviews` : '2,400+ happy travellers';
-
-    const mega = state.megaMenu && MEGA_CONFIG[state.megaMenu]
-      ? `
-        <div class="hidden lg:block absolute left-0 right-0 top-full bg-white text-[#101613] shadow-2xl border-t border-[#E7DCC4] z-40" id="homeMegaPanel">
-          <div class="max-w-[1360px] mx-auto px-6 py-7 grid grid-cols-4 gap-7">
-            <div>
-              <p class="text-xs tracking-[0.2em] text-[#C9A24B] font-extrabold">EXPLORE ${esc(state.megaMenu.toUpperCase())}</p>
-              <div class="flex items-baseline justify-between mt-2 gap-2">
-                <h3 class="font-serif text-3xl text-[#0B2A22]">${esc(MEGA_CONFIG[state.megaMenu].title)} in Bhutan</h3>
-                <a href="${esc(MEGA_CONFIG[state.megaMenu].href)}" class="text-xs font-bold text-[#C9A24B] hover:underline whitespace-nowrap">View Page →</a>
-              </div>
-              <p class="text-sm text-[#66706A] mt-2">Hand-checked routes, licensed guides and SDF included.</p>
-              <div class="flex flex-wrap gap-2 mt-4">
-                ${['bhutan tour packages', 'best time to visit', 'tigers nest'].map((tag) => `
-                  <button type="button" data-action="quick-tag" data-tag="${esc(tag)}" class="text-xs bg-[#FFF8EC] text-[#0B2A22] border border-[#E7DCC4] px-3 py-1.5 rounded-full font-bold">${esc(tag)}</button>
-                `).join('')}
-              </div>
-            </div>
-            <div class="space-y-1">
-              ${MEGA_CONFIG[state.megaMenu].links.map((lk) => `
-                <a href="${esc(lk.href)}" class="w-full text-left px-3 py-2.5 rounded-xl hover:bg-[#FFF8EC] font-semibold flex justify-between items-center text-[#101613]">
-                  <span>${esc(lk.label)}</span>
-                  <span class="text-[#C9A24B]">→</span>
-                </a>
-              `).join('')}
-            </div>
-            <div class="bg-[#FFF8EC] text-[#101613] rounded-2xl p-4 flex flex-col justify-between border border-[#E7DCC4]">
-              <div>
-                <p class="text-xs font-extrabold text-[#C9A24B] tracking-widest">DIRECT CONCIERGE</p>
-                <p class="font-serif text-xl mt-1 text-[#0B2A22]">Need tailor-made dates or Regional INR pricing?</p>
-                <p class="text-sm text-[#66706A] mt-2">Use our instant SDF calculator or speak directly with our Paro booking desk.</p>
-              </div>
-              <a href="book.html" class="mt-4 inline-flex items-center gap-2 bg-[#0B2A22] text-white px-4 py-2.5 rounded-full text-sm font-bold w-fit whitespace-nowrap">
-                Start Booking ${svgIcon('arrowRight', 15)}
-              </a>
-            </div>
-            <div class="relative rounded-2xl overflow-hidden min-h-[200px]">
-              <img src="${esc(MEGA_CONFIG[state.megaMenu].img)}" alt="${esc(MEGA_CONFIG[state.megaMenu].feature)}" class="w-full h-full object-cover">
-              <div class="absolute inset-0 bg-gradient-to-t from-black/75 to-transparent"></div>
-              <div class="absolute bottom-3 left-3 right-3 text-white">
-                <span class="text-[11px] font-bold text-[#E4C87E] uppercase">HIGHLIGHT</span>
-                <p class="font-serif text-lg">${esc(MEGA_CONFIG[state.megaMenu].feature)}</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      `
-      : '';
 
     return `
       <div class="bg-[#0B2A22] text-white text-[12px] sm:text-[13px]" id="top">
@@ -526,7 +527,7 @@
             </button>
           </div>
         </div>
-        ${mega}
+        <div id="homeMegaSlot">${renderMegaMenuHtml()}</div>
       </header>
     `;
   }
@@ -560,9 +561,21 @@
     `;
   }
 
-  function renderSearchAndTrust() {
+  function renderSearchDropdownHtml() {
+    if (!state.searchDropdownOpen || !state.searchQuery.trim()) return '';
     const q = state.searchQuery.trim().toLowerCase();
     const suggestions = q ? TRENDING_TAGS.filter((t) => t.includes(q)).slice(0, 6) : [];
+    return `
+      <div class="absolute left-0 right-0 top-full mt-2 bg-white text-[#101613] border border-[#E7DCC4] rounded-2xl shadow-xl overflow-hidden z-30">
+        ${suggestions.length
+          ? suggestions.map((tag) => `<button type="button" data-action="quick-tag" data-tag="${esc(tag)}" class="w-full text-left px-4 py-3 hover:bg-[#FFF8EC] text-[#0B2A22] text-sm font-semibold flex gap-2">${svgIcon('sparkles', 16, 'text-[#C9A24B] shrink-0 mt-0.5')} ${esc(tag)}</button>`).join('')
+          : `<button type="button" id="homeSearchDirectGo" class="w-full text-left px-4 py-3 hover:bg-[#FFF8EC] text-[#0B2A22] text-sm font-semibold">Search live tours for "${esc(state.searchQuery)}" →</button>`
+        }
+      </div>
+    `;
+  }
+
+  function renderSearchAndTrust() {
     const trustBadges = [
       ['Licensed operator', `Bhutan Tourism approved #${String(state.settings.company_license || 'TR/2018/9882').replace(/^#/, '')}`],
       ['SDF included', 'No hidden fees · USD & INR'],
@@ -585,14 +598,7 @@
               <input id="homeSearchInput" type="text" value="${esc(state.searchQuery)}" placeholder="Ask AI: e.g. 7 days festival + Tiger’s Nest under $2500" class="flex-1 min-w-0 bg-transparent outline-none py-1.5 text-[15px] sm:text-base text-[#101613]" style="color-scheme:light;color:#101613;">
               <button type="button" id="homeSearchBtn" class="bg-[#0B2A22] hover:bg-[#123A30] text-white px-5 py-2.5 rounded-full font-bold shrink-0">Search</button>
             </div>
-            ${state.searchDropdownOpen && state.searchQuery.trim()
-              ? `<div class="absolute left-0 right-0 top-full mt-2 bg-white text-[#101613] border border-[#E7DCC4] rounded-2xl shadow-xl overflow-hidden z-30">
-                  ${suggestions.length
-                    ? suggestions.map((tag) => `<button type="button" data-action="quick-tag" data-tag="${esc(tag)}" class="w-full text-left px-4 py-3 hover:bg-[#FFF8EC] text-[#0B2A22] text-sm font-semibold flex gap-2">${svgIcon('sparkles', 16, 'text-[#C9A24B] shrink-0 mt-0.5')} ${esc(tag)}</button>`).join('')
-                    : `<button type="button" id="homeSearchDirectGo" class="w-full text-left px-4 py-3 hover:bg-[#FFF8EC] text-[#0B2A22] text-sm font-semibold">Search live tours for "${esc(state.searchQuery)}" →</button>`
-                  }
-                </div>`
-              : ''}
+            <div id="homeSearchDropdownSlot">${renderSearchDropdownHtml()}</div>
           </div>
           <div class="flex flex-wrap gap-2 mt-3">
             <span class="text-xs font-bold pt-1.5 text-[#66706A]">Trending:</span>
@@ -1168,8 +1174,8 @@
       const estTotal = state.tripPlan.reduce((sum, item) => sum + (Number(item.price) || 0) * (item.qty || 1), 0);
       const firstTourHref = state.tripPlan[0] ? `book.html?tour=${encodeURIComponent(state.tripPlan[0].slug || state.tripPlan[0].id)}` : 'book.html';
       html += `
-        <div id="homePlanBackdrop" class="fixed inset-0 z-50 bg-black/50">
-          <div id="homePlanPanel" class="absolute right-0 top-0 h-full w-[92%] max-w-[420px] bg-[var(--cream)] p-5 overflow-y-auto shadow-2xl">
+        <div id="homePlanBackdrop" class="fixed inset-0 z-50 bg-black/50 bfr-trip-drawer-backdrop">
+          <div id="homePlanPanel" class="bfr-trip-drawer absolute right-0 top-0 h-full w-[92%] max-w-[420px] bg-[var(--cream)] p-5 overflow-y-auto shadow-2xl">
             <div class="flex justify-between items-center pb-3 border-b border-[var(--line)]">
               <h3 class="font-serif text-2xl text-[#0B2A22]">Your Trip Plan</h3>
               <button type="button" id="closePlanDrawerBtn" aria-label="Close trip plan" class="p-2 rounded-xl hover:bg-[#F7EDD8]">${svgIcon('x', 20)}</button>
@@ -1179,8 +1185,8 @@
               ${state.tripPlan.length === 0
                 ? `<div class="bg-white border border-[var(--line)] rounded-2xl p-5 text-sm text-[#66706A]">Your Trip Plan shortlist is empty. Heart or Quick View any package below to build your route.</div>`
                 : state.tripPlan.map((item) => `
-                  <div class="bg-white border border-[var(--line)] rounded-2xl p-3 flex gap-3">
-                    <img src="${esc(item.img)}" alt="${esc(item.title)}" class="w-20 h-20 object-cover rounded-xl shrink-0">
+                  <div class="bg-white border border-[var(--line)] rounded-2xl p-3 flex gap-3 items-center">
+                    <img src="${esc(safeUrl(item.img, FALLBACK_IMAGES.tiger))}" alt="${esc(item.title)}" class="w-20 h-20 object-cover rounded-xl shrink-0" style="width:80px;height:80px;min-width:80px;display:block;">
                     <div class="flex-1 min-w-0">
                       <b class="text-sm leading-tight block text-[#0B2A22]">${esc(item.title)}</b>
                       <span class="text-sm text-[#66706A]">$${Number(item.price).toLocaleString('en-US')} × ${item.qty} guest(s)</span>
@@ -1423,115 +1429,127 @@
     });
   }
 
-  function bindEvents(root) {
-    root.querySelectorAll('[data-mega]').forEach((el) => {
-      el.addEventListener('mouseenter', () => {
-        const next = el.getAttribute('data-mega');
-        if (state.megaMenu !== next) {
-          state.megaMenu = next;
-          render();
-        }
-      });
-    });
-    const header = root.querySelector('#siteHeader');
-    header?.addEventListener('mouseleave', () => {
-      if (state.megaMenu) {
-        state.megaMenu = null;
-        render();
-      }
-    });
+  function getRoot() {
+    return global.document && global.document.getElementById('root');
+  }
 
-    const hero = root.querySelector('#hero');
-    hero?.addEventListener('mouseenter', () => { state.heroPaused = true; });
-    hero?.addEventListener('mouseleave', () => { state.heroPaused = false; });
-
-    root.querySelectorAll('[data-action="hero-dot"]').forEach((btn) => {
-      btn.addEventListener('click', () => {
-        state.heroIdx = Number(btn.getAttribute('data-idx')) || 0;
-        render();
-      });
-    });
-
-    root.querySelector('#homeMobileOpenBtn')?.addEventListener('click', () => { state.mobileMenuOpen = true; render(); });
-    root.querySelector('#homeMobileCloseBtn')?.addEventListener('click', () => { state.mobileMenuOpen = false; render(); });
-    root.querySelector('#homeMobileBackdrop')?.addEventListener('click', (e) => {
-      if (e.target.id === 'homeMobileBackdrop') { state.mobileMenuOpen = false; render(); }
-    });
-    root.querySelector('#mobileCustomLink')?.addEventListener('click', () => { state.mobileMenuOpen = false; render(); });
-
-    const searchInput = root.querySelector('#homeSearchInput');
-    searchInput?.addEventListener('input', (e) => {
-      state.searchQuery = e.target.value;
-      state.searchDropdownOpen = true;
-      render();
-      const refocused = root.querySelector('#homeSearchInput');
-      if (refocused) {
-        refocused.focus();
-        refocused.setSelectionRange(refocused.value.length, refocused.value.length);
-      }
-    });
-    searchInput?.addEventListener('focus', () => { state.searchDropdownOpen = true; });
-    root.querySelector('#homeSearchBtn')?.addEventListener('click', () => {
-      state.searchDropdownOpen = false;
-      render();
-      global.document.getElementById('tours')?.scrollIntoView({ behavior: 'smooth' });
-    });
-    root.querySelector('#homeSearchDirectGo')?.addEventListener('click', () => {
-      state.searchDropdownOpen = false;
-      render();
-      global.document.getElementById('tours')?.scrollIntoView({ behavior: 'smooth' });
-    });
-
-    root.querySelectorAll('[data-action="quick-tag"]').forEach((btn) => {
+  function bindMegaSlotEvents(scope) {
+    if (!scope) return;
+    scope.querySelectorAll('[data-action="quick-tag"]').forEach((btn) => {
       btn.addEventListener('click', () => {
         state.searchQuery = btn.getAttribute('data-tag') || '';
         state.searchDropdownOpen = false;
         state.megaMenu = null;
-        render();
+        updateMegaSlot();
+        syncSearchInputVal();
+        updateToursMount();
         global.document.getElementById('tours')?.scrollIntoView({ behavior: 'smooth' });
       });
     });
+  }
 
-    root.querySelectorAll('[data-action="cat-filter"]').forEach((btn) => {
+  function updateMegaSlot() {
+    const slot = global.document && global.document.getElementById('homeMegaSlot');
+    if (!slot) return;
+    slot.innerHTML = renderMegaMenuHtml();
+    bindMegaSlotEvents(slot);
+  }
+
+  function syncSearchInputVal() {
+    const inp = global.document && global.document.getElementById('homeSearchInput');
+    if (inp && inp.value !== state.searchQuery) inp.value = state.searchQuery;
+  }
+
+  function bindSearchDropdownEvents(scope) {
+    if (!scope) return;
+    scope.querySelectorAll('[data-action="quick-tag"]').forEach((btn) => {
       btn.addEventListener('click', () => {
-        state.category = btn.getAttribute('data-cat') || 'All';
-        render();
+        state.searchQuery = btn.getAttribute('data-tag') || '';
+        state.searchDropdownOpen = false;
+        syncSearchInputVal();
+        updateSearchDropdownSlot();
+        updateToursMount();
+        global.document.getElementById('tours')?.scrollIntoView({ behavior: 'smooth' });
+      });
+    });
+    scope.querySelector('#homeSearchDirectGo')?.addEventListener('click', () => {
+      state.searchDropdownOpen = false;
+      updateSearchDropdownSlot();
+      updateToursMount();
+      global.document.getElementById('tours')?.scrollIntoView({ behavior: 'smooth' });
+    });
+  }
+
+  function updateSearchDropdownSlot() {
+    const slot = global.document && global.document.getElementById('homeSearchDropdownSlot');
+    if (!slot) return;
+    slot.innerHTML = renderSearchDropdownHtml();
+    bindSearchDropdownEvents(slot);
+  }
+
+  function updateHeroSlideUi() {
+    const hero = global.document && global.document.getElementById('hero');
+    if (!hero) return;
+    hero.querySelectorAll('[data-hero-slide]').forEach((el) => {
+      const idx = Number(el.getAttribute('data-hero-slide'));
+      const active = idx === state.heroIdx;
+      el.classList.toggle('opacity-100', active);
+      el.classList.toggle('z-10', active);
+      el.classList.toggle('opacity-0', !active);
+      el.classList.toggle('pointer-events-none', !active);
+      el.classList.toggle('z-0', !active);
+      const img = el.querySelector('img');
+      if (img) img.classList.toggle('kenburns', active);
+    });
+    hero.querySelectorAll('[data-hero-dot-bar]').forEach((bar) => {
+      const idx = Number(bar.getAttribute('data-hero-dot-bar'));
+      bar.innerHTML = idx === state.heroIdx
+        ? '<span class="block h-full bg-[#C9A24B] progress-run"></span>'
+        : (idx < state.heroIdx ? '<span class="block h-full bg-white w-full"></span>' : '');
+    });
+  }
+
+  function updatePlanBadge() {
+    const btn = global.document && global.document.getElementById('homePlanDrawerBtn');
+    if (!btn) return;
+    const totalQty = state.tripPlan.reduce((acc, item) => acc + (item.qty || 1), 0);
+    let badge = btn.querySelector('.bfr-plan-badge');
+    if (totalQty > 0) {
+      if (!badge) {
+        badge = global.document.createElement('span');
+        badge.className = 'bfr-plan-badge absolute -top-1 -right-1 w-5 h-5 bg-[#C9A24B] text-[#0B2A22] rounded-full text-[11px] grid place-items-center font-extrabold';
+        btn.appendChild(badge);
+      }
+      badge.textContent = String(totalQty);
+    } else if (badge) {
+      badge.remove();
+    }
+  }
+
+  function bindToursEvents(scope) {
+    if (!scope) return;
+    scope.querySelectorAll('[data-action="cat-filter"]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const nextCat = btn.getAttribute('data-cat') || 'All';
+        if (nextCat === 'All' && state.searchQuery) {
+          state.searchQuery = '';
+          syncSearchInputVal();
+          updateSearchDropdownSlot();
+        }
+        state.category = nextCat;
+        updateToursMount();
       });
     });
 
-    root.querySelector('#resetTourFilterBtn')?.addEventListener('click', () => {
+    scope.querySelector('#resetTourFilterBtn')?.addEventListener('click', () => {
       state.searchQuery = '';
       state.category = 'All';
-      render();
+      syncSearchInputVal();
+      updateSearchDropdownSlot();
+      updateToursMount();
     });
 
-    root.querySelector('#homePlanDrawerBtn')?.addEventListener('click', () => { state.planDrawerOpen = true; render(); });
-    root.querySelector('#closePlanDrawerBtn')?.addEventListener('click', () => { state.planDrawerOpen = false; render(); });
-    root.querySelector('#homePlanBackdrop')?.addEventListener('click', (e) => { if (e.target.id === 'homePlanBackdrop') { state.planDrawerOpen = false; render(); } });
-    root.querySelector('#planToCustomBtn')?.addEventListener('click', () => {
-      state.planDrawerOpen = false;
-      render();
-      global.document.getElementById('custom')?.scrollIntoView({ behavior: 'smooth' });
-    });
-    root.querySelectorAll('[data-action="plan-qty"]').forEach((btn) => {
-      btn.addEventListener('click', () => {
-        const id = btn.getAttribute('data-id');
-        const delta = Number(btn.getAttribute('data-delta')) || 0;
-        state.tripPlan = state.tripPlan.map((it) => it.id === id ? { ...it, qty: Math.max(1, (it.qty || 1) + delta) } : it);
-        saveTripPlanStorage();
-        render();
-      });
-    });
-    root.querySelectorAll('[data-action="plan-remove"]').forEach((btn) => {
-      btn.addEventListener('click', () => {
-        const id = btn.getAttribute('data-id');
-        state.tripPlan = state.tripPlan.filter((it) => it.id !== id);
-        saveTripPlanStorage();
-        render();
-      });
-    });
-
-    root.querySelectorAll('[data-action="quick-tour"]').forEach((btn) => {
+    scope.querySelectorAll('[data-action="quick-tour"]').forEach((btn) => {
       btn.addEventListener('click', () => {
         const id = btn.getAttribute('data-id');
         const tour = state.tours.find((t) => t.id === id);
@@ -1539,80 +1557,12 @@
           state.activeTourModal = tour;
           state.modalGuests = 2;
           state.modalDayOpen = 0;
-          render();
+          updateOverlaysMount();
         }
       });
     });
-    root.querySelector('#closeTourModalBtn')?.addEventListener('click', () => { state.activeTourModal = null; render(); });
-    root.querySelector('#homeTourModalBackdrop')?.addEventListener('click', (e) => { if (e.target.id === 'homeTourModalBackdrop') { state.activeTourModal = null; render(); } });
-    root.querySelector('#modalGuestMinusBtn')?.addEventListener('click', () => { state.modalGuests = Math.max(1, state.modalGuests - 1); render(); });
-    root.querySelector('#modalGuestPlusBtn')?.addEventListener('click', () => { state.modalGuests += 1; render(); });
-    root.querySelector('#modalShortlistBtn')?.addEventListener('click', () => {
-      if (state.activeTourModal) {
-        addTourToPlan(state.activeTourModal);
-        state.activeTourModal = null;
-        state.planDrawerOpen = true;
-        render();
-      }
-    });
-    root.querySelectorAll('[data-action="modal-day"]').forEach((btn) => {
-      btn.addEventListener('click', () => {
-        const idx = Number(btn.getAttribute('data-idx'));
-        state.modalDayOpen = state.modalDayOpen === idx ? -1 : idx;
-        render();
-      });
-    });
 
-    root.querySelector('#openCompareModalBtn')?.addEventListener('click', () => { state.compareModalOpen = true; render(); });
-    root.querySelector('#closeCompareModalBtn')?.addEventListener('click', () => { state.compareModalOpen = false; render(); });
-    root.querySelector('#homeCompareBackdrop')?.addEventListener('click', (e) => { if (e.target.id === 'homeCompareBackdrop') { state.compareModalOpen = false; render(); } });
-
-    root.querySelectorAll('[data-action="quick-fest"]').forEach((btn) => {
-      btn.addEventListener('click', () => {
-        const idx = Number(btn.getAttribute('data-idx'));
-        state.activeFestModal = state.festivals[idx] || null;
-        render();
-      });
-    });
-    root.querySelectorAll('[data-action="quick-dest"]').forEach((btn) => {
-      btn.addEventListener('click', () => {
-        const idx = Number(btn.getAttribute('data-idx'));
-        state.activeDestModal = state.destinations[idx] || null;
-        render();
-      });
-    });
-    root.querySelectorAll('[data-action="open-film"]').forEach((btn) => {
-      btn.addEventListener('click', () => {
-        const idx = Number(btn.getAttribute('data-idx'));
-        state.activeFilmModal = SPECIALTY_CARDS[idx] || null;
-        render();
-      });
-    });
-    root.querySelector('#closeStoryModalBtn')?.addEventListener('click', () => {
-      state.activeFestModal = null;
-      state.activeDestModal = null;
-      state.activeFilmModal = null;
-      render();
-    });
-    root.querySelector('#homeStoryBackdrop')?.addEventListener('click', (e) => {
-      if (e.target.id === 'homeStoryBackdrop') {
-        state.activeFestModal = null;
-        state.activeDestModal = null;
-        state.activeFilmModal = null;
-        render();
-      }
-    });
-    root.querySelector('#storyToCustomBtn')?.addEventListener('click', () => {
-      const m = state.activeFestModal || state.activeDestModal || state.activeFilmModal;
-      if (m) state.customForm.message = `Interested in: ${m.name || m.title}. `;
-      state.activeFestModal = null;
-      state.activeDestModal = null;
-      state.activeFilmModal = null;
-      render();
-      global.document.getElementById('custom')?.scrollIntoView({ behavior: 'smooth' });
-    });
-
-    root.querySelectorAll('[data-action="save-tour"]').forEach((btn) => {
+    scope.querySelectorAll('[data-action="save-tour"]').forEach((btn) => {
       btn.addEventListener('click', () => {
         const id = btn.getAttribute('data-id');
         if (!id) return;
@@ -1625,11 +1575,12 @@
         } else if (tour) {
           addTourToPlan(tour);
         }
-        render();
+        updatePlanBadge();
+        updateToursMount();
       });
     });
 
-    root.querySelectorAll('[data-action="compare-tour"]').forEach((btn) => {
+    scope.querySelectorAll('[data-action="compare-tour"]').forEach((btn) => {
       btn.addEventListener('click', () => {
         const id = btn.getAttribute('data-id');
         if (!id) return;
@@ -1638,44 +1589,156 @@
         } else {
           state.compareIds = [...state.compareIds.slice(-1), id];
         }
-        render();
+        updateToursMount();
       });
     });
-    root.querySelector('#clearCompareBtn')?.addEventListener('click', () => { state.compareIds = []; render(); });
 
-    // Custom Itinerary Form
-    root.querySelector('#custName')?.addEventListener('input', (e) => { state.customForm.name = e.target.value; });
-    root.querySelector('#custEmail')?.addEventListener('input', (e) => { state.customForm.email = e.target.value; });
-    root.querySelector('#custPhone')?.addEventListener('input', (e) => { state.customForm.phone = e.target.value; });
-    root.querySelector('#custDates')?.addEventListener('input', (e) => { state.customForm.dates = e.target.value; });
-    root.querySelector('#custTravellers')?.addEventListener('change', (e) => { state.customForm.travellers = e.target.value; });
-    root.querySelector('#custMessage')?.addEventListener('input', (e) => { state.customForm.message = e.target.value; });
-    root.querySelector('#custBudget')?.addEventListener('input', (e) => {
+    scope.querySelector('#clearCompareBtn')?.addEventListener('click', () => {
+      state.compareIds = [];
+      updateToursMount();
+    });
+    scope.querySelector('#openCompareModalBtn')?.addEventListener('click', () => {
+      state.compareModalOpen = true;
+      updateOverlaysMount();
+    });
+  }
+
+  function updateToursMount() {
+    const el = global.document && global.document.getElementById('bfr-tours');
+    if (!el) return;
+    el.innerHTML = renderToursSection();
+    bindToursEvents(el);
+  }
+
+  function bindOverlaysEvents(scope) {
+    if (!scope) return;
+    scope.querySelector('#homeMobileCloseBtn')?.addEventListener('click', () => { state.mobileMenuOpen = false; updateOverlaysMount(); });
+    scope.querySelector('#homeMobileBackdrop')?.addEventListener('click', (e) => {
+      if (e.target.id === 'homeMobileBackdrop') { state.mobileMenuOpen = false; updateOverlaysMount(); }
+    });
+    scope.querySelector('#mobileCustomLink')?.addEventListener('click', () => { state.mobileMenuOpen = false; updateOverlaysMount(); });
+
+    scope.querySelector('#closePlanDrawerBtn')?.addEventListener('click', () => { state.planDrawerOpen = false; updateOverlaysMount(); });
+    scope.querySelector('#homePlanBackdrop')?.addEventListener('click', (e) => { if (e.target.id === 'homePlanBackdrop') { state.planDrawerOpen = false; updateOverlaysMount(); } });
+    scope.querySelector('#planToCustomBtn')?.addEventListener('click', () => {
+      state.planDrawerOpen = false;
+      updateOverlaysMount();
+      global.document.getElementById('custom')?.scrollIntoView({ behavior: 'smooth' });
+    });
+    scope.querySelectorAll('[data-action="plan-qty"]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const id = btn.getAttribute('data-id');
+        const delta = Number(btn.getAttribute('data-delta')) || 0;
+        state.tripPlan = state.tripPlan.map((it) => it.id === id ? { ...it, qty: Math.max(1, (it.qty || 1) + delta) } : it);
+        saveTripPlanStorage();
+        updatePlanBadge();
+        updateOverlaysMount();
+      });
+    });
+    scope.querySelectorAll('[data-action="plan-remove"]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const id = btn.getAttribute('data-id');
+        state.tripPlan = state.tripPlan.filter((it) => it.id !== id);
+        state.savedIds = state.savedIds.filter((x) => x !== id);
+        saveTripPlanStorage();
+        updatePlanBadge();
+        updateToursMount();
+        updateOverlaysMount();
+      });
+    });
+
+    scope.querySelector('#closeTourModalBtn')?.addEventListener('click', () => { state.activeTourModal = null; updateOverlaysMount(); });
+    scope.querySelector('#homeTourModalBackdrop')?.addEventListener('click', (e) => { if (e.target.id === 'homeTourModalBackdrop') { state.activeTourModal = null; updateOverlaysMount(); } });
+    scope.querySelector('#modalGuestMinusBtn')?.addEventListener('click', () => { state.modalGuests = Math.max(1, state.modalGuests - 1); updateOverlaysMount(); });
+    scope.querySelector('#modalGuestPlusBtn')?.addEventListener('click', () => { state.modalGuests += 1; updateOverlaysMount(); });
+    scope.querySelector('#modalShortlistBtn')?.addEventListener('click', () => {
+      if (state.activeTourModal) {
+        addTourToPlan(state.activeTourModal);
+        state.activeTourModal = null;
+        state.planDrawerOpen = true;
+        updatePlanBadge();
+        updateToursMount();
+        updateOverlaysMount();
+      }
+    });
+    scope.querySelectorAll('[data-action="modal-day"]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const idx = Number(btn.getAttribute('data-idx'));
+        state.modalDayOpen = state.modalDayOpen === idx ? -1 : idx;
+        updateOverlaysMount();
+      });
+    });
+
+    scope.querySelector('#closeCompareModalBtn')?.addEventListener('click', () => { state.compareModalOpen = false; updateOverlaysMount(); });
+    scope.querySelector('#homeCompareBackdrop')?.addEventListener('click', (e) => { if (e.target.id === 'homeCompareBackdrop') { state.compareModalOpen = false; updateOverlaysMount(); } });
+
+    scope.querySelector('#closeStoryModalBtn')?.addEventListener('click', () => {
+      state.activeFestModal = null;
+      state.activeDestModal = null;
+      state.activeFilmModal = null;
+      updateOverlaysMount();
+    });
+    scope.querySelector('#homeStoryBackdrop')?.addEventListener('click', (e) => {
+      if (e.target.id === 'homeStoryBackdrop') {
+        state.activeFestModal = null;
+        state.activeDestModal = null;
+        state.activeFilmModal = null;
+        updateOverlaysMount();
+      }
+    });
+    scope.querySelector('#storyToCustomBtn')?.addEventListener('click', () => {
+      const m = state.activeFestModal || state.activeDestModal || state.activeFilmModal;
+      if (m) state.customForm.message = `Interested in: ${m.name || m.title}. `;
+      state.activeFestModal = null;
+      state.activeDestModal = null;
+      state.activeFilmModal = null;
+      updateOverlaysMount();
+      updateCustomMount();
+      global.document.getElementById('custom')?.scrollIntoView({ behavior: 'smooth' });
+    });
+  }
+
+  function updateOverlaysMount() {
+    const el = global.document && global.document.getElementById('bfr-overlays');
+    if (!el) return;
+    el.innerHTML = `${renderMobileDrawer()}${renderInteractiveOverlays()}`;
+    bindOverlaysEvents(el);
+  }
+
+  function bindCustomEvents(scope) {
+    if (!scope) return;
+    scope.querySelector('#custName')?.addEventListener('input', (e) => { state.customForm.name = e.target.value; });
+    scope.querySelector('#custEmail')?.addEventListener('input', (e) => { state.customForm.email = e.target.value; });
+    scope.querySelector('#custPhone')?.addEventListener('input', (e) => { state.customForm.phone = e.target.value; });
+    scope.querySelector('#custDates')?.addEventListener('input', (e) => { state.customForm.dates = e.target.value; });
+    scope.querySelector('#custTravellers')?.addEventListener('change', (e) => { state.customForm.travellers = e.target.value; });
+    scope.querySelector('#custMessage')?.addEventListener('input', (e) => { state.customForm.message = e.target.value; });
+    scope.querySelector('#custBudget')?.addEventListener('input', (e) => {
       state.customForm.budget = Number(e.target.value) || 2400;
-      const lbl = root.querySelector('#custBudgetVal');
+      const lbl = scope.querySelector('#custBudgetVal');
       if (lbl) lbl.textContent = `$${state.customForm.budget.toLocaleString('en-US')}`;
     });
-    root.querySelectorAll('[data-action="toggle-interest"]').forEach((btn) => {
+    scope.querySelectorAll('[data-action="toggle-interest"]').forEach((btn) => {
       btn.addEventListener('click', () => {
         const tag = btn.getAttribute('data-interest');
         if (!tag) return;
         state.customForm.interests = state.customForm.interests.includes(tag)
           ? state.customForm.interests.filter((x) => x !== tag)
           : [...state.customForm.interests, tag];
-        render();
+        updateCustomMount();
       });
     });
-    root.querySelectorAll('[data-action="set-pace"]').forEach((btn) => {
+    scope.querySelectorAll('[data-action="set-pace"]').forEach((btn) => {
       btn.addEventListener('click', () => {
         state.customForm.pace = btn.getAttribute('data-pace') || 'Balanced';
-        render();
+        updateCustomMount();
       });
     });
-    root.querySelector('#homeCustomForm')?.addEventListener('submit', async (e) => {
+    scope.querySelector('#homeCustomForm')?.addEventListener('submit', async (e) => {
       e.preventDefault();
       state.customError = '';
       state.customSubmitting = true;
-      render();
+      updateCustomMount();
       try {
         const res = await global.ApiClient.submitInquiry({
           source: 'website_custom_builder',
@@ -1694,21 +1757,30 @@
         state.customError = err.message || 'Unable to submit custom inquiry. Please try WhatsApp or try again.';
       } finally {
         state.customSubmitting = false;
-        render();
+        updateCustomMount();
       }
     });
-    root.querySelector('#customEditAgainBtn')?.addEventListener('click', () => { state.customResult = null; render(); });
+    scope.querySelector('#customEditAgainBtn')?.addEventListener('click', () => { state.customResult = null; updateCustomMount(); });
+  }
 
-    // Newsletter Inquiry
-    root.querySelector('#homeNewsletterEmail')?.addEventListener('input', (e) => { state.newsletterEmail = e.target.value; });
-    root.querySelector('#homeNewsletterForm')?.addEventListener('submit', async (e) => {
+  function updateCustomMount() {
+    const el = global.document && global.document.getElementById('bfr-custom');
+    if (!el) return;
+    el.innerHTML = renderCustomBuilderSection();
+    bindCustomEvents(el);
+  }
+
+  function bindFooterEvents(scope) {
+    if (!scope) return;
+    scope.querySelector('#homeNewsletterEmail')?.addEventListener('input', (e) => { state.newsletterEmail = e.target.value; });
+    scope.querySelector('#homeNewsletterForm')?.addEventListener('submit', async (e) => {
       e.preventDefault();
       const email = state.newsletterEmail.trim();
       if (!email) return;
       state.newsletterBusy = true;
       state.newsletterMsg = '';
       state.newsletterErr = '';
-      render();
+      updateFooterMount();
       try {
         const res = await global.ApiClient.submitInquiry({
           inquiry_type: 'newsletter',
@@ -1722,16 +1794,24 @@
         state.newsletterErr = err.message || 'Subscription could not be saved right now.';
       } finally {
         state.newsletterBusy = false;
-        render();
+        updateFooterMount();
       }
     });
+  }
 
-    // Concierge Assistant
-    root.querySelector('#homeAiHeaderBtn')?.addEventListener('click', () => { state.chatOpen = true; render(); });
-    root.querySelector('#homeChatToggleBtn')?.addEventListener('click', () => { state.chatOpen = !state.chatOpen; render(); });
-    root.querySelector('#homeChatCloseBtn')?.addEventListener('click', () => { state.chatOpen = false; render(); });
-    root.querySelector('#homeChatInput')?.addEventListener('input', (e) => { state.chatInput = e.target.value; });
-    root.querySelector('#homeChatForm')?.addEventListener('submit', (e) => {
+  function updateFooterMount() {
+    const el = global.document && global.document.getElementById('bfr-footer');
+    if (!el) return;
+    el.innerHTML = renderFooter();
+    bindFooterEvents(el);
+  }
+
+  function bindChatEvents(scope) {
+    if (!scope) return;
+    scope.querySelector('#homeChatToggleBtn')?.addEventListener('click', () => { state.chatOpen = !state.chatOpen; updateChatMount(); });
+    scope.querySelector('#homeChatCloseBtn')?.addEventListener('click', () => { state.chatOpen = false; updateChatMount(); });
+    scope.querySelector('#homeChatInput')?.addEventListener('input', (e) => { state.chatInput = e.target.value; });
+    scope.querySelector('#homeChatForm')?.addEventListener('submit', (e) => {
       e.preventDefault();
       const txt = state.chatInput.trim();
       if (!txt) return;
@@ -1774,46 +1854,151 @@
         };
       }
       state.chatMessages.push(reply);
-      render();
-      const body = root.querySelector('#homeChatBody');
+      updateChatMount();
+      const body = global.document && global.document.getElementById('homeChatBody');
       if (body) body.scrollTop = body.scrollHeight;
+    });
+  }
+
+  function updateChatMount() {
+    const el = global.document && global.document.getElementById('bfr-chat');
+    if (!el) return;
+    el.innerHTML = renderChatWidget();
+    bindChatEvents(el);
+  }
+
+  function bindEvents(root) {
+    root.querySelectorAll('[data-mega]').forEach((el) => {
+      el.addEventListener('mouseenter', () => {
+        const next = el.getAttribute('data-mega');
+        if (state.megaMenu !== next) {
+          state.megaMenu = next;
+          updateMegaSlot();
+        }
+      });
+    });
+    const header = root.querySelector('#siteHeader');
+    header?.addEventListener('mouseleave', () => {
+      if (state.megaMenu) {
+        state.megaMenu = null;
+        updateMegaSlot();
+      }
+    });
+    bindMegaSlotEvents(root.querySelector('#homeMegaSlot'));
+
+    const hero = root.querySelector('#hero');
+    hero?.addEventListener('mouseenter', () => { state.heroPaused = true; });
+    hero?.addEventListener('mouseleave', () => { state.heroPaused = false; });
+
+    root.querySelectorAll('[data-action="hero-dot"]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        state.heroIdx = Number(btn.getAttribute('data-idx')) || 0;
+        updateHeroSlideUi();
+      });
+    });
+
+    root.querySelector('#homeMobileOpenBtn')?.addEventListener('click', () => { state.mobileMenuOpen = true; updateOverlaysMount(); });
+    root.querySelector('#homePlanDrawerBtn')?.addEventListener('click', () => { state.planDrawerOpen = true; updateOverlaysMount(); });
+    root.querySelector('#homeAiHeaderBtn')?.addEventListener('click', () => { state.chatOpen = true; updateChatMount(); });
+
+    const searchInput = root.querySelector('#homeSearchInput');
+    searchInput?.addEventListener('input', (e) => {
+      state.searchQuery = e.target.value;
+      state.searchDropdownOpen = true;
+      updateSearchDropdownSlot();
+      updateToursMount();
+    });
+    searchInput?.addEventListener('focus', () => {
+      state.searchDropdownOpen = true;
+      updateSearchDropdownSlot();
+    });
+    root.querySelector('#homeSearchBtn')?.addEventListener('click', () => {
+      state.searchDropdownOpen = false;
+      updateSearchDropdownSlot();
+      updateToursMount();
+      global.document.getElementById('tours')?.scrollIntoView({ behavior: 'smooth' });
+    });
+    root.querySelectorAll('#bfr-search [data-action="quick-tag"]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        state.searchQuery = btn.getAttribute('data-tag') || '';
+        state.searchDropdownOpen = false;
+        syncSearchInputVal();
+        updateSearchDropdownSlot();
+        updateToursMount();
+        global.document.getElementById('tours')?.scrollIntoView({ behavior: 'smooth' });
+      });
+    });
+    bindSearchDropdownEvents(root.querySelector('#homeSearchDropdownSlot'));
+
+    bindToursEvents(root.querySelector('#bfr-tours'));
+    bindOverlaysEvents(root.querySelector('#bfr-overlays'));
+    bindCustomEvents(root.querySelector('#bfr-custom'));
+    bindFooterEvents(root.querySelector('#bfr-footer'));
+    bindChatEvents(root.querySelector('#bfr-chat'));
+
+    root.querySelectorAll('[data-action="quick-fest"]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const idx = Number(btn.getAttribute('data-idx'));
+        state.activeFestModal = state.festivals[idx] || null;
+        updateOverlaysMount();
+      });
+    });
+    root.querySelectorAll('[data-action="quick-dest"]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const idx = Number(btn.getAttribute('data-idx'));
+        state.activeDestModal = state.destinations[idx] || null;
+        updateOverlaysMount();
+      });
+    });
+    root.querySelectorAll('[data-action="open-film"]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const idx = Number(btn.getAttribute('data-idx'));
+        state.activeFilmModal = SPECIALTY_CARDS[idx] || null;
+        updateOverlaysMount();
+      });
     });
 
     attachLensListeners(root);
   }
 
   function render() {
-    const root = global.document && global.document.getElementById('root');
+    const root = getRoot();
     if (!root) return;
     root.innerHTML = `
       <div class="min-h-screen bg-[var(--cream)] text-[var(--ink)] overflow-x-clip">
-        ${renderHeaderSection()}
-        ${renderMobileDrawer()}
-        ${renderHeroSection()}
-        ${renderSearchAndTrust()}
-        ${renderToursSection()}
-        ${renderFestivalsSection()}
-        ${renderSpecialtySection()}
-        ${renderServicesMosaic()}
-        ${renderDestinationsSection()}
-        ${renderCustomBuilderSection()}
-        ${renderReviewsAndTrust()}
-        ${renderFooter()}
-        ${renderInteractiveOverlays()}
-        ${renderChatWidget()}
+        <div id="bfr-header">${renderHeaderSection()}</div>
+        <div id="bfr-hero">${renderHeroSection()}</div>
+        <div id="bfr-search">${renderSearchAndTrust()}</div>
+        <div id="bfr-tours">${renderToursSection()}</div>
+        <div id="bfr-festivals">${renderFestivalsSection()}</div>
+        <div id="bfr-specialty">${renderSpecialtySection()}</div>
+        <div id="bfr-services">${renderServicesMosaic()}</div>
+        <div id="bfr-destinations">${renderDestinationsSection()}</div>
+        <div id="bfr-custom">${renderCustomBuilderSection()}</div>
+        <div id="bfr-reviews">${renderReviewsAndTrust()}</div>
+        <div id="bfr-footer">${renderFooter()}</div>
+        <div id="bfr-overlays">${renderMobileDrawer()}${renderInteractiveOverlays()}</div>
+        <div id="bfr-chat">${renderChatWidget()}</div>
       </div>
     `;
+    updatePlanBadge();
     bindEvents(root);
   }
 
   async function init() {
+    if (typeof global.Image === 'function') {
+      Object.values(FALLBACK_IMAGES).forEach((src) => {
+        const im = new global.Image();
+        im.src = src;
+      });
+    }
     render();
     if (!state.heroTimer) {
       state.heroTimer = global.setInterval(() => {
         const busyModal = state.planDrawerOpen || state.activeTourModal || state.activeFestModal || state.activeDestModal || state.activeFilmModal || state.compareModalOpen;
         if (!state.heroPaused && !state.megaMenu && !state.searchDropdownOpen && !busyModal) {
           state.heroIdx = (state.heroIdx + 1) % HERO_SLIDES.length;
-          render();
+          updateHeroSlideUi();
         }
       }, 6500);
     }
