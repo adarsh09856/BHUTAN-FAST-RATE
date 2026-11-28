@@ -121,6 +121,21 @@ function parseStrictPositiveInt(rawValue) {
 }
 
 const TOUR_SEARCH_STOPWORDS = new Set(['bhutan', 'tour', 'tours', 'package', 'packages', 'under', 'below', 'less', 'than', 'days', 'day', 'trip', 'trips', 'and', 'with', 'in', 'the', 'for', 'best', 'time', 'to', 'visit', '2026', '2027', 'retreat', 'guide', 'plus']);
+const TOUR_SEARCH_SYNONYMS = {
+  tigers: ['tiger', 'taktsang', 'paro'],
+  tiger: ['tigers', 'taktsang', 'paro'],
+  nest: ['taktsang', 'monastery', 'paro'],
+  hike: ['trek', 'hiking', 'walk', 'climb', 'excursion', 'trail'],
+  hiking: ['trek', 'hike', 'walk', 'trail'],
+  trek: ['hiking', 'hike', 'expedition', 'trail', 'trekking'],
+  trekking: ['trek', 'hiking', 'hike', 'expedition'],
+  luxury: ['escape', '5star', 'wellness', 'lodge', 'amankora'],
+  retreat: ['luxury', 'escape', 'wellness', 'lodge'],
+  festival: ['tshechu', 'masked', 'dance', 'festival'],
+  honeymoon: ['luxury', 'escape', 'romantic', 'punakha'],
+  birding: ['crane', 'bird', 'phobjikha', 'gangtey'],
+  adventure: ['trek', 'expedition', 'alpine', 'snowman']
+};
 
 function normSearchText(v) {
   return String(v || '')
@@ -162,7 +177,10 @@ function tourMatchesApiSearch(tour, rawSearch) {
 
   const rawTokens = qNorm.split(' ').filter((w) => w && !TOUR_SEARCH_STOPWORDS.has(w) && !/^\d+$/.test(w));
   if (!rawTokens.length) return true;
-  return rawTokens.every((tok) => hay.includes(tok) || (tok === 'tigers' && hay.includes('tiger')));
+  return rawTokens.every((tok) => {
+    const alts = [tok, ...(TOUR_SEARCH_SYNONYMS[tok] || [])];
+    return alts.some((alt) => hay.includes(alt));
+  });
 }
 
 // GET /api/tours - List all active tours with search, category & duration filters
