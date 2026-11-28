@@ -46,11 +46,11 @@
       layout: 'split'
     },
     {
-      img: FALLBACK_IMAGES.thimphuDzong,
-      kicker: 'DOCHULA & THIMPHU · HIMALAYA',
-      title: 'Sacred fortresses & endless horizons.',
-      sub: 'Golden dzong courtyards, high mountain passes and the quiet of the Himalaya.',
-      defaultPrice: 2480,
+      img: FALLBACK_IMAGES.dochula,
+      kicker: 'DOCHULA · HIMALAYAN PANORAMA',
+      title: '108 chortens. One endless horizon.',
+      sub: 'A sunrise pass, high mountain air and the quiet of the Himalaya.',
+      defaultPrice: 2299,
       tourSlug: 'druk-path-trek',
       layout: 'left'
     }
@@ -374,26 +374,27 @@
         s.layout === 'center'
           ? 'mx-auto'
           : s.layout === 'split'
-            ? 'bg-[#0B2A22]/72 backdrop-blur-md p-6 sm:p-8 rounded-[28px] border border-white/20'
+            ? 'backdrop-blur-md p-6 sm:p-8 rounded-[28px] border border-white/20'
             : '';
+      const boxStyle = s.layout === 'split' ? 'background-color:rgba(11,42,34,0.72);' : '';
 
       return `
         <div class="absolute inset-0 transition-opacity duration-500 ${isActive ? 'opacity-100 z-10' : 'opacity-0 pointer-events-none z-0'}" data-hero-slide="${idx}">
           <img src="${esc(s.img)}" alt="${esc(s.title)}" loading="eager" decoding="async" class="absolute inset-0 w-full h-full object-cover ${isActive ? 'kenburns' : ''}">
-          <div class="absolute inset-0 bg-gradient-to-r from-black/75 via-black/40 to-transparent pointer-events-none"></div>
+          <div class="absolute inset-0 pointer-events-none" style="background:linear-gradient(to right, rgba(0,0,0,0.72), rgba(0,0,0,0.35), rgba(0,0,0,0));"></div>
           <div class="relative z-10 h-full max-w-[1360px] mx-auto px-4 sm:px-6 flex items-center ${wrapJustify}">
-            <div class="splash-in max-w-[680px] text-white ${boxCls}">
-              <span class="inline-block bg-[#C9A24B] text-[#0B2A22] px-3 py-1 rounded-full text-xs font-extrabold tracking-[0.18em]">${esc(s.kicker)}</span>
-              <h1 class="font-serif text-[38px] sm:text-[56px] lg:text-[64px] leading-[1.03] mt-3 drop-shadow">${esc(s.title)}</h1>
-              <p class="mt-3 text-white/90 text-base sm:text-lg max-w-[560px]">${esc(s.sub)}</p>
-              <div class="mt-6 flex flex-wrap items-center gap-3">
-                <a href="${esc(tourHref)}" class="bg-[#C9A24B] hover:bg-[#E4C87E] text-[#0B2A22] px-6 py-3.5 rounded-full font-extrabold text-sm transition inline-flex items-center gap-2">
+            <div class="splash-in max-w-[680px] text-white ${boxCls}" style="${boxStyle}">
+              <span class="inline-flex items-center gap-2 bg-[#C9A24B] text-[#0B2A22] px-3 py-1.5 rounded-full text-xs font-extrabold tracking-widest">${esc(s.kicker)}</span>
+              <h1 class="font-serif text-[42px] leading-[0.98] sm:text-[68px] lg:text-[78px] font-semibold mt-4 drop-shadow">${esc(s.title)}</h1>
+              <p class="text-[17px] sm:text-lg text-white/90 mt-4 max-w-[560px]">${esc(s.sub)}</p>
+              <div class="flex flex-wrap items-center gap-3 mt-6">
+                <a href="${esc(tourHref)}" class="bg-[#C9A24B] hover:bg-[#E4C87E] text-[#0B2A22] px-6 py-3.5 rounded-full font-extrabold transition inline-flex items-center gap-2">
                   Explore this journey ${svgIcon('arrowRight', 16)}
                 </a>
-                <a href="#tours" class="border border-white/60 hover:bg-white/15 text-white px-6 py-3.5 rounded-full font-bold text-sm transition">
+                <a href="#tours" class="border border-white/60 hover:bg-white/15 text-white px-6 py-3.5 rounded-full font-bold transition">
                   All tours
                 </a>
-                <span class="font-serif text-xl text-white">from <b class="text-[28px] text-[#E4C87E]">$${livePrice.toLocaleString('en-US')}</b> <span class="text-sm text-white/80">/ person</span></span>
+                <span class="font-serif text-xl text-white">from <b class="text-[28px]">$${livePrice.toLocaleString('en-US')}</b> <span class="text-sm">/ person</span></span>
               </div>
             </div>
           </div>
@@ -495,14 +496,14 @@
           </button>
 
           <a href="#top" class="flex items-center gap-2 shrink-0 whitespace-nowrap">
-            <span class="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-[#0B2A22] text-[#C9A24B] grid place-items-center font-serif text-lg sm:text-xl font-bold shrink-0">B</span>
+            <span class="w-10 h-10 rounded-full bg-[#0B2A22] text-[#C9A24B] grid place-items-center font-serif text-xl font-bold shrink-0">B</span>
             <span class="leading-none">
-              <span class="block font-serif text-[17px] sm:text-[20px] font-bold tracking-tight text-[#0B2A22] whitespace-nowrap" data-bfr-company>BHUTAN FAST RATE</span>
-              <span class="block text-[9px] sm:text-[10px] tracking-[0.22em] text-[#C9A24B] font-extrabold whitespace-nowrap">TOURS · EST. PARO</span>
+              <span class="block font-serif text-[18px] sm:text-[22px] font-bold tracking-tight text-[#0B2A22] whitespace-nowrap">BHUTAN FAST RATE</span>
+              <span class="block text-[10px] tracking-[0.24em] text-[#C9A24B] font-extrabold whitespace-nowrap">TOURS · EST. PARO</span>
             </span>
           </a>
 
-          <nav class="hidden lg:flex items-center ml-2 xl:ml-4 gap-0.5 text-[14px] font-semibold text-[#101613] whitespace-nowrap">
+          <nav class="hidden lg:flex items-center ml-4 xl:ml-6 gap-0.5 text-[15px] font-semibold text-[#101613] whitespace-nowrap">
             <a href="index.html" class="px-3 py-2 rounded-full bg-[#0B2A22] text-white font-bold whitespace-nowrap shrink-0">Home</a>
             <a href="tours.html" data-mega="Tours" class="px-2.5 py-2 rounded-full text-[#101613] hover:bg-[#F7EDD8] transition-colors whitespace-nowrap shrink-0">Tours</a>
             <a href="destinations.html" data-mega="Destinations" class="px-2.5 py-2 rounded-full text-[#101613] hover:bg-[#F7EDD8] transition-colors whitespace-nowrap shrink-0">Destinations</a>
