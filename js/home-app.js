@@ -207,6 +207,7 @@
       search: '<circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>',
       mapPin: '<path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"/><circle cx="12" cy="10" r="3"/>',
       users: '<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>',
+      user: '<path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>',
       star: '<path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"/>',
       heart: '<path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/>',
       eye: '<path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"/><circle cx="12" cy="12" r="3"/>',
@@ -562,47 +563,51 @@
     return `
       <div class="bg-[#0B2A22] text-white text-[12px] sm:text-[13px]" id="top">
         <div class="max-w-[1360px] mx-auto px-4 sm:px-6 py-2 flex flex-wrap gap-x-5 gap-y-1 items-center justify-between">
-          <span class="font-semibold whitespace-nowrap">✓ SDF fee included · Licensed Bhutan operator <span data-bfr-license>#${esc(cleanLic)}</span></span>
+          <span class="font-semibold sm:whitespace-nowrap">✓ SDF fee included · Licensed Bhutan operator <span data-bfr-license>#${esc(cleanLic)}</span></span>
           <span class="hidden md:block whitespace-nowrap">USD &amp; INR · English · Live help 9am–7pm Bhutan time</span>
           <span class="text-[#E4C87E] font-bold whitespace-nowrap">★ ${esc(avg)} · ${esc(totalReviews)}</span>
         </div>
       </div>
 
       <header id="siteHeader" class="sticky top-0 z-40 bg-[#FFF8EC]/95 backdrop-blur border-b border-[#E7DCC4]" style="top:0;background-color:rgba(255,248,236,0.97);">
-        <div class="max-w-[1360px] mx-auto px-4 sm:px-6 h-[72px] flex items-center gap-2">
-          <button type="button" id="homeMobileOpenBtn" class="lg:hidden p-2 rounded-xl text-[#0B2A22] hover:bg-[#F7EDD8] shrink-0" aria-label="Open menu">
+        <div class="max-w-[1360px] mx-auto px-3 sm:px-6 h-[68px] sm:h-[72px] flex items-center gap-1.5 sm:gap-2">
+          <button type="button" id="homeMobileOpenBtn" class="lg:hidden p-1.5 sm:p-2 rounded-xl text-[#0B2A22] hover:bg-[#F7EDD8] shrink-0" aria-label="Open menu">
             ${svgIcon('menu', 22)}
           </button>
 
-          <a href="#top" class="flex items-center gap-2 shrink-0 whitespace-nowrap">
-            <span class="w-10 h-10 rounded-full bg-[#0B2A22] text-[#C9A24B] grid place-items-center font-serif text-xl font-bold shrink-0">B</span>
+          <a href="#top" class="flex items-center gap-2 shrink-0 min-w-0 whitespace-nowrap">
+            <span class="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-[#0B2A22] text-[#C9A24B] grid place-items-center font-serif text-base sm:text-xl font-bold shrink-0">B</span>
             <span class="leading-none">
-              <span class="block font-serif text-[18px] sm:text-[22px] font-bold tracking-tight text-[#0B2A22] whitespace-nowrap">BHUTAN FAST RATE</span>
-              <span class="block text-[10px] tracking-[0.24em] text-[#C9A24B] font-extrabold whitespace-nowrap">TOURS · EST. PARO</span>
+              <span class="block font-serif text-[14px] sm:text-[20px] xl:text-[22px] font-bold tracking-tight text-[#0B2A22] whitespace-nowrap">BHUTAN FAST RATE</span>
+              <span class="block text-[9px] sm:text-[10px] tracking-[0.16em] sm:tracking-[0.24em] text-[#C9A24B] font-extrabold whitespace-nowrap">TOURS · EST. PARO</span>
             </span>
           </a>
 
-          <nav class="hidden lg:flex items-center ml-4 xl:ml-6 gap-0.5 text-[15px] font-semibold text-[#101613] whitespace-nowrap">
-            <a href="index.html" class="px-3 py-2 rounded-full bg-[#0B2A22] text-white font-bold whitespace-nowrap shrink-0">Home</a>
-            <a href="tours.html" data-mega="Tours" class="px-2.5 py-2 rounded-full text-[#101613] hover:bg-[#F7EDD8] transition-colors whitespace-nowrap shrink-0">Tours</a>
-            <a href="destinations.html" data-mega="Destinations" class="px-2.5 py-2 rounded-full text-[#101613] hover:bg-[#F7EDD8] transition-colors whitespace-nowrap shrink-0">Destinations</a>
-            <a href="festivals.html" data-mega="Festivals" class="px-2.5 py-2 rounded-full text-[#101613] hover:bg-[#F7EDD8] transition-colors whitespace-nowrap shrink-0">Festivals</a>
-            <a href="services.html" data-mega="Services" class="px-2.5 py-2 rounded-full text-[#101613] hover:bg-[#F7EDD8] transition-colors whitespace-nowrap shrink-0">Visa &amp; SDF</a>
-            <a href="about.html" class="px-2.5 py-2 rounded-full text-[#101613] hover:bg-[#F7EDD8] transition-colors whitespace-nowrap shrink-0">About Us</a>
-            <a href="contact.html" class="px-2.5 py-2 rounded-full text-[#101613] hover:bg-[#F7EDD8] transition-colors whitespace-nowrap shrink-0">Contact</a>
+          <nav class="hidden lg:flex items-center ml-2 xl:ml-5 gap-0.5 text-[13px] xl:text-[15px] font-semibold text-[#101613] whitespace-nowrap">
+            <a href="index.html" class="px-2.5 xl:px-3 py-1.5 xl:py-2 rounded-full bg-[#0B2A22] text-white font-bold whitespace-nowrap shrink-0">Home</a>
+            <a href="tours.html" data-mega="Tours" class="px-2 xl:px-2.5 py-1.5 xl:py-2 rounded-full text-[#101613] hover:bg-[#F7EDD8] transition-colors whitespace-nowrap shrink-0">Tours</a>
+            <a href="destinations.html" data-mega="Destinations" class="px-2 xl:px-2.5 py-1.5 xl:py-2 rounded-full text-[#101613] hover:bg-[#F7EDD8] transition-colors whitespace-nowrap shrink-0">Destinations</a>
+            <a href="festivals.html" data-mega="Festivals" class="px-2 xl:px-2.5 py-1.5 xl:py-2 rounded-full text-[#101613] hover:bg-[#F7EDD8] transition-colors whitespace-nowrap shrink-0">Festivals</a>
+            <a href="services.html" data-mega="Services" class="px-2 xl:px-2.5 py-1.5 xl:py-2 rounded-full text-[#101613] hover:bg-[#F7EDD8] transition-colors whitespace-nowrap shrink-0">Visa &amp; SDF</a>
+            <a href="about.html" class="px-2 xl:px-2.5 py-1.5 xl:py-2 rounded-full text-[#101613] hover:bg-[#F7EDD8] transition-colors whitespace-nowrap shrink-0">About Us</a>
+            <a href="contact.html" class="px-2 xl:px-2.5 py-1.5 xl:py-2 rounded-full text-[#101613] hover:bg-[#F7EDD8] transition-colors whitespace-nowrap shrink-0">Contact</a>
           </nav>
 
           <div class="ml-auto flex items-center gap-1.5 shrink-0" data-bfr-portal-links data-bfr-skip-portal-inject="1">
-            <button type="button" id="homePlanDrawerBtn" class="relative inline-flex items-center gap-1.5 bg-[#0B2A22] hover:bg-[#123A30] text-white px-3 sm:px-4 py-2 rounded-full text-xs sm:text-sm font-bold shadow-sm whitespace-nowrap shrink-0 transition">
-              ${svgIcon('briefcase', 16)}
-              <span class="hidden sm:inline">Trip Plan</span>
+            <a href="client/login.html" class="inline-flex items-center gap-1 border border-[#E7DCC4] bg-white hover:bg-[#F7EDD8] text-[#0B2A22] px-2.5 sm:px-3 py-1.5 sm:py-2 rounded-full text-[11px] sm:text-xs xl:text-sm font-bold shadow-sm whitespace-nowrap shrink-0 transition" title="User / Traveler Sign In">
+              ${svgIcon('user', 14, 'text-[#C9A24B] shrink-0')}
+              <span>Sign In</span>
+            </a>
+            <button type="button" id="homePlanDrawerBtn" class="relative inline-flex items-center gap-1.5 bg-[#0B2A22] hover:bg-[#123A30] text-white px-2.5 sm:px-3.5 py-1.5 sm:py-2 rounded-full text-xs xl:text-sm font-bold shadow-sm whitespace-nowrap shrink-0 transition">
+              ${svgIcon('briefcase', 15)}
+              <span class="hidden sm:inline lg:hidden xl:inline">Trip Plan</span>
               ${state.tripPlan.length > 0 ? `<span class="absolute -top-1 -right-1 w-5 h-5 bg-[#C9A24B] text-[#0B2A22] rounded-full text-[11px] grid place-items-center font-extrabold">${state.tripPlan.reduce((acc, item) => acc + (item.qty || 1), 0)}</span>` : ''}
             </button>
-            <a href="book.html" class="hidden sm:inline-flex items-center gap-1.5 bg-[#C9A24B] hover:bg-[#E4C87E] text-[#0B2A22] px-3.5 py-2 rounded-full text-xs sm:text-sm font-extrabold shadow-sm whitespace-nowrap shrink-0 transition">
+            <a href="book.html" class="hidden sm:inline-flex items-center gap-1.5 bg-[#C9A24B] hover:bg-[#E4C87E] text-[#0B2A22] px-3 xl:px-3.5 py-1.5 sm:py-2 rounded-full text-xs xl:text-sm font-extrabold shadow-sm whitespace-nowrap shrink-0 transition">
               <span>Book Now</span>
-              ${svgIcon('arrowRight', 15)}
+              ${svgIcon('arrowRight', 14)}
             </a>
-            <button type="button" id="homeAiHeaderBtn" class="hidden md:inline-flex items-center gap-1.5 border border-[#E7DCC4] px-3 py-2 rounded-full text-xs sm:text-sm font-bold bg-white text-[#0B2A22] hover:bg-[#F7EDD8] whitespace-nowrap shrink-0 transition">
+            <button type="button" id="homeAiHeaderBtn" class="hidden xl:inline-flex items-center gap-1.5 border border-[#E7DCC4] px-3 py-2 rounded-full text-xs xl:text-sm font-bold bg-white text-[#0B2A22] hover:bg-[#F7EDD8] whitespace-nowrap shrink-0 transition">
               ${svgIcon('sparkles', 15, 'text-[#C9A24B]')} AI Help
             </button>
           </div>
@@ -630,7 +635,7 @@
             <a href="services.html" class="block px-3 py-2.5 rounded-xl hover:bg-[#F7EDD8]">Visa &amp; SDF</a>
             <a href="sdf-calculator.html" class="block px-3 py-2.5 rounded-xl hover:bg-[#F7EDD8]">SDF Calculator</a>
             <a href="track-visa.html" class="block px-3 py-2.5 rounded-xl hover:bg-[#F7EDD8]">Track Visa Status</a>
-            <a href="client/login.html" class="block px-3 py-2.5 rounded-xl hover:bg-[#F7EDD8]">Client Portal</a>
+            <a href="client/login.html" class="block px-3 py-2.5 rounded-xl bg-white border border-[#E7DCC4] font-bold text-[#0B2A22] hover:bg-[#F7EDD8]">User Sign In (Client Portal)</a>
             <a href="contact.html" class="block px-3 py-2.5 rounded-xl hover:bg-[#F7EDD8]">Contact &amp; Custom Quotes</a>
           </div>
           <a href="#custom" id="mobileCustomLink" class="mt-6 block text-center bg-[#C9A24B] text-[#0B2A22] py-3 rounded-full font-extrabold text-sm">

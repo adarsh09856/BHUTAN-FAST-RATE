@@ -39,7 +39,7 @@
     <!-- Top Announcement Bar -->
   <div class="bg-[#0B2A22] text-white text-[12px] sm:text-[13px] border-b border-[#123A30]">
     <div class="max-w-[1360px] mx-auto px-4 sm:px-6 py-2.5 flex flex-wrap gap-x-6 gap-y-1 justify-between items-center">
-      <span class="font-semibold flex items-center gap-1.5 whitespace-nowrap">
+      <span class="font-semibold flex items-center gap-1.5 sm:whitespace-nowrap">
         <span class="text-[#E4C87E]">✓</span> SDF fee included · Licensed Bhutan operator <span data-bfr-license>#TR/2018/9882</span>
       </span>
       <span class="hidden md:flex items-center gap-4 text-white/80 whitespace-nowrap">
@@ -58,37 +58,41 @@
 
   <!-- Sticky Luxury Header -->
   <header class="sticky top-0 z-40 bg-[#FFF8EC]/95 backdrop-blur-md border-b border-[#E7DCC4] transition-all" style="background-color:rgba(255,248,236,0.97);">
-    <div class="max-w-[1360px] mx-auto px-4 sm:px-6 h-[72px] flex items-center justify-between gap-3">
-      <button id="tourMobileBtn" type="button" aria-label="Toggle Menu" class="lg:hidden p-2 rounded-xl text-[#0B2A22] hover:bg-[#F7EDD8] shrink-0">
+    <div class="max-w-[1360px] mx-auto px-3 sm:px-6 h-[68px] sm:h-[72px] flex items-center justify-between gap-2 sm:gap-3">
+      <button id="tourMobileBtn" type="button" aria-label="Toggle Menu" class="lg:hidden p-1.5 sm:p-2 rounded-xl text-[#0B2A22] hover:bg-[#F7EDD8] shrink-0">
         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
       </button>
 
-      <a href="index.html" class="flex items-center gap-2.5 shrink-0 whitespace-nowrap">
-        <span class="w-10 h-10 rounded-full bg-[#0B2A22] text-[#C9A24B] grid place-items-center font-serif text-xl font-bold shadow-sm shrink-0">B</span>
+      <a href="index.html" class="flex items-center gap-2 shrink-0 min-w-0 whitespace-nowrap">
+        <span class="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-[#0B2A22] text-[#C9A24B] grid place-items-center font-serif text-base sm:text-xl font-bold shadow-sm shrink-0">B</span>
         <span class="leading-none">
-          <span class="block font-serif text-[18px] sm:text-[21px] font-bold tracking-tight text-[#0B2A22] whitespace-nowrap" data-bfr-company>BHUTAN FAST RATE</span>
-          <span class="block text-[10px] tracking-[0.22em] text-[#C9A24B] font-extrabold whitespace-nowrap">TOURS · EST. PARO</span>
+          <span class="block font-serif text-[14px] sm:text-[19px] xl:text-[21px] font-bold tracking-tight text-[#0B2A22] whitespace-nowrap" data-bfr-company>BHUTAN FAST RATE</span>
+          <span class="block text-[9px] sm:text-[10px] tracking-[0.16em] sm:tracking-[0.22em] text-[#C9A24B] font-extrabold whitespace-nowrap">TOURS · EST. PARO</span>
         </span>
       </a>
 
-      <nav class="hidden lg:flex items-center gap-0.5 xl:gap-1 text-[14px] xl:text-[15px] font-semibold text-[#101613] whitespace-nowrap">
-        <a href="index.html" class="px-3 py-2 rounded-full hover:bg-[#F7EDD8] text-[#101613] transition-colors whitespace-nowrap shrink-0">Home</a>
-        <a href="tours.html" class="px-3 py-2 rounded-full hover:bg-[#F7EDD8] text-[#101613] transition-colors whitespace-nowrap shrink-0">Tours</a>
-        <a href="destinations.html" class="px-3 py-2 rounded-full bg-[#0B2A22] text-white shadow-sm transition-colors whitespace-nowrap shrink-0">Destinations</a>
-        <a href="festivals.html" class="px-3 py-2 rounded-full hover:bg-[#F7EDD8] text-[#101613] transition-colors whitespace-nowrap shrink-0">Festivals</a>
-        <a href="services.html" class="px-3 py-2 rounded-full hover:bg-[#F7EDD8] text-[#101613] transition-colors whitespace-nowrap shrink-0">Visa &amp; SDF</a>
-        <a href="about.html" class="px-3 py-2 rounded-full hover:bg-[#F7EDD8] text-[#101613] transition-colors whitespace-nowrap shrink-0">About Us</a>
-        <a href="contact.html" class="px-3 py-2 rounded-full hover:bg-[#F7EDD8] text-[#101613] transition-colors whitespace-nowrap shrink-0">Contact</a>
+      <nav class="hidden lg:flex items-center gap-0.5 text-[13px] xl:text-[15px] font-semibold text-[#101613] whitespace-nowrap">
+        <a href="index.html" class="px-2 xl:px-3 py-1.5 xl:py-2 rounded-full hover:bg-[#F7EDD8] text-[#101613] transition-colors whitespace-nowrap shrink-0">Home</a>
+        <a href="tours.html" class="px-2 xl:px-3 py-1.5 xl:py-2 rounded-full hover:bg-[#F7EDD8] text-[#101613] transition-colors whitespace-nowrap shrink-0">Tours</a>
+        <a href="destinations.html" class="px-2 xl:px-3 py-1.5 xl:py-2 rounded-full bg-[#0B2A22] text-white shadow-sm transition-colors whitespace-nowrap shrink-0">Destinations</a>
+        <a href="festivals.html" class="px-2 xl:px-3 py-1.5 xl:py-2 rounded-full hover:bg-[#F7EDD8] text-[#101613] transition-colors whitespace-nowrap shrink-0">Festivals</a>
+        <a href="services.html" class="px-2 xl:px-3 py-1.5 xl:py-2 rounded-full hover:bg-[#F7EDD8] text-[#101613] transition-colors whitespace-nowrap shrink-0">Visa &amp; SDF</a>
+        <a href="about.html" class="px-2 xl:px-3 py-1.5 xl:py-2 rounded-full hover:bg-[#F7EDD8] text-[#101613] transition-colors whitespace-nowrap shrink-0">About Us</a>
+        <a href="contact.html" class="px-2 xl:px-3 py-1.5 xl:py-2 rounded-full hover:bg-[#F7EDD8] text-[#101613] transition-colors whitespace-nowrap shrink-0">Contact</a>
       </nav>
 
-      <div class="flex items-center gap-2 shrink-0">
+      <div class="flex items-center gap-1.5 sm:gap-2 shrink-0">
+        <a href="client/login.html" class="inline-flex items-center gap-1 text-[11px] sm:text-xs xl:text-sm font-bold text-[#0B2A22] bg-white hover:bg-[#F7EDD8] px-2.5 sm:px-3 py-1.5 sm:py-2 rounded-full border border-[#E7DCC4] shadow-sm whitespace-nowrap shrink-0 transition" title="User / Traveler Sign In">
+          <svg class="w-3.5 h-3.5 text-[#C9A24B] shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          <span>Sign In</span>
+        </a>
         <a href="sdf-calculator.html" class="hidden xl:inline-flex items-center gap-1.5 text-xs font-bold text-[#0B2A22] bg-[#F7EDD8] hover:bg-[#EADFC8] px-3.5 py-2 rounded-full border border-[#E7DCC4] whitespace-nowrap shrink-0 transition">
           SDF Calculator
         </a>
         <a href="track-visa.html" class="hidden 2xl:inline-flex items-center gap-1.5 text-xs font-bold text-[#0B2A22] bg-white hover:bg-[#F7EDD8] px-3.5 py-2 rounded-full border border-[#E7DCC4] whitespace-nowrap shrink-0 transition">
           Track Visa
         </a>
-        <a href="book.html" class="hidden sm:inline-flex items-center gap-1.5 text-xs sm:text-sm font-bold bg-[#C9A24B] hover:bg-[#E4C87E] text-[#0B2A22] px-4 sm:px-5 py-2.5 rounded-full shadow-sm whitespace-nowrap shrink-0 transition">
+        <a href="book.html" class="hidden sm:inline-flex items-center gap-1.5 text-xs xl:text-sm font-bold bg-[#C9A24B] hover:bg-[#E4C87E] text-[#0B2A22] px-3 xl:px-4 py-1.5 sm:py-2 rounded-full shadow-sm whitespace-nowrap shrink-0 transition">
           Book Now →
         </a>
       </div>
@@ -104,7 +108,7 @@
         <a href="services.html" class="px-3.5 py-2.5 rounded-xl hover:bg-[#F7EDD8]">Visa &amp; SDF</a>
         <a href="sdf-calculator.html" class="px-3.5 py-2.5 rounded-xl hover:bg-[#F7EDD8] text-[#0B2A22] font-bold">SDF Cost Calculator</a>
         <a href="track-visa.html" class="px-3.5 py-2.5 rounded-xl hover:bg-[#F7EDD8] text-[#0B2A22] font-bold">Track Visa Status</a>
-        <a href="client/login.html" class="px-3.5 py-2.5 rounded-xl hover:bg-[#F7EDD8]">Client Portal</a>
+        <a href="client/login.html" class="px-3.5 py-2.5 rounded-xl bg-white border border-[#E7DCC4] font-bold text-[#0B2A22] hover:bg-[#F7EDD8]">User Sign In (Client Portal)</a>
         <a href="about.html" class="px-3.5 py-2.5 rounded-xl hover:bg-[#F7EDD8]">About Us</a>
         <a href="contact.html" class="px-3.5 py-2.5 rounded-xl hover:bg-[#F7EDD8]">Contact Booking Desk</a>
         <a href="book.html" class="mt-2 text-center py-3 rounded-full bg-[#C9A24B] hover:bg-[#E4C87E] text-[#0B2A22] font-extrabold text-xs uppercase tracking-wider">

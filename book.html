@@ -34,16 +34,20 @@
     button { color: inherit; }
     .font-serif { font-family: 'Fraunces', Georgia, serif; }
     .topbar { background: var(--forest); color: #fff; font-size: 12px; border-bottom: 1px solid var(--forest2); }
-    .wrap { max-width: 1280px; margin: 0 auto; padding: 0 20px; width: 100%; }
-    .topbar-inner { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 10px; padding-top: 9px; padding-bottom: 9px; }
+    .wrap { max-width: 1280px; margin: 0 auto; padding: 0 16px; width: 100%; }
+    @media (min-width: 640px) { .wrap { padding: 0 20px; } }
+    .topbar-inner { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 6px 12px; padding-top: 9px; padding-bottom: 9px; }
     header.site-hdr {
       position: sticky; top: 0; z-index: 40;
       background: rgba(255, 248, 236, 0.96); backdrop-filter: blur(10px);
       border-bottom: 1px solid var(--line);
     }
-    .hdr-inner { height: 72px; display: flex; align-items: center; justify-content: space-between; gap: 16px; }
-    .brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: inherit; flex-shrink: 0; white-space: nowrap; }
-    .brand-mark { width: 40px; height: 40px; border-radius: 999px; background: var(--forest); color: var(--gold); display: grid; place-items: center; font-family: 'Fraunces', serif; font-size: 20px; font-weight: 700; flex-shrink: 0; }
+    .hdr-inner { min-height: 68px; padding: 8px 0; display: flex; align-items: center; justify-content: space-between; gap: 8px; flex-wrap: wrap; }
+    .brand { display: flex; align-items: center; gap: 8px; text-decoration: none; color: inherit; min-width: 0; }
+    .brand-mark { width: 34px; height: 34px; border-radius: 999px; background: var(--forest); color: var(--gold); display: grid; place-items: center; font-family: 'Fraunces', serif; font-size: 17px; font-weight: 700; flex-shrink: 0; }
+    @media (min-width: 640px) { .brand-mark { width: 40px; height: 40px; font-size: 20px; } }
+    .brand-title { display: block; font-size: clamp(14px, 3.6vw, 19px); font-weight: 700; line-height: 1; white-space: nowrap; }
+    .hdr-actions { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
     .nav-links { display: none; gap: 6px; font-size: 14px; font-weight: 700; white-space: nowrap; }
     .nav-links a { padding: 8px 14px; border-radius: 999px; color: var(--ink); text-decoration: none; white-space: nowrap; }
     .nav-links a:hover { background: var(--cream2); }
@@ -137,8 +141,8 @@
       <a href="index.html" class="brand">
         <span class="brand-mark">B</span>
         <span>
-          <span class="font-serif" style="display:block;font-size:19px;font-weight:700;line-height:1;" data-bfr-company>BHUTAN FAST RATE</span>
-          <span style="display:block;font-size:10px;font-weight:800;letter-spacing:.22em;color:var(--gold);margin-top:2px;">DIRECT BOOKING DESK</span>
+          <span class="font-serif brand-title" data-bfr-company>BHUTAN FAST RATE</span>
+          <span style="display:block;font-size:9px;font-weight:800;letter-spacing:.18em;color:var(--gold);margin-top:2px;">DIRECT BOOKING DESK</span>
         </span>
       </a>
       <nav class="nav-links">
@@ -146,9 +150,11 @@
         <a href="tours.html">Tours</a>
         <a href="sdf-calculator.html">SDF Calculator</a>
         <a href="track-visa.html">Track Visa</a>
-        <a href="client/login.html">Client Portal</a>
       </nav>
-      <a href="tours.html" class="btn btn-outline" style="padding:9px 16px;font-size:13px;">← All Tours</a>
+      <div class="hdr-actions">
+        <a href="client/login.html" class="btn btn-outline" style="padding:7px 12px;font-size:12px;">Sign In</a>
+        <a href="tours.html" class="btn btn-outline" style="padding:7px 12px;font-size:12px;">All Tours</a>
+      </div>
     </div>
   </header>
 

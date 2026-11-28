@@ -191,8 +191,21 @@ const AdminApp = (function () {
     const sidebar = document.getElementById('adminSidebar');
     if (toggle && sidebar && !toggle.dataset.bfrBound) {
       toggle.dataset.bfrBound = '1';
-      toggle.addEventListener('click', () => {
+      toggle.addEventListener('click', (e) => {
+        e.stopPropagation();
         sidebar.classList.toggle('open');
+      });
+      document.addEventListener('click', (e) => {
+        if (window.innerWidth <= 1024 && sidebar.classList.contains('open')) {
+          if (!sidebar.contains(e.target) && !toggle.contains(e.target)) {
+            sidebar.classList.remove('open');
+          }
+        }
+      });
+      sidebar.addEventListener('click', (e) => {
+        if (window.innerWidth <= 1024 && e.target.closest('a')) {
+          sidebar.classList.remove('open');
+        }
       });
     }
   }

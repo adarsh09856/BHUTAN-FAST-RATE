@@ -116,8 +116,30 @@ input::placeholder, textarea::placeholder {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 16px;
+  gap: 12px 16px;
   padding: 10px 24px;
+  flex-wrap: wrap;
+}
+
+.admin-header > div {
+  min-width: 0;
+  max-width: 100%;
+}
+
+.admin-header > div:last-child {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+@media (max-width: 768px) {
+  .admin-header {
+    padding: 10px 14px;
+  }
+  .admin-main > main {
+    padding: 16px 14px;
+  }
 }
 
 /* Notification Badges */

@@ -41,7 +41,7 @@
   <!-- Top Announcement Bar -->
   <div class="bg-[#0B2A22] text-white text-[12px] sm:text-[13px] border-b border-[#123A30]">
     <div class="max-w-[1360px] mx-auto px-4 sm:px-6 py-2.5 flex flex-wrap gap-x-6 gap-y-1 justify-between items-center">
-      <span class="font-semibold flex items-center gap-1.5">
+      <span class="font-semibold flex items-center gap-1.5 sm:whitespace-nowrap">
         <span class="text-[#E4C87E]">✓</span> 100% Visa Approval Guarantee · Official Department of Tourism Agent
       </span>
       <span class="hidden md:flex items-center gap-4 text-white/80">
@@ -58,35 +58,39 @@
 
   <!-- Header Navigation -->
   <header class="sticky top-0 z-40 bg-[#FFF8EC]/95 backdrop-blur-md border-b border-[#E7DCC4] transition-all">
-    <div class="max-w-[1360px] mx-auto px-4 sm:px-6 h-[72px] flex items-center justify-between gap-4">
-      <button id="mobileMenuBtn" class="lg:hidden p-2 rounded-xl text-[#0B2A22] hover:bg-[#F7EDD8]" aria-label="Open navigation menu">
+    <div class="max-w-[1360px] mx-auto px-3 sm:px-6 h-[68px] sm:h-[72px] flex items-center justify-between gap-2 sm:gap-3">
+      <button id="mobileMenuBtn" class="lg:hidden p-1.5 sm:p-2 rounded-xl text-[#0B2A22] hover:bg-[#F7EDD8] shrink-0" aria-label="Open navigation menu">
         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
       </button>
 
-      <a href="index.html" class="flex items-center gap-2.5 shrink-0 whitespace-nowrap">
-        <span class="w-10 h-10 rounded-full bg-[#0B2A22] text-[#C9A24B] grid place-items-center font-serif text-xl font-bold shadow-sm">B</span>
+      <a href="index.html" class="flex items-center gap-2 shrink-0 min-w-0 whitespace-nowrap">
+        <span class="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-[#0B2A22] text-[#C9A24B] grid place-items-center font-serif text-base sm:text-xl font-bold shadow-sm shrink-0">B</span>
         <span class="leading-none">
-          <span class="block font-serif text-[18px] sm:text-[22px] font-bold tracking-tight text-[#0B2A22]">BHUTAN FAST RATE</span>
-          <span class="block text-[10px] tracking-[0.24em] text-[#C9A24B] font-extrabold">TOURS · EST. PARO</span>
+          <span class="block font-serif text-[14px] sm:text-[20px] xl:text-[22px] font-bold tracking-tight text-[#0B2A22] whitespace-nowrap">BHUTAN FAST RATE</span>
+          <span class="block text-[9px] sm:text-[10px] tracking-[0.16em] sm:tracking-[0.24em] text-[#C9A24B] font-extrabold whitespace-nowrap">TOURS · EST. PARO</span>
         </span>
       </a>
 
-      <nav class="hidden lg:flex items-center gap-0.5 xl:gap-1 text-[14px] xl:text-[15px] font-semibold text-[#101613] whitespace-nowrap">
-        <a href="index.html" class="px-3.5 py-2 rounded-full hover:bg-[#F7EDD8] transition-colors whitespace-nowrap shrink-0">Home</a>
-        <a href="tours.html" class="px-3.5 py-2 rounded-full hover:bg-[#F7EDD8] transition-colors whitespace-nowrap shrink-0">Tours</a>
-        <a href="destinations.html" class="px-3.5 py-2 rounded-full hover:bg-[#F7EDD8] transition-colors whitespace-nowrap shrink-0">Destinations</a>
-        <a href="festivals.html" class="px-3.5 py-2 rounded-full hover:bg-[#F7EDD8] transition-colors whitespace-nowrap shrink-0">Festivals</a>
-        <a href="services.html" class="px-3.5 py-2 rounded-full bg-[#0B2A22] text-white shadow-sm transition-colors whitespace-nowrap shrink-0">Visa & SDF</a>
-        <a href="about.html" class="px-3.5 py-2 rounded-full hover:bg-[#F7EDD8] transition-colors whitespace-nowrap shrink-0">About Us</a>
-        <a href="contact.html" class="px-3.5 py-2 rounded-full hover:bg-[#F7EDD8] transition-colors whitespace-nowrap shrink-0">Contact</a>
+      <nav class="hidden lg:flex items-center gap-0.5 text-[13px] xl:text-[15px] font-semibold text-[#101613] whitespace-nowrap">
+        <a href="index.html" class="px-2 xl:px-3 py-1.5 xl:py-2 rounded-full hover:bg-[#F7EDD8] transition-colors whitespace-nowrap shrink-0">Home</a>
+        <a href="tours.html" class="px-2 xl:px-3 py-1.5 xl:py-2 rounded-full hover:bg-[#F7EDD8] transition-colors whitespace-nowrap shrink-0">Tours</a>
+        <a href="destinations.html" class="px-2 xl:px-3 py-1.5 xl:py-2 rounded-full hover:bg-[#F7EDD8] transition-colors whitespace-nowrap shrink-0">Destinations</a>
+        <a href="festivals.html" class="px-2 xl:px-3 py-1.5 xl:py-2 rounded-full hover:bg-[#F7EDD8] transition-colors whitespace-nowrap shrink-0">Festivals</a>
+        <a href="services.html" class="px-2 xl:px-3 py-1.5 xl:py-2 rounded-full bg-[#0B2A22] text-white shadow-sm transition-colors whitespace-nowrap shrink-0">Visa & SDF</a>
+        <a href="about.html" class="px-2 xl:px-3 py-1.5 xl:py-2 rounded-full hover:bg-[#F7EDD8] transition-colors whitespace-nowrap shrink-0">About Us</a>
+        <a href="contact.html" class="px-2 xl:px-3 py-1.5 xl:py-2 rounded-full hover:bg-[#F7EDD8] transition-colors whitespace-nowrap shrink-0">Contact</a>
       </nav>
 
-      <div class="flex items-center gap-3">
-        <a href="sdf-calculator.html" class="inline-flex items-center gap-1.5 text-xs font-bold text-[#0B2A22] bg-[#F7EDD8] hover:bg-[#EADFC8] px-3.5 py-2 rounded-full border border-[#E7DCC4] transition whitespace-nowrap shrink-0">
+      <div class="flex items-center gap-1.5 sm:gap-2 shrink-0">
+        <a href="client/login.html" class="inline-flex items-center gap-1 text-[11px] sm:text-xs xl:text-sm font-bold text-[#0B2A22] bg-white hover:bg-[#F7EDD8] px-2.5 sm:px-3 py-1.5 sm:py-2 rounded-full border border-[#E7DCC4] shadow-sm whitespace-nowrap shrink-0 transition" title="User / Traveler Sign In">
+          <svg class="w-3.5 h-3.5 text-[#C9A24B] shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          <span>Sign In</span>
+        </a>
+        <a href="sdf-calculator.html" class="hidden xl:inline-flex items-center gap-1.5 text-xs font-bold text-[#0B2A22] bg-[#F7EDD8] hover:bg-[#EADFC8] px-3.5 py-2 rounded-full border border-[#E7DCC4] transition whitespace-nowrap shrink-0">
           <svg class="w-4 h-4 text-[#C9A24B]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>
           SDF Calculator
         </a>
-        <a href="contact.html" class="inline-flex items-center gap-1.5 text-xs sm:text-sm font-bold bg-[#C9A24B] hover:bg-[#E4C87E] text-[#0B2A22] px-4 sm:px-5 py-2.5 rounded-full shadow-sm transition transform active:scale-95 whitespace-nowrap shrink-0">
+        <a href="contact.html" class="hidden sm:inline-flex items-center gap-1.5 text-xs xl:text-sm font-bold bg-[#C9A24B] hover:bg-[#E4C87E] text-[#0B2A22] px-3 xl:px-4 py-1.5 sm:py-2 rounded-full shadow-sm transition transform active:scale-95 whitespace-nowrap shrink-0">
           Build My Route
         </a>
       </div>
@@ -117,6 +121,7 @@
         </nav>
       </div>
       <div class="pt-6 border-t border-[#E7DCC4] space-y-3">
+        <a href="client/login.html" class="block text-center w-full py-2.5 rounded-xl font-bold bg-white border border-[#E7DCC4] text-[#0B2A22] text-sm">User Sign In (Client Portal)</a>
         <a href="sdf-calculator.html" class="block text-center w-full py-2.5 rounded-xl font-bold bg-[#F7EDD8] text-[#0B2A22] text-sm whitespace-nowrap shrink-0">
           SDF Fee Calculator
         </a>
