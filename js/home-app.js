@@ -578,12 +578,12 @@
           <a href="#top" class="flex items-center gap-2 shrink-0 min-w-0 whitespace-nowrap">
             <span class="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-[#0B2A22] text-[#C9A24B] grid place-items-center font-serif text-base sm:text-xl font-bold shrink-0">B</span>
             <span class="leading-none">
-              <span class="block font-serif text-[14px] sm:text-[20px] xl:text-[22px] font-bold tracking-tight text-[#0B2A22] whitespace-nowrap">BHUTAN FAST RATE</span>
-              <span class="block text-[9px] sm:text-[10px] tracking-[0.16em] sm:tracking-[0.24em] text-[#C9A24B] font-extrabold whitespace-nowrap">TOURS · EST. PARO</span>
+              <span class="block font-serif text-[14px] sm:text-[18px] lg:text-[17px] xl:text-[22px] font-bold tracking-tight text-[#0B2A22] whitespace-nowrap">BHUTAN FAST RATE</span>
+              <span class="block text-[9px] sm:text-[10px] tracking-[0.16em] sm:tracking-[0.2em] xl:tracking-[0.24em] text-[#C9A24B] font-extrabold whitespace-nowrap">TOURS · EST. PARO</span>
             </span>
           </a>
 
-          <nav class="hidden lg:flex items-center ml-2 xl:ml-5 gap-0.5 text-[13px] xl:text-[15px] font-semibold text-[#101613] whitespace-nowrap">
+          <nav class="hidden lg:flex items-center ml-1 xl:ml-5 gap-0.5 text-[13px] xl:text-[15px] font-semibold text-[#101613] whitespace-nowrap">
             <a href="index.html" class="px-2.5 xl:px-3 py-1.5 xl:py-2 rounded-full bg-[#0B2A22] text-white font-bold whitespace-nowrap shrink-0">Home</a>
             <a href="tours.html" data-mega="Tours" class="px-2 xl:px-2.5 py-1.5 xl:py-2 rounded-full text-[#101613] hover:bg-[#F7EDD8] transition-colors whitespace-nowrap shrink-0">Tours</a>
             <a href="destinations.html" data-mega="Destinations" class="px-2 xl:px-2.5 py-1.5 xl:py-2 rounded-full text-[#101613] hover:bg-[#F7EDD8] transition-colors whitespace-nowrap shrink-0">Destinations</a>
