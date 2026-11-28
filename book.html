@@ -9,7 +9,8 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
-    :root {
+    :root, html, body {
+      color-scheme: light !important;
       --forest: #0B2A22;
       --forest2: #123A30;
       --gold: #C9A24B;
@@ -30,20 +31,21 @@
       display: flex;
       flex-direction: column;
     }
+    button { color: inherit; }
     .font-serif { font-family: 'Fraunces', Georgia, serif; }
     .topbar { background: var(--forest); color: #fff; font-size: 12px; border-bottom: 1px solid var(--forest2); }
     .wrap { max-width: 1280px; margin: 0 auto; padding: 0 20px; width: 100%; }
-    .topbar-inner { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 10px; padding: 9px 0; }
+    .topbar-inner { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 10px; padding-top: 9px; padding-bottom: 9px; }
     header.site-hdr {
       position: sticky; top: 0; z-index: 40;
       background: rgba(255, 248, 236, 0.96); backdrop-filter: blur(10px);
       border-bottom: 1px solid var(--line);
     }
     .hdr-inner { height: 72px; display: flex; align-items: center; justify-content: space-between; gap: 16px; }
-    .brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: inherit; }
-    .brand-mark { width: 40px; height: 40px; border-radius: 999px; background: var(--forest); color: var(--gold); display: grid; place-items: center; font-family: 'Fraunces', serif; font-size: 20px; font-weight: 700; }
-    .nav-links { display: none; gap: 6px; font-size: 14px; font-weight: 700; }
-    .nav-links a { padding: 8px 14px; border-radius: 999px; color: var(--ink); text-decoration: none; }
+    .brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: inherit; flex-shrink: 0; white-space: nowrap; }
+    .brand-mark { width: 40px; height: 40px; border-radius: 999px; background: var(--forest); color: var(--gold); display: grid; place-items: center; font-family: 'Fraunces', serif; font-size: 20px; font-weight: 700; flex-shrink: 0; }
+    .nav-links { display: none; gap: 6px; font-size: 14px; font-weight: 700; white-space: nowrap; }
+    .nav-links a { padding: 8px 14px; border-radius: 999px; color: var(--ink); text-decoration: none; white-space: nowrap; }
     .nav-links a:hover { background: var(--cream2); }
     @media (min-width: 1024px) { .nav-links { display: flex; } }
 
@@ -91,9 +93,9 @@
     @media (min-width: 640px) { .tier-grid { grid-template-columns: repeat(3, 1fr); } }
     .choice-card {
       border: 1.5px solid var(--line); border-radius: 16px; padding: 14px; cursor: pointer;
-      background: var(--cream); transition: all .15s; text-align: left; width: 100%;
+      background: var(--cream); color: var(--ink); transition: all .15s; text-align: left; width: 100%;
     }
-    .choice-card.selected { border-color: var(--forest); background: #fff; box-shadow: 0 0 0 2px var(--forest); }
+    .choice-card.selected { border-color: var(--forest); background: #fff; color: var(--ink); box-shadow: 0 0 0 2px var(--forest); }
 
     .guest-box { border: 1px solid var(--line); border-radius: 18px; padding: 18px; background: #FFFCF6; margin-bottom: 14px; }
     .badge { display: inline-flex; align-items: center; gap: 5px; padding: 4px 10px; border-radius: 999px; font-size: 11px; font-weight: 800; }

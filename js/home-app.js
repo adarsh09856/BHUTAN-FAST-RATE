@@ -12,7 +12,9 @@
     punakha: 'assets/images/punakha-dzong.webp',
     festival: 'assets/images/thimphu-festival.webp',
     cranes: 'assets/images/phobjikha-cranes.webp',
-    dochula: 'assets/images/dochula-pass.webp'
+    dochula: 'assets/images/dochula-pass.webp',
+    thimphuDzong: 'assets/images/thimphu-dzong.jpg',
+    lodge: 'assets/images/bhutan-lodge.jpg'
   };
 
   const HERO_SLIDES = [
@@ -21,7 +23,7 @@
       kicker: 'PARO · THE ICON',
       title: 'Stand above the clouds at Tiger’s Nest.',
       sub: 'A cliff monastery, a mountain trail, and a journey you will remember for life.',
-      defaultPrice: 1899,
+      defaultPrice: 1950,
       tourSlug: 'essential-bhutan-7d',
       layout: 'left'
     },
@@ -30,7 +32,7 @@
       kicker: 'PUNAKHA · RIVER VALLEY',
       title: 'Where two rivers meet a golden dzong.',
       sub: 'Slow valley mornings, riverside picnics and Bhutan’s most beautiful fortress.',
-      defaultPrice: 2199,
+      defaultPrice: 1520,
       tourSlug: 'punakha-escape',
       layout: 'center'
     },
@@ -39,16 +41,16 @@
       kicker: 'FESTIVALS · 2027 SEASON',
       title: 'Dance, colour and blessing in Thimphu.',
       sub: 'Front-row festival days, local storytellers and moments of pure joy.',
-      defaultPrice: 2499,
+      defaultPrice: 2280,
       tourSlug: 'thimphu-tshechu',
       layout: 'split'
     },
     {
-      img: FALLBACK_IMAGES.dochula,
-      kicker: 'DOCHULA · HIMALAYAN PANORAMA',
-      title: '108 chortens. One endless horizon.',
-      sub: 'A sunrise pass, high mountain air and the quiet of the Himalaya.',
-      defaultPrice: 2299,
+      img: FALLBACK_IMAGES.thimphuDzong,
+      kicker: 'DOCHULA & THIMPHU · HIMALAYA',
+      title: 'Sacred fortresses & endless horizons.',
+      sub: 'Golden dzong courtyards, high mountain passes and the quiet of the Himalaya.',
+      defaultPrice: 2480,
       tourSlug: 'druk-path-trek',
       layout: 'left'
     }
@@ -58,7 +60,7 @@
     {
       name: 'Wellness & Meditation Retreat',
       dur: '7 days · Cultural & Spiritual',
-      img: FALLBACK_IMAGES.dochula,
+      img: FALLBACK_IMAGES.lodge,
       desc: 'Guided meditation, monastery mornings and traditional hot-stone baths.',
       href: 'tours.html?cat=Luxury'
     },
@@ -79,21 +81,21 @@
     {
       name: 'Monastery Stay',
       dur: '5 days · Sacred Retreats',
-      img: FALLBACK_IMAGES.punakha,
+      img: FALLBACK_IMAGES.thimphuDzong,
       desc: 'Stay beside working mountain monasteries and join serene dawn prayers.',
       href: 'tours.html?cat=Classic'
     }
   ];
 
   const SERVICES_GRID = [
-    { n: 'Visa & SDF Handling', d: 'Paperwork, SDF and approvals handled end-to-end.', img: FALLBACK_IMAGES.punakha, pos: 'center 20%', href: 'services.html' },
-    { n: 'Flight Booking — Paro', d: 'Drukair / Bhutan Airlines seats, checked in advance.', img: FALLBACK_IMAGES.dochula, pos: 'center 40%', href: 'services.html' },
-    { n: 'Hotels & Farmstay', d: 'Hand-checked stays from boutique lodges to family homes.', img: FALLBACK_IMAGES.tiger, pos: 'center 60%', href: 'services.html' },
-    { n: 'Private Guide & Driver', d: 'Licensed English-speaking guide and comfortable private vehicle.', img: FALLBACK_IMAGES.festival, pos: 'center 30%', href: 'about.html' },
+    { n: 'Visa & SDF Handling', d: 'Paperwork, SDF and approvals handled end-to-end.', img: FALLBACK_IMAGES.punakha, pos: 'center 25%', href: 'services.html' },
+    { n: 'Flight Booking — Paro', d: 'Drukair / Bhutan Airlines seats, checked in advance.', img: FALLBACK_IMAGES.dochula, pos: 'center 45%', href: 'services.html' },
+    { n: 'Hotels & Farmstay', d: 'Hand-checked stays from boutique lodges to family homes.', img: FALLBACK_IMAGES.lodge, pos: 'center 50%', href: 'services.html' },
+    { n: 'Private Guide & Driver', d: 'Licensed English-speaking guide and comfortable private vehicle.', img: FALLBACK_IMAGES.thimphuDzong, pos: 'center 45%', href: 'about.html' },
     { n: 'Trek Permits', d: 'Route permits, camping crew and safety planning.', img: FALLBACK_IMAGES.cranes, pos: 'center 50%', href: 'tours.html?cat=Trek' },
-    { n: 'SDF Tax Calculator', d: 'Instant USD & INR pricing with DoI child exemptions.', img: FALLBACK_IMAGES.dochula, pos: 'center 70%', href: 'sdf-calculator.html' },
-    { n: 'Travel Insurance Help', d: 'Clear guidance on cover for altitude, trekking and delays.', img: FALLBACK_IMAGES.punakha, pos: 'center 35%', href: 'visa-guide.html' },
-    { n: 'Group / MICE', d: 'Incentive groups, retreats and celebrations, planned in detail.', img: FALLBACK_IMAGES.festival, pos: 'center 55%', href: 'contact.html' }
+    { n: 'SDF Tax Calculator', d: 'Instant USD & INR pricing with DoI child exemptions.', img: FALLBACK_IMAGES.tiger, pos: 'center 50%', href: 'sdf-calculator.html' },
+    { n: 'Travel Insurance Help', d: 'Clear guidance on cover for altitude, trekking and delays.', img: FALLBACK_IMAGES.punakha, pos: 'center 60%', href: 'visa-guide.html' },
+    { n: 'Group / MICE', d: 'Incentive groups, retreats and celebrations, planned in detail.', img: FALLBACK_IMAGES.festival, pos: 'center 35%', href: 'contact.html' }
   ];
 
   const CATEGORIES = ['All', 'Classic', 'Festival', 'Luxury', 'Trek', 'Adventure'];
@@ -383,10 +385,10 @@
     `).join('');
 
     return `
-      <section id="hero" class="relative h-[560px] sm:h-[620px] overflow-hidden bg-[#0B2A22]">
-        <div class="relative h-full">
+      <section id="hero" class="relative h-[600px] sm:h-[640px] overflow-hidden bg-[#0B2A22]" style="min-height:580px;">
+        <div class="relative h-full" style="min-height:580px;">
           ${slidesHtml}
-          <div class="absolute inset-x-0 bottom-4 z-20 max-w-[1360px] mx-auto px-4 sm:px-6">
+          <div class="absolute inset-x-0 bottom-5 z-20 max-w-[1360px] mx-auto px-4 sm:px-6">
             <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
               ${dotsHtml}
             </div>
@@ -404,36 +406,36 @@
 
     const mega = state.megaMenu && MEGA_CONFIG[state.megaMenu]
       ? `
-        <div class="hidden lg:block absolute left-0 right-0 top-full bg-white shadow-2xl border-t border-[var(--line)] z-40" id="homeMegaPanel">
+        <div class="hidden lg:block absolute left-0 right-0 top-full bg-white text-[#101613] shadow-2xl border-t border-[#E7DCC4] z-40" id="homeMegaPanel">
           <div class="max-w-[1360px] mx-auto px-6 py-7 grid grid-cols-4 gap-7">
             <div>
               <p class="text-xs tracking-[0.2em] text-[#C9A24B] font-extrabold">EXPLORE ${esc(state.megaMenu.toUpperCase())}</p>
-              <div class="flex items-baseline justify-between mt-2">
-                <h3 class="font-serif text-3xl">${esc(MEGA_CONFIG[state.megaMenu].title)} in Bhutan</h3>
-                <a href="${esc(MEGA_CONFIG[state.megaMenu].href)}" class="text-xs font-bold text-[#C9A24B] hover:underline">View Page →</a>
+              <div class="flex items-baseline justify-between mt-2 gap-2">
+                <h3 class="font-serif text-3xl text-[#0B2A22]">${esc(MEGA_CONFIG[state.megaMenu].title)} in Bhutan</h3>
+                <a href="${esc(MEGA_CONFIG[state.megaMenu].href)}" class="text-xs font-bold text-[#C9A24B] hover:underline whitespace-nowrap">View Page →</a>
               </div>
-              <p class="text-sm text-[var(--muted)] mt-2">Hand-checked routes, licensed guides and SDF included.</p>
+              <p class="text-sm text-[#66706A] mt-2">Hand-checked routes, licensed guides and SDF included.</p>
               <div class="flex flex-wrap gap-2 mt-4">
                 ${['bhutan tour packages', 'best time to visit', 'tigers nest'].map((tag) => `
-                  <button type="button" data-action="quick-tag" data-tag="${esc(tag)}" class="text-xs bg-[#FFF8EC] border border-[var(--line)] px-3 py-1.5 rounded-full font-bold">${esc(tag)}</button>
+                  <button type="button" data-action="quick-tag" data-tag="${esc(tag)}" class="text-xs bg-[#FFF8EC] text-[#0B2A22] border border-[#E7DCC4] px-3 py-1.5 rounded-full font-bold">${esc(tag)}</button>
                 `).join('')}
               </div>
             </div>
             <div class="space-y-1">
               ${MEGA_CONFIG[state.megaMenu].links.map((lk) => `
-                <a href="${esc(lk.href)}" class="w-full text-left px-3 py-2.5 rounded-xl hover:bg-[#FFF8EC] font-semibold flex justify-between items-center text-[var(--ink)]">
+                <a href="${esc(lk.href)}" class="w-full text-left px-3 py-2.5 rounded-xl hover:bg-[#FFF8EC] font-semibold flex justify-between items-center text-[#101613]">
                   <span>${esc(lk.label)}</span>
                   <span class="text-[#C9A24B]">→</span>
                 </a>
               `).join('')}
             </div>
-            <div class="bg-[#FFF8EC] rounded-2xl p-4 flex flex-col justify-between">
+            <div class="bg-[#FFF8EC] text-[#101613] rounded-2xl p-4 flex flex-col justify-between border border-[#E7DCC4]">
               <div>
                 <p class="text-xs font-extrabold text-[#C9A24B] tracking-widest">DIRECT CONCIERGE</p>
-                <p class="font-serif text-xl mt-1">Need tailor-made dates or Regional INR pricing?</p>
-                <p class="text-sm text-[var(--muted)] mt-2">Use our instant SDF calculator or speak directly with our Paro booking desk.</p>
+                <p class="font-serif text-xl mt-1 text-[#0B2A22]">Need tailor-made dates or Regional INR pricing?</p>
+                <p class="text-sm text-[#66706A] mt-2">Use our instant SDF calculator or speak directly with our Paro booking desk.</p>
               </div>
-              <a href="book.html" class="mt-4 inline-flex items-center gap-2 bg-[#0B2A22] text-white px-4 py-2.5 rounded-full text-sm font-bold w-fit">
+              <a href="book.html" class="mt-4 inline-flex items-center gap-2 bg-[#0B2A22] text-white px-4 py-2.5 rounded-full text-sm font-bold w-fit whitespace-nowrap">
                 Start Booking ${svgIcon('arrowRight', 15)}
               </a>
             </div>
@@ -452,46 +454,49 @@
 
     return `
       <div class="bg-[#0B2A22] text-white text-[12px] sm:text-[13px]" id="top">
-        <div class="max-w-[1360px] mx-auto px-4 sm:px-6 py-2 flex flex-wrap gap-x-5 gap-y-1 justify-between">
-          <span class="font-semibold">✓ SDF fee included · Licensed Bhutan operator <span data-bfr-license>#${esc(cleanLic)}</span></span>
-          <span class="hidden md:block">USD &amp; INR · English · Live help 9am–7pm Bhutan time</span>
-          <span class="text-[#E4C87E] font-bold">★ ${esc(avg)} · ${esc(totalReviews)}</span>
+        <div class="max-w-[1360px] mx-auto px-4 sm:px-6 py-2 flex flex-wrap gap-x-5 gap-y-1 items-center justify-between">
+          <span class="font-semibold whitespace-nowrap">✓ SDF fee included · Licensed Bhutan operator <span data-bfr-license>#${esc(cleanLic)}</span></span>
+          <span class="hidden md:block whitespace-nowrap">USD &amp; INR · English · Live help 9am–7pm Bhutan time</span>
+          <span class="text-[#E4C87E] font-bold whitespace-nowrap">★ ${esc(avg)} · ${esc(totalReviews)}</span>
         </div>
       </div>
 
-      <header id="siteHeader" class="sticky z-40 bg-[var(--cream)]/95 backdrop-blur border-b border-[var(--line)]" style="top:0">
+      <header id="siteHeader" class="sticky top-0 z-40 bg-[#FFF8EC]/95 backdrop-blur border-b border-[#E7DCC4]" style="top:0;background-color:rgba(255,248,236,0.97);">
         <div class="max-w-[1360px] mx-auto px-4 sm:px-6 h-[72px] flex items-center gap-3">
-          <button type="button" id="homeMobileOpenBtn" class="lg:hidden p-2 rounded-xl hover:bg-[#F7EDD8]" aria-label="Open menu">
+          <button type="button" id="homeMobileOpenBtn" class="lg:hidden p-2 rounded-xl text-[#0B2A22] hover:bg-[#F7EDD8] shrink-0" aria-label="Open menu">
             ${svgIcon('menu', 22)}
           </button>
 
-          <a href="#top" class="flex items-center gap-2 min-w-0">
-            <span class="w-10 h-10 rounded-full bg-[#0B2A22] text-[#C9A24B] grid place-items-center font-serif text-xl font-bold">B</span>
+          <a href="#top" class="flex items-center gap-2.5 shrink-0 whitespace-nowrap">
+            <span class="w-10 h-10 rounded-full bg-[#0B2A22] text-[#C9A24B] grid place-items-center font-serif text-xl font-bold shrink-0">B</span>
             <span class="leading-none">
-              <span class="block font-serif text-[18px] sm:text-[22px] font-bold tracking-tight" data-bfr-company>BHUTAN FAST RATE</span>
-              <span class="block text-[10px] tracking-[0.24em] text-[#C9A24B] font-extrabold">TOURS · EST. PARO</span>
+              <span class="block font-serif text-[18px] sm:text-[21px] font-bold tracking-tight text-[#0B2A22] whitespace-nowrap" data-bfr-company>BHUTAN FAST RATE</span>
+              <span class="block text-[10px] tracking-[0.22em] text-[#C9A24B] font-extrabold whitespace-nowrap">TOURS · EST. PARO</span>
             </span>
           </a>
 
-          <nav class="hidden lg:flex ml-6 gap-1 text-[15px] font-semibold">
-            <a href="index.html" class="px-3 py-2 rounded-full bg-[#0B2A22] text-white font-bold">Home</a>
-            <a href="tours.html" data-mega="Tours" class="px-3 py-2 rounded-full hover:bg-[#F7EDD8] transition-colors">Tours</a>
-            <a href="destinations.html" data-mega="Destinations" class="px-3 py-2 rounded-full hover:bg-[#F7EDD8] transition-colors">Destinations</a>
-            <a href="festivals.html" data-mega="Festivals" class="px-3 py-2 rounded-full hover:bg-[#F7EDD8] transition-colors">Festivals</a>
-            <a href="services.html" data-mega="Services" class="px-3 py-2 rounded-full hover:bg-[#F7EDD8] transition-colors">Visa &amp; SDF</a>
-            <a href="about.html" class="px-3 py-2 rounded-full hover:bg-[#F7EDD8] transition-colors">About Us</a>
-            <a href="contact.html" class="px-3 py-2 rounded-full hover:bg-[#F7EDD8] transition-colors">Contact</a>
+          <nav class="hidden lg:flex items-center ml-4 xl:ml-6 gap-0.5 xl:gap-1 text-[14px] xl:text-[15px] font-semibold text-[#101613] whitespace-nowrap">
+            <a href="index.html" class="px-3 py-2 rounded-full bg-[#0B2A22] text-white font-bold whitespace-nowrap shrink-0">Home</a>
+            <a href="tours.html" data-mega="Tours" class="px-2.5 xl:px-3 py-2 rounded-full text-[#101613] hover:bg-[#F7EDD8] transition-colors whitespace-nowrap shrink-0">Tours</a>
+            <a href="destinations.html" data-mega="Destinations" class="px-2.5 xl:px-3 py-2 rounded-full text-[#101613] hover:bg-[#F7EDD8] transition-colors whitespace-nowrap shrink-0">Destinations</a>
+            <a href="festivals.html" data-mega="Festivals" class="px-2.5 xl:px-3 py-2 rounded-full text-[#101613] hover:bg-[#F7EDD8] transition-colors whitespace-nowrap shrink-0">Festivals</a>
+            <a href="services.html" data-mega="Services" class="px-2.5 xl:px-3 py-2 rounded-full text-[#101613] hover:bg-[#F7EDD8] transition-colors whitespace-nowrap shrink-0">Visa &amp; SDF</a>
+            <a href="about.html" class="px-2.5 xl:px-3 py-2 rounded-full text-[#101613] hover:bg-[#F7EDD8] transition-colors whitespace-nowrap shrink-0">About Us</a>
+            <a href="contact.html" class="px-2.5 xl:px-3 py-2 rounded-full text-[#101613] hover:bg-[#F7EDD8] transition-colors whitespace-nowrap shrink-0">Contact</a>
           </nav>
 
-          <div class="ml-auto flex items-center gap-2" data-bfr-portal-links>
-            <a href="client/login.html" class="hidden xl:inline-flex items-center gap-1.5 border border-[var(--line)] bg-white hover:bg-[#F7EDD8] px-3 py-2 rounded-full text-xs font-bold text-[#0B2A22] transition">
+          <div class="ml-auto flex items-center gap-2 shrink-0" data-bfr-portal-links data-bfr-skip-portal-inject="1">
+            <a href="track-visa.html" class="hidden 2xl:inline-flex items-center gap-1.5 border border-[#E7DCC4] bg-white hover:bg-[#F7EDD8] px-3 py-2 rounded-full text-xs font-bold text-[#0B2A22] whitespace-nowrap shrink-0 transition">
+              Track Visa
+            </a>
+            <a href="client/login.html" class="hidden xl:inline-flex items-center gap-1.5 border border-[#E7DCC4] bg-white hover:bg-[#F7EDD8] px-3 py-2 rounded-full text-xs font-bold text-[#0B2A22] whitespace-nowrap shrink-0 transition">
               Client Portal
             </a>
-            <a href="book.html" class="flex items-center gap-2 bg-[#0B2A22] hover:bg-[#123A30] text-white px-4 py-2.5 rounded-full text-sm font-bold shadow-sm transition">
+            <a href="book.html" class="inline-flex items-center gap-1.5 bg-[#0B2A22] hover:bg-[#123A30] text-white px-4 py-2.5 rounded-full text-sm font-bold shadow-sm whitespace-nowrap shrink-0 transition">
               <span>Book Now</span>
               ${svgIcon('arrowRight', 15)}
             </a>
-            <button type="button" id="homeAiHeaderBtn" class="hidden md:flex items-center gap-2 border border-[var(--line)] px-3 py-2.5 rounded-full text-sm font-bold bg-white hover:bg-[#F7EDD8] transition">
+            <button type="button" id="homeAiHeaderBtn" class="hidden md:inline-flex items-center gap-1.5 border border-[#E7DCC4] px-3 py-2.5 rounded-full text-sm font-bold bg-white text-[#0B2A22] hover:bg-[#F7EDD8] whitespace-nowrap shrink-0 transition">
               ${svgIcon('sparkles', 16, 'text-[#C9A24B]')} AI Help
             </button>
           </div>
@@ -544,38 +549,38 @@
 
     return `
       <section class="max-w-[1360px] mx-auto px-4 sm:px-6 -mt-8 relative z-30">
-        <div class="bg-white rounded-[24px] p-4 sm:p-5 border border-[var(--line)] shadow-xl">
+        <div class="bg-white text-[#101613] rounded-[24px] p-4 sm:p-5 border border-[#E7DCC4] shadow-xl">
           <div class="flex flex-wrap items-center gap-2 text-xs font-extrabold text-[#C9A24B] tracking-[0.18em]">
             ${svgIcon('sparkles', 15)}
             <span>INSTANT PACKAGE &amp; VALLEY SEARCH</span>
-            <span class="text-[var(--muted)] font-semibold tracking-normal ml-auto">Live catalog powered by our Paro desk</span>
+            <span class="text-[#66706A] font-semibold tracking-normal ml-auto">Live catalog powered by our Paro desk</span>
           </div>
           <div class="relative mt-3">
-            <div class="flex items-center gap-2 border border-[var(--line)] rounded-full px-4 py-2 bg-[var(--cream)]">
-              ${svgIcon('search', 18, 'text-[var(--muted)]')}
-              <input id="homeSearchInput" type="text" value="${esc(state.searchQuery)}" placeholder="Search Tiger’s Nest, Punakha, Tshechu festival, luxury..." class="flex-1 bg-transparent py-1.5 text-sm outline-none" style="color-scheme:light;color:#101613;">
-              <button type="button" id="homeSearchBtn" class="bg-[#0B2A22] text-white px-5 py-2 rounded-full text-sm font-bold shrink-0">Find Trips</button>
+            <div class="flex items-center gap-2 border border-[#E7DCC4] rounded-full px-4 py-2 bg-[#FFF8EC]">
+              ${svgIcon('search', 18, 'text-[#66706A]')}
+              <input id="homeSearchInput" type="text" value="${esc(state.searchQuery)}" placeholder="Search Tiger’s Nest, Punakha, Tshechu festival, luxury..." class="flex-1 bg-transparent py-1.5 text-sm outline-none text-[#101613]" style="color-scheme:light;color:#101613;">
+              <button type="button" id="homeSearchBtn" class="bg-[#0B2A22] hover:bg-[#123A30] text-white px-5 py-2 rounded-full text-sm font-bold shrink-0">Find Trips</button>
             </div>
             ${state.searchDropdownOpen && state.searchQuery.trim()
-              ? `<div class="absolute left-0 right-0 top-full mt-2 bg-white border border-[var(--line)] rounded-2xl shadow-xl p-2 z-30">
+              ? `<div class="absolute left-0 right-0 top-full mt-2 bg-white text-[#101613] border border-[#E7DCC4] rounded-2xl shadow-xl p-2 z-30">
                   ${suggestions.length
-                    ? suggestions.map((tag) => `<button type="button" data-action="quick-tag" data-tag="${esc(tag)}" class="w-full text-left px-3 py-2 rounded-xl hover:bg-[#FFF8EC] text-sm font-semibold flex items-center gap-2">${svgIcon('sparkles', 15, 'text-[#C9A24B]')} ${esc(tag)}</button>`).join('')
-                    : `<button type="button" id="homeSearchDirectGo" class="w-full text-left px-3 py-2 rounded-xl hover:bg-[#FFF8EC] text-sm font-semibold">Search live tours for "${esc(state.searchQuery)}" →</button>`
+                    ? suggestions.map((tag) => `<button type="button" data-action="quick-tag" data-tag="${esc(tag)}" class="w-full text-left px-3 py-2 rounded-xl hover:bg-[#FFF8EC] text-[#0B2A22] text-sm font-semibold flex items-center gap-2">${svgIcon('sparkles', 15, 'text-[#C9A24B]')} ${esc(tag)}</button>`).join('')
+                    : `<button type="button" id="homeSearchDirectGo" class="w-full text-left px-3 py-2 rounded-xl hover:bg-[#FFF8EC] text-[#0B2A22] text-sm font-semibold">Search live tours for "${esc(state.searchQuery)}" →</button>`
                   }
                 </div>`
               : ''}
           </div>
           <div class="flex flex-wrap items-center gap-2 mt-3">
-            <span class="text-xs font-bold text-[var(--muted)]">Popular:</span>
-            ${TRENDING_TAGS.map((tag) => `<button type="button" data-action="quick-tag" data-tag="${esc(tag)}" class="text-xs bg-[#FFF8EC] hover:bg-[#F7EDD8] border border-[var(--line)] px-3 py-1 rounded-full font-semibold transition">${esc(tag)}</button>`).join('')}
+            <span class="text-xs font-bold text-[#66706A]">Popular:</span>
+            ${TRENDING_TAGS.map((tag) => `<button type="button" data-action="quick-tag" data-tag="${esc(tag)}" class="text-xs bg-[#FFF8EC] text-[#0B2A22] hover:bg-[#F7EDD8] border border-[#E7DCC4] px-3 py-1 rounded-full font-semibold transition">${esc(tag)}</button>`).join('')}
           </div>
         </div>
 
         <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2.5 mt-4">
           ${trustBadges.map(([t, sub]) => `
-            <div class="bg-white/90 border border-[var(--line)] rounded-2xl p-3">
-              <div class="font-extrabold text-sm">${esc(t)}</div>
-              <p class="text-xs text-[var(--muted)] mt-0.5">${esc(sub)}</p>
+            <div class="bg-white/95 text-[#101613] border border-[#E7DCC4] rounded-2xl p-3 shadow-sm">
+              <div class="font-extrabold text-sm text-[#0B2A22]">${esc(t)}</div>
+              <p class="text-xs text-[#66706A] mt-0.5">${esc(sub)}</p>
             </div>
           `).join('')}
         </div>
@@ -627,7 +632,7 @@
         const isSaved = state.savedIds.includes(t.id);
         const isCmp = state.compareIds.includes(t.id);
         return `
-          <article class="group bg-white rounded-[24px] overflow-hidden border border-[var(--line)] card-lift flex flex-col">
+          <article class="group bg-white text-[#101613] rounded-[24px] overflow-hidden border border-[#E7DCC4] card-lift flex flex-col">
             <a href="${esc(tourHref)}" class="relative block text-left overflow-hidden h-[230px]">
               <img src="${esc(img)}" alt="${esc(t.title)}" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
               <span class="absolute top-3 left-3 bg-white/95 px-3 py-1 rounded-full text-xs font-extrabold text-[#0B2A22]">${days} DAYS · ${esc(cat.toUpperCase())}</span>
@@ -638,26 +643,26 @@
               <a href="${esc(tourHref)}" class="text-left">
                 <h3 class="font-serif text-[22px] leading-tight gold-line inline text-[#0B2A22]">${esc(t.title)}</h3>
               </a>
-              <p class="text-sm text-[var(--muted)] mt-2 flex gap-1">${svgIcon('mapPin', 15, 'shrink-0 mt-0.5')} <span>${esc(t.valleys || 'Paro • Thimphu • Punakha')}</span></p>
-              <p class="text-sm mt-2 flex-1">${esc(t.subtitle || t.highlight_text || 'Private licensed Bhutanese guide, SDF included, and curated boutique stays.')}</p>
-              <p class="text-xs text-[var(--muted)] mt-3 flex items-center gap-1">${svgIcon('users', 14)} <span>${esc(t.difficulty || 'Easy to Moderate')} · SDF Included</span></p>
-              <div class="flex items-end justify-between mt-4 pt-4 border-t border-[var(--line)]">
+              <p class="text-sm text-[#66706A] mt-2 flex gap-1">${svgIcon('mapPin', 15, 'shrink-0 mt-0.5')} <span>${esc(t.valleys || 'Paro • Thimphu • Punakha')}</span></p>
+              <p class="text-sm text-[#101613] mt-2 flex-1">${esc(t.subtitle || t.highlight_text || 'Private licensed Bhutanese guide, SDF included, and curated boutique stays.')}</p>
+              <p class="text-xs text-[#66706A] mt-3 flex items-center gap-1">${svgIcon('users', 14)} <span>${esc(t.difficulty || 'Easy to Moderate')} · SDF Included</span></p>
+              <div class="flex items-end justify-between mt-4 pt-4 border-t border-[#E7DCC4]">
                 <div>
-                  <span class="text-xs text-[var(--muted)] block">From (3★)</span>
-                  <span class="font-serif text-[26px] font-bold">$${price.toLocaleString('en-US')}</span>
+                  <span class="text-xs text-[#66706A] block">From (3★)</span>
+                  <span class="font-serif text-[26px] font-bold text-[#0B2A22]">$${price.toLocaleString('en-US')}</span>
                 </div>
                 <div class="flex gap-1.5">
-                  <button type="button" data-action="save-tour" data-id="${esc(t.id)}" aria-label="Save tour" class="w-10 h-10 rounded-full grid place-items-center border ${isSaved ? 'bg-[#C9A24B] text-white border-[#C9A24B]' : 'border-[var(--line)]'}">
+                  <button type="button" data-action="save-tour" data-id="${esc(t.id)}" aria-label="Save tour" class="w-10 h-10 rounded-full grid place-items-center border ${isSaved ? 'bg-[#C9A24B] text-white border-[#C9A24B]' : 'bg-white text-[#0B2A22] border-[#E7DCC4]'}">
                     ${svgIcon('heart', 16, isSaved ? 'fill-white' : '')}
                   </button>
-                  <button type="button" data-action="compare-tour" data-id="${esc(t.id)}" aria-label="Compare tour" class="px-3 h-10 rounded-full text-xs font-extrabold border ${isCmp ? 'bg-[#0B2A22] text-white' : 'border-[var(--line)]'}">
+                  <button type="button" data-action="compare-tour" data-id="${esc(t.id)}" aria-label="Compare tour" class="px-3 h-10 rounded-full text-xs font-extrabold border ${isCmp ? 'bg-[#0B2A22] text-white border-[#0B2A22]' : 'bg-white text-[#0B2A22] border-[#E7DCC4]'}">
                     Compare
                   </button>
                 </div>
               </div>
               <div class="flex gap-2 mt-3">
                 <a href="${esc(tourHref)}" class="flex-1 text-center bg-[#0B2A22] hover:bg-[#123A30] text-white py-3 rounded-full font-bold text-sm transition">View Details</a>
-                <a href="${esc(bookHref)}" class="flex-1 text-center border border-[#0B2A22] hover:bg-[#FFF8EC] text-[#0B2A22] py-3 rounded-full font-bold text-sm transition">Book Now</a>
+                <a href="${esc(bookHref)}" class="flex-1 text-center border border-[#0B2A22] bg-white hover:bg-[#FFF8EC] text-[#0B2A22] py-3 rounded-full font-bold text-sm transition">Book Now</a>
               </div>
             </div>
           </article>
@@ -670,10 +675,10 @@
         <div class="flex flex-wrap items-end justify-between gap-4">
           <div>
             <p class="text-[#C9A24B] font-extrabold tracking-[0.22em] text-xs">CURATED COLLECTION</p>
-            <h2 class="font-serif text-[36px] sm:text-[54px] leading-none mt-2">Journeys people<br>remember for life.</h2>
+            <h2 class="font-serif text-[36px] sm:text-[54px] leading-none mt-2 text-[#0B2A22]">Journeys people<br>remember for life.</h2>
           </div>
           <div class="max-w-[400px]">
-            <p class="text-[var(--muted)]">Explore full day-by-day itineraries, transparent 3★/4★/5★ tier rates with SDF included, and instant online booking.</p>
+            <p class="text-[#66706A]">Explore full day-by-day itineraries, transparent 3★/4★/5★ tier rates with SDF included, and instant online booking.</p>
             <a href="tours.html" class="inline-flex items-center gap-1.5 text-sm font-extrabold text-[#0B2A22] hover:text-[#C9A24B] mt-2">
               Browse all ${state.tours.length || ''} packages ${svgIcon('arrowRight', 15)}
             </a>
@@ -682,7 +687,7 @@
 
         <div class="flex gap-2 overflow-x-auto no-scrollbar py-5">
           ${CATEGORIES.map((c) => `
-            <button type="button" data-action="cat-filter" data-cat="${esc(c)}" class="px-4 py-2 rounded-full text-sm font-bold whitespace-nowrap ${state.category === c ? 'bg-[#0B2A22] text-white' : 'bg-white border border-[var(--line)]'}">
+            <button type="button" data-action="cat-filter" data-cat="${esc(c)}" class="px-4 py-2 rounded-full text-sm font-bold whitespace-nowrap ${state.category === c ? 'bg-[#0B2A22] text-white' : 'bg-white text-[#0B2A22] border border-[#E7DCC4] hover:bg-[#F7EDD8]'}">
               ${esc(c)}
             </button>
           `).join('')}
@@ -704,8 +709,8 @@
         <div class="flex flex-wrap items-end justify-between gap-4">
           <div>
             <p class="text-[#C9A24B] font-extrabold tracking-[0.22em] text-xs">FESTIVAL DEPARTURES · 2027</p>
-            <h2 class="font-serif text-[36px] sm:text-[54px] mt-2">Move your cursor.<br>Look closer.</h2>
-            <p class="text-[var(--muted)] mt-2 max-w-[620px]">Hover any festival image to activate the magnifying lens. Open dedicated festival schedules and reserve priority monastery seating.</p>
+            <h2 class="font-serif text-[36px] sm:text-[54px] mt-2 text-[#0B2A22]">Move your cursor.<br>Look closer.</h2>
+            <p class="text-[#66706A] mt-2 max-w-[620px]">Hover any festival image to activate the magnifying lens. Open dedicated festival schedules and reserve priority monastery seating.</p>
           </div>
           <a href="festivals.html" class="text-sm font-extrabold text-[#0B2A22] hover:text-[#C9A24B]">View All Festival Dates →</a>
         </div>
@@ -717,7 +722,7 @@
             const festHref = resolveFestivalPageHref(f);
             const bookHref = f.related_tour_id ? `book.html?tour=${encodeURIComponent(f.related_tour_id)}` : 'festivals.html';
             return `
-              <article class="bg-white rounded-[24px] overflow-hidden border border-[var(--line)] card-lift flex flex-col">
+              <article class="bg-white text-[#101613] rounded-[24px] overflow-hidden border border-[#E7DCC4] card-lift flex flex-col">
                 <a href="${esc(festHref)}" class="block relative overflow-hidden cursor-crosshair h-[240px] sm:h-[260px] bfr-lens-box" data-img="${esc(img)}">
                   <div role="img" aria-label="${esc(festName)}" class="w-full h-full bg-cover bg-center" style="background-image:url('${esc(img)}')"></div>
                   <div class="bfr-lens-circle hidden pointer-events-none absolute z-10 w-[150px] h-[150px] rounded-full border-4 border-white shadow-2xl" style="transform:translate(-50%,-50%);background-image:url('${esc(img)}');background-size:420% 420%"></div>
@@ -727,10 +732,10 @@
                 </a>
                 <div class="p-4 flex-1 flex flex-col">
                   <span class="text-xs font-extrabold text-[#C9A24B]">${esc(f.dates_label || f.best_months || f.season || '2027 Season')}</span>
-                  <h3 class="font-serif text-2xl mt-1"><a href="${esc(festHref)}" class="hover:text-[#C9A24B]">${esc(festName)}</a></h3>
-                  <p class="text-sm text-[var(--muted)] mt-1 flex items-center gap-1">${svgIcon('mapPin', 14)} ${esc(f.venue || f.dzongkhag || 'Bhutan')}</p>
-                  <p class="text-sm mt-2 flex-1">${esc(f.summary || '')}</p>
-                  <div class="flex justify-between items-center mt-4 pt-3 border-t border-[var(--line)]">
+                  <h3 class="font-serif text-2xl mt-1 text-[#0B2A22]"><a href="${esc(festHref)}" class="hover:text-[#C9A24B]">${esc(festName)}</a></h3>
+                  <p class="text-sm text-[#66706A] mt-1 flex items-center gap-1">${svgIcon('mapPin', 14)} ${esc(f.venue || f.dzongkhag || 'Bhutan')}</p>
+                  <p class="text-sm text-[#101613] mt-2 flex-1">${esc(f.summary || '')}</p>
+                  <div class="flex justify-between items-center mt-4 pt-3 border-t border-[#E7DCC4]">
                     <a href="${esc(festHref)}" class="bg-[#0B2A22] text-white px-4 py-2 rounded-full text-sm font-bold">View Festival</a>
                     <a href="${esc(bookHref)}" class="text-xs font-extrabold text-[#C9A24B] hover:underline">Book Tour →</a>
                   </div>
@@ -780,16 +785,16 @@
     return `
       <section class="max-w-[1360px] mx-auto px-4 sm:px-6 pt-20">
         <p class="text-[#C9A24B] font-extrabold tracking-[0.22em] text-xs">FULL CONCIERGE COVERAGE</p>
-        <h2 class="font-serif text-[36px] sm:text-[54px] mt-2">Everything handled before you land.</h2>
+        <h2 class="font-serif text-[36px] sm:text-[54px] mt-2 text-[#0B2A22]">Everything handled before you land.</h2>
         <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-7">
           ${SERVICES_GRID.map((svc) => `
-            <a href="${esc(svc.href)}" class="bg-white border border-[var(--line)] rounded-[22px] overflow-hidden card-lift block">
+            <a href="${esc(svc.href)}" class="bg-white text-[#101613] border border-[#E7DCC4] rounded-[22px] overflow-hidden card-lift block">
               <div class="h-[150px] overflow-hidden">
                 <img src="${esc(svc.img)}" alt="${esc(svc.n)}" class="w-full h-full object-cover" style="object-position:${esc(svc.pos)}">
               </div>
               <div class="p-4">
                 <h3 class="font-serif text-xl font-bold text-[#0B2A22]">${esc(svc.n)}</h3>
-                <p class="text-sm text-[var(--muted)] mt-1">${esc(svc.d)}</p>
+                <p class="text-sm text-[#66706A] mt-1">${esc(svc.d)}</p>
               </div>
             </a>
           `).join('')}
@@ -805,20 +810,20 @@
         <div class="flex flex-wrap items-end justify-between gap-4">
           <div>
             <p class="text-[#C9A24B] font-extrabold tracking-[0.22em] text-xs">SACRED VALLEYS</p>
-            <h2 class="font-serif text-[36px] sm:text-[54px] mt-2">Six valleys in detail.</h2>
+            <h2 class="font-serif text-[36px] sm:text-[54px] mt-2 text-[#0B2A22]">Six valleys in detail.</h2>
           </div>
           <a href="destinations.html" class="inline-flex items-center gap-1.5 text-sm font-extrabold text-[#0B2A22] hover:text-[#C9A24B]">
             Explore all destinations ${svgIcon('sliders', 16)}
           </a>
         </div>
-        <p class="text-[var(--muted)] mt-2">Live valley guides synced with our Paro operations database.</p>
+        <p class="text-[#66706A] mt-2">Live valley guides synced with our Paro operations database.</p>
 
         <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-5 mt-7">
           ${dests.map((d) => {
             const img = safeUrl(d.cover_image, FALLBACK_IMAGES.punakha);
             const destHref = resolveDestPageHref(d);
             return `
-              <article class="bg-white border border-[var(--line)] rounded-[24px] overflow-hidden card-lift">
+              <article class="bg-white text-[#101613] border border-[#E7DCC4] rounded-[24px] overflow-hidden card-lift">
                 <a href="${esc(destHref)}" class="block relative overflow-hidden cursor-crosshair h-[240px] bfr-lens-box" data-img="${esc(img)}">
                   <div role="img" aria-label="${esc(d.name)}" class="w-full h-full bg-cover bg-center" style="background-image:url('${esc(img)}')"></div>
                   <div class="bfr-lens-circle hidden pointer-events-none absolute z-10 w-[150px] h-[150px] rounded-full border-4 border-white shadow-2xl" style="transform:translate(-50%,-50%);background-image:url('${esc(img)}');background-size:420% 420%"></div>
@@ -827,9 +832,9 @@
                   </div>
                 </a>
                 <div class="p-4">
-                  <h3 class="font-serif text-2xl">${esc(d.name)}</h3>
+                  <h3 class="font-serif text-2xl text-[#0B2A22]">${esc(d.name)}</h3>
                   <p class="text-xs font-extrabold text-[#C9A24B] mt-1">${esc(d.best_months || d.tagline || 'Year-round')}</p>
-                  <p class="text-sm text-[var(--muted)] mt-2">${esc(d.tagline || d.description || '')}</p>
+                  <p class="text-sm text-[#66706A] mt-2">${esc(d.tagline || d.description || '')}</p>
                   <a href="${esc(destHref)}" class="mt-3 inline-flex items-center gap-1 text-sm font-bold text-[#0B2A22] hover:text-[#C9A24B]">Explore valley →</a>
                 </div>
               </article>
@@ -906,15 +911,15 @@
             </div>
           </div>
           <div>
-            <span class="text-sm font-bold block mb-1.5">Interests</span>
+            <span class="text-sm font-bold block mb-1.5 text-[#0B2A22]">Interests</span>
             <div class="flex flex-wrap gap-2">
-              ${interestOpts.map((tag) => `<button type="button" data-action="toggle-interest" data-interest="${esc(tag)}" class="px-3.5 py-1.5 rounded-full text-xs font-bold border border-[var(--line)] ${f.interests.includes(tag) ? 'bg-[#0B2A22] text-white' : 'bg-[var(--cream)]'}">${esc(tag)}</button>`).join('')}
+              ${interestOpts.map((tag) => `<button type="button" data-action="toggle-interest" data-interest="${esc(tag)}" class="px-3.5 py-1.5 rounded-full text-xs font-bold border border-[#E7DCC4] ${f.interests.includes(tag) ? 'bg-[#0B2A22] text-white' : 'bg-[#FFF8EC] text-[#0B2A22]'}">${esc(tag)}</button>`).join('')}
             </div>
           </div>
           <div>
-            <span class="text-sm font-bold block mb-1.5">Travel Pace</span>
+            <span class="text-sm font-bold block mb-1.5 text-[#0B2A22]">Travel Pace</span>
             <div class="flex gap-2">
-              ${paceOpts.map((p) => `<button type="button" data-action="set-pace" data-pace="${esc(p)}" class="px-4 py-1.5 rounded-full text-xs font-bold border border-[var(--line)] ${f.pace === p ? 'bg-[#C9A24B] text-[#0B2A22]' : 'bg-[var(--cream)]'}">${esc(p)}</button>`).join('')}
+              ${paceOpts.map((p) => `<button type="button" data-action="set-pace" data-pace="${esc(p)}" class="px-4 py-1.5 rounded-full text-xs font-bold border border-[#E7DCC4] ${f.pace === p ? 'bg-[#C9A24B] text-[#0B2A22]' : 'bg-[#FFF8EC] text-[#0B2A22]'}">${esc(p)}</button>`).join('')}
             </div>
           </div>
           <label class="block">
@@ -930,27 +935,27 @@
 
     return `
       <section id="custom" class="max-w-[1360px] mx-auto px-4 sm:px-6 pt-20">
-        <div class="grid lg:grid-cols-2 gap-8 items-start">
+        <div class="grid grid-cols-1 lg:grid-cols-[1fr_1.15fr] gap-8 items-start">
           <div>
             <p class="text-[#C9A24B] font-extrabold tracking-[0.22em] text-xs">BESPOKE ITINERARY DESIGN</p>
-            <h2 class="font-serif text-[36px] sm:text-[50px] leading-tight mt-2">Design a Bhutan trip around your dates.</h2>
-            <p class="text-[var(--muted)] mt-3 max-w-[500px]">Share your travel window, group size, and hotel preference. Your inquiry goes directly to our licensed Paro travel concierges.</p>
+            <h2 class="font-serif text-[36px] sm:text-[50px] leading-tight mt-2 text-[#0B2A22]">Design a Bhutan trip around your dates.</h2>
+            <p class="text-[#66706A] mt-3 max-w-[500px]">Share your travel window, group size, and hotel preference. Your inquiry goes directly to our licensed Paro travel concierges.</p>
             <div class="space-y-3 mt-6">
               ${[
                 ['1', 'Share your idea', 'Dates, valley preferences & international USD or India INR pricing.'],
                 ['2', 'Live concierge quote', 'Our team computes exact SDF & boutique lodging tiers in 2 hours.'],
                 ['3', 'One-click conversion', 'Approve your custom plan and step straight into visa clearance.']
               ].map(([num, h, desc]) => `
-                <div class="flex gap-3 bg-white border border-[var(--line)] rounded-2xl p-4">
+                <div class="flex gap-3 bg-white text-[#101613] border border-[#E7DCC4] rounded-2xl p-4">
                   <span class="w-8 h-8 rounded-full bg-[#0B2A22] text-[#C9A24B] grid place-items-center font-bold shrink-0">${num}</span>
-                  <div><strong class="block text-sm">${esc(h)}</strong><span class="text-xs text-[var(--muted)]">${esc(desc)}</span></div>
+                  <div><strong class="block text-sm text-[#0B2A22]">${esc(h)}</strong><span class="text-xs text-[#66706A]">${esc(desc)}</span></div>
                 </div>
               `).join('')}
             </div>
-            <img src="${FALLBACK_IMAGES.festival}" alt="Bhutan festival celebration" class="w-full h-[220px] object-cover rounded-[24px] mt-5 border border-[var(--line)]">
+            <img src="${FALLBACK_IMAGES.lodge}" alt="Luxury Bhutanese heritage valley lodge" class="w-full h-[220px] object-cover rounded-[24px] mt-5 border border-[#E7DCC4]">
           </div>
 
-          <div class="bg-white border border-[var(--line)] rounded-[28px] p-6 sm:p-8 shadow-sm">
+          <div class="bg-white text-[#101613] border border-[#E7DCC4] rounded-[28px] p-6 sm:p-8 shadow-sm">
             ${formPanel}
           </div>
         </div>
@@ -965,24 +970,24 @@
         <div class="flex flex-wrap items-end justify-between gap-4">
           <div>
             <p class="text-[#C9A24B] font-extrabold tracking-[0.22em] text-xs">VERIFIED GUEST STORIES</p>
-            <h2 class="font-serif text-[36px] sm:text-[48px] mt-2">Trusted across 40+ countries.</h2>
+            <h2 class="font-serif text-[36px] sm:text-[48px] mt-2 text-[#0B2A22]">Trusted across 40+ countries.</h2>
           </div>
           <a href="reviews.html" class="text-sm font-extrabold text-[#0B2A22] hover:text-[#C9A24B]">Read all verified reviews →</a>
         </div>
 
-        <div class="grid md:grid-cols-3 gap-5 mt-7">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-5 mt-7">
           ${revs.map((r) => {
             const guestName = r.author_name || r.reviewer_name || r.guest_name || 'Verified Guest';
             const tourInfo = [r.tour_taken || r.tour_title, r.author_country].filter(Boolean).join(' · ') || 'Bhutan Journey';
             return `
-            <blockquote class="bg-white border border-[var(--line)] rounded-[24px] p-6 flex flex-col justify-between">
+            <blockquote class="bg-white text-[#101613] border border-[#E7DCC4] rounded-[24px] p-6 flex flex-col justify-between">
               <div>
                 <div class="text-[#C9A24B] text-sm font-bold">${'★'.repeat(Math.max(1, Math.min(5, Number(r.rating) || 5)))}</div>
-                <p class="mt-3 text-sm leading-relaxed">“${esc(r.comment || r.review_text || '')}”</p>
+                <p class="mt-3 text-sm leading-relaxed text-[#101613]">“${esc(r.comment || r.review_text || '')}”</p>
               </div>
-              <footer class="mt-5 pt-3 border-t border-[var(--line)] text-xs">
+              <footer class="mt-5 pt-3 border-t border-[#E7DCC4] text-xs">
                 <strong class="block text-sm text-[#0B2A22]">${esc(guestName)}</strong>
-                <span class="text-[var(--muted)]">${esc(tourInfo)}</span>
+                <span class="text-[#66706A]">${esc(tourInfo)}</span>
               </footer>
             </blockquote>
           `;
@@ -1060,7 +1065,7 @@
   function renderChatWidget() {
     const box = state.chatOpen
       ? `
-        <div class="fixed bottom-[84px] right-4 sm:right-5 z-50 w-[calc(100vw-32px)] max-w-[380px] bg-white rounded-[24px] shadow-2xl border border-[var(--line)] overflow-hidden flex flex-col max-h-[560px]">
+        <div class="fixed bottom-[84px] right-4 sm:right-5 z-50 w-[calc(100vw-32px)] max-w-[380px] bg-white text-[#101613] rounded-[24px] shadow-2xl border border-[#E7DCC4] overflow-hidden flex flex-col max-h-[560px]">
           <div class="bg-[#0B2A22] text-white p-4 flex justify-between items-center">
             <div>
               <b>Bhutan Concierge</b>
@@ -1068,16 +1073,16 @@
             </div>
             <button type="button" id="homeChatCloseBtn" aria-label="Close chat">${svgIcon('x', 18)}</button>
           </div>
-          <div id="homeChatBody" class="flex-1 overflow-y-auto p-4 space-y-3">
+          <div id="homeChatBody" class="flex-1 overflow-y-auto p-4 space-y-3 bg-white">
             ${state.chatMessages.map((m) => `
-              <div class="max-w-[85%] p-3 rounded-2xl text-sm ${m.who === 'ai' ? 'bg-[#FFF8EC]' : 'bg-[#0B2A22] text-white ml-auto'}">
+              <div class="max-w-[85%] p-3 rounded-2xl text-sm ${m.who === 'ai' ? 'bg-[#FFF8EC] text-[#101613]' : 'bg-[#0B2A22] text-white ml-auto'}">
                 <p>${esc(m.text)}</p>
                 ${m.linkHref ? `<a href="${esc(m.linkHref)}" class="inline-block mt-2 text-xs font-extrabold text-[#C9A24B] underline">${esc(m.linkLabel || 'View details →')}</a>` : ''}
               </div>
             `).join('')}
           </div>
-          <form id="homeChatForm" class="p-3 border-t flex gap-2">
-            <input id="homeChatInput" value="${esc(state.chatInput)}" placeholder="e.g. 7 days festival, India permit, trek" class="flex-1 min-w-0 border border-[var(--line)] rounded-full px-3 py-2.5 text-sm outline-none" style="color-scheme:light;color:#101613;">
+          <form id="homeChatForm" class="p-3 border-t border-[#E7DCC4] bg-white flex gap-2">
+            <input id="homeChatInput" value="${esc(state.chatInput)}" placeholder="e.g. 7 days festival, India permit, trek" class="flex-1 min-w-0 border border-[#E7DCC4] bg-[#FFF8EC] rounded-full px-3 py-2.5 text-sm outline-none text-[#101613]" style="color-scheme:light;color:#101613;">
             <button type="submit" aria-label="Send message" class="w-10 h-10 rounded-full bg-[#C9A24B] text-[#0B2A22] grid place-items-center shrink-0">${svgIcon('send', 16)}</button>
           </form>
         </div>

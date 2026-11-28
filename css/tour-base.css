@@ -1816,17 +1816,7 @@ video {
   --card:#FFFFFF;
 }
 
-@media (prefers-color-scheme: dark){
-  :root{
-    --cream:#101914;
-    --cream2:#17231F;
-    --surface:#101914;
-    --card:#1A2B25;
-    --ink:#FFF8EC;
-    --muted:#B9C4BB;
-    --line:#2E423A;
-  }
-}
+/* light-only palette */
 
 *{
   box-sizing:border-box

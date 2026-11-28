@@ -140,7 +140,7 @@ function getSeedData() {
       description: 'The political and cultural heartbeat of Bhutan where ancient monastic traditions harmonize with modern Gross National Happiness governance. Overlooked by the colossal 169ft Buddha Dordenma.',
       highlights_json: JSON.stringify(['Buddha Dordenma (Giant Buddha Point)', 'Tashichho Dzong Throne Room', 'National Memorial Chorten', 'Centenary Farmers Market & Craft Bazaar', 'Royal Takin Preserve']),
       best_months: 'Year-Round (Festivals in Sep/Oct)',
-      cover_image: 'assets/images/thimphu-festival.webp',
+      cover_image: 'assets/images/thimphu-dzong.jpg',
       sort_order: 2
     },
     {
@@ -179,7 +179,7 @@ function getSeedData() {
       description: 'Consisting of four sacred valleys (Choekhor, Tang, Ura, and Chhume), Bumthang contains Bhutan’s oldest temples where Guru Rinpoche cured the local king in the 8th century.',
       highlights_json: JSON.stringify(['Jambay Lhakhang (Built 659 AD)', 'Kurjey Lhakhang (Guru Body Imprint)', 'Tamshing Monastery', 'Mebar Tsho (Burning Lake)', 'Swiss Farm Cheese & Red Panda Beer']),
       best_months: 'Mar - May, Sep - Nov',
-      cover_image: 'assets/images/dochula-pass.webp',
+      cover_image: 'assets/images/bhutan-lodge.jpg',
       sort_order: 5
     },
     {
@@ -329,7 +329,7 @@ function getSeedData() {
       price_5star_usd: 9500,
       valleys: 'Paro, Lingshi, Laya, Lunana, Bumthang',
       highlight_text: 'Cross 11 mountain passes over 4,500m through the isolated glacial highlands of Lunana.',
-      cover_image: 'assets/images/dochula-pass.webp',
+      cover_image: 'assets/images/phobjikha-cranes.webp',
       itinerary_json: JSON.stringify([
         { day: 'Day 1-4', title: 'Paro Acclimatization & Shana Trailhead', description: 'Enter the remote northern wilderness past Mt. Jomolhari base camp (4,080m).' },
         { day: 'Day 5-9', title: 'Jomolhari Base to Lingshi Dzong (4,150m)', description: 'Cross Nyele La pass (4,830m) into remote mountain fortresses.' },
@@ -397,7 +397,7 @@ function getSeedData() {
       price_5star_usd: 5100,
       valleys: 'Paro, Thimphu, Punakha, Phobjikha, Trongsa, Bumthang',
       highlight_text: 'Visit Bhutan’s oldest temples (659 AD), burning lake Mebar Tsho, and Trongsa ancestral fortress.',
-      cover_image: 'assets/images/dochula-pass.webp',
+      cover_image: 'assets/images/thimphu-dzong.jpg',
       itinerary_json: JSON.stringify([
         { day: 'Day 1-3', title: 'Western Valleys: Paro, Thimphu, Punakha', description: 'Explore iconic highlights before venturing into the high interior.' },
         { day: 'Day 4', title: 'Phobjikha Glacial Valley & Black-Necked Cranes', description: 'Cross Pele La pass to Gangtey monastery wetlands.' },
@@ -431,7 +431,7 @@ function getSeedData() {
       price_5star_usd: 1950,
       valleys: 'Paro Valley',
       highlight_text: 'Ideal weekend break: Paro Rinpung Dzong, Tiger’s Nest pilgrimage, and herbal hot stone relaxation.',
-      cover_image: 'assets/images/tigers-nest.webp',
+      cover_image: 'assets/images/bhutan-lodge.jpg',
       itinerary_json: JSON.stringify([
         { day: 1, title: 'Arrival in Paro & Rinpung Dzong', description: 'Check in to boutique valley hotel, tour Ta Dzong and wooden cantilever bridge.' },
         { day: 2, title: 'Tiger’s Nest Pilgrimage & Dotsho Mineral Bath', description: 'Morning hike to Taktsang monastery, afternoon hot stone herbal soak.' },
@@ -462,7 +462,7 @@ function getSeedData() {
       price_5star_usd: 6800,
       valleys: 'Paro, Bumthang, Mongar, Trashigang, Trashiyangtse',
       highlight_text: 'Visit Radhi raw silk weavers, dramatic cliffs of Trashigang, and the remote nomadic realm of Merak-Sakteng.',
-      cover_image: 'assets/images/dochula-pass.webp',
+      cover_image: 'assets/images/thimphu-festival.webp',
       itinerary_json: JSON.stringify([
         { day: 'Day 1-4', title: 'Western & Central Bhutan Highlights', description: 'Paro, Thimphu, Punakha, and Bumthang cultural treasures.' },
         { day: 'Day 5-7', title: 'Thrumshingla Pass (3,780m) to Mongar & Trashigang', description: 'Spectacular mountain shelf roads to lush Eastern cliffs.' },

@@ -244,6 +244,7 @@
 
       for (const item of portalItems) {
         if (hasHref(item.href)) continue;
+        if (container.hasAttribute && container.hasAttribute('data-bfr-skip-portal-inject')) continue;
         const a = doc.createElement('a');
         a.setAttribute('href', item.href);
         a.href = item.href;
