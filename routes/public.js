@@ -120,6 +120,51 @@ function parseStrictPositiveInt(rawValue) {
   return num !== null && num >= 1 ? num : null;
 }
 
+const TOUR_SEARCH_STOPWORDS = new Set(['bhutan', 'tour', 'tours', 'package', 'packages', 'under', 'below', 'less', 'than', 'days', 'day', 'trip', 'trips', 'and', 'with', 'in', 'the', 'for', 'best', 'time', 'to', 'visit', '2026', '2027', 'retreat', 'guide', 'plus']);
+
+function normSearchText(v) {
+  return String(v || '')
+    .toLowerCase()
+    .replace(/[\u2018\u2019'`]/g, '')
+    .replace(/[^a-z0-9\s]/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+function tourMatchesApiSearch(tour, rawSearch) {
+  const qNorm = normSearchText(rawSearch);
+  if (!qNorm) return true;
+  const hay = normSearchText([
+    tour.title,
+    tour.subtitle,
+    tour.valleys,
+    tour.category,
+    tour.difficulty,
+    tour.badge,
+    tour.slug,
+    tour.itinerary_json,
+    tour.highlights_json
+  ].filter(Boolean).join(' '));
+
+  const budgetMatch = String(rawSearch).match(/(?:under|below|<|max|budget)\s*\$?\s*(\d{3,5})/i);
+  if (budgetMatch) {
+    const cap = Number(budgetMatch[1]);
+    if (Number(tour.price_usd || 0) > cap) return false;
+  }
+
+  const daysMatch = String(rawSearch).match(/\b(\d{1,2})\s*(?:days?|d)\b/i);
+  if (daysMatch) {
+    const dTarget = Number(daysMatch[1]);
+    if (Math.abs(Number(tour.duration_days || 0) - dTarget) > 2) return false;
+  }
+
+  if (hay.includes(qNorm)) return true;
+
+  const rawTokens = qNorm.split(' ').filter((w) => w && !TOUR_SEARCH_STOPWORDS.has(w) && !/^\d+$/.test(w));
+  if (!rawTokens.length) return true;
+  return rawTokens.every((tok) => hay.includes(tok) || (tok === 'tigers' && hay.includes('tiger')));
+}
+
 // GET /api/tours - List all active tours with search, category & duration filters
 router.get('/tours', async (req, res, next) => {
   try {
@@ -146,12 +191,6 @@ router.get('/tours', async (req, res, next) => {
       params.push(`%${String(valley).trim().toLowerCase()}%`);
     }
 
-    if (search && String(search).trim()) {
-      const term = `%${String(search).trim().toLowerCase()}%`;
-      sql += " AND (LOWER(title) LIKE ? OR LOWER(COALESCE(subtitle, '')) LIKE ? OR LOWER(valleys) LIKE ? OR LOWER(category) LIKE ?)";
-      params.push(term, term, term, term);
-    }
-
     if (sort === 'price_asc' || sort === 'price-low') {
       sql += ' ORDER BY price_usd ASC, sort_order ASC';
     } else if (sort === 'price_desc' || sort === 'price-high') {
@@ -165,7 +204,10 @@ router.get('/tours', async (req, res, next) => {
     }
 
     const rows = await db.query(sql, params);
-    const tours = rows.map(mapTourRow);
+    const filteredRows = search && String(search).trim()
+      ? rows.filter((row) => tourMatchesApiSearch(row, search))
+      : rows;
+    const tours = filteredRows.map(mapTourRow);
 
     res.json({ success: true, count: tours.length, data: tours });
   } catch (err) {
