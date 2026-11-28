@@ -285,7 +285,7 @@
                 </div>
                 <div>
                   <span class="text-zinc-400 block">Travel Dates</span>
-                  <div class="font-bold text-white font-mono mt-0.5">${AdminApp.esc(b.travel_date_start)} → ${AdminApp.esc(b.travel_date_end)}</div>
+                  <div class="font-bold text-white mt-0.5">${AdminApp.esc(AdminApp.formatDateShort(b.travel_date_start))} → ${AdminApp.esc(AdminApp.formatDateShort(b.travel_date_end))}</div>
                   <div class="text-[11px] text-zinc-400">${Number(b.total_nights) || 1} Nights · Plan: ${AdminApp.esc(b.payment_plan || 'deposit_30')}</div>
                 </div>
                 <div>

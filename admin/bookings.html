@@ -445,19 +445,22 @@
 
         return `
           <tr>
-            <td class="font-mono font-bold text-white">
-              <a href="booking-detail.html?id=${encodeURIComponent(b.id)}" class="text-[#C9A24B] hover:underline">${AdminApp.esc(b.id)}</a>
+            <td class="font-mono font-bold text-white whitespace-nowrap">
+              <a href="booking-detail.html?id=${encodeURIComponent(b.id)}" class="text-[#C9A24B] hover:underline whitespace-nowrap">${AdminApp.esc(b.id)}</a>
               <div class="text-[10px] text-zinc-500 mt-0.5">${AdminApp.esc(AdminApp.humanize(b.source || 'website'))}</div>
             </td>
             <td>
-              <div class="font-bold text-white text-xs">${AdminApp.esc(b.lead_name)}</div>
+              <div class="font-bold text-white text-xs whitespace-nowrap">${AdminApp.esc(b.lead_name)}</div>
               <div class="text-[10px] text-zinc-400">${AdminApp.esc(b.lead_country || 'International')} · ${AdminApp.esc(b.lead_email)}</div>
             </td>
             <td>
-              <div class="text-xs text-zinc-200 max-w-[210px] truncate">${AdminApp.esc(b.tour_title)}</div>
+              <div class="text-xs text-zinc-200 max-w-[190px] truncate">${AdminApp.esc(b.tour_title)}</div>
               <div class="text-[10px] text-zinc-400">${AdminApp.esc(b.hotel_tier || '4-Star Premium')}</div>
             </td>
-            <td><span class="text-xs text-zinc-300 font-mono">${AdminApp.esc(b.travel_date_start)} → ${AdminApp.esc(b.travel_date_end)}</span></td>
+            <td class="whitespace-nowrap">
+              <div class="text-xs text-zinc-200 font-medium">${AdminApp.esc(AdminApp.formatDateShort(b.travel_date_start))}</div>
+              <div class="text-[10px] text-zinc-400">to ${AdminApp.esc(AdminApp.formatDateShort(b.travel_date_end))}</div>
+            </td>
             <td><span class="text-xs text-zinc-300">${Number(b.total_travelers) || 1}</span></td>
             <td>
               <div class="font-bold text-white text-xs">${AdminApp.esc(usdTotal)}</div>

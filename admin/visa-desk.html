@@ -320,8 +320,8 @@
         return `
           <tr>
             <td>
-              <a href="booking-detail.html?id=${encodeURIComponent(b.id)}" class="font-mono font-bold text-[#C9A24B] hover:underline">${AdminApp.esc(b.id)}</a>
-              <div class="text-[10px] text-zinc-400 mt-0.5">${AdminApp.esc(b.travel_date_start)} → ${AdminApp.esc(b.travel_date_end)}</div>
+              <a href="booking-detail.html?id=${encodeURIComponent(b.id)}" class="font-mono font-bold text-[#C9A24B] hover:underline whitespace-nowrap">${AdminApp.esc(b.id)}</a>
+              <div class="text-[10px] text-zinc-400 mt-0.5 whitespace-nowrap">${AdminApp.esc(AdminApp.formatDateShort(b.travel_date_start))} → ${AdminApp.esc(AdminApp.formatDateShort(b.travel_date_end))}</div>
             </td>
             <td>
               <div class="font-bold text-white text-xs">${AdminApp.esc(b.lead_name)}</div>

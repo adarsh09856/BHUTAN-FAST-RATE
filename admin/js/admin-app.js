@@ -351,6 +351,22 @@ const AdminApp = (function () {
     return options.withCode ? `${sign}${sym}${num} ${curr}` : `${sign}${sym}${num}`;
   }
 
+  function formatDateShort(ts) {
+    if (!ts) return '—';
+    const str = String(ts).trim();
+    const isoMatch = str.match(/^(\d{4})-(\d{2})-(\d{2})/);
+    const d = isoMatch
+      ? new Date(Date.UTC(Number(isoMatch[1]), Number(isoMatch[2]) - 1, Number(isoMatch[3])))
+      : new Date(str);
+    if (Number.isNaN(d.getTime())) return str.slice(0, 10);
+    return d.toLocaleDateString('en-US', {
+      month: 'short',
+      day: 'numeric',
+      year: 'numeric',
+      timeZone: 'UTC'
+    });
+  }
+
   function formatDateTime(ts) {
     if (!ts) return '—';
     const d = new Date(ts);
@@ -419,6 +435,7 @@ const AdminApp = (function () {
     showToast,
     humanize,
     formatMoney,
+    formatDateShort,
     formatDateTime,
     bookingStatusBadge,
     visaStatusBadge
