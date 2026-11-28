@@ -202,6 +202,7 @@ function startServer(port = PORT) {
 
 if (require.main === module) {
   startServer(PORT);
+  require('./services/whatsapp-qr').resumeIfSessionExists();
 }
 
 app.app = app;

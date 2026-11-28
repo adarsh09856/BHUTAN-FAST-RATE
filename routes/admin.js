@@ -9,6 +9,7 @@ const { UPLOAD_ROOT } = require('../middleware/upload');
 const { calculatePricingQuote } = require('../services/sdf-engine');
 const { parseUTCDate, checkVisaTransition } = require('../services/visa-workflow');
 const { dispatchNotification } = require('../services/notification-service');
+const whatsappQr = require('../services/whatsapp-qr');
 
 const staffAll = requireStaff('super_admin', 'admin', 'concierge', 'finance');
 const staffOps = requireStaff('super_admin', 'admin', 'concierge');
@@ -1219,8 +1220,11 @@ router.patch('/bookings/:id/status', staffOps, async (req, res, next) => {
 
     const updated = await db.get('SELECT * FROM bookings WHERE id = ?', [booking.id]);
     let whatsappShareUrl = null;
-    if (targetStatus === 'confirmed') {
-      const notif = await dispatchNotification('booking_confirmed', {
+    if (targetStatus !== booking.booking_status) {
+      const notifEvent = targetStatus === 'confirmed'
+        ? 'booking_confirmed'
+        : (targetStatus === 'cancelled' ? 'booking_cancelled' : 'booking_update');
+      const notif = await dispatchNotification(notifEvent, {
         booking: updated,
         booking_id: updated.id,
         recipient_type: 'client',
@@ -2948,6 +2952,59 @@ router.post('/settings/test-notification', staffAdmin, async (req, res, next) =>
     });
 
     return res.json({ success: true, message: 'Test notification dispatched', result });
+  } catch (err) {
+    return next(err);
+  }
+});
+
+// --- Built-In WhatsApp Web QR Integration ---
+router.get('/whatsapp/status', staffOps, (req, res) => {
+  return res.json({ success: true, data: whatsappQr.getStatus() });
+});
+
+router.post('/whatsapp/connect', staffOps, async (req, res, next) => {
+  try {
+    const status = await whatsappQr.connect({ fresh: Boolean(req.body && req.body.fresh) });
+    return res.json({ success: true, data: status });
+  } catch (err) {
+    return next(err);
+  }
+});
+
+router.post('/whatsapp/disconnect', staffOps, async (req, res, next) => {
+  try {
+    const status = await whatsappQr.disconnect();
+    await insertAuditLog(db, {
+      user: req.user,
+      action: 'whatsapp.disconnect',
+      entityType: 'system',
+      entityId: 'whatsapp_qr',
+      newValue: 'Disconnected linked WhatsApp Web session',
+      ipAddress: req.ip
+    });
+    return res.json({ success: true, data: status });
+  } catch (err) {
+    return next(err);
+  }
+});
+
+router.post('/whatsapp/test', staffOps, async (req, res, next) => {
+  try {
+    const body = req.body || {};
+    const phone = normalizeOptionalText(body.phone, 50);
+    if (!phone) {
+      return res.status(400).json({ success: false, error: 'Recipient phone number with country code is required.' });
+    }
+    const message = normalizeOptionalText(body.message, 1500) ||
+      'Kuzuzangpo La! Test alert from Bhutan Fast Rate Tours Operations Center (#TR/2018/9882).';
+    if (!whatsappQr.isConnected()) {
+      return res.status(400).json({ success: false, error: 'WhatsApp Web QR session is not connected yet. Scan the QR code first.' });
+    }
+    const delivery = await whatsappQr.sendTextMessage(phone, message);
+    if (delivery.status !== 'sent') {
+      return res.status(502).json({ success: false, error: delivery.error || 'WhatsApp send failed' });
+    }
+    return res.json({ success: true, message: `Test WhatsApp sent to ${phone}`, delivery });
   } catch (err) {
     return next(err);
   }

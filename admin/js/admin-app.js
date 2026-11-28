@@ -210,6 +210,22 @@ const AdminApp = (function () {
     }
   }
 
+  const SIDEBAR_ICONS = {
+    dashboard: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="9" rx="1"/><rect x="14" y="3" width="7" height="5" rx="1"/><rect x="14" y="12" width="7" height="9" rx="1"/><rect x="3" y="16" width="7" height="5" rx="1"/></svg>',
+    bookings: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="7" width="18" height="14" rx="2"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>',
+    visa: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="m9 15 2 2 4-4"/></svg>',
+    inquiries: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>',
+    guides: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>',
+    tours: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></svg>',
+    cms: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>',
+    finance: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>',
+    notifications: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>',
+    settings: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>',
+    users: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>',
+    audit: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>',
+    globe: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>'
+  };
+
   function renderSidebar(activeItem, options = {}) {
     activeSidebarKey = activeItem || activeSidebarKey;
     const sidebarEl = document.getElementById('adminSidebar');
@@ -224,78 +240,78 @@ const AdminApp = (function () {
     const isSuper = displayRole === 'super_admin';
 
     sidebarEl.innerHTML = `
-      <div class="p-6 border-b border-[#1C4539] flex items-center gap-3">
+      <div class="p-5 border-b border-[#164034] flex items-center gap-3">
         <div class="w-9 h-9 rounded-full bg-[#C9A24B] text-[#0B2A22] font-serif font-black flex items-center justify-center text-lg shrink-0 shadow">B</div>
         <div class="min-w-0">
           <div class="font-serif font-extrabold text-sm text-[#FFF8EC] leading-tight truncate">BHUTAN FAST RATE</div>
-          <div class="text-[9px] font-bold text-[#C9A24B] tracking-widest uppercase">OPERATIONS CENTER</div>
+          <div class="text-[9px] font-bold text-[#E4C87E] tracking-widest uppercase">OPERATIONS CENTER</div>
         </div>
       </div>
 
       <div class="p-4 flex-1 overflow-y-auto space-y-1">
-        <div class="text-[10px] font-bold text-zinc-500 uppercase px-3 py-1">Operations</div>
+        <div class="text-[10px] font-bold text-[#9DB5AD] uppercase tracking-wider px-3 py-1">Operations</div>
         <a href="dashboard.html" class="sidebar-link ${activeItem === 'dashboard' ? 'active' : ''}">
-          <span class="sidebar-link-main"><span>📊</span><span>Dashboard</span></span>
+          <span class="sidebar-link-main">${SIDEBAR_ICONS.dashboard}<span>Dashboard</span></span>
         </a>
         <a href="bookings.html" class="sidebar-link ${activeItem === 'bookings' ? 'active' : ''}">
-          <span class="sidebar-link-main"><span>🧳</span><span>Bookings Pipeline</span></span>
+          <span class="sidebar-link-main">${SIDEBAR_ICONS.bookings}<span>Bookings Pipeline</span></span>
         </a>
         <a href="visa-desk.html" class="sidebar-link ${activeItem === 'visa' ? 'active' : ''}">
-          <span class="sidebar-link-main"><span>🛂</span><span>Visa Clearance Desk</span></span>
+          <span class="sidebar-link-main">${SIDEBAR_ICONS.visa}<span>Visa Clearance Desk</span></span>
         </a>
         <a href="inquiries.html" class="sidebar-link ${activeItem === 'inquiries' ? 'active' : ''}">
-          <span class="sidebar-link-main"><span>💬</span><span>Inquiries CRM</span></span>
+          <span class="sidebar-link-main">${SIDEBAR_ICONS.inquiries}<span>Inquiries CRM</span></span>
         </a>
         <a href="guides.html" class="sidebar-link ${activeItem === 'guides' ? 'active' : ''}">
-          <span class="sidebar-link-main"><span>🏔️</span><span>Guide Roster</span></span>
+          <span class="sidebar-link-main">${SIDEBAR_ICONS.guides}<span>Guide Roster</span></span>
         </a>
 
-        <div class="text-[10px] font-bold text-zinc-500 uppercase px-3 pt-4 py-1">Catalog &amp; Finance</div>
+        <div class="text-[10px] font-bold text-[#9DB5AD] uppercase tracking-wider px-3 pt-4 py-1">Catalog &amp; Finance</div>
         <a href="tours-manager.html" class="sidebar-link ${activeItem === 'tours' ? 'active' : ''}">
-          <span class="sidebar-link-main"><span>🗺️</span><span>Tour Packages</span></span>
+          <span class="sidebar-link-main">${SIDEBAR_ICONS.tours}<span>Tour Packages</span></span>
         </a>
         <a href="content-cms.html" class="sidebar-link ${activeItem === 'cms' || activeItem === 'content-cms' ? 'active' : ''}">
-          <span class="sidebar-link-main"><span>✨</span><span>Content CMS</span></span>
+          <span class="sidebar-link-main">${SIDEBAR_ICONS.cms}<span>Content CMS</span></span>
         </a>
         ${showFinance ? `
           <a href="finance.html" class="sidebar-link ${activeItem === 'finance' ? 'active' : ''}" data-roles="super_admin,admin,finance">
-            <span class="sidebar-link-main"><span>💰</span><span>Finance &amp; SDF</span></span>
+            <span class="sidebar-link-main">${SIDEBAR_ICONS.finance}<span>Finance &amp; SDF</span></span>
           </a>
         ` : ''}
         <a href="notifications.html" class="sidebar-link ${activeItem === 'notifications' ? 'active' : ''}">
-          <span class="sidebar-link-main"><span>🔔</span><span>Notifications</span></span>
+          <span class="sidebar-link-main">${SIDEBAR_ICONS.notifications}<span>Notifications &amp; WA QR</span></span>
           <span id="sidebarNotifBadge" class="notif-badge ${lastUnreadCount > 0 ? '' : 'hidden'}">${lastUnreadCount > 99 ? '99+' : (lastUnreadCount || 0)}</span>
         </a>
 
-        <div class="text-[10px] font-bold text-zinc-500 uppercase px-3 pt-4 py-1">System</div>
+        <div class="text-[10px] font-bold text-[#9DB5AD] uppercase tracking-wider px-3 pt-4 py-1">System</div>
         <a href="settings.html" class="sidebar-link ${activeItem === 'settings' ? 'active' : ''}">
-          <span class="sidebar-link-main"><span>⚙️</span><span>Platform Settings</span></span>
+          <span class="sidebar-link-main">${SIDEBAR_ICONS.settings}<span>Platform Settings</span></span>
           ${isSuper ? '<span class="text-[9px] px-1.5 py-0.5 rounded bg-[#C9A24B]/20 text-[#E4C87E] font-bold">RBAC</span>' : ''}
         </a>
         ${isSuper ? `
           <a href="settings.html#staff-users" class="sidebar-link" data-roles="super_admin">
-            <span class="sidebar-link-main"><span>🛡️</span><span>Staff Users</span></span>
+            <span class="sidebar-link-main">${SIDEBAR_ICONS.users}<span>Staff Users</span></span>
           </a>
         ` : ''}
         <a href="audit-log.html" class="sidebar-link ${activeItem === 'audit' ? 'active' : ''}">
-          <span class="sidebar-link-main"><span>📜</span><span>Audit Trail</span></span>
+          <span class="sidebar-link-main">${SIDEBAR_ICONS.audit}<span>Audit Trail</span></span>
         </a>
         <a href="../index.html" target="_blank" rel="noopener" class="sidebar-link">
-          <span class="sidebar-link-main"><span>🌐</span><span>View Public Site ↗</span></span>
+          <span class="sidebar-link-main">${SIDEBAR_ICONS.globe}<span>View Public Site ↗</span></span>
         </a>
       </div>
 
-      <div class="p-4 border-t border-[#334155] flex items-center justify-between gap-2">
+      <div class="p-4 border-t border-[#164034] flex items-center justify-between gap-2">
         <div class="flex items-center gap-2 overflow-hidden min-w-0">
-          <div class="w-8 h-8 rounded-full bg-zinc-700 flex items-center justify-center font-bold text-xs text-zinc-200 shrink-0">
+          <div class="w-8 h-8 rounded-full bg-[#123A30] border border-[#C9A24B]/40 flex items-center justify-center font-bold text-xs text-[#E4C87E] shrink-0">
             ${esc(initial)}
           </div>
           <div class="overflow-hidden min-w-0">
             <div class="text-xs font-bold text-white truncate">${esc(displayName)}</div>
-            <div class="text-[10px] text-emerald-400 capitalize truncate">${esc(displayRole.replace(/_/g, ' '))}</div>
+            <div class="text-[10px] text-[#E4C87E] capitalize truncate">${esc(displayRole.replace(/_/g, ' '))}</div>
           </div>
         </div>
-        <button type="button" onclick="AdminApp.logout()" title="Sign Out" class="p-1.5 rounded hover:bg-zinc-800 text-zinc-400 hover:text-white shrink-0">
+        <button type="button" onclick="AdminApp.logout()" title="Sign Out" class="p-1.5 rounded hover:bg-[#123A30] text-[#9DB5AD] hover:text-white shrink-0">
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>
         </button>
       </div>

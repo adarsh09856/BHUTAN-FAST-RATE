@@ -1,9 +1,12 @@
 const db = require('../database/db');
 const nodemailer = require('nodemailer');
+const whatsappQr = require('./whatsapp-qr');
 
 const EVENT_TITLES = {
   booking_new: 'Booking Confirmation & Wire Instructions',
   booking_confirmed: 'Booking Confirmed — Bhutan Fast Rate Tours',
+  booking_update: 'Reservation Status Updated — Bhutan Fast Rate Tours',
+  booking_cancelled: 'Reservation Cancelled — Bhutan Fast Rate Tours',
   payment_received: 'Payment Receipt & Balance Update',
   visa_submitted: 'Bhutan Visa Application Submitted to DoI',
   visa_approved: 'Bhutan Visa Clearance Approved',
@@ -11,6 +14,7 @@ const EVENT_TITLES = {
   visa_update: 'Bhutan Visa Status Update',
   visa_rejected: 'Action Required: Bhutan Visa Document Update',
   guide_assignment: 'Your Certified Bhutanese Guide Assigned',
+  inquiry_received: 'Custom Trip Request Received — Bhutan Fast Rate Tours',
   review_request: 'Share Your Bhutan Journey Feedback'
 };
 
@@ -79,8 +83,15 @@ function renderConfirmationText(event, booking = {}, settings = {}) {
   let headline = 'Booking & DoI Visa Update';
   if (event === 'booking_new' || event === 'booking_confirmed') {
     headline = 'Reservation Confirmed';
+  } else if (event === 'booking_cancelled') {
+    headline = 'Reservation Cancelled';
+  } else if (event === 'booking_update') {
+    const statusHuman = String(booking.booking_status || 'updated').replace(/_/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase());
+    headline = `Reservation Updated (${statusHuman})`;
   } else if (event === 'payment_received') {
     headline = 'Payment Receipt Recorded';
+  } else if (event === 'visa_submitted') {
+    headline = 'Bhutan Visa Application Submitted to DoI';
   } else if (event === 'visa_approved' || event === 'clearance_issued') {
     headline = `Official Visa Clearance Ready${booking.visa_clearance_number ? ` (${booking.visa_clearance_number})` : ''}`;
   } else if (event === 'visa_rejected') {
@@ -166,7 +177,16 @@ async function sendWhatsAppApi({ settings, phone, event, bookingId, subject, mes
   const apiToken = String(settings.whatsapp_api_token || '').trim();
   const digits = normalizePhoneDigits(phone);
 
-  if (!provider || !apiUrl || !digits) {
+  if (!digits) {
+    return { status: 'skipped', error: null };
+  }
+
+  // Primary Direct WhatsApp Web (QR-linked session) when selected OR active without a custom webhook URL
+  if ((provider === 'qr_web' || !provider || (provider === 'webhook' && !apiUrl)) && whatsappQr.isConnected()) {
+    return whatsappQr.sendTextMessage(phone, message);
+  }
+
+  if (!provider || !apiUrl) {
     return { status: 'skipped', error: null };
   }
 

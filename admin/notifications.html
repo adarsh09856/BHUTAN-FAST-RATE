@@ -48,6 +48,52 @@
         </div>
       </div>
 
+      <!-- WhatsApp Direct Link (QR Login) -->
+      <section class="stat-card space-y-4">
+        <div class="flex flex-wrap items-center justify-between gap-3 pb-3 border-b border-zinc-700">
+          <div>
+            <h2 class="text-base font-extrabold text-white">WhatsApp Direct Link (QR Login)</h2>
+            <p class="text-[11px] text-zinc-400">Scan once from your phone's WhatsApp → Linked Devices. Once connected, new bookings, visa updates, payment receipts, and manual admin alerts automatically deliver to guests on WhatsApp.</p>
+          </div>
+          <div class="flex items-center gap-2">
+            <span id="waConnBadge" class="badge badge-zinc">Checking...</span>
+            <button type="button" id="waConnectBtn" class="admin-btn admin-btn-primary admin-btn-sm">Link / Generate QR</button>
+            <button type="button" id="waDisconnectBtn" class="admin-btn admin-btn-danger admin-btn-sm hidden">Disconnect</button>
+          </div>
+        </div>
+
+        <div class="admin-grid-12 items-center">
+          <div class="admin-col-5 flex flex-col items-center justify-center p-4 admin-panel-sub min-h-[210px]">
+            <div id="waQrBox" class="hidden text-center space-y-2">
+              <img id="waQrImg" alt="WhatsApp QR Code" class="w-48 h-48 mx-auto rounded-xl border border-[#E7DCC4] bg-white p-2 shadow-sm">
+              <p class="text-[11px] font-semibold text-zinc-400">Open WhatsApp → Settings → Linked Devices → Link a Device</p>
+            </div>
+            <div id="waConnectedBox" class="hidden text-center space-y-1.5">
+              <div class="text-sm font-extrabold text-emerald-400">WhatsApp Session Active</div>
+              <div id="waLinkedIdentity" class="text-xs font-bold text-white">—</div>
+              <div id="waLinkedSince" class="text-[11px] text-zinc-400">Ready for automated booking &amp; visa dispatch</div>
+            </div>
+            <div id="waIdleBox" class="text-center space-y-1.5">
+              <div class="text-xs font-bold text-zinc-300">No WhatsApp Device Linked Yet</div>
+              <p id="waIdleSub" class="text-[11px] text-zinc-400 max-w-xs">Click “Link / Generate QR” above to pair your operations WhatsApp number.</p>
+            </div>
+          </div>
+
+          <div class="admin-col-7 space-y-3 text-xs">
+            <div class="font-bold text-zinc-300">Live Automatic Triggers When Linked</div>
+            <ul class="space-y-1 text-zinc-400 list-disc pl-4">
+              <li>New website or admin booking created (`booking_new`) → instant guest WhatsApp confirmation with Booking Ref, total &amp; Client Portal link</li>
+              <li>Admin booking status, payment verification, or DoI visa stage update → instant client WhatsApp alert</li>
+              <li>Licensed guide assignment &amp; manual messages from the composer below → instant delivery without opening Web WhatsApp tabs</li>
+            </ul>
+            <div class="flex flex-wrap items-center gap-2 pt-2">
+              <input type="tel" id="waTestPhone" placeholder="Test number e.g. +97517654321" class="px-3 py-2 rounded-lg border border-zinc-600 text-xs w-56">
+              <button type="button" id="waSendTestBtn" class="admin-btn admin-btn-secondary admin-btn-sm">Send Live WhatsApp Test</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
       <!-- Top Grid: WhatsApp Pending Queue + Manual Client Composer -->
       <div class="admin-grid-12">
         <!-- WhatsApp Pending Queue -->
@@ -433,12 +479,129 @@
       }
     });
 
+    let waPollTimer = null;
+
+    function stopWaPoll() {
+      if (waPollTimer) {
+        clearInterval(waPollTimer);
+        waPollTimer = null;
+      }
+    }
+
+    function startWaPoll() {
+      stopWaPoll();
+      waPollTimer = setInterval(loadWhatsAppQrStatus, 2500);
+    }
+
+    function renderWhatsAppQrState(st) {
+      const badge = document.getElementById('waConnBadge');
+      const connectBtn = document.getElementById('waConnectBtn');
+      const disconnectBtn = document.getElementById('waDisconnectBtn');
+      const qrBox = document.getElementById('waQrBox');
+      const qrImg = document.getElementById('waQrImg');
+      const connBox = document.getElementById('waConnectedBox');
+      const idleBox = document.getElementById('waIdleBox');
+      const idleSub = document.getElementById('waIdleSub');
+
+      const s = (st && st.status) || 'disconnected';
+      qrBox.classList.add('hidden');
+      connBox.classList.add('hidden');
+      idleBox.classList.add('hidden');
+
+      if (s === 'connected') {
+        badge.textContent = `Connected${st.phone ? ` (${st.phone})` : ''}`;
+        badge.className = 'badge badge-green';
+        connectBtn.classList.add('hidden');
+        disconnectBtn.classList.remove('hidden');
+        connBox.classList.remove('hidden');
+        document.getElementById('waLinkedIdentity').textContent = `${st.name || 'Linked WhatsApp'}${st.phone ? ` · ${st.phone}` : ''}`;
+        document.getElementById('waLinkedSince').textContent = st.connected_at ? `Linked since ${AdminApp.formatDateTime(st.connected_at)}` : 'Ready for automatic dispatch';
+        stopWaPoll();
+      } else if (s === 'qr_ready' && st.qr_data_url) {
+        badge.textContent = 'Scan QR Code';
+        badge.className = 'badge badge-amber';
+        connectBtn.classList.remove('hidden');
+        connectBtn.textContent = '↻ Refresh QR';
+        disconnectBtn.classList.remove('hidden');
+        qrBox.classList.remove('hidden');
+        qrImg.src = st.qr_data_url;
+        startWaPoll();
+      } else if (s === 'connecting') {
+        badge.textContent = 'Generating QR...';
+        badge.className = 'badge badge-blue';
+        connectBtn.classList.remove('hidden');
+        disconnectBtn.classList.remove('hidden');
+        idleBox.classList.remove('hidden');
+        idleSub.textContent = st.last_error || 'Connecting to WhatsApp Web servers...';
+        startWaPoll();
+      } else {
+        badge.textContent = 'Disconnected';
+        badge.className = 'badge badge-zinc';
+        connectBtn.classList.remove('hidden');
+        connectBtn.textContent = 'Link / Generate QR';
+        disconnectBtn.classList.add('hidden');
+        idleBox.classList.remove('hidden');
+        idleSub.textContent = st.last_error || 'Click “Link / Generate QR” above to pair your operations WhatsApp number.';
+        stopWaPoll();
+      }
+    }
+
+    async function loadWhatsAppQrStatus() {
+      try {
+        const res = await ApiClient.getWhatsAppStatus();
+        renderWhatsAppQrState((res && res.data) || res);
+      } catch (_) {}
+    }
+
+    document.getElementById('waConnectBtn').addEventListener('click', async () => {
+      const btn = document.getElementById('waConnectBtn');
+      btn.disabled = true;
+      btn.textContent = 'Starting QR...';
+      try {
+        const res = await ApiClient.connectWhatsApp({ fresh: true });
+        renderWhatsAppQrState((res && res.data) || res);
+      } catch (err) {
+        AdminApp.showToast(err.message || 'Unable to generate WhatsApp QR', 'error');
+      } finally {
+        btn.disabled = false;
+      }
+    });
+
+    document.getElementById('waDisconnectBtn').addEventListener('click', async () => {
+      try {
+        const res = await ApiClient.disconnectWhatsApp();
+        renderWhatsAppQrState((res && res.data) || res);
+        AdminApp.showToast('WhatsApp session disconnected.');
+      } catch (err) {
+        AdminApp.showToast(err.message || 'Disconnect failed', 'error');
+      }
+    });
+
+    document.getElementById('waSendTestBtn').addEventListener('click', async () => {
+      const phone = document.getElementById('waTestPhone').value.trim();
+      if (!phone) {
+        AdminApp.showToast('Enter a phone number with country code first.', 'warn');
+        return;
+      }
+      const btn = document.getElementById('waSendTestBtn');
+      btn.disabled = true;
+      try {
+        const res = await ApiClient.sendWhatsAppTest({ phone });
+        AdminApp.showToast((res && res.message) || 'Test WhatsApp sent!');
+      } catch (err) {
+        AdminApp.showToast(err.message || 'WhatsApp test send failed', 'error');
+      } finally {
+        btn.disabled = false;
+      }
+    });
+
     document.getElementById('refreshNotifsBtn').addEventListener('click', loadNotifications);
     document.getElementById('inboxUnreadFilter').addEventListener('change', loadNotifications);
     document.getElementById('inboxChannelFilter').addEventListener('change', loadNotifications);
     document.getElementById('inboxCategoryFilter').addEventListener('change', loadNotifications);
 
     document.addEventListener('DOMContentLoaded', () => {
+      loadWhatsAppQrStatus();
       loadBookingsForComposer();
       loadNotifications();
     });

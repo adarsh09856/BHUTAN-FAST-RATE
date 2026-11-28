@@ -1040,6 +1040,30 @@
         method: 'POST',
         body: data
       });
+    },
+
+    async getWhatsAppStatus() {
+      return request('/api/admin/whatsapp/status');
+    },
+
+    async connectWhatsApp(data = {}) {
+      return request('/api/admin/whatsapp/connect', {
+        method: 'POST',
+        body: data
+      });
+    },
+
+    async disconnectWhatsApp() {
+      return request('/api/admin/whatsapp/disconnect', {
+        method: 'POST'
+      });
+    },
+
+    async sendWhatsAppTest(data = {}) {
+      return request('/api/admin/whatsapp/test', {
+        method: 'POST',
+        body: data
+      });
     }
   };
 

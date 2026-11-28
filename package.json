@@ -21,11 +21,13 @@
   "author": "Bhutan Fast Rate Tours (License #TR/2018/9882)",
   "license": "ISC",
   "dependencies": {
+    "@whiskeysockets/baileys": "^6.7.24",
     "cors": "^2.8.5",
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
     "multer": "^2.5.0",
     "nodemailer": "^10.6.1",
-    "pg": "^8.13.1"
+    "pg": "^8.13.1",
+    "qrcode": "^1.5.4"
   }
 }
