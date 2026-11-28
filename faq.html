@@ -246,9 +246,12 @@ let cfg = { sdfInt: 100, sdfInd: 1200, visaUsd: 40, freeDays: 30, partDays: 15, 
     function renderFaqs() {
       const box = document.getElementById('faqListContainer');
       if (!box) return;
+      const normFaq = (v) => String(v || '').toLowerCase().replace(/['’‘`]/g, '').replace(/[^a-z0-9]+/g, ' ').trim();
+      const qTokens = normFaq(searchQ).split(/\s+/).filter(Boolean);
       const items = buildFaqs().filter((item) => {
         const catOk = selectedCat === 'All' || item.cat === selectedCat;
-        const qOk = !searchQ || `${item.cat} ${item.q} ${item.a}`.toLowerCase().includes(searchQ);
+        const hay = normFaq(`${item.cat} ${item.q} ${item.a}`);
+        const qOk = !qTokens.length || qTokens.every((tok) => hay.includes(tok));
         return catOk && qOk;
       });
       if (!items.length) {

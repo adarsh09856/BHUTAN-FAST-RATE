@@ -447,8 +447,45 @@
       }).join('');
     }
 
+    const TOUR_STOPWORDS = new Set([
+      'bhutan', 'tour', 'tours', 'package', 'packages', 'trip', 'trips',
+      '2026', '2027', 'best', 'time', 'to', 'visit', 'the', 'and', 'with',
+      'for', 'in', 'on', 'of', 'a', 'an', 'under', 'below', 'less', 'than',
+      'budget', 'max', 'days', 'day', 'nights', 'night'
+    ]);
+    const TOUR_SYNONYMS = {
+      tiger: ['tiger', 'tigers', 'taktsang', 'nest', 'paro'],
+      tigers: ['tiger', 'tigers', 'taktsang', 'nest', 'paro'],
+      nest: ['nest', 'taktsang', 'tiger', 'paro'],
+      hike: ['hike', 'trek', 'trekking', 'excursion', 'trail', 'tiger'],
+      retreat: ['retreat', 'luxury', 'escape', 'wellness', 'amankora', 'punakha'],
+      honeymoon: ['honeymoon', 'romantic', 'luxury', 'escape', 'punakha', 'amankora'],
+      festival: ['festival', 'festivals', 'tshechu', 'cham'],
+      trek: ['trek', 'trekking', 'expedition', 'alpine', 'snowman', 'druk'],
+      family: ['family', 'easy', 'short', 'essential', 'cultural', 'paro', 'punakha'],
+      birding: ['bird', 'birding', 'crane', 'cranes', 'phobjikha', 'gangtey']
+    };
+    function normTourTxt(v) {
+      return String(v || '').toLowerCase().replace(/['’‘`]/g, '').replace(/[^a-z0-9]+/g, ' ').trim();
+    }
+    function smartTourMatch(t, rawQuery) {
+      let work = String(rawQuery || '').toLowerCase().replace(/['’‘`]/g, '');
+      let maxPrice = null;
+      const pm = work.match(/(?:under|below|less than|max|budget|<)\s*\$?\s*(\d{3,5})/);
+      if (pm) { maxPrice = Number(pm[1]); work = work.replace(pm[0], ' '); }
+      let targetDays = null;
+      const dm = work.match(/\b(\d{1,2})\s*(?:days?|nights?|d)\b/);
+      if (dm) { targetDays = Number(dm[1]); work = work.replace(dm[0], ' '); }
+      if (maxPrice !== null && Number(t.price_3star_usd || t.price_usd || 0) > maxPrice) return false;
+      if (targetDays !== null && Math.abs((Number(t.duration_days) || 6) - targetDays) > 2) return false;
+      const hay = normTourTxt(`${t.title || ''} ${t.valleys || ''} ${t.subtitle || ''} ${t.highlight_text || ''} ${t.category || ''} ${t.difficulty || ''}`);
+      const tokens = normTourTxt(work).split(/\s+/).filter(tok => tok && !TOUR_STOPWORDS.has(tok) && !/^\d+$/.test(tok));
+      if (!tokens.length) return true;
+      return tokens.every(tok => (TOUR_SYNONYMS[tok] || [tok, tok.replace(/s$/, '')]).some(v => v && hay.includes(v)));
+    }
+
     function filterAndSort() {
-      const search = (document.getElementById('searchInput')?.value || '').toLowerCase().trim();
+      const search = (document.getElementById('searchInput')?.value || '').trim();
       const durationVal = document.getElementById('durationSelect')?.value || 'all';
       const sortVal = document.getElementById('sortSelect')?.value || 'popular';
       let filtered = [...allTours];
@@ -456,21 +493,22 @@
       if (currentCategory && currentCategory !== 'All') {
         const catLower = currentCategory.toLowerCase();
         filtered = filtered.filter(t => {
-          const tCat = (t.category || '').toLowerCase();
-          if (catLower === 'classic' && (tCat.includes('classic') || tCat.includes('cultural'))) return true;
+          const tCat = normTourTxt(t.category || '');
+          const hayAll = normTourTxt(`${t.title || ''} ${t.valleys || ''} ${t.subtitle || ''} ${t.highlight_text || ''} ${t.category || ''} ${t.difficulty || ''}`);
+          if (catLower === 'classic' && (tCat.includes('classic') || tCat.includes('cultural') || tCat.includes('heritage') || tCat.includes('short'))) return true;
           if (catLower === 'festival' && tCat.includes('festival')) return true;
           if (catLower === 'trek' && (tCat.includes('trek') || tCat.includes('expedition'))) return true;
-          if (catLower === 'luxury' && (tCat.includes('luxury') || tCat.includes('escape'))) return true;
-          if (catLower === 'honeymoon' && (tCat.includes('honeymoon') || tCat.includes('romantic'))) return true;
-          if (catLower === 'family' && (tCat.includes('family') || tCat.includes('short'))) return true;
-          return tCat.includes(catLower);
+          if (catLower === 'luxury' && (tCat.includes('luxury') || tCat.includes('escape') || tCat.includes('wellness'))) return true;
+          if (catLower === 'honeymoon' && (hayAll.includes('honeymoon') || hayAll.includes('romantic') || tCat.includes('luxury') || tCat.includes('escape') || hayAll.includes('punakha'))) return true;
+          if (catLower === 'family' && (hayAll.includes('family') || hayAll.includes('easy') || tCat.includes('short') || tCat.includes('cultural'))) return true;
+          if (catLower === 'adventure' && (tCat.includes('adventure') || tCat.includes('trek') || tCat.includes('expedition'))) return true;
+          if (catLower === 'birding' && (hayAll.includes('bird') || hayAll.includes('crane') || hayAll.includes('phobjikha'))) return true;
+          return hayAll.includes(catLower);
         });
       }
 
       if (search) {
-        filtered = filtered.filter(t =>
-          `${t.title || ''} ${t.valleys || ''} ${t.subtitle || ''} ${t.highlight_text || ''}`.toLowerCase().includes(search)
-        );
+        filtered = filtered.filter(t => smartTourMatch(t, search));
       }
 
       if (durationVal === 'short') filtered = filtered.filter(t => t.duration_days >= 3 && t.duration_days <= 6);
@@ -532,6 +570,10 @@
         document.getElementById('sortSelect')?.addEventListener('change', filterAndSort);
 
         const urlParams = new URLSearchParams(window.location.search);
+        const qParam = urlParams.get('q');
+        if (qParam && document.getElementById('searchInput')) {
+          document.getElementById('searchInput').value = qParam;
+        }
         const catParam = urlParams.get('cat');
         if (catParam) {
           const targetPill = document.querySelector('.cat-pill[data-cat="' + catParam + '"]');

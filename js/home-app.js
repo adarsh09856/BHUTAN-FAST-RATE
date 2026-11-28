@@ -339,11 +339,91 @@
     catalogError: ''
   };
 
+  const SEARCH_STOPWORDS = new Set([
+    'bhutan', 'tour', 'tours', 'package', 'packages', 'trip', 'trips', 'holiday', 'holidays',
+    '2026', '2027', 'best', 'time', 'to', 'visit', 'the', 'and', 'with', 'for', 'in', 'on', 'of',
+    'a', 'an', 'under', 'below', 'less', 'than', 'budget', 'max', 'days', 'day', 'nights', 'night', 'eg'
+  ]);
+
+  const SEARCH_SYNONYMS = {
+    tiger: ['tiger', 'tigers', 'taktsang', 'nest', 'paro'],
+    tigers: ['tiger', 'tigers', 'taktsang', 'nest', 'paro'],
+    nest: ['nest', 'taktsang', 'tiger', 'paro'],
+    hike: ['hike', 'trek', 'trekking', 'excursion', 'trail', 'tiger'],
+    hikes: ['hike', 'trek', 'trekking', 'excursion', 'trail', 'tiger'],
+    retreat: ['retreat', 'luxury', 'escape', 'wellness', 'amankora', 'punakha'],
+    honeymoon: ['honeymoon', 'romantic', 'luxury', 'escape', 'punakha', 'amankora'],
+    festival: ['festival', 'festivals', 'tshechu', 'cham'],
+    festivals: ['festival', 'festivals', 'tshechu', 'cham'],
+    trek: ['trek', 'trekking', 'expedition', 'alpine', 'snowman', 'druk'],
+    trekking: ['trek', 'trekking', 'expedition', 'alpine', 'snowman', 'druk'],
+    family: ['family', 'easy', 'short', 'essential', 'cultural', 'paro', 'punakha'],
+    birding: ['bird', 'birding', 'crane', 'cranes', 'phobjikha', 'gangtey'],
+    crane: ['crane', 'cranes', 'phobjikha', 'gangtey'],
+    spiritual: ['spiritual', 'pilgrimage', 'bumthang', 'sacred', 'monastery', 'tshechu'],
+    craft: ['craft', 'textile', 'textiles', 'eastern', 'bumthang'],
+    luxury: ['luxury', 'escape', 'amankora', 'five', '5']
+  };
+
+  function normSearchText(val) {
+    return String(val || '')
+      .toLowerCase()
+      .replace(/['’‘`]/g, '')
+      .replace(/[^a-z0-9]+/g, ' ')
+      .trim();
+  }
+
+  function tourMatchesQuery(tour, rawQuery) {
+    const raw = String(rawQuery || '').trim().toLowerCase();
+    if (!raw) return true;
+
+    let work = raw.replace(/['’‘`]/g, '');
+    let maxPrice = null;
+    const priceMatch = work.match(/(?:under|below|less than|max|budget|<)\s*\$?\s*(\d{3,5})/);
+    if (priceMatch) {
+      maxPrice = Number(priceMatch[1]);
+      work = work.replace(priceMatch[0], ' ');
+    }
+    const bareCurrency = work.match(/\$\s*(\d{3,5})/);
+    if (bareCurrency && !maxPrice) {
+      maxPrice = Number(bareCurrency[1]);
+      work = work.replace(bareCurrency[0], ' ');
+    }
+
+    let targetDays = null;
+    const daysMatch = work.match(/\b(\d{1,2})\s*(?:days?|nights?|d)\b/);
+    if (daysMatch) {
+      targetDays = Number(daysMatch[1]);
+      work = work.replace(daysMatch[0], ' ');
+    }
+
+    const tourPrice = Number(tour.price_3star_usd || tour.price_usd || 0);
+    if (maxPrice !== null && tourPrice > maxPrice) return false;
+
+    const tourDays = Number(tour.duration_days || 6);
+    if (targetDays !== null && Math.abs(tourDays - targetDays) > 2) return false;
+
+    const hay = normSearchText(
+      `${tour.title || ''} ${tour.valleys || ''} ${tour.subtitle || ''} ${tour.highlight_text || ''} ${tour.category || ''} ${tour.difficulty || ''} ${tour.slug || ''}`
+    );
+
+    const tokens = normSearchText(work)
+      .split(/\s+/)
+      .filter((tok) => tok && !SEARCH_STOPWORDS.has(tok) && !/^\d+$/.test(tok));
+
+    if (tokens.length === 0) return true;
+
+    return tokens.every((tok) => {
+      const variants = SEARCH_SYNONYMS[tok] || [tok, tok.replace(/s$/, '')];
+      return variants.some((v) => v && hay.includes(v));
+    });
+  }
+
   function getFilteredTours() {
-    const q = state.searchQuery.trim().toLowerCase();
+    const q = state.searchQuery.trim();
     return state.tours.filter((t) => {
-      const catStr = String(t.category || '').toLowerCase();
-      const hayAll = `${t.title || ''} ${t.valleys || ''} ${t.subtitle || ''} ${t.highlight_text || ''} ${t.category || ''}`.toLowerCase();
+      const catStr = normSearchText(t.category || '');
+      const hayAll = normSearchText(`${t.title || ''} ${t.valleys || ''} ${t.subtitle || ''} ${t.highlight_text || ''} ${t.category || ''} ${t.difficulty || ''}`);
       const sel = state.category.toLowerCase();
       const catOk =
         state.category === 'All' ||
@@ -351,14 +431,13 @@
         hayAll.includes(sel) ||
         (sel === 'classic' && (catStr.includes('classic') || catStr.includes('cultural') || catStr.includes('heritage') || catStr.includes('short'))) ||
         (sel === 'luxury' && (catStr.includes('luxury') || catStr.includes('escape') || catStr.includes('wellness'))) ||
-        (sel === 'honeymoon' && (hayAll.includes('honeymoon') || hayAll.includes('romantic') || catStr.includes('luxury') || catStr.includes('punakha'))) ||
-        (sel === 'family' && (hayAll.includes('family') || catStr.includes('cultural') || catStr.includes('classic'))) ||
+        (sel === 'honeymoon' && (hayAll.includes('honeymoon') || hayAll.includes('romantic') || catStr.includes('luxury') || catStr.includes('escape') || hayAll.includes('punakha'))) ||
+        (sel === 'family' && (hayAll.includes('family') || hayAll.includes('easy') || catStr.includes('short') || catStr.includes('cultural') || catStr.includes('classic'))) ||
         (sel === 'birding' && (hayAll.includes('bird') || hayAll.includes('phobjikha') || hayAll.includes('crane'))) ||
         (sel === 'trek' && (catStr.includes('trek') || catStr.includes('expedition'))) ||
         (sel === 'adventure' && (catStr.includes('adventure') || catStr.includes('trek') || catStr.includes('expedition')));
       if (!catOk) return false;
-      if (!q) return true;
-      return hayAll.includes(q);
+      return tourMatchesQuery(t, q);
     });
   }
 
@@ -564,14 +643,33 @@
 
   function renderSearchDropdownHtml() {
     if (!state.searchDropdownOpen || !state.searchQuery.trim()) return '';
-    const q = state.searchQuery.trim().toLowerCase();
-    const suggestions = q ? TRENDING_TAGS.filter((t) => t.includes(q)).slice(0, 6) : [];
+    const qNorm = normSearchText(state.searchQuery);
+    const qTokens = qNorm.split(/\s+/).filter(Boolean);
+    const tagSuggestions = TRENDING_TAGS.filter((t) => {
+      const tNorm = normSearchText(t);
+      return tNorm.includes(qNorm) || qTokens.some((tok) => tok.length >= 2 && tNorm.includes(tok));
+    }).slice(0, 4);
+    const tourMatches = state.tours.filter((t) => tourMatchesQuery(t, state.searchQuery)).slice(0, 4);
+
     return `
       <div class="absolute left-0 right-0 top-full mt-2 bg-white text-[#101613] border border-[#E7DCC4] rounded-2xl shadow-xl overflow-hidden z-30">
-        ${suggestions.length
-          ? suggestions.map((tag) => `<button type="button" data-action="quick-tag" data-tag="${esc(tag)}" class="w-full text-left px-4 py-3 hover:bg-[#FFF8EC] text-[#0B2A22] text-sm font-semibold flex gap-2">${svgIcon('sparkles', 16, 'text-[#C9A24B] shrink-0 mt-0.5')} ${esc(tag)}</button>`).join('')
-          : `<button type="button" id="homeSearchDirectGo" class="w-full text-left px-4 py-3 hover:bg-[#FFF8EC] text-[#0B2A22] text-sm font-semibold">Search live tours for "${esc(state.searchQuery)}" →</button>`
-        }
+        ${tagSuggestions.map((tag) => `
+          <button type="button" data-action="quick-tag" data-tag="${esc(tag)}" class="w-full text-left px-4 py-2.5 hover:bg-[#FFF8EC] text-[#0B2A22] text-sm font-semibold flex items-center gap-2 border-b border-[#E7DCC4]/50">
+            ${svgIcon('sparkles', 15, 'text-[#C9A24B] shrink-0')}
+            <span>${esc(tag)}</span>
+            <span class="ml-auto text-[11px] font-bold text-[#66706A]">Tag</span>
+          </button>
+        `).join('')}
+        ${tourMatches.map((t) => `
+          <button type="button" data-action="dropdown-tour" data-id="${esc(t.id)}" class="w-full text-left px-4 py-2.5 hover:bg-[#FFF8EC] text-[#0B2A22] text-sm font-semibold flex items-center justify-between gap-2 border-b border-[#E7DCC4]/50">
+            <span class="truncate">${esc(t.title)}</span>
+            <span class="text-xs font-extrabold text-[#C9A24B] shrink-0">${Number(t.duration_days) || 6}D · $${Number(t.price_3star_usd || t.price_usd || 1899).toLocaleString('en-US')}</span>
+          </button>
+        `).join('')}
+        <button type="button" id="homeSearchDirectGo" class="w-full text-left px-4 py-3 bg-[#FFF8EC]/70 hover:bg-[#F7EDD8] text-[#0B2A22] text-xs font-extrabold flex items-center justify-between">
+          <span>Show all matching packages (${state.tours.filter((t) => tourMatchesQuery(t, state.searchQuery)).length}) for "${esc(state.searchQuery)}"</span>
+          <span>→</span>
+        </button>
       </div>
     `;
   }
@@ -601,9 +699,12 @@
             </div>
             <div id="homeSearchDropdownSlot">${renderSearchDropdownHtml()}</div>
           </div>
-          <div class="flex flex-wrap gap-2 mt-3">
+          <div class="flex flex-wrap gap-2 mt-3" id="homeTrendingTagsRow">
             <span class="text-xs font-bold pt-1.5 text-[#66706A]">Trending:</span>
-            ${TRENDING_TAGS.map((tag) => `<button type="button" data-action="quick-tag" data-tag="${esc(tag)}" class="text-xs border border-[#E7DCC4] bg-white hover:border-[#C9A24B] text-[#0B2A22] px-3 py-1.5 rounded-full font-bold transition">${esc(tag)}</button>`).join('')}
+            ${TRENDING_TAGS.map((tag) => {
+              const activeTag = normSearchText(state.searchQuery) === normSearchText(tag);
+              return `<button type="button" data-action="quick-tag" data-tag="${esc(tag)}" class="text-xs border px-3 py-1.5 rounded-full font-bold transition ${activeTag ? 'bg-[#0B2A22] text-white border-[#0B2A22]' : 'border-[#E7DCC4] bg-white hover:border-[#C9A24B] text-[#0B2A22]'}">${esc(tag)}</button>`;
+            }).join('')}
           </div>
         </div>
 
@@ -637,6 +738,13 @@
 
     const toastBanner = state.toastMsg
       ? `<div class="mb-4 bg-[#0B2A22] text-white px-4 py-3 rounded-xl text-sm font-bold flex items-center gap-2">${svgIcon('check', 16, 'text-[#C9A24B]')} <span>${esc(state.toastMsg)}</span></div>`
+      : '';
+
+    const activeQueryBar = state.searchQuery.trim()
+      ? `<div class="mb-4 bg-white border border-[var(--line)] rounded-2xl px-4 py-3 flex flex-wrap gap-3 items-center justify-between text-sm shadow-sm">
+          <span class="font-semibold text-[#0B2A22]">Showing <strong>${filtered.length}</strong> ${filtered.length === 1 ? 'package' : 'packages'} for “${esc(state.searchQuery.trim())}”</span>
+          <button type="button" id="clearSearchQueryBtn" class="text-xs font-extrabold text-[#C9A24B] hover:underline">Clear search ✕</button>
+        </div>`
       : '';
 
     let gridBody = '';
@@ -726,6 +834,7 @@
         </div>
 
         ${toastBanner}
+        ${activeQueryBar}
         ${compareBar}
         <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
           ${gridBody}
@@ -1434,18 +1543,33 @@
     return global.document && global.document.getElementById('root');
   }
 
+  function applyQuickTag(tag) {
+    state.searchQuery = tag || '';
+    state.category = 'All';
+    state.searchDropdownOpen = false;
+    state.megaMenu = null;
+    updateMegaSlot();
+    syncSearchInputVal();
+    updateTrendingTagsUi();
+    updateSearchDropdownSlot();
+    updateToursMount();
+    global.document.getElementById('tours')?.scrollIntoView({ behavior: 'smooth' });
+  }
+
+  function updateTrendingTagsUi() {
+    const row = global.document && global.document.getElementById('homeTrendingTagsRow');
+    if (!row) return;
+    row.querySelectorAll('[data-action="quick-tag"]').forEach((btn) => {
+      const tag = btn.getAttribute('data-tag') || '';
+      const active = state.searchQuery && normSearchText(state.searchQuery) === normSearchText(tag);
+      btn.className = `text-xs border px-3 py-1.5 rounded-full font-bold transition ${active ? 'bg-[#0B2A22] text-white border-[#0B2A22]' : 'border-[#E7DCC4] bg-white hover:border-[#C9A24B] text-[#0B2A22]'}`;
+    });
+  }
+
   function bindMegaSlotEvents(scope) {
     if (!scope) return;
     scope.querySelectorAll('[data-action="quick-tag"]').forEach((btn) => {
-      btn.addEventListener('click', () => {
-        state.searchQuery = btn.getAttribute('data-tag') || '';
-        state.searchDropdownOpen = false;
-        state.megaMenu = null;
-        updateMegaSlot();
-        syncSearchInputVal();
-        updateToursMount();
-        global.document.getElementById('tours')?.scrollIntoView({ behavior: 'smooth' });
-      });
+      btn.addEventListener('click', () => applyQuickTag(btn.getAttribute('data-tag') || ''));
     });
   }
 
@@ -1464,13 +1588,20 @@
   function bindSearchDropdownEvents(scope) {
     if (!scope) return;
     scope.querySelectorAll('[data-action="quick-tag"]').forEach((btn) => {
+      btn.addEventListener('click', () => applyQuickTag(btn.getAttribute('data-tag') || ''));
+    });
+    scope.querySelectorAll('[data-action="dropdown-tour"]').forEach((btn) => {
       btn.addEventListener('click', () => {
-        state.searchQuery = btn.getAttribute('data-tag') || '';
+        const id = btn.getAttribute('data-id');
+        const tour = state.tours.find((t) => t.id === id);
         state.searchDropdownOpen = false;
-        syncSearchInputVal();
         updateSearchDropdownSlot();
-        updateToursMount();
-        global.document.getElementById('tours')?.scrollIntoView({ behavior: 'smooth' });
+        if (tour) {
+          state.activeTourModal = tour;
+          state.modalGuests = 2;
+          state.modalDayOpen = 0;
+          updateOverlaysMount();
+        }
       });
     });
     scope.querySelector('#homeSearchDirectGo')?.addEventListener('click', () => {
@@ -1535,6 +1666,7 @@
         if (nextCat === 'All' && state.searchQuery) {
           state.searchQuery = '';
           syncSearchInputVal();
+          updateTrendingTagsUi();
           updateSearchDropdownSlot();
         }
         state.category = nextCat;
@@ -1546,6 +1678,15 @@
       state.searchQuery = '';
       state.category = 'All';
       syncSearchInputVal();
+      updateTrendingTagsUi();
+      updateSearchDropdownSlot();
+      updateToursMount();
+    });
+
+    scope.querySelector('#clearSearchQueryBtn')?.addEventListener('click', () => {
+      state.searchQuery = '';
+      syncSearchInputVal();
+      updateTrendingTagsUi();
       updateSearchDropdownSlot();
       updateToursMount();
     });
@@ -1906,12 +2047,25 @@
     searchInput?.addEventListener('input', (e) => {
       state.searchQuery = e.target.value;
       state.searchDropdownOpen = true;
+      updateTrendingTagsUi();
       updateSearchDropdownSlot();
       updateToursMount();
     });
     searchInput?.addEventListener('focus', () => {
       state.searchDropdownOpen = true;
       updateSearchDropdownSlot();
+    });
+    searchInput?.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        state.searchDropdownOpen = false;
+        updateSearchDropdownSlot();
+        updateToursMount();
+        global.document.getElementById('tours')?.scrollIntoView({ behavior: 'smooth' });
+      } else if (e.key === 'Escape') {
+        state.searchDropdownOpen = false;
+        updateSearchDropdownSlot();
+      }
     });
     root.querySelector('#homeSearchBtn')?.addEventListener('click', () => {
       state.searchDropdownOpen = false;
@@ -1920,15 +2074,17 @@
       global.document.getElementById('tours')?.scrollIntoView({ behavior: 'smooth' });
     });
     root.querySelectorAll('#bfr-search [data-action="quick-tag"]').forEach((btn) => {
-      btn.addEventListener('click', () => {
-        state.searchQuery = btn.getAttribute('data-tag') || '';
-        state.searchDropdownOpen = false;
-        syncSearchInputVal();
-        updateSearchDropdownSlot();
-        updateToursMount();
-        global.document.getElementById('tours')?.scrollIntoView({ behavior: 'smooth' });
-      });
+      btn.addEventListener('click', () => applyQuickTag(btn.getAttribute('data-tag') || ''));
     });
+    if (!global.__bfrOutsideSearchClickBound && global.document) {
+      global.__bfrOutsideSearchClickBound = true;
+      global.document.addEventListener('click', (e) => {
+        if (state.searchDropdownOpen && !e.target.closest('#bfr-search')) {
+          state.searchDropdownOpen = false;
+          updateSearchDropdownSlot();
+        }
+      });
+    }
     bindSearchDropdownEvents(root.querySelector('#homeSearchDropdownSlot'));
 
     bindToursEvents(root.querySelector('#bfr-tours'));
