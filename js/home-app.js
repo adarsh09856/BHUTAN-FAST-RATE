@@ -59,31 +59,35 @@
   const SPECIALTY_CARDS = [
     {
       name: 'Wellness & Meditation Retreat',
-      dur: '7 days · Cultural & Spiritual',
+      dur: '7 days · Film preview 1:40',
       img: FALLBACK_IMAGES.lodge,
       desc: 'Guided meditation, monastery mornings and traditional hot-stone baths.',
-      href: 'tours.html?cat=Luxury'
+      href: 'tours.html?cat=Luxury',
+      tourSlug: 'luxury-amankora'
     },
     {
       name: 'Photography Expedition',
-      dur: '9 days · Alpine & Heritage',
+      dur: '9 days · Film preview 2:10',
       img: FALLBACK_IMAGES.tiger,
       desc: 'Golden-hour access, festival portraits and crisp Himalayan mountain light.',
-      href: 'tours.html?cat=Festival'
+      href: 'tours.html?cat=Festival',
+      tourSlug: 'thimphu-tshechu'
     },
     {
       name: 'Textile & Craft Trail',
-      dur: '6 days · Artisan Immersion',
+      dur: '6 days · Film preview 1:35',
       img: FALLBACK_IMAGES.festival,
       desc: 'Weavers, natural dyers and valley markets with Bhutanese master artisans.',
-      href: 'tours.html?cat=Classic'
+      href: 'tours.html?cat=Classic',
+      tourSlug: 'bumthang-heritage'
     },
     {
       name: 'Monastery Stay',
-      dur: '5 days · Sacred Retreats',
+      dur: '5 days · Film preview 1:25',
       img: FALLBACK_IMAGES.thimphuDzong,
       desc: 'Stay beside working mountain monasteries and join serene dawn prayers.',
-      href: 'tours.html?cat=Classic'
+      href: 'tours.html?cat=Classic',
+      tourSlug: 'essential-bhutan-7d'
     }
   ];
 
@@ -98,7 +102,7 @@
     { n: 'Group / MICE', d: 'Incentive groups, retreats and celebrations, planned in detail.', img: FALLBACK_IMAGES.festival, pos: 'center 35%', href: 'contact.html' }
   ];
 
-  const CATEGORIES = ['All', 'Classic', 'Festival', 'Luxury', 'Trek', 'Adventure'];
+  const CATEGORIES = ['All', 'Classic', 'Festival', 'Luxury', 'Honeymoon', 'Trek', 'Family', 'Birding', 'Adventure'];
   const TRENDING_TAGS = [
     'bhutan tour packages',
     'tigers nest hike',
@@ -213,7 +217,14 @@
       check: '<path d="M20 6 9 17l-5-5"/>',
       clock: '<circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>',
       send: '<path d="M14.536 21.686a.5.5 0 0 0 .937-.024l6.5-19a.496.496 0 0 0-.635-.635l-19 6.5a.5.5 0 0 0-.024.937l7.93 3.18a2 2 0 0 1 1.112 1.11z"/><path d="m21.854 2.147-10.94 10.939"/>',
-      sliders: '<line x1="21" x2="14" y1="4" y2="4"/><line x1="10" x2="3" y1="4" y2="4"/><line x1="21" x2="12" y1="12" y2="12"/><line x1="8" x2="3" y1="12" y2="12"/><line x1="21" x2="16" y1="20" y2="20"/><line x1="12" x2="3" y1="20" y2="20"/>'
+      sliders: '<line x1="21" x2="14" y1="4" y2="4"/><line x1="10" x2="3" y1="4" y2="4"/><line x1="21" x2="12" y1="12" y2="12"/><line x1="8" x2="3" y1="12" y2="12"/><line x1="21" x2="16" y1="20" y2="20"/><line x1="12" x2="3" y1="20" y2="20"/>',
+      play: '<polygon points="6 3 20 12 6 21 6 3"/>',
+      video: '<path d="m16 13 5.223 3.482a.5.5 0 0 0 .777-.416V7.87a.5.5 0 0 0-.752-.432L16 10.5"/><rect x="2" y="6" width="14" height="12" rx="2"/>',
+      briefcase: '<path d="M16 20V4a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/><rect width="20" height="14" x="2" y="6" rx="2"/>',
+      minus: '<path d="M5 12h14"/>',
+      plus: '<path d="M5 12h14"/><path d="M12 5v14"/>',
+      chevronDown: '<path d="m6 9 6 6 6-6"/>',
+      compass: '<circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/>'
     };
     return `<svg ${common}>${paths[name] || ''}</svg>`;
   }
@@ -265,6 +276,23 @@
     category: 'All',
     savedIds: [],
     compareIds: [],
+    tripPlan: (() => {
+      try {
+        const raw = typeof localStorage !== 'undefined' && localStorage.getItem('bfr_trip_plan');
+        const parsed = raw ? JSON.parse(raw) : [];
+        return Array.isArray(parsed) ? parsed : [];
+      } catch (_) {
+        return [];
+      }
+    })(),
+    planDrawerOpen: false,
+    compareModalOpen: false,
+    activeTourModal: null,
+    modalGuests: 2,
+    modalDayOpen: 0,
+    activeFestModal: null,
+    activeDestModal: null,
+    activeFilmModal: null,
     toastMsg: '',
     chatOpen: false,
     chatInput: '',
@@ -315,18 +343,22 @@
     const q = state.searchQuery.trim().toLowerCase();
     return state.tours.filter((t) => {
       const catStr = String(t.category || '').toLowerCase();
+      const hayAll = `${t.title || ''} ${t.valleys || ''} ${t.subtitle || ''} ${t.highlight_text || ''} ${t.category || ''}`.toLowerCase();
       const sel = state.category.toLowerCase();
       const catOk =
         state.category === 'All' ||
         catStr.includes(sel) ||
-        (sel === 'classic' && (catStr.includes('classic') || catStr.includes('cultural'))) ||
+        hayAll.includes(sel) ||
+        (sel === 'classic' && (catStr.includes('classic') || catStr.includes('cultural') || catStr.includes('heritage') || catStr.includes('short'))) ||
         (sel === 'luxury' && (catStr.includes('luxury') || catStr.includes('escape') || catStr.includes('wellness'))) ||
+        (sel === 'honeymoon' && (hayAll.includes('honeymoon') || hayAll.includes('romantic') || catStr.includes('luxury') || catStr.includes('punakha'))) ||
+        (sel === 'family' && (hayAll.includes('family') || catStr.includes('cultural') || catStr.includes('classic'))) ||
+        (sel === 'birding' && (hayAll.includes('bird') || hayAll.includes('phobjikha') || hayAll.includes('crane'))) ||
         (sel === 'trek' && (catStr.includes('trek') || catStr.includes('expedition'))) ||
-        (sel === 'adventure' && (catStr.includes('adventure') || catStr.includes('birding')));
+        (sel === 'adventure' && (catStr.includes('adventure') || catStr.includes('trek') || catStr.includes('expedition')));
       if (!catOk) return false;
       if (!q) return true;
-      const hay = `${t.title || ''} ${t.valleys || ''} ${t.subtitle || ''} ${t.highlight_text || ''} ${t.category || ''}`.toLowerCase();
-      return hay.includes(q);
+      return hayAll.includes(q);
     });
   }
 
@@ -356,16 +388,12 @@
               <p class="mt-3 text-white/90 text-base sm:text-lg max-w-[560px]">${esc(s.sub)}</p>
               <div class="mt-6 flex flex-wrap items-center gap-3">
                 <a href="${esc(tourHref)}" class="bg-[#C9A24B] hover:bg-[#E4C87E] text-[#0B2A22] px-6 py-3.5 rounded-full font-extrabold text-sm transition inline-flex items-center gap-2">
-                  Explore journey ${svgIcon('arrowRight', 16)}
+                  Explore this journey ${svgIcon('arrowRight', 16)}
                 </a>
-                <a href="${esc(bookHref)}" class="bg-white/15 hover:bg-white/25 backdrop-blur border border-white/30 text-white px-5 py-3.5 rounded-full font-bold text-sm transition">
-                  Book Now
+                <a href="#tours" class="border border-white/60 hover:bg-white/15 text-white px-6 py-3.5 rounded-full font-bold text-sm transition">
+                  All tours
                 </a>
-                <div class="bg-[#0B2A22]/80 border border-white/20 px-4 py-2 rounded-2xl text-xs">
-                  <span class="text-white/70 block">All-inclusive from</span>
-                  <strong class="font-serif text-lg text-[#E4C87E]">$${livePrice.toLocaleString('en-US')}</strong>
-                  <span class="text-white/70"> · SDF included</span>
-                </div>
+                <span class="font-serif text-xl text-white">from <b class="text-[28px] text-[#E4C87E]">$${livePrice.toLocaleString('en-US')}</b> <span class="text-sm text-white/80">/ person</span></span>
               </div>
             </div>
           </div>
@@ -374,22 +402,20 @@
     }).join('');
 
     const dotsHtml = HERO_SLIDES.map((s, idx) => `
-      <button type="button" data-action="hero-dot" data-idx="${idx}" aria-label="Go to slide ${idx + 1}" class="text-left p-2.5 rounded-xl bg-black/35 backdrop-blur border ${idx === state.heroIdx ? 'border-[#C9A24B]' : 'border-white/15'} text-white hover:bg-black/50 transition">
-        <div class="text-[11px] font-bold tracking-wider truncate">
-          <span class="text-[#C9A24B] mr-1">${String(idx + 1).padStart(2, '0')}</span> ${esc(s.kicker.split('·')[0].trim())}
-        </div>
-        <div class="h-1 bg-white/20 rounded-full mt-1.5 overflow-hidden">
-          ${idx === state.heroIdx ? '<div class="h-full bg-[#C9A24B]" style="width:100%"></div>' : idx < state.heroIdx ? '<div class="h-full bg-[#C9A24B]" style="width:100%"></div>' : ''}
-        </div>
+      <button type="button" data-action="hero-dot" data-idx="${idx}" aria-label="Go to slide ${idx + 1}" class="flex-1 text-left">
+        <span class="text-white text-xs font-bold block mb-2 drop-shadow">${String(idx + 1).padStart(2, '0')} · ${esc(s.kicker)}</span>
+        <span class="block h-[4px] bg-white/30 rounded-full overflow-hidden">
+          ${idx === state.heroIdx ? '<span class="block h-full bg-[#C9A24B] progress-run"></span>' : idx < state.heroIdx ? '<span class="block h-full bg-white w-full"></span>' : ''}
+        </span>
       </button>
     `).join('');
 
     return `
-      <section id="hero" class="relative h-[600px] sm:h-[640px] overflow-hidden bg-[#0B2A22]" style="min-height:580px;">
-        <div class="relative h-full" style="min-height:580px;">
+      <section id="hero" class="relative h-[620px] sm:h-[640px] overflow-hidden bg-[#0B2A22]" style="min-height:600px;">
+        <div class="relative h-full" style="min-height:600px;">
           ${slidesHtml}
-          <div class="absolute inset-x-0 bottom-5 z-20 max-w-[1360px] mx-auto px-4 sm:px-6">
-            <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
+          <div class="absolute bottom-5 left-0 right-0 z-20">
+            <div class="max-w-[1360px] mx-auto px-4 sm:px-6 flex gap-2">
               ${dotsHtml}
             </div>
           </div>
@@ -486,13 +512,12 @@
           </nav>
 
           <div class="ml-auto flex items-center gap-1.5 shrink-0" data-bfr-portal-links data-bfr-skip-portal-inject="1">
-            <a href="track-visa.html" class="hidden 2xl:inline-flex items-center gap-1.5 border border-[#E7DCC4] bg-white hover:bg-[#F7EDD8] px-3 py-2 rounded-full text-xs font-bold text-[#0B2A22] whitespace-nowrap shrink-0 transition">
-              Track Visa
-            </a>
-            <a href="client/login.html" class="hidden xl:inline-flex items-center gap-1.5 border border-[#E7DCC4] bg-white hover:bg-[#F7EDD8] px-3 py-2 rounded-full text-xs font-bold text-[#0B2A22] whitespace-nowrap shrink-0 transition">
-              Client Portal
-            </a>
-            <a href="book.html" class="inline-flex items-center gap-1.5 bg-[#0B2A22] hover:bg-[#123A30] text-white px-3.5 sm:px-4 py-2 rounded-full text-xs sm:text-sm font-bold shadow-sm whitespace-nowrap shrink-0 transition">
+            <button type="button" id="homePlanDrawerBtn" class="relative inline-flex items-center gap-1.5 bg-[#0B2A22] hover:bg-[#123A30] text-white px-3 sm:px-4 py-2 rounded-full text-xs sm:text-sm font-bold shadow-sm whitespace-nowrap shrink-0 transition">
+              ${svgIcon('briefcase', 16)}
+              <span class="hidden sm:inline">Trip Plan</span>
+              ${state.tripPlan.length > 0 ? `<span class="absolute -top-1 -right-1 w-5 h-5 bg-[#C9A24B] text-[#0B2A22] rounded-full text-[11px] grid place-items-center font-extrabold">${state.tripPlan.reduce((acc, item) => acc + (item.qty || 1), 0)}</span>` : ''}
+            </button>
+            <a href="book.html" class="hidden sm:inline-flex items-center gap-1.5 bg-[#C9A24B] hover:bg-[#E4C87E] text-[#0B2A22] px-3.5 py-2 rounded-full text-xs sm:text-sm font-extrabold shadow-sm whitespace-nowrap shrink-0 transition">
               <span>Book Now</span>
               ${svgIcon('arrowRight', 15)}
             </a>
@@ -539,47 +564,46 @@
     const q = state.searchQuery.trim().toLowerCase();
     const suggestions = q ? TRENDING_TAGS.filter((t) => t.includes(q)).slice(0, 6) : [];
     const trustBadges = [
-      ['Bhutan Tourism approved', `Licensed #${String(state.settings.company_license || 'TR/2018/9882').replace(/^#/, '')}`],
-      ['SDF included', 'No surprises at checkout'],
-      ['No hidden fees', 'Transparent USD & INR billing'],
-      ['Private guides', 'Licensed Bhutanese locals'],
-      ['English-speaking experts', 'Storytellers & trek specialists'],
-      ['Flexible dates', '30+ days free date changes']
+      ['Licensed operator', `Bhutan Tourism approved #${String(state.settings.company_license || 'TR/2018/9882').replace(/^#/, '')}`],
+      ['SDF included', 'No hidden fees · USD & INR'],
+      ['Private guides', 'English-speaking experts'],
+      ['Flexible dates', 'Departures all year']
     ];
 
     return `
-      <section class="max-w-[1360px] mx-auto px-4 sm:px-6 -mt-8 relative z-30">
-        <div class="bg-white text-[#101613] rounded-[24px] p-4 sm:p-5 border border-[#E7DCC4] shadow-xl">
-          <div class="flex flex-wrap items-center gap-2 text-xs font-extrabold text-[#C9A24B] tracking-[0.18em]">
-            ${svgIcon('sparkles', 15)}
-            <span>INSTANT PACKAGE &amp; VALLEY SEARCH</span>
-            <span class="text-[#66706A] font-semibold tracking-normal ml-auto">Live catalog powered by our Paro desk</span>
+      <section class="max-w-[1100px] mx-auto px-4 sm:px-6 -mt-8 relative z-30">
+        <div class="bg-white text-[#101613] rounded-[26px] shadow-2xl p-4 sm:p-5 border border-[#E7DCC4]">
+          <div class="flex items-center gap-2 text-[#0B2A22] font-extrabold">
+            ${svgIcon('sparkles', 18, 'text-[#C9A24B]')}
+            <span>AI Trip Search</span>
+            <span class="hidden sm:inline text-xs bg-[#FFF8EC] border border-[#E7DCC4] px-2.5 py-1 rounded-full font-bold">SDF INCLUDED</span>
+            <span class="hidden md:inline text-xs text-[#66706A] font-semibold ml-auto">Live catalog synced with Paro desk</span>
           </div>
           <div class="relative mt-3">
-            <div class="flex items-center gap-2 border border-[#E7DCC4] rounded-full px-4 py-2 bg-[#FFF8EC]">
-              ${svgIcon('search', 18, 'text-[#66706A]')}
-              <input id="homeSearchInput" type="text" value="${esc(state.searchQuery)}" placeholder="Search Tiger’s Nest, Punakha, Tshechu festival, luxury..." class="flex-1 bg-transparent py-1.5 text-sm outline-none text-[#101613]" style="color-scheme:light;color:#101613;">
-              <button type="button" id="homeSearchBtn" class="bg-[#0B2A22] hover:bg-[#123A30] text-white px-5 py-2 rounded-full text-sm font-bold shrink-0">Find Trips</button>
+            <div class="flex items-center gap-2 bg-[#FFF8EC] border-2 border-[#0B2A22] rounded-full pl-5 pr-2 py-2">
+              ${svgIcon('search', 18, 'text-[#0B2A22]')}
+              <input id="homeSearchInput" type="text" value="${esc(state.searchQuery)}" placeholder="Ask AI: e.g. 7 days festival + Tiger’s Nest under $2500" class="flex-1 min-w-0 bg-transparent outline-none py-1.5 text-[15px] sm:text-base text-[#101613]" style="color-scheme:light;color:#101613;">
+              <button type="button" id="homeSearchBtn" class="bg-[#0B2A22] hover:bg-[#123A30] text-white px-5 py-2.5 rounded-full font-bold shrink-0">Search</button>
             </div>
             ${state.searchDropdownOpen && state.searchQuery.trim()
-              ? `<div class="absolute left-0 right-0 top-full mt-2 bg-white text-[#101613] border border-[#E7DCC4] rounded-2xl shadow-xl p-2 z-30">
+              ? `<div class="absolute left-0 right-0 top-full mt-2 bg-white text-[#101613] border border-[#E7DCC4] rounded-2xl shadow-xl overflow-hidden z-30">
                   ${suggestions.length
-                    ? suggestions.map((tag) => `<button type="button" data-action="quick-tag" data-tag="${esc(tag)}" class="w-full text-left px-3 py-2 rounded-xl hover:bg-[#FFF8EC] text-[#0B2A22] text-sm font-semibold flex items-center gap-2">${svgIcon('sparkles', 15, 'text-[#C9A24B]')} ${esc(tag)}</button>`).join('')
-                    : `<button type="button" id="homeSearchDirectGo" class="w-full text-left px-3 py-2 rounded-xl hover:bg-[#FFF8EC] text-[#0B2A22] text-sm font-semibold">Search live tours for "${esc(state.searchQuery)}" →</button>`
+                    ? suggestions.map((tag) => `<button type="button" data-action="quick-tag" data-tag="${esc(tag)}" class="w-full text-left px-4 py-3 hover:bg-[#FFF8EC] text-[#0B2A22] text-sm font-semibold flex gap-2">${svgIcon('sparkles', 16, 'text-[#C9A24B] shrink-0 mt-0.5')} ${esc(tag)}</button>`).join('')
+                    : `<button type="button" id="homeSearchDirectGo" class="w-full text-left px-4 py-3 hover:bg-[#FFF8EC] text-[#0B2A22] text-sm font-semibold">Search live tours for "${esc(state.searchQuery)}" →</button>`
                   }
                 </div>`
               : ''}
           </div>
-          <div class="flex flex-wrap items-center gap-2 mt-3">
-            <span class="text-xs font-bold text-[#66706A]">Popular:</span>
-            ${TRENDING_TAGS.map((tag) => `<button type="button" data-action="quick-tag" data-tag="${esc(tag)}" class="text-xs bg-[#FFF8EC] text-[#0B2A22] hover:bg-[#F7EDD8] border border-[#E7DCC4] px-3 py-1 rounded-full font-semibold transition">${esc(tag)}</button>`).join('')}
+          <div class="flex flex-wrap gap-2 mt-3">
+            <span class="text-xs font-bold pt-1.5 text-[#66706A]">Trending:</span>
+            ${TRENDING_TAGS.map((tag) => `<button type="button" data-action="quick-tag" data-tag="${esc(tag)}" class="text-xs border border-[#E7DCC4] bg-white hover:border-[#C9A24B] text-[#0B2A22] px-3 py-1.5 rounded-full font-bold transition">${esc(tag)}</button>`).join('')}
           </div>
         </div>
 
-        <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2.5 mt-4">
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-3 mt-4 text-center">
           ${trustBadges.map(([t, sub]) => `
             <div class="bg-white/95 text-[#101613] border border-[#E7DCC4] rounded-2xl p-3 shadow-sm">
-              <div class="font-extrabold text-sm text-[#0B2A22]">${esc(t)}</div>
+              <p class="font-extrabold text-sm text-[#0B2A22]">${esc(t)}</p>
               <p class="text-xs text-[#66706A] mt-0.5">${esc(sub)}</p>
             </div>
           `).join('')}
@@ -591,13 +615,14 @@
   function renderToursSection() {
     const filtered = getFilteredTours();
     const compareBar = state.compareIds.length > 0
-      ? `<div class="mb-4 bg-white border border-[var(--line)] rounded-2xl p-4 flex flex-wrap gap-3 items-center justify-between">
-          <span class="font-bold text-sm">Compare: ${state.compareIds.map((id) => {
+      ? `<div class="mb-4 bg-white border border-[var(--line)] rounded-2xl p-4 flex flex-wrap gap-3 items-center justify-between shadow-sm">
+          <span class="font-bold text-sm text-[#0B2A22]">Compare: ${state.compareIds.map((id) => {
             const t = state.tours.find((x) => x.id === id);
             return esc(t ? t.title : id);
           }).join('  vs  ')}</span>
           <div class="flex items-center gap-3">
-            <a href="tours.html" class="text-sm font-bold text-[#C9A24B] hover:underline">Open Full Catalog →</a>
+            ${state.compareIds.length >= 2 ? `<button type="button" id="openCompareModalBtn" class="bg-[#0B2A22] text-white px-4 py-1.5 rounded-full text-xs font-bold">Compare Side-by-Side</button>` : ''}
+            <a href="tours.html" class="text-sm font-bold text-[#C9A24B] hover:underline">Full Catalog →</a>
             <button type="button" id="clearCompareBtn" class="text-sm font-bold underline">Clear</button>
           </div>
         </div>`
@@ -633,12 +658,12 @@
         const isCmp = state.compareIds.includes(t.id);
         return `
           <article class="group bg-white text-[#101613] rounded-[24px] overflow-hidden border border-[#E7DCC4] card-lift flex flex-col">
-            <a href="${esc(tourHref)}" class="relative block text-left overflow-hidden h-[230px]">
+            <button type="button" data-action="quick-tour" data-id="${esc(t.id)}" class="relative block w-full text-left overflow-hidden h-[230px]">
               <img src="${esc(img)}" alt="${esc(t.title)}" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
               <span class="absolute top-3 left-3 bg-white/95 px-3 py-1 rounded-full text-xs font-extrabold text-[#0B2A22]">${days} DAYS · ${esc(cat.toUpperCase())}</span>
               <span class="absolute top-3 right-3 bg-[#0B2A22] text-white px-2.5 py-1 rounded-full text-xs font-bold flex items-center gap-1">${svgIcon('star', 13, 'fill-[#C9A24B] text-[#C9A24B]')} ${esc(rating)}</span>
-              <span class="absolute inset-x-3 bottom-3 bg-[#0B2A22]/90 text-white text-center py-2.5 rounded-full text-sm font-bold opacity-0 group-hover:opacity-100 transition">View Full Itinerary →</span>
-            </a>
+              <span class="absolute inset-x-3 bottom-3 bg-[#0B2A22]/90 text-white text-center py-2.5 rounded-full text-sm font-bold opacity-0 group-hover:opacity-100 transition">Quick view →</span>
+            </button>
             <div class="p-4 flex-1 flex flex-col">
               <a href="${esc(tourHref)}" class="text-left">
                 <h3 class="font-serif text-[22px] leading-tight gold-line inline text-[#0B2A22]">${esc(t.title)}</h3>
@@ -648,7 +673,7 @@
               <p class="text-xs text-[#66706A] mt-3 flex items-center gap-1">${svgIcon('users', 14)} <span>${esc(t.difficulty || 'Easy to Moderate')} · SDF Included</span></p>
               <div class="flex items-end justify-between mt-4 pt-4 border-t border-[#E7DCC4]">
                 <div>
-                  <span class="text-xs text-[#66706A] block">From (3★)</span>
+                  <span class="text-xs text-[#66706A] block">From</span>
                   <span class="font-serif text-[26px] font-bold text-[#0B2A22]">$${price.toLocaleString('en-US')}</span>
                 </div>
                 <div class="flex gap-1.5">
@@ -661,7 +686,7 @@
                 </div>
               </div>
               <div class="flex gap-2 mt-3">
-                <a href="${esc(tourHref)}" class="flex-1 text-center bg-[#0B2A22] hover:bg-[#123A30] text-white py-3 rounded-full font-bold text-sm transition">View Details</a>
+                <a href="${esc(tourHref)}" class="flex-1 text-center bg-[#0B2A22] hover:bg-[#123A30] text-white py-3 rounded-full font-bold text-sm transition">View details</a>
                 <a href="${esc(bookHref)}" class="flex-1 text-center border border-[#0B2A22] bg-white hover:bg-[#FFF8EC] text-[#0B2A22] py-3 rounded-full font-bold text-sm transition">Book Now</a>
               </div>
             </div>
@@ -710,33 +735,33 @@
           <div>
             <p class="text-[#C9A24B] font-extrabold tracking-[0.22em] text-xs">FESTIVAL DEPARTURES · 2027</p>
             <h2 class="font-serif text-[36px] sm:text-[54px] mt-2 text-[#0B2A22]">Move your cursor.<br>Look closer.</h2>
-            <p class="text-[#66706A] mt-2 max-w-[620px]">Hover any festival image to activate the magnifying lens. Open dedicated festival schedules and reserve priority monastery seating.</p>
+            <p class="text-[#66706A] mt-2 max-w-[620px]">Hover any festival image to use the magnifying glass. Click for the quick festival briefing or open the full calendar.</p>
           </div>
           <a href="festivals.html" class="text-sm font-extrabold text-[#0B2A22] hover:text-[#C9A24B]">View All Festival Dates →</a>
         </div>
 
         <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-5 mt-7">
-          ${fests.map((f) => {
+          ${fests.map((f, idx) => {
             const img = safeUrl(f.cover_image, FALLBACK_IMAGES.festival);
             const festName = f.name || f.title || 'Bhutan Tshechu Festival';
             const festHref = resolveFestivalPageHref(f);
             const bookHref = f.related_tour_id ? `book.html?tour=${encodeURIComponent(f.related_tour_id)}` : 'festivals.html';
             return `
               <article class="bg-white text-[#101613] rounded-[24px] overflow-hidden border border-[#E7DCC4] card-lift flex flex-col">
-                <a href="${esc(festHref)}" class="block relative overflow-hidden cursor-crosshair h-[240px] sm:h-[260px] bfr-lens-box" data-img="${esc(img)}">
+                <button type="button" data-action="quick-fest" data-idx="${idx}" class="block w-full text-left relative overflow-hidden cursor-crosshair h-[240px] sm:h-[260px] bfr-lens-box" data-img="${esc(img)}">
                   <div role="img" aria-label="${esc(festName)}" class="w-full h-full bg-cover bg-center" style="background-image:url('${esc(img)}')"></div>
                   <div class="bfr-lens-circle hidden pointer-events-none absolute z-10 w-[150px] h-[150px] rounded-full border-4 border-white shadow-2xl" style="transform:translate(-50%,-50%);background-image:url('${esc(img)}');background-size:420% 420%"></div>
                   <div class="bfr-lens-pill hidden absolute bottom-3 left-3 bg-[#0B2A22]/90 text-white text-xs font-bold px-3 py-2 rounded-full items-center gap-1">
-                    ${svgIcon('eye', 14)} Looking glass · zoomed view
+                    ${svgIcon('eye', 14)} Magnifying glass
                   </div>
-                </a>
+                </button>
                 <div class="p-4 flex-1 flex flex-col">
                   <span class="text-xs font-extrabold text-[#C9A24B]">${esc(f.dates_label || f.best_months || f.season || '2027 Season')}</span>
                   <h3 class="font-serif text-2xl mt-1 text-[#0B2A22]"><a href="${esc(festHref)}" class="hover:text-[#C9A24B]">${esc(festName)}</a></h3>
                   <p class="text-sm text-[#66706A] mt-1 flex items-center gap-1">${svgIcon('mapPin', 14)} ${esc(f.venue || f.dzongkhag || 'Bhutan')}</p>
                   <p class="text-sm text-[#101613] mt-2 flex-1">${esc(f.summary || '')}</p>
                   <div class="flex justify-between items-center mt-4 pt-3 border-t border-[#E7DCC4]">
-                    <a href="${esc(festHref)}" class="bg-[#0B2A22] text-white px-4 py-2 rounded-full text-sm font-bold">View Festival</a>
+                    <a href="${esc(festHref)}" class="bg-[#0B2A22] text-white px-4 py-2 rounded-full text-sm font-bold">View festival</a>
                     <a href="${esc(bookHref)}" class="text-xs font-extrabold text-[#C9A24B] hover:underline">Book Tour →</a>
                   </div>
                 </div>
@@ -752,26 +777,36 @@
     return `
       <section class="mt-20 bg-[#0B2A22] text-white py-16">
         <div class="max-w-[1360px] mx-auto px-4 sm:px-6">
-          <div class="flex flex-wrap items-end justify-between gap-4">
+          <div class="flex flex-wrap justify-between gap-4 items-end">
             <div>
-              <p class="text-[#C9A24B] font-extrabold tracking-[0.22em] text-xs">SPECIALTY EXPEDITIONS</p>
-              <h2 class="font-serif text-[36px] sm:text-[54px] mt-2">Beyond standard routes.</h2>
+              <p class="text-[#C9A24B] font-extrabold tracking-[0.22em] text-xs">SPECIALTY TOURS</p>
+              <h2 class="font-serif text-[36px] sm:text-[54px] leading-none mt-2">Made for the way<br>you travel.</h2>
             </div>
-            <p class="max-w-[380px] text-white/75">Quiet monasteries, golden-hour photography, botanical valleys and artisan studios curated by Bhutanese locals.</p>
+            <p class="max-w-[420px] text-white/75">Watch a short film briefing preview, then inspect the full curated route or customise your departure.</p>
           </div>
           <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-5 mt-8">
-            ${SPECIALTY_CARDS.map((card) => `
-              <article class="bg-white/10 border border-white/15 rounded-[24px] overflow-hidden flex flex-col">
-                <a href="${esc(card.href)}" class="relative h-[200px] overflow-hidden block group">
-                  <img src="${esc(card.img)}" alt="${esc(card.name)}" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
-                  <span class="absolute bottom-3 left-3 bg-[#0B2A22]/90 text-white text-xs font-bold px-3 py-1 rounded-full flex items-center gap-1">${svgIcon('clock', 13)} ${esc(card.dur)}</span>
-                </a>
+            ${SPECIALTY_CARDS.map((card, idx) => `
+              <article class="group bg-white text-[var(--ink)] rounded-[24px] overflow-hidden card-lift flex flex-col">
+                <button type="button" data-action="open-film" data-idx="${idx}" class="relative block w-full h-[220px] overflow-hidden">
+                  <img src="${esc(card.img)}" alt="${esc(card.name)}" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
+                  <span class="absolute inset-0 grid place-items-center">
+                    <span class="w-16 h-16 rounded-full bg-[#C9A24B] text-[#0B2A22] grid place-items-center shadow-2xl" style="animation:floaty 2.5s infinite">
+                      ${svgIcon('play', 24, 'fill-[#0B2A22] ml-0.5')}
+                    </span>
+                  </span>
+                  <span class="absolute bottom-3 right-3 bg-black/75 text-white text-xs px-2.5 py-1 rounded-full flex items-center gap-1 font-semibold">
+                    ${svgIcon('video', 13)} ${esc(card.dur)}
+                  </span>
+                </button>
                 <div class="p-4 flex-1 flex flex-col">
-                  <h3 class="font-serif text-2xl">${esc(card.name)}</h3>
-                  <p class="text-sm text-white/75 mt-2 flex-1">${esc(card.desc)}</p>
-                  <a href="${esc(card.href)}" class="mt-4 inline-flex items-center gap-1.5 text-sm font-bold text-[#E4C87E] hover:underline">
-                    Explore packages ${svgIcon('arrowUpRight', 15)}
-                  </a>
+                  <h3 class="font-serif text-[22px] leading-tight text-[#0B2A22]">${esc(card.name)}</h3>
+                  <p class="text-sm text-[var(--muted)] mt-2 flex-1">${esc(card.desc)}</p>
+                  <div class="mt-4 flex items-center justify-between">
+                    <button type="button" data-action="open-film" data-idx="${idx}" class="font-bold text-sm text-[#0B2A22] flex items-center gap-1 hover:text-[#C9A24B]">
+                      Watch &amp; explore ${svgIcon('arrowUpRight', 16)}
+                    </button>
+                    <a href="${esc(card.href)}" class="text-xs font-extrabold text-[#C9A24B] hover:underline">Packages →</a>
+                  </div>
                 </div>
               </article>
             `).join('')}
@@ -784,17 +819,22 @@
   function renderServicesMosaic() {
     return `
       <section class="max-w-[1360px] mx-auto px-4 sm:px-6 pt-20">
-        <p class="text-[#C9A24B] font-extrabold tracking-[0.22em] text-xs">FULL CONCIERGE COVERAGE</p>
-        <h2 class="font-serif text-[36px] sm:text-[54px] mt-2 text-[#0B2A22]">Everything handled before you land.</h2>
-        <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-7">
+        <div class="flex flex-wrap items-end justify-between gap-4">
+          <div>
+            <p class="text-[#C9A24B] font-extrabold tracking-[0.22em] text-xs">ALL SERVICES · ONE TEAM</p>
+            <h2 class="font-serif text-[36px] sm:text-[54px] mt-2 text-[#0B2A22]">Everything, handled.</h2>
+          </div>
+          <a href="services.html" class="text-sm font-extrabold text-[#0B2A22] hover:text-[#C9A24B]">Visa, SDF &amp; Flight Services →</a>
+        </div>
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mt-7">
           ${SERVICES_GRID.map((svc) => `
-            <a href="${esc(svc.href)}" class="bg-white text-[#101613] border border-[#E7DCC4] rounded-[22px] overflow-hidden card-lift block">
-              <div class="h-[150px] overflow-hidden">
-                <img src="${esc(svc.img)}" alt="${esc(svc.n)}" class="w-full h-full object-cover" style="object-position:${esc(svc.pos)}">
+            <a href="${esc(svc.href)}" class="group bg-white text-[#101613] border border-[#E7DCC4] rounded-[22px] overflow-hidden card-lift block">
+              <div class="h-[150px] sm:h-[170px] overflow-hidden">
+                <img src="${esc(svc.img)}" alt="${esc(svc.n)}" class="w-full h-full object-cover group-hover:scale-110 transition duration-500" style="object-position:${esc(svc.pos)}">
               </div>
               <div class="p-4">
-                <h3 class="font-serif text-xl font-bold text-[#0B2A22]">${esc(svc.n)}</h3>
-                <p class="text-sm text-[#66706A] mt-1">${esc(svc.d)}</p>
+                <h3 class="font-bold text-[17px] leading-tight text-[#0B2A22]">${esc(svc.n)}</h3>
+                <p class="text-sm text-[#66706A] mt-1.5">${esc(svc.d)}</p>
               </div>
             </a>
           `).join('')}
@@ -806,36 +846,42 @@
   function renderDestinationsSection() {
     const dests = state.destinations.slice(0, 6);
     return `
-      <section class="max-w-[1360px] mx-auto px-4 sm:px-6 pt-20">
-        <div class="flex flex-wrap items-end justify-between gap-4">
-          <div>
-            <p class="text-[#C9A24B] font-extrabold tracking-[0.22em] text-xs">SACRED VALLEYS</p>
-            <h2 class="font-serif text-[36px] sm:text-[54px] mt-2 text-[#0B2A22]">Six valleys in detail.</h2>
+      <section class="mt-20 bg-[#F7EDD8] py-14">
+        <div class="max-w-[1360px] mx-auto px-4 sm:px-6">
+          <div class="flex justify-between items-end gap-4">
+            <div>
+              <p class="text-[#C9A24B] font-extrabold tracking-[0.22em] text-xs">BEST PLACES TO VISIT</p>
+              <h2 class="font-serif text-[36px] sm:text-[54px] text-[#0B2A22]">The looking glass.</h2>
+            </div>
+            <div class="flex items-center gap-4">
+              <span class="hidden sm:flex items-center gap-2 text-sm font-bold text-[#0B2A22]">Scroll → ${svgIcon('compass', 16)}</span>
+              <a href="destinations.html" class="text-sm font-extrabold text-[#0B2A22] hover:text-[#C9A24B]">All Valleys →</a>
+            </div>
           </div>
-          <a href="destinations.html" class="inline-flex items-center gap-1.5 text-sm font-extrabold text-[#0B2A22] hover:text-[#C9A24B]">
-            Explore all destinations ${svgIcon('sliders', 16)}
-          </a>
+          <p class="text-[#66706A] mt-2">Hover to magnify. Click for the story behind each valley.</p>
         </div>
-        <p class="text-[#66706A] mt-2">Live valley guides synced with our Paro operations database.</p>
 
-        <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-5 mt-7">
-          ${dests.map((d) => {
+        <div class="max-w-[1360px] mx-auto px-4 sm:px-6 mt-6 flex gap-5 overflow-x-auto no-scrollbar snap-x pb-2">
+          ${dests.map((d, idx) => {
             const img = safeUrl(d.cover_image, FALLBACK_IMAGES.punakha);
             const destHref = resolveDestPageHref(d);
             return `
-              <article class="bg-white text-[#101613] border border-[#E7DCC4] rounded-[24px] overflow-hidden card-lift">
-                <a href="${esc(destHref)}" class="block relative overflow-hidden cursor-crosshair h-[240px] bfr-lens-box" data-img="${esc(img)}">
+              <article class="min-w-[300px] sm:min-w-[350px] snap-start bg-white text-[#101613] border border-[#E7DCC4] rounded-[24px] overflow-hidden card-lift flex flex-col">
+                <button type="button" data-action="quick-dest" data-idx="${idx}" class="block w-full text-left relative overflow-hidden cursor-crosshair h-[240px] sm:h-[270px] bfr-lens-box" data-img="${esc(img)}">
                   <div role="img" aria-label="${esc(d.name)}" class="w-full h-full bg-cover bg-center" style="background-image:url('${esc(img)}')"></div>
                   <div class="bfr-lens-circle hidden pointer-events-none absolute z-10 w-[150px] h-[150px] rounded-full border-4 border-white shadow-2xl" style="transform:translate(-50%,-50%);background-image:url('${esc(img)}');background-size:420% 420%"></div>
                   <div class="bfr-lens-pill hidden absolute bottom-3 left-3 bg-[#0B2A22]/90 text-white text-xs font-bold px-3 py-2 rounded-full items-center gap-1">
-                    ${svgIcon('eye', 14)} Looking glass · zoomed view
+                    ${svgIcon('eye', 14)} Magnifying glass
                   </div>
-                </a>
-                <div class="p-4">
-                  <h3 class="font-serif text-2xl text-[#0B2A22]">${esc(d.name)}</h3>
-                  <p class="text-xs font-extrabold text-[#C9A24B] mt-1">${esc(d.best_months || d.tagline || 'Year-round')}</p>
-                  <p class="text-sm text-[#66706A] mt-2">${esc(d.tagline || d.description || '')}</p>
-                  <a href="${esc(destHref)}" class="mt-3 inline-flex items-center gap-1 text-sm font-bold text-[#0B2A22] hover:text-[#C9A24B]">Explore valley →</a>
+                </button>
+                <div class="p-4 flex-1 flex flex-col">
+                  <h3 class="font-serif text-2xl text-[#0B2A22]"><a href="${esc(destHref)}" class="hover:text-[#C9A24B]">${esc(d.name)}</a></h3>
+                  <p class="text-xs font-extrabold text-[#C9A24B] mt-1">BEST · ${esc(d.best_months || d.tagline || 'Year-round')}</p>
+                  <p class="text-sm text-[#66706A] mt-2 flex-1">${esc(d.tagline || d.description || '')}</p>
+                  <div class="flex items-center justify-between mt-3 pt-3 border-t border-[#E7DCC4]">
+                    <button type="button" data-action="quick-dest" data-idx="${idx}" class="font-bold text-sm text-[#0B2A22] hover:text-[#C9A24B]">Open place →</button>
+                    <a href="${esc(destHref)}" class="text-xs font-bold text-[#66706A] hover:text-[#0B2A22]">Full Guide</a>
+                  </div>
                 </div>
               </article>
             `;
@@ -847,8 +893,8 @@
 
   function renderCustomBuilderSection() {
     const f = state.customForm;
-    const interestOpts = ['Trek', 'Luxury', 'Culture', 'Honeymoon', 'Birding'];
-    const paceOpts = ['Balanced', 'Active'];
+    const interestOpts = ['Festival', 'Trek', 'Luxury', 'Culture', 'Honeymoon', 'Birding'];
+    const paceOpts = ['Relaxed', 'Balanced', 'Active'];
     const waUrl = safeWhatsAppUrl(
       state.settings.company_whatsapp,
       `Kuzu Zangpo! Custom Bhutan Inquiry (${f.dates || 'Flexible dates'}, ${f.travellers}, budget $${f.budget}/person).`
@@ -906,8 +952,9 @@
               </select>
             </label>
             <div>
-              <div class="flex justify-between text-sm font-bold"><span>Budget / person</span><span id="custBudgetVal" class="text-[#C9A24B]">$${Number(f.budget).toLocaleString('en-US')}</span></div>
+              <div class="flex justify-between text-sm font-bold"><span>Budget per person</span><span id="custBudgetVal" class="text-[#0B2A22]">$${Number(f.budget).toLocaleString('en-US')}</span></div>
               <input id="custBudget" type="range" min="1200" max="6000" step="100" value="${Number(f.budget)}" class="w-full mt-2 accent-[#0B2A22]">
+              <div class="flex justify-between text-xs text-[#66706A]"><span>$1,200</span><span>$6,000</span></div>
             </div>
           </div>
           <div>
@@ -937,14 +984,14 @@
       <section id="custom" class="max-w-[1360px] mx-auto px-4 sm:px-6 pt-20">
         <div class="grid grid-cols-1 lg:grid-cols-[1fr_1.15fr] gap-8 items-start">
           <div>
-            <p class="text-[#C9A24B] font-extrabold tracking-[0.22em] text-xs">BESPOKE ITINERARY DESIGN</p>
-            <h2 class="font-serif text-[36px] sm:text-[50px] leading-tight mt-2 text-[#0B2A22]">Design a Bhutan trip around your dates.</h2>
-            <p class="text-[#66706A] mt-3 max-w-[500px]">Share your travel window, group size, and hotel preference. Your inquiry goes directly to our licensed Paro travel concierges.</p>
+            <p class="text-[#C9A24B] font-extrabold tracking-[0.22em] text-xs">CUSTOMISED ITINERARY REQUEST</p>
+            <h2 class="font-serif text-[40px] sm:text-[54px] leading-[0.98] mt-2 text-[#0B2A22]">Tell us the trip<br>in your head.</h2>
+            <p class="text-[#66706A] mt-4 max-w-[480px]">Share dates, budget and interests. Receive an instant tailored draft AND send directly to our licensed Paro travel concierges.</p>
             <div class="space-y-3 mt-6">
               ${[
                 ['1', 'Share your idea', 'Dates, valley preferences & international USD or India INR pricing.'],
-                ['2', 'Live concierge quote', 'Our team computes exact SDF & boutique lodging tiers in 2 hours.'],
-                ['3', 'One-click conversion', 'Approve your custom plan and step straight into visa clearance.']
+                ['2', 'See a draft & live Paro quote', 'Our team computes exact SDF & boutique lodging tiers in 2 hours.'],
+                ['3', 'Refine it with an expert', 'Approve your custom plan and step straight into visa clearance.']
               ].map(([num, h, desc]) => `
                 <div class="flex gap-3 bg-white text-[#101613] border border-[#E7DCC4] rounded-2xl p-4">
                   <span class="w-8 h-8 rounded-full bg-[#0B2A22] text-[#C9A24B] grid place-items-center font-bold shrink-0">${num}</span>
@@ -952,7 +999,7 @@
                 </div>
               `).join('')}
             </div>
-            <img src="${FALLBACK_IMAGES.lodge}" alt="Luxury Bhutanese heritage valley lodge" class="w-full h-[220px] object-cover rounded-[24px] mt-5 border border-[#E7DCC4]">
+            <img src="${FALLBACK_IMAGES.festival}" alt="Festival dancers in Bhutan" class="w-full h-[240px] object-cover rounded-[24px] mt-6 border border-[#E7DCC4]">
           </div>
 
           <div class="bg-white text-[#101613] border border-[#E7DCC4] rounded-[28px] p-6 sm:p-8 shadow-sm">
@@ -970,22 +1017,22 @@
         <div class="flex flex-wrap items-end justify-between gap-4">
           <div>
             <p class="text-[#C9A24B] font-extrabold tracking-[0.22em] text-xs">VERIFIED GUEST STORIES</p>
-            <h2 class="font-serif text-[36px] sm:text-[48px] mt-2 text-[#0B2A22]">Trusted across 40+ countries.</h2>
+            <h2 class="font-serif text-[36px] sm:text-[48px] mt-2 text-[#0B2A22]">Travellers, in their words.</h2>
           </div>
           <a href="reviews.html" class="text-sm font-extrabold text-[#0B2A22] hover:text-[#C9A24B]">Read all verified reviews →</a>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-5 mt-7">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-5 mt-8">
           ${revs.map((r) => {
             const guestName = r.author_name || r.reviewer_name || r.guest_name || 'Verified Guest';
             const tourInfo = [r.tour_taken || r.tour_title, r.author_country].filter(Boolean).join(' · ') || 'Bhutan Journey';
             return `
             <blockquote class="bg-white text-[#101613] border border-[#E7DCC4] rounded-[24px] p-6 flex flex-col justify-between">
               <div>
-                <div class="text-[#C9A24B] text-sm font-bold">${'★'.repeat(Math.max(1, Math.min(5, Number(r.rating) || 5)))}</div>
-                <p class="mt-3 text-sm leading-relaxed text-[#101613]">“${esc(r.comment || r.review_text || '')}”</p>
+                <div class="text-[#C9A24B] text-base font-bold">${'★'.repeat(Math.max(1, Math.min(5, Number(r.rating) || 5)))}</div>
+                <p class="font-serif text-xl leading-snug mt-3 text-[#0B2A22]">“${esc(r.comment || r.review_text || '')}”</p>
               </div>
-              <footer class="mt-5 pt-3 border-t border-[#E7DCC4] text-xs">
+              <footer class="mt-4 pt-3 border-t border-[#E7DCC4] text-xs">
                 <strong class="block text-sm text-[#0B2A22]">${esc(guestName)}</strong>
                 <span class="text-[#66706A]">${esc(tourInfo)}</span>
               </footer>
@@ -994,12 +1041,12 @@
           }).join('')}
         </div>
 
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-3 mt-10">
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-3 mt-8">
           ${[
             ['Royally Licensed #TR/2018/9882', 'badgeCheck'],
             ['SDF Tax Included', 'shieldCheck'],
-            ['Certified English Guides', 'shieldCheck'],
-            ['Fast-Track 24–48h Visa', 'check']
+            ['English-Speaking Guides', 'compass'],
+            ['Secure Visa Planning', 'shieldCheck']
           ].map(([label, ic]) => `
             <div class="bg-[#0B2A22] text-white rounded-2xl p-4 flex flex-col items-center gap-2 text-center">
               ${svgIcon(ic, 22, 'text-[#C9A24B]')}
@@ -1060,6 +1107,254 @@
         </div>
       </footer>
     `;
+  }
+
+  function saveTripPlanStorage() {
+    try {
+      if (typeof localStorage !== 'undefined') {
+        localStorage.setItem('bfr_trip_plan', JSON.stringify(state.tripPlan));
+      }
+    } catch (_) {}
+  }
+
+  function addTourToPlan(tour) {
+    if (!tour) return;
+    const price = Number(tour.price_3star_usd || tour.price_usd || 1899);
+    const idx = state.tripPlan.findIndex((p) => p.id === tour.id);
+    if (idx >= 0) {
+      state.tripPlan[idx].qty = (state.tripPlan[idx].qty || 1) + 1;
+    } else {
+      state.tripPlan.push({
+        id: tour.id,
+        slug: tour.slug || tour.id,
+        title: tour.title,
+        price,
+        days: Number(tour.duration_days) || 6,
+        img: safeUrl(tour.cover_image, FALLBACK_IMAGES.tiger),
+        qty: Math.max(1, Number(state.modalGuests) || 2)
+      });
+    }
+    if (!state.savedIds.includes(tour.id)) {
+      state.savedIds.push(tour.id);
+    }
+    saveTripPlanStorage();
+    state.toastMsg = `${tour.title} saved to your Trip Plan.`;
+  }
+
+  function parseTourDaysPlan(tour) {
+    if (!tour) return [];
+    let arr = tour.itinerary_json || tour.itinerary || tour.highlights;
+    if (typeof arr === 'string') {
+      try { arr = JSON.parse(arr); } catch (_) { arr = arr.split('\n').filter(Boolean); }
+    }
+    if (Array.isArray(arr) && arr.length > 0) {
+      return arr.map((d, idx) => typeof d === 'string'
+        ? { day: idx + 1, title: d, summary: 'Private licensed Bhutanese guide, unhurried valley sightseeing, boutique lodging and SDF fees included.' }
+        : { day: d.day || idx + 1, title: d.title || d.heading || `Day ${idx + 1}`, summary: d.description || d.summary || 'Guided visits, scenic mountain passes, local dining and private transfers.' });
+    }
+    return [
+      { day: 1, title: 'Arrive Paro & River Valley Walk', summary: 'VIP airport meet & greet, heritage valley stroll and Bhutanese welcome dinner.' },
+      { day: 2, title: 'Thimphu & Cultural Landmarks', summary: 'National Memorial Chorten, Buddha Dordenma panoramic overlook and Tashichho Dzong.' },
+      { day: 3, title: 'Dochula Pass & Punakha Dzong', summary: 'Cross the 3,100m 108-chorten ridge before descending into lush Punakha Valley.' },
+      { day: 4, title: 'Tiger’s Nest (Taktsang) Ascent', summary: 'Guided sunrise hike up pine trails to Bhutan’s sacred cliffside sanctuary.' }
+    ];
+  }
+
+  function renderInteractiveOverlays() {
+    let html = '';
+
+    // 1. Trip Plan Slide-Over Drawer
+    if (state.planDrawerOpen) {
+      const estTotal = state.tripPlan.reduce((sum, item) => sum + (Number(item.price) || 0) * (item.qty || 1), 0);
+      const firstTourHref = state.tripPlan[0] ? `book.html?tour=${encodeURIComponent(state.tripPlan[0].slug || state.tripPlan[0].id)}` : 'book.html';
+      html += `
+        <div id="homePlanBackdrop" class="fixed inset-0 z-50 bg-black/50">
+          <div id="homePlanPanel" class="absolute right-0 top-0 h-full w-[92%] max-w-[420px] bg-[var(--cream)] p-5 overflow-y-auto shadow-2xl">
+            <div class="flex justify-between items-center pb-3 border-b border-[var(--line)]">
+              <h3 class="font-serif text-2xl text-[#0B2A22]">Your Trip Plan</h3>
+              <button type="button" id="closePlanDrawerBtn" aria-label="Close trip plan" class="p-2 rounded-xl hover:bg-[#F7EDD8]">${svgIcon('x', 20)}</button>
+            </div>
+            <p class="text-sm text-[var(--muted)] mt-2">Shortlisted Bhutan journeys &amp; estimated multi-traveller pricing (SDF included).</p>
+            <div class="mt-5 space-y-3">
+              ${state.tripPlan.length === 0
+                ? `<div class="bg-white border border-[var(--line)] rounded-2xl p-5 text-sm text-[#66706A]">Your Trip Plan shortlist is empty. Heart or Quick View any package below to build your route.</div>`
+                : state.tripPlan.map((item) => `
+                  <div class="bg-white border border-[var(--line)] rounded-2xl p-3 flex gap-3">
+                    <img src="${esc(item.img)}" alt="${esc(item.title)}" class="w-20 h-20 object-cover rounded-xl shrink-0">
+                    <div class="flex-1 min-w-0">
+                      <b class="text-sm leading-tight block text-[#0B2A22]">${esc(item.title)}</b>
+                      <span class="text-sm text-[#66706A]">$${Number(item.price).toLocaleString('en-US')} × ${item.qty} guest(s)</span>
+                      <div class="flex items-center gap-2 mt-2">
+                        <button type="button" data-action="plan-qty" data-id="${esc(item.id)}" data-delta="-1" aria-label="Decrease" class="w-7 h-7 border border-[var(--line)] rounded-full grid place-items-center">${svgIcon('minus', 13)}</button>
+                        <button type="button" data-action="plan-qty" data-id="${esc(item.id)}" data-delta="1" aria-label="Increase" class="w-7 h-7 border border-[var(--line)] rounded-full grid place-items-center">${svgIcon('plus', 13)}</button>
+                        <button type="button" data-action="plan-remove" data-id="${esc(item.id)}" class="text-xs font-bold text-red-600 ml-auto">Remove</button>
+                      </div>
+                    </div>
+                  </div>
+                `).join('')}
+            </div>
+            ${state.tripPlan.length > 0 ? `
+              <div class="mt-5 bg-white border border-[var(--line)] rounded-2xl p-4">
+                <div class="flex justify-between items-center">
+                  <span class="text-sm font-bold text-[#66706A]">Estimated Total</span>
+                  <b class="font-serif text-2xl text-[#0B2A22]">$${estTotal.toLocaleString('en-US')}</b>
+                </div>
+                <p class="text-xs text-[#66706A] mt-1">Includes $100/night SDF &amp; guiding. Choose 3★/4★/5★ tier at checkout.</p>
+                <a href="${esc(firstTourHref)}" class="block text-center w-full mt-3 bg-[#0B2A22] text-white py-3 rounded-full font-bold text-sm">Proceed to Online Booking →</a>
+                <button type="button" id="planToCustomBtn" class="w-full mt-2 border border-[#0B2A22] text-[#0B2A22] py-2.5 rounded-full font-bold text-sm">Customise in Request Form</button>
+              </div>
+            ` : ''}
+          </div>
+        </div>
+      `;
+    }
+
+    // 2. Tour Quick View Modal
+    if (state.activeTourModal) {
+      const t = state.activeTourModal;
+      const price = Number(t.price_3star_usd || t.price_usd || 1899);
+      const days = Number(t.duration_days) || 6;
+      const img = safeUrl(t.cover_image, FALLBACK_IMAGES.tiger);
+      const daysPlan = parseTourDaysPlan(t);
+      const tourHref = resolveTourPageHref(t);
+      const bookHref = resolveBookHref(t);
+      html += `
+        <div id="homeTourModalBackdrop" class="fixed inset-0 z-50 bg-black/60 p-3 sm:p-6 overflow-y-auto">
+          <div id="homeTourModalCard" class="max-w-[920px] mx-auto bg-[var(--cream)] rounded-[28px] overflow-hidden my-4 shadow-2xl">
+            <div class="relative h-[280px] sm:h-[340px]">
+              <img src="${esc(img)}" alt="${esc(t.title)}" class="w-full h-full object-cover">
+              <div class="absolute inset-0 bg-gradient-to-t from-black/75 via-transparent to-black/20"></div>
+              <button type="button" id="closeTourModalBtn" aria-label="Close tour" class="absolute top-4 right-4 w-10 h-10 bg-white text-[#0B2A22] rounded-full grid place-items-center shadow">${svgIcon('x', 20)}</button>
+              <div class="absolute bottom-4 left-5 right-5 text-white">
+                <span class="bg-[#C9A24B] text-[#0B2A22] px-3 py-1 rounded-full text-xs font-extrabold">${days} DAYS · ${esc(String(t.category || 'CLASSIC').toUpperCase())}</span>
+                <h3 class="font-serif text-[32px] sm:text-[42px] leading-none mt-2 drop-shadow">${esc(t.title)}</h3>
+              </div>
+            </div>
+            <div class="p-5 sm:p-7 grid md:grid-cols-[1.3fr_.7fr] gap-6">
+              <div>
+                <p class="text-[var(--muted)]">${esc(t.subtitle || t.highlight_text || 'Private Bhutan cultural & mountain itinerary')} · ${esc(t.valleys || 'Paro · Thimphu · Punakha')}</p>
+                <div class="grid grid-cols-3 gap-2 mt-4">
+                  ${[FALLBACK_IMAGES.tiger, FALLBACK_IMAGES.punakha, FALLBACK_IMAGES.festival].map((gImg, gi) => `<img src="${esc(gImg)}" alt="Gallery ${gi + 1}" class="h-[86px] w-full object-cover rounded-xl">`).join('')}
+                </div>
+                <h4 class="font-serif text-2xl mt-6 text-[#0B2A22]">Day-by-day itinerary</h4>
+                <div class="mt-3 divide-y divide-[var(--line)] border-y border-[var(--line)]">
+                  ${daysPlan.slice(0, 6).map((dp, bi) => `
+                    <div>
+                      <button type="button" data-action="modal-day" data-idx="${bi}" class="w-full flex justify-between items-center py-3 font-bold text-left text-[#0B2A22]">
+                        <span>Day ${dp.day} — ${esc(dp.title)}</span>
+                        ${svgIcon('chevronDown', 16, state.modalDayOpen === bi ? 'rotate-180 transition-transform' : 'transition-transform')}
+                      </button>
+                      ${state.modalDayOpen === bi ? `<p class="pb-3 text-sm text-[var(--muted)]">${esc(dp.summary)}</p>` : ''}
+                    </div>
+                  `).join('')}
+                </div>
+                <h4 class="font-serif text-2xl mt-6 text-[#0B2A22]">Included</h4>
+                <ul class="text-sm mt-2 space-y-1 text-[#101613]">
+                  <li>✓ SDF, visa clearance &amp; government fees</li>
+                  <li>✓ Licensed English-speaking guide, driver &amp; private SUV</li>
+                  <li>✓ Hand-checked 3★/4★/5★ hotels &amp; daily meals</li>
+                </ul>
+              </div>
+              <div class="bg-white border border-[var(--line)] rounded-2xl p-4 h-fit">
+                <p class="text-xs font-extrabold tracking-widest text-[#C9A24B]">LIVE PRICE ESTIMATE</p>
+                <div class="flex justify-between mt-3 text-sm items-center">
+                  <span>Travellers</span>
+                  <div class="flex gap-2 items-center">
+                    <button type="button" id="modalGuestMinusBtn" aria-label="Fewer travellers" class="w-7 h-7 border border-[var(--line)] rounded-full grid place-items-center">${svgIcon('minus', 13)}</button>
+                    <b>${state.modalGuests}</b>
+                    <button type="button" id="modalGuestPlusBtn" aria-label="More travellers" class="w-7 h-7 border border-[var(--line)] rounded-full grid place-items-center">${svgIcon('plus', 13)}</button>
+                  </div>
+                </div>
+                <div class="flex justify-between mt-3 text-sm"><span>Per person (3★)</span><b>$${price.toLocaleString('en-US')}</b></div>
+                <div class="flex justify-between mt-3 pt-3 border-t border-[var(--line)]"><span>Total estimate</span><b class="font-serif text-2xl text-[#0B2A22]">$${(price * state.modalGuests).toLocaleString('en-US')}</b></div>
+                <a href="${esc(bookHref)}" class="block text-center w-full mt-4 bg-[#0B2A22] text-white py-3.5 rounded-full font-bold text-sm">Book This Tour Now →</a>
+                <button type="button" id="modalShortlistBtn" class="w-full mt-2 bg-[#C9A24B] text-[#0B2A22] py-3 rounded-full font-extrabold text-sm">Save to Trip Plan</button>
+                <a href="${esc(tourHref)}" class="block text-center w-full mt-2 border border-[#0B2A22] text-[#0B2A22] py-3 rounded-full font-bold text-sm">Full Itinerary Page</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    // 3. Compare Side-by-Side Modal
+    if (state.compareModalOpen && state.compareIds.length >= 2) {
+      const cmpTours = state.compareIds.map((id) => state.tours.find((t) => t.id === id)).filter(Boolean);
+      if (cmpTours.length >= 2) {
+        html += `
+          <div id="homeCompareBackdrop" class="fixed inset-0 z-50 bg-black/60 p-4 overflow-y-auto flex items-center justify-center">
+            <div id="homeCompareCard" class="max-w-[780px] w-full bg-[var(--cream)] rounded-[28px] p-6 shadow-2xl border border-[var(--line)]">
+              <div class="flex justify-between items-center pb-3 border-b border-[var(--line)]">
+                <h3 class="font-serif text-2xl text-[#0B2A22]">Compare Bhutan Packages</h3>
+                <button type="button" id="closeCompareModalBtn" class="p-2 rounded-xl hover:bg-[#F7EDD8]">${svgIcon('x', 20)}</button>
+              </div>
+              <div class="grid sm:grid-cols-2 gap-4 mt-5">
+                ${cmpTours.map((t) => `
+                  <div class="bg-white border border-[var(--line)] rounded-2xl p-4 space-y-2">
+                    <img src="${esc(safeUrl(t.cover_image, FALLBACK_IMAGES.tiger))}" alt="${esc(t.title)}" class="w-full h-[150px] object-cover rounded-xl">
+                    <h4 class="font-serif text-xl text-[#0B2A22]">${esc(t.title)}</h4>
+                    <div class="text-xs font-extrabold text-[#C9A24B]">${Number(t.duration_days) || 6} DAYS · ${esc(t.category || 'Classic')}</div>
+                    <p class="text-sm text-[#66706A]">${esc(t.valleys || 'Paro · Thimphu · Punakha')}</p>
+                    <div class="text-sm"><strong>3★ Price:</strong> $${Number(t.price_3star_usd || t.price_usd || 1899).toLocaleString('en-US')}</div>
+                    <div class="text-sm"><strong>4★ / 5★:</strong> $${Number(t.price_4star_usd || 0).toLocaleString('en-US')} / $${Number(t.price_5star_usd || 0).toLocaleString('en-US')}</div>
+                    <div class="flex gap-2 pt-2">
+                      <a href="${esc(resolveTourPageHref(t))}" class="flex-1 text-center bg-[#0B2A22] text-white py-2.5 rounded-full text-xs font-bold">Details</a>
+                      <a href="${esc(resolveBookHref(t))}" class="flex-1 text-center bg-[#C9A24B] text-[#0B2A22] py-2.5 rounded-full text-xs font-extrabold">Book Now</a>
+                    </div>
+                  </div>
+                `).join('')}
+              </div>
+            </div>
+          </div>
+        `;
+      }
+    }
+
+    // 4. Festival / Destination / Film Story Modal
+    const modalItem = state.activeFestModal || state.activeDestModal || state.activeFilmModal;
+    if (modalItem) {
+      const mImg = safeUrl(modalItem.cover_image || modalItem.img, FALLBACK_IMAGES.festival);
+      const mTitle = modalItem.name || modalItem.title || 'Bhutan Experience';
+      const mDesc = modalItem.summary || modalItem.description || modalItem.tagline || modalItem.desc || '';
+      const fullHref = state.activeFestModal
+        ? resolveFestivalPageHref(state.activeFestModal)
+        : state.activeDestModal
+          ? resolveDestPageHref(state.activeDestModal)
+          : (state.activeFilmModal.href || 'tours.html');
+      const fullLabel = state.activeFestModal ? 'Full Festival Schedule →' : state.activeDestModal ? 'Read Valley Guide →' : 'Browse Curated Packages →';
+
+      html += `
+        <div id="homeStoryBackdrop" class="fixed inset-0 z-50 bg-black/60 p-4 overflow-y-auto flex items-start justify-center">
+          <div id="homeStoryCard" class="max-w-[680px] w-full bg-[var(--cream)] rounded-[28px] overflow-hidden my-6 shadow-2xl">
+            <img src="${esc(mImg)}" alt="${esc(mTitle)}" class="w-full h-[280px] object-cover">
+            <div class="p-6">
+              <div class="flex justify-between gap-3 items-start">
+                <h3 class="font-serif text-3xl text-[#0B2A22]">${esc(mTitle)}</h3>
+                <button type="button" id="closeStoryModalBtn" aria-label="Close details" class="p-2 rounded-xl hover:bg-[#F7EDD8]">${svgIcon('x', 20)}</button>
+              </div>
+              <p class="text-[var(--muted)] mt-2">${esc(mDesc)}</p>
+              ${state.activeFestModal ? `<p class="mt-3 font-bold text-[#0B2A22]">${esc(state.activeFestModal.dates_label || state.activeFestModal.season || '2027 Season')} · ${esc(state.activeFestModal.venue || state.activeFestModal.dzongkhag || 'Bhutan')}</p>` : ''}
+              ${state.activeDestModal ? `<p class="mt-3 font-bold text-[#0B2A22]">Best season: ${esc(state.activeDestModal.best_months || 'Year-round')}</p>` : ''}
+              ${state.activeFilmModal ? `
+                <div class="mt-4 bg-[#0B2A22] text-white rounded-2xl p-4 flex gap-3 items-center">
+                  <span class="w-12 h-12 bg-[#C9A24B] rounded-full grid place-items-center shrink-0">${svgIcon('play', 20, 'fill-[#0B2A22] ml-0.5')}</span>
+                  <div>
+                    <b class="block">Curated Expedition Briefing</b>
+                    <p class="text-sm text-white/75">${esc(state.activeFilmModal.dur)} · Includes private licensed Bhutanese cultural guide, valley passes, and DoI permit coordination.</p>
+                  </div>
+                </div>
+              ` : ''}
+              <div class="flex flex-wrap gap-2 mt-5">
+                <a href="${esc(fullHref)}" class="flex-1 text-center bg-[#0B2A22] text-white py-3 px-4 rounded-full font-bold text-sm">${esc(fullLabel)}</a>
+                <button type="button" id="storyToCustomBtn" class="flex-1 border border-[#0B2A22] text-[#0B2A22] py-3 px-4 rounded-full font-bold text-sm">Plan This Experience</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    return html;
   }
 
   function renderChatWidget() {
@@ -1210,14 +1505,126 @@
       render();
     });
 
+    root.querySelector('#homePlanDrawerBtn')?.addEventListener('click', () => { state.planDrawerOpen = true; render(); });
+    root.querySelector('#closePlanDrawerBtn')?.addEventListener('click', () => { state.planDrawerOpen = false; render(); });
+    root.querySelector('#homePlanBackdrop')?.addEventListener('click', (e) => { if (e.target.id === 'homePlanBackdrop') { state.planDrawerOpen = false; render(); } });
+    root.querySelector('#planToCustomBtn')?.addEventListener('click', () => {
+      state.planDrawerOpen = false;
+      render();
+      global.document.getElementById('custom')?.scrollIntoView({ behavior: 'smooth' });
+    });
+    root.querySelectorAll('[data-action="plan-qty"]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const id = btn.getAttribute('data-id');
+        const delta = Number(btn.getAttribute('data-delta')) || 0;
+        state.tripPlan = state.tripPlan.map((it) => it.id === id ? { ...it, qty: Math.max(1, (it.qty || 1) + delta) } : it);
+        saveTripPlanStorage();
+        render();
+      });
+    });
+    root.querySelectorAll('[data-action="plan-remove"]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const id = btn.getAttribute('data-id');
+        state.tripPlan = state.tripPlan.filter((it) => it.id !== id);
+        saveTripPlanStorage();
+        render();
+      });
+    });
+
+    root.querySelectorAll('[data-action="quick-tour"]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const id = btn.getAttribute('data-id');
+        const tour = state.tours.find((t) => t.id === id);
+        if (tour) {
+          state.activeTourModal = tour;
+          state.modalGuests = 2;
+          state.modalDayOpen = 0;
+          render();
+        }
+      });
+    });
+    root.querySelector('#closeTourModalBtn')?.addEventListener('click', () => { state.activeTourModal = null; render(); });
+    root.querySelector('#homeTourModalBackdrop')?.addEventListener('click', (e) => { if (e.target.id === 'homeTourModalBackdrop') { state.activeTourModal = null; render(); } });
+    root.querySelector('#modalGuestMinusBtn')?.addEventListener('click', () => { state.modalGuests = Math.max(1, state.modalGuests - 1); render(); });
+    root.querySelector('#modalGuestPlusBtn')?.addEventListener('click', () => { state.modalGuests += 1; render(); });
+    root.querySelector('#modalShortlistBtn')?.addEventListener('click', () => {
+      if (state.activeTourModal) {
+        addTourToPlan(state.activeTourModal);
+        state.activeTourModal = null;
+        state.planDrawerOpen = true;
+        render();
+      }
+    });
+    root.querySelectorAll('[data-action="modal-day"]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const idx = Number(btn.getAttribute('data-idx'));
+        state.modalDayOpen = state.modalDayOpen === idx ? -1 : idx;
+        render();
+      });
+    });
+
+    root.querySelector('#openCompareModalBtn')?.addEventListener('click', () => { state.compareModalOpen = true; render(); });
+    root.querySelector('#closeCompareModalBtn')?.addEventListener('click', () => { state.compareModalOpen = false; render(); });
+    root.querySelector('#homeCompareBackdrop')?.addEventListener('click', (e) => { if (e.target.id === 'homeCompareBackdrop') { state.compareModalOpen = false; render(); } });
+
+    root.querySelectorAll('[data-action="quick-fest"]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const idx = Number(btn.getAttribute('data-idx'));
+        state.activeFestModal = state.festivals[idx] || null;
+        render();
+      });
+    });
+    root.querySelectorAll('[data-action="quick-dest"]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const idx = Number(btn.getAttribute('data-idx'));
+        state.activeDestModal = state.destinations[idx] || null;
+        render();
+      });
+    });
+    root.querySelectorAll('[data-action="open-film"]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const idx = Number(btn.getAttribute('data-idx'));
+        state.activeFilmModal = SPECIALTY_CARDS[idx] || null;
+        render();
+      });
+    });
+    root.querySelector('#closeStoryModalBtn')?.addEventListener('click', () => {
+      state.activeFestModal = null;
+      state.activeDestModal = null;
+      state.activeFilmModal = null;
+      render();
+    });
+    root.querySelector('#homeStoryBackdrop')?.addEventListener('click', (e) => {
+      if (e.target.id === 'homeStoryBackdrop') {
+        state.activeFestModal = null;
+        state.activeDestModal = null;
+        state.activeFilmModal = null;
+        render();
+      }
+    });
+    root.querySelector('#storyToCustomBtn')?.addEventListener('click', () => {
+      const m = state.activeFestModal || state.activeDestModal || state.activeFilmModal;
+      if (m) state.customForm.message = `Interested in: ${m.name || m.title}. `;
+      state.activeFestModal = null;
+      state.activeDestModal = null;
+      state.activeFilmModal = null;
+      render();
+      global.document.getElementById('custom')?.scrollIntoView({ behavior: 'smooth' });
+    });
+
     root.querySelectorAll('[data-action="save-tour"]').forEach((btn) => {
       btn.addEventListener('click', () => {
         const id = btn.getAttribute('data-id');
         if (!id) return;
-        state.savedIds = state.savedIds.includes(id)
-          ? state.savedIds.filter((x) => x !== id)
-          : [...state.savedIds, id];
-        state.toastMsg = state.savedIds.includes(id) ? 'Saved to your shortlist.' : 'Removed from shortlist.';
+        const tour = state.tours.find((t) => t.id === id);
+        if (state.savedIds.includes(id)) {
+          state.savedIds = state.savedIds.filter((x) => x !== id);
+          state.tripPlan = state.tripPlan.filter((x) => x.id !== id);
+          saveTripPlanStorage();
+          state.toastMsg = 'Removed from shortlist & Trip Plan.';
+        } else if (tour) {
+          addTourToPlan(tour);
+        }
         render();
       });
     });
@@ -1392,6 +1799,7 @@
         ${renderCustomBuilderSection()}
         ${renderReviewsAndTrust()}
         ${renderFooter()}
+        ${renderInteractiveOverlays()}
         ${renderChatWidget()}
       </div>
     `;
@@ -1402,7 +1810,8 @@
     render();
     if (!state.heroTimer) {
       state.heroTimer = global.setInterval(() => {
-        if (!state.heroPaused && !state.megaMenu && !state.searchDropdownOpen) {
+        const busyModal = state.planDrawerOpen || state.activeTourModal || state.activeFestModal || state.activeDestModal || state.activeFilmModal || state.compareModalOpen;
+        if (!state.heroPaused && !state.megaMenu && !state.searchDropdownOpen && !busyModal) {
           state.heroIdx = (state.heroIdx + 1) % HERO_SLIDES.length;
           render();
         }

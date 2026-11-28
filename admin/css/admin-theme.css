@@ -128,16 +128,16 @@ input::placeholder, textarea::placeholder {
   justify-content: center;
   padding: 8px 10px;
   border-radius: 8px;
-  background-color: #273449;
+  background-color: #123A30;
   border: 1px solid var(--admin-border);
-  color: #E2E8F0;
+  color: #FFF8EC;
   text-decoration: none;
   transition: background-color 0.2s ease, color 0.2s ease;
 }
 
 .notif-bell-btn:hover {
-  background-color: #334155;
-  color: #FFFFFF;
+  background-color: #1C4539;
+  color: #E4C87E;
 }
 
 .notif-badge {
@@ -149,7 +149,7 @@ input::placeholder, textarea::placeholder {
   padding: 0 5px;
   border-radius: 9999px;
   background-color: var(--primary);
-  color: #FFFFFF;
+  color: #0B2A22;
   font-size: 10px;
   font-weight: 800;
   line-height: 1;
@@ -171,7 +171,7 @@ input::placeholder, textarea::placeholder {
 }
 
 .admin-panel-sub {
-  background-color: rgba(15, 23, 42, 0.72);
+  background-color: rgba(5, 19, 15, 0.72);
   border: 1px solid var(--admin-border);
   border-radius: 10px;
   padding: 14px;
@@ -248,7 +248,7 @@ input::placeholder, textarea::placeholder {
 }
 
 .admin-table th {
-  background-color: #162033;
+  background-color: #08201A;
   color: var(--admin-muted);
   font-weight: 700;
   text-transform: uppercase;
@@ -262,8 +262,8 @@ input::placeholder, textarea::placeholder {
 
 .admin-table td {
   padding: 13px 14px;
-  border-bottom: 1px solid rgba(51, 65, 85, 0.5);
-  color: #E2E8F0;
+  border-bottom: 1px solid rgba(28, 69, 57, 0.55);
+  color: #FFF8EC;
   vertical-align: top;
 }
 
@@ -326,12 +326,13 @@ input::placeholder, textarea::placeholder {
   background-color: var(--primary-hover);
 }
 .admin-btn-secondary {
-  background-color: #273449;
+  background-color: #123A30;
   border-color: var(--admin-border);
-  color: #F1F5F9;
+  color: #FFF8EC;
 }
 .admin-btn-secondary:hover:not(:disabled) {
-  background-color: #334155;
+  background-color: #1C4539;
+  color: #E4C87E;
 }
 .admin-btn-emerald {
   background-color: #059669;
@@ -443,22 +444,22 @@ input::placeholder, textarea::placeholder {
   border-top: 1px solid var(--admin-border);
 }
 
-/* Fallback utilities for dark admin palette */
-.bg-zinc-900 { background-color: #0F172A; }
-.bg-zinc-800 { background-color: #1E293B; }
-.bg-zinc-800\/80 { background-color: rgba(30, 41, 59, 0.8); }
-.bg-zinc-800\/60 { background-color: rgba(30, 41, 59, 0.6); }
-.border-zinc-800 { border-color: #1E293B; }
-.border-zinc-700 { border-color: #334155; }
-.border-zinc-600 { border-color: #475569; }
+/* Fallback utilities aligned to Bhutan Fast Rate Emerald & Gold admin palette */
+.bg-zinc-900 { background-color: #05130F; }
+.bg-zinc-800 { background-color: #0B2A22; }
+.bg-zinc-800\/80 { background-color: rgba(11, 42, 34, 0.85); }
+.bg-zinc-800\/60 { background-color: rgba(11, 42, 34, 0.65); }
+.border-zinc-800 { border-color: #123A30; }
+.border-zinc-700 { border-color: #1C4539; }
+.border-zinc-600 { border-color: #2C5C4E; }
 .text-emerald-400 { color: #34D399; }
-.text-amber-400 { color: #FBBF24; }
-.text-amber-300 { color: #FCD34D; }
+.text-amber-400 { color: #E4C87E; }
+.text-amber-300 { color: #F7EDD8; }
 .text-blue-400 { color: #60A5FA; }
 .text-purple-400 { color: #C084FC; }
 .text-red-400 { color: #F87171; }
-.text-zinc-200 { color: #E2E8F0; }
-.text-zinc-300 { color: #CBD5E1; }
-.text-zinc-400 { color: #94A3B8; }
-.text-zinc-500 { color: #64748B; }
+.text-zinc-200 { color: #FFF8EC; }
+.text-zinc-300 { color: #E7DCC4; }
+.text-zinc-400 { color: #9DB5AD; }
+.text-zinc-500 { color: #7C9A91; }
 .role-hidden { display: none !important; }

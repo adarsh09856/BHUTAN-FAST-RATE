@@ -211,11 +211,11 @@ const AdminApp = (function () {
     const isSuper = displayRole === 'super_admin';
 
     sidebarEl.innerHTML = `
-      <div class="p-6 border-b border-[#334155] flex items-center gap-3">
-        <div class="w-9 h-9 rounded-xl bg-[#E05A47] text-white font-black flex items-center justify-center text-lg shrink-0">B</div>
+      <div class="p-6 border-b border-[#1C4539] flex items-center gap-3">
+        <div class="w-9 h-9 rounded-full bg-[#C9A24B] text-[#0B2A22] font-serif font-black flex items-center justify-center text-lg shrink-0 shadow">B</div>
         <div class="min-w-0">
-          <div class="font-extrabold text-sm text-white leading-tight truncate">BHUTAN FAST RATE</div>
-          <div class="text-[9px] font-bold text-[#E05A47] tracking-widest uppercase">OPERATIONS CENTER</div>
+          <div class="font-serif font-extrabold text-sm text-[#FFF8EC] leading-tight truncate">BHUTAN FAST RATE</div>
+          <div class="text-[9px] font-bold text-[#C9A24B] tracking-widest uppercase">OPERATIONS CENTER</div>
         </div>
       </div>
 
@@ -257,7 +257,7 @@ const AdminApp = (function () {
         <div class="text-[10px] font-bold text-zinc-500 uppercase px-3 pt-4 py-1">System</div>
         <a href="settings.html" class="sidebar-link ${activeItem === 'settings' ? 'active' : ''}">
           <span class="sidebar-link-main"><span>⚙️</span><span>Platform Settings</span></span>
-          ${isSuper ? '<span class="text-[9px] px-1.5 py-0.5 rounded bg-[#E05A47]/20 text-[#E05A47] font-bold">RBAC</span>' : ''}
+          ${isSuper ? '<span class="text-[9px] px-1.5 py-0.5 rounded bg-[#C9A24B]/20 text-[#E4C87E] font-bold">RBAC</span>' : ''}
         </a>
         ${isSuper ? `
           <a href="settings.html#staff-users" class="sidebar-link" data-roles="super_admin">

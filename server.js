@@ -92,10 +92,15 @@ app.use((req, res, next) => {
   return next();
 });
 
+// Convenience portal directory redirects & clean extensionless routes
+app.get(['/admin', '/admin/'], (req, res) => res.redirect(302, '/admin/login.html'));
+app.get(['/client', '/client/'], (req, res) => res.redirect(302, '/client/login.html'));
+app.get(['/guide', '/guide/'], (req, res) => res.redirect(302, '/guide/login.html'));
+
 // Serve static frontend files
 app.use(express.static(__dirname));
 
-// Dynamic HTML fallbacks for admin-created tours, destinations, and festivals
+// Dynamic HTML fallbacks for admin-created tours, destinations, festivals & extensionless pages
 app.use((req, res, next) => {
   if (req.method !== 'GET' && req.method !== 'HEAD') return next();
 
@@ -113,6 +118,14 @@ app.use((req, res, next) => {
   }
   if (/^\/festival-[^/]+\.html$/i.test(reqPath)) {
     return res.sendFile(path.join(__dirname, 'festivals.html'));
+  }
+
+  const extMatch = reqPath.match(/^\/([a-z0-9-]+)\/?$/i);
+  if (extMatch) {
+    const candidate = path.join(__dirname, `${extMatch[1]}.html`);
+    if (fs.existsSync(candidate)) {
+      return res.sendFile(candidate);
+    }
   }
 
   return next();
