@@ -10,7 +10,7 @@ const { ensureUploadDirs, MAX_UPLOAD_MB } = require('./middleware/upload');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-const BLOCKED_DIR_RE = /^\/(database|uploads|middleware|services|routes|tests|docs|\.git|\.superpowers)(\/|$)/i;
+const BLOCKED_DIR_RE = /^\/(?:(database|uploads|middleware|routes|tests|docs|\.git|\.superpowers)(\/|$)|services\/)/i;
 const BLOCKED_FILE_RE = /^\/(\.env(\..*)?|\.gitignore|package\.json|package-lock\.json|test-crud\.js|server\.js)$/i;
 const BLOCKED_SEGMENT_RE = /(^|\/)(\.env(\..*)?|\.git)(\/|$)/i;
 
@@ -118,6 +118,10 @@ app.use((req, res, next) => {
   }
   if (/^\/festival-[^/]+\.html$/i.test(reqPath)) {
     return res.sendFile(path.join(__dirname, 'festivals.html'));
+  }
+
+  if (parsed.normalized === '/services') {
+    return res.sendFile(path.join(__dirname, 'services.html'));
   }
 
   const extMatch = reqPath.match(/^\/([a-z0-9-]+)\/?$/i);
