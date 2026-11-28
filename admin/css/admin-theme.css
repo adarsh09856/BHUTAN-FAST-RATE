@@ -1,14 +1,17 @@
 /* ============================================================
    BHUTAN FAST RATE TOURS - ADMIN OPERATIONS CENTER THEME
+   Frosted Deep Emerald & Imperial Gold Glassmorphism
    ============================================================ */
 
 :root {
-  --admin-bg: #071A15;
-  --admin-card: #0D2921;
-  --admin-sidebar: #05130F;
-  --admin-border: #1C4539;
+  --admin-bg: #051611;
+  --admin-card: rgba(11, 39, 31, 0.58);
+  --admin-card-solid: #0D2921;
+  --admin-sidebar: rgba(5, 19, 15, 0.78);
+  --admin-border: rgba(201, 162, 75, 0.22);
+  --admin-glass-edge: rgba(255, 248, 236, 0.08);
   --admin-text: #FFF8EC;
-  --admin-muted: #9DB5AD;
+  --admin-muted: #A4BCB4;
   --primary: #C9A24B;
   --primary-hover: #E4C87E;
   --accent-emerald: #10B981;
@@ -23,6 +26,12 @@ input, textarea, select {
   color: #0f172a !important;
   -webkit-text-fill-color: #0f172a !important;
   opacity: 1 !important;
+  border-radius: 10px;
+}
+
+input:focus, textarea:focus, select:focus {
+  border-color: var(--primary) !important;
+  box-shadow: 0 0 0 3px rgba(201, 162, 75, 0.22) !important;
 }
 
 input[type="checkbox"], input[type="radio"] {
@@ -37,23 +46,49 @@ input::placeholder, textarea::placeholder {
   opacity: 1 !important;
 }
 
-/* Layout */
+/* Atmospheric Himalayan Emerald Canvas */
 .admin-layout {
   display: flex;
   min-height: 100vh;
   background-color: var(--admin-bg);
+  background-image:
+    radial-gradient(circle at 12% 14%, rgba(201, 162, 75, 0.16), transparent 36%),
+    radial-gradient(circle at 86% 12%, rgba(16, 185, 129, 0.14), transparent 38%),
+    radial-gradient(circle at 52% 92%, rgba(201, 162, 75, 0.10), transparent 44%),
+    linear-gradient(155deg, #04120E 0%, #09251D 52%, #051611 100%);
+  background-attachment: fixed;
   color: var(--admin-text);
-  font-family: 'Manrope', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-family: 'Manrope', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  overflow-x: clip;
 }
 
-/* Sidebar */
+/* Editorial Fonts matching Bhutan Fast Rate Storefront */
+.admin-layout h1,
+.admin-layout h2,
+.admin-modal-header h2,
+.stat-card .text-2xl,
+.stat-card .text-3xl {
+  font-family: 'Fraunces', Georgia, serif;
+  letter-spacing: -0.015em;
+}
+
+/* Sticky Frosted Glass Sidebar */
 .admin-sidebar {
-  width: 260px;
-  background-color: var(--admin-sidebar);
+  width: 262px;
+  position: sticky;
+  top: 0;
+  align-self: flex-start;
+  height: 100vh;
+  max-height: 100vh;
+  background: var(--admin-sidebar);
+  backdrop-filter: blur(22px) saturate(145%);
+  -webkit-backdrop-filter: blur(22px) saturate(145%);
   border-right: 1px solid var(--admin-border);
+  box-shadow: 8px 0 32px rgba(0, 0, 0, 0.34), inset -1px 0 0 var(--admin-glass-edge);
   display: flex;
   flex-direction: column;
   flex-shrink: 0;
+  z-index: 40;
   transition: transform 0.3s ease;
 }
 
@@ -63,8 +98,10 @@ input::placeholder, textarea::placeholder {
     top: 0;
     bottom: 0;
     left: 0;
+    height: 100vh;
     z-index: 50;
     transform: translateX(-100%);
+    background: rgba(5, 19, 15, 0.92);
   }
   .admin-sidebar.open {
     transform: translateX(0);
@@ -77,7 +114,7 @@ input::placeholder, textarea::placeholder {
   justify-content: space-between;
   gap: 10px;
   padding: 10px 14px;
-  border-radius: 8px;
+  border-radius: 10px;
   font-size: 13px;
   font-weight: 600;
   color: var(--admin-muted);
@@ -93,10 +130,16 @@ input::placeholder, textarea::placeholder {
   min-width: 0;
 }
 
-.sidebar-link:hover, .sidebar-link.active {
-  background-color: rgba(201, 162, 75, 0.16);
+.sidebar-link:hover {
+  background: rgba(255, 248, 236, 0.06);
+  color: #FFF8EC;
+}
+
+.sidebar-link.active {
+  background: linear-gradient(90deg, rgba(201, 162, 75, 0.24), rgba(201, 162, 75, 0.06));
   color: #FFF8EC;
   border-left: 3px solid var(--primary);
+  box-shadow: inset 0 1px 0 rgba(255, 248, 236, 0.12), 0 4px 14px rgba(0, 0, 0, 0.16);
 }
 
 /* Main Content Area */
@@ -105,19 +148,24 @@ input::placeholder, textarea::placeholder {
   display: flex;
   flex-direction: column;
   min-width: 0;
-  overflow-y: auto;
 }
 
-/* Header */
+/* Sticky Frosted Top Header */
 .admin-header {
-  min-height: 64px;
-  background-color: var(--admin-card);
+  position: sticky;
+  top: 0;
+  z-index: 30;
+  min-height: 68px;
+  background: rgba(11, 39, 31, 0.68);
+  backdrop-filter: blur(20px) saturate(145%);
+  -webkit-backdrop-filter: blur(20px) saturate(145%);
   border-bottom: 1px solid var(--admin-border);
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.22), inset 0 -1px 0 var(--admin-glass-edge);
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 12px 16px;
-  padding: 10px 24px;
+  padding: 12px 24px;
   flex-wrap: wrap;
 }
 
@@ -149,17 +197,19 @@ input::placeholder, textarea::placeholder {
   align-items: center;
   justify-content: center;
   padding: 8px 10px;
-  border-radius: 8px;
-  background-color: #123A30;
+  border-radius: 10px;
+  background: rgba(18, 58, 48, 0.65);
+  backdrop-filter: blur(10px);
   border: 1px solid var(--admin-border);
   color: #FFF8EC;
   text-decoration: none;
-  transition: background-color 0.2s ease, color 0.2s ease;
+  transition: background-color 0.2s ease, color 0.2s ease, transform 0.15s ease;
 }
 
 .notif-bell-btn:hover {
-  background-color: #1C4539;
+  background: rgba(201, 162, 75, 0.22);
   color: #E4C87E;
+  transform: translateY(-1px);
 }
 
 .notif-badge {
@@ -181,22 +231,33 @@ input::placeholder, textarea::placeholder {
   position: absolute;
   top: -6px;
   right: -6px;
-  border: 2px solid var(--admin-card);
+  border: 2px solid #0B2A22;
 }
 
-/* Cards & Stats */
+/* Frosted Glass Cards & Panels */
 .stat-card {
-  background-color: var(--admin-card);
+  background: linear-gradient(145deg, rgba(16, 54, 43, 0.60), rgba(7, 26, 21, 0.72));
+  backdrop-filter: blur(18px) saturate(140%);
+  -webkit-backdrop-filter: blur(18px) saturate(140%);
   border: 1px solid var(--admin-border);
-  border-radius: 12px;
+  border-radius: 16px;
   padding: 20px;
+  box-shadow: 0 12px 34px rgba(0, 0, 0, 0.26), inset 0 1px 0 rgba(255, 248, 236, 0.09);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.stat-card:hover {
+  border-color: rgba(201, 162, 75, 0.36);
 }
 
 .admin-panel-sub {
-  background-color: rgba(5, 19, 15, 0.72);
-  border: 1px solid var(--admin-border);
-  border-radius: 10px;
+  background: rgba(5, 19, 15, 0.56);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 248, 236, 0.10);
+  border-radius: 12px;
   padding: 14px;
+  box-shadow: inset 0 1px 0 rgba(255, 248, 236, 0.05);
 }
 
 /* Responsive Admin Grids */
@@ -251,7 +312,7 @@ input::placeholder, textarea::placeholder {
   width: 100%;
   height: 7px;
   border-radius: 9999px;
-  background-color: rgba(148, 163, 184, 0.16);
+  background-color: rgba(255, 248, 236, 0.12);
   overflow: hidden;
 }
 
@@ -270,12 +331,12 @@ input::placeholder, textarea::placeholder {
 }
 
 .admin-table th {
-  background-color: #08201A;
-  color: var(--admin-muted);
+  background: rgba(5, 19, 15, 0.68);
+  color: #E4C87E;
   font-weight: 700;
   text-transform: uppercase;
   font-size: 11px;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.06em;
   padding: 12px 14px;
   border-bottom: 1px solid var(--admin-border);
   text-align: left;
@@ -284,13 +345,13 @@ input::placeholder, textarea::placeholder {
 
 .admin-table td {
   padding: 13px 14px;
-  border-bottom: 1px solid rgba(28, 69, 57, 0.55);
+  border-bottom: 1px solid rgba(255, 248, 236, 0.08);
   color: #FFF8EC;
   vertical-align: top;
 }
 
 .admin-table tr:hover td {
-  background-color: rgba(255, 255, 255, 0.025);
+  background-color: rgba(201, 162, 75, 0.06);
 }
 
 /* Status Badges */
@@ -298,30 +359,31 @@ input::placeholder, textarea::placeholder {
   display: inline-flex;
   align-items: center;
   gap: 4px;
-  padding: 2px 8px;
+  padding: 3px 9px;
   border-radius: 9999px;
   font-size: 10px;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.05em;
   white-space: nowrap;
+  backdrop-filter: blur(6px);
 }
 
-.badge-green { background-color: rgba(16, 185, 129, 0.2); color: #34D399; border: 1px solid rgba(16, 185, 129, 0.35); }
-.badge-amber { background-color: rgba(245, 158, 11, 0.2); color: #FBBF24; border: 1px solid rgba(245, 158, 11, 0.35); }
-.badge-blue { background-color: rgba(59, 130, 246, 0.2); color: #60A5FA; border: 1px solid rgba(59, 130, 246, 0.35); }
-.badge-red { background-color: rgba(239, 68, 68, 0.2); color: #F87171; border: 1px solid rgba(239, 68, 68, 0.35); }
-.badge-purple { background-color: rgba(168, 85, 247, 0.2); color: #C084FC; border: 1px solid rgba(168, 85, 247, 0.35); }
-.badge-zinc { background-color: rgba(148, 163, 184, 0.16); color: #CBD5E1; border: 1px solid rgba(148, 163, 184, 0.3); }
+.badge-green { background-color: rgba(16, 185, 129, 0.18); color: #34D399; border: 1px solid rgba(16, 185, 129, 0.38); }
+.badge-amber { background-color: rgba(245, 158, 11, 0.18); color: #FBBF24; border: 1px solid rgba(245, 158, 11, 0.38); }
+.badge-blue { background-color: rgba(59, 130, 246, 0.18); color: #60A5FA; border: 1px solid rgba(59, 130, 246, 0.38); }
+.badge-red { background-color: rgba(239, 68, 68, 0.18); color: #F87171; border: 1px solid rgba(239, 68, 68, 0.38); }
+.badge-purple { background-color: rgba(168, 85, 247, 0.18); color: #C084FC; border: 1px solid rgba(168, 85, 247, 0.38); }
+.badge-zinc { background-color: rgba(255, 248, 236, 0.10); color: #E7DCC4; border: 1px solid rgba(255, 248, 236, 0.22); }
 
-/* Buttons */
+/* Frosted Glass Buttons */
 .admin-btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 6px;
   padding: 8px 14px;
-  border-radius: 8px;
+  border-radius: 10px;
   font-size: 12px;
   font-weight: 700;
   cursor: pointer;
@@ -337,24 +399,27 @@ input::placeholder, textarea::placeholder {
 .admin-btn-sm {
   padding: 5px 10px;
   font-size: 11px;
-  border-radius: 6px;
+  border-radius: 8px;
 }
 .admin-btn-primary {
-  background-color: var(--primary);
+  background: linear-gradient(135deg, #D5B15B, #C9A24B);
   color: #0B2A22;
   font-weight: 800;
+  box-shadow: 0 4px 16px rgba(201, 162, 75, 0.25);
 }
 .admin-btn-primary:hover:not(:disabled) {
-  background-color: var(--primary-hover);
+  background: linear-gradient(135deg, #E7CC85, #D5B15B);
 }
 .admin-btn-secondary {
-  background-color: #123A30;
+  background: rgba(18, 58, 48, 0.65);
+  backdrop-filter: blur(8px);
   border-color: var(--admin-border);
   color: #FFF8EC;
 }
 .admin-btn-secondary:hover:not(:disabled) {
-  background-color: #1C4539;
+  background: rgba(201, 162, 75, 0.20);
   color: #E4C87E;
+  border-color: rgba(201, 162, 75, 0.45);
 }
 .admin-btn-emerald {
   background-color: #059669;
@@ -383,34 +448,36 @@ input::placeholder, textarea::placeholder {
 /* Inline Alerts */
 .admin-alert {
   padding: 12px 14px;
-  border-radius: 10px;
+  border-radius: 12px;
   font-size: 12px;
   line-height: 1.45;
   border: 1px solid transparent;
+  backdrop-filter: blur(10px);
 }
 .admin-alert-error {
-  background-color: rgba(239, 68, 68, 0.14);
-  border-color: rgba(239, 68, 68, 0.4);
+  background-color: rgba(239, 68, 68, 0.16);
+  border-color: rgba(239, 68, 68, 0.42);
   color: #FCA5A5;
 }
 .admin-alert-warn {
-  background-color: rgba(245, 158, 11, 0.14);
-  border-color: rgba(245, 158, 11, 0.4);
+  background-color: rgba(245, 158, 11, 0.16);
+  border-color: rgba(245, 158, 11, 0.42);
   color: #FDE68A;
 }
 .admin-alert-success {
-  background-color: rgba(16, 185, 129, 0.14);
-  border-color: rgba(16, 185, 129, 0.4);
+  background-color: rgba(16, 185, 129, 0.16);
+  border-color: rgba(16, 185, 129, 0.42);
   color: #6EE7B7;
 }
 
-/* Modals */
+/* Frosted Glass Modals */
 .admin-modal-backdrop {
   position: fixed;
   inset: 0;
   z-index: 60;
-  background-color: rgba(2, 6, 23, 0.78);
-  backdrop-filter: blur(4px);
+  background-color: rgba(4, 16, 12, 0.72);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -424,10 +491,12 @@ input::placeholder, textarea::placeholder {
   width: 100%;
   max-width: 560px;
   max-height: 92vh;
-  background-color: var(--admin-card);
-  border: 1px solid var(--admin-border);
-  border-radius: 16px;
-  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.65);
+  background: rgba(10, 35, 28, 0.88);
+  backdrop-filter: blur(24px) saturate(145%);
+  -webkit-backdrop-filter: blur(24px) saturate(145%);
+  border: 1px solid rgba(201, 162, 75, 0.34);
+  border-radius: 20px;
+  box-shadow: 0 28px 60px -12px rgba(0, 0, 0, 0.72), inset 0 1px 0 rgba(255, 248, 236, 0.12);
   display: flex;
   flex-direction: column;
   overflow: hidden;
@@ -446,7 +515,7 @@ input::placeholder, textarea::placeholder {
   justify-content: space-between;
   gap: 12px;
   padding: 16px 22px;
-  background-color: var(--admin-sidebar);
+  background: rgba(5, 19, 15, 0.78);
   border-bottom: 1px solid var(--admin-border);
 }
 
@@ -462,18 +531,30 @@ input::placeholder, textarea::placeholder {
   justify-content: flex-end;
   gap: 10px;
   padding: 14px 22px;
-  background-color: var(--admin-sidebar);
+  background: rgba(5, 19, 15, 0.78);
   border-top: 1px solid var(--admin-border);
 }
 
-/* Fallback utilities aligned to Bhutan Fast Rate Emerald & Gold admin palette */
-.bg-zinc-900 { background-color: #05130F; }
-.bg-zinc-800 { background-color: #0B2A22; }
-.bg-zinc-800\/80 { background-color: rgba(11, 42, 34, 0.85); }
-.bg-zinc-800\/60 { background-color: rgba(11, 42, 34, 0.65); }
-.border-zinc-800 { border-color: #123A30; }
-.border-zinc-700 { border-color: #1C4539; }
-.border-zinc-600 { border-color: #2C5C4E; }
+/* Custom sleek scrollbars inside frosted sidebar & modals */
+.admin-sidebar *::-webkit-scrollbar,
+.admin-modal-body::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+.admin-sidebar *::-webkit-scrollbar-thumb,
+.admin-modal-body::-webkit-scrollbar-thumb {
+  background: rgba(201, 162, 75, 0.28);
+  border-radius: 9999px;
+}
+
+/* Fallback utilities aligned to Bhutan Fast Rate Emerald & Gold Glass palette */
+.bg-zinc-900 { background-color: rgba(5, 19, 15, 0.72); }
+.bg-zinc-800 { background-color: rgba(11, 42, 34, 0.68); }
+.bg-zinc-800\/80 { background-color: rgba(11, 42, 34, 0.78); }
+.bg-zinc-800\/60 { background-color: rgba(11, 42, 34, 0.58); }
+.border-zinc-800 { border-color: rgba(201, 162, 75, 0.16); }
+.border-zinc-700 { border-color: rgba(201, 162, 75, 0.22); }
+.border-zinc-600 { border-color: rgba(201, 162, 75, 0.30); }
 .text-emerald-400 { color: #34D399; }
 .text-amber-400 { color: #E4C87E; }
 .text-amber-300 { color: #F7EDD8; }
@@ -482,6 +563,6 @@ input::placeholder, textarea::placeholder {
 .text-red-400 { color: #F87171; }
 .text-zinc-200 { color: #FFF8EC; }
 .text-zinc-300 { color: #E7DCC4; }
-.text-zinc-400 { color: #9DB5AD; }
-.text-zinc-500 { color: #7C9A91; }
+.text-zinc-400 { color: #A4BCB4; }
+.text-zinc-500 { color: #83A096; }
 .role-hidden { display: none !important; }
